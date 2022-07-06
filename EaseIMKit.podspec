@@ -43,7 +43,13 @@ Pod::Spec.new do |s|
         'EaseIMKit/EaseIMKit/Classes/Chat/ChatModels/EaseChatViewModel.h',
         'EaseIMKit/EaseIMKit/Classes/BaseTableViewController/EaseBaseTableViewModel.h',
         'EaseIMKit/EaseIMKit/Classes/BaseTableviewController/EaseUserDelegate.h',
-        'EaseIMKit/EaseIMKit/Classes/BaseTableViewController/EaseBaseTableViewController.h'
+        'EaseIMKit/EaseIMKit/Classes/BaseTableViewController/EaseBaseTableViewController.h',
+        
+        #BeiQi
+        'EaseIMKit/EaseIMKit/Classes/BeiQi/Conversation/EMConversationsViewController.h',
+        'EaseIMKit/EaseIMKit/Classes/BeiQi/Helper/ViewController/RefreshController/EMRefreshViewController.h',
+        'EaseIMKit/EaseIMKit/Classes/BeiQi/Helper/View/EMAlertView.h'
+        
     ]
     
     s.static_framework = true
@@ -61,6 +67,15 @@ Pod::Spec.new do |s|
 
     s.dependency 'HyphenateChat', '3.9.4'
     s.dependency 'EMVoiceConvert', '0.1.0'
+    s.dependency 'MBProgressHUD'
+    s.dependency 'Masonry'
+    s.dependency 'MJRefresh'
+    s.dependency 'SDWebImage'
+    s.dependency 'AgoraRtcEngine_iOS','3.6.1.2'
+    s.dependency 'FMDB'
+    s.dependency 'Bugly'
+    s.dependency 'EMTranslate'
+    s.dependency 'EaseCallKit','3.9.1'
 
 
 end

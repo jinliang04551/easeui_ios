@@ -41,7 +41,7 @@
 #define MSG_TYPING_END @"TypingEnd"
 
 //通话
-#define EMCOMMMUNICATE_RECORD @"EMCommunicateRecord" //本地通话记录
+#define EMCOMMMUNICATE_muRECORD @"EMCommunicateRecord" //本地通话记录
 #define EMCOMMMUNICATE @"EMCommunicate" //远端通话记录
 #define EMCOMMUNICATE_TYPE @"EMCommunicateType"
 #define EMCOMMUNICATE_TYPE_VOICE @"EMCommunicateTypeVoice"
@@ -120,9 +120,18 @@
 #define CHATROOM_INFO_UPDATED @"EMChatroomInfoUpdated"
 #define CHATROOM_INFO_PUSHVIEWCONTROLLER @"EMPushChatroomInfoViewController"
 
+//#define EaseLocalizableString(key,comment) ^{\
+//    NSString *path = [[NSBundle mainBundle] pathForResource:@"EaseIMKit" ofType:@"bundle"];\
+//    NSBundle* bundle = [NSBundle bundleWithPath:path];\
+//    return NSLocalizedStringFromTableInBundle(key, @"EaseLocalizable", bundle, comment);\
+//}()
+
 #define EaseLocalizableString(key,comment) ^{\
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"EaseIMKit" ofType:@"bundle"];\
-    NSBundle* bundle = [NSBundle bundleWithPath:path];\
+NSBundle *tBundle = [NSBundle bundleForClass:self.class]; \
+NSString* absolutePath = [tBundle pathForResource:@"EaseIMKit" ofType:@"bundle"];\
+NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
     return NSLocalizedStringFromTableInBundle(key, @"EaseLocalizable", bundle, comment);\
 }()
+
+
 #endif /* EMDefines_h */
