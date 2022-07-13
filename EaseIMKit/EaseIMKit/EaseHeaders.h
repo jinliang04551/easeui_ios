@@ -19,6 +19,7 @@
 #import "UIViewController+HUD.h"
 #import "UIColor+EaseUI.h"
 #import "UIImage+EaseUI.h"
+#import "UILabel+LinkUrl.h"
 
 #import <Masonry/Masonry.h>
 #import "EaseUIDefine.h"

@@ -10,7 +10,7 @@
 #import "EaseRefreshViewController.h"
 #import "EaseSearchBar.h"
 #import "EaseRealtimeSearch.h"
-
+#import "EaseSearchNoDataView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSMutableArray *searchResults;
 
 @property (nonatomic, strong) UITableView *searchResultTableView;
+
+@property (nonatomic, strong) EaseSearchNoDataView *noDataPromptView;
 
 - (void)keyBoardWillShow:(NSNotification *)note;
 

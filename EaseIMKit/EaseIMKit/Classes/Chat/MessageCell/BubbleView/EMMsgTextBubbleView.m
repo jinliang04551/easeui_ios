@@ -7,6 +7,7 @@
 //
 
 #import "EMMsgTextBubbleView.h"
+#import "EaseHeaders.h"
 
 @interface EMMsgTextBubbleView ()
 {
@@ -78,20 +79,22 @@
                                     } range:NSMakeRange(0, 3)];
     [attaStr appendAttributedString:throughlineStr];*/
     //超链接
-    NSDataDetector *detector= [[NSDataDetector alloc] initWithTypes:NSTextCheckingTypeLink error:nil];
-    NSArray *checkArr = [detector matchesInString:text options:0 range:NSMakeRange(0, text.length)];
-    for (NSTextCheckingResult *result in checkArr) {
-        NSString *urlStr = result.URL.absoluteString;
-        NSRange range = [text rangeOfString:urlStr options:NSCaseInsensitiveSearch];
-        if(range.length > 0) {
-            [attaStr setAttributes:@{NSLinkAttributeName : [NSURL URLWithString:urlStr]} range:NSMakeRange(range.location, urlStr.length)];
-        }
-    }
+//    NSDataDetector *detector= [[NSDataDetector alloc] initWithTypes:NSTextCheckingTypeLink error:nil];
+//    NSArray *checkArr = [detector matchesInString:text options:0 range:NSMakeRange(0, text.length)];
+//    for (NSTextCheckingResult *result in checkArr) {
+//        NSString *urlStr = result.URL.absoluteString;
+//        NSRange range = [text rangeOfString:urlStr options:NSCaseInsensitiveSearch];
+//        if(range.length > 0) {
+//            [attaStr setAttributes:@{NSLinkAttributeName : [NSURL URLWithString:urlStr]} range:NSMakeRange(range.location, urlStr.length)];
+//        }
+//    }
+    
     /*
     NSString *urlStr = @"http://www.baidu.com";
     NSMutableAttributedString *linkStr = [[NSMutableAttributedString alloc] initWithString:urlStr];
     [linkStr addAttributes:@{NSLinkAttributeName: [NSURL URLWithString:urlStr]} range:NSMakeRange(0, urlStr.length)];
-    [attaStr appendAttributedString:linkStr];*/
+    [attaStr appendAttributedString:linkStr];
+    /*/
     //图片
     /*
     NSTextAttachment *imgAttach =  [[NSTextAttachment alloc] init];
@@ -100,7 +103,10 @@
     NSAttributedString *attachStr = [NSAttributedString attributedStringWithAttachment:imgAttach];
     [attaStr appendAttributedString:attachStr];*/
     
+
+    
     self.textLabel.attributedText = attaStr;
+//    [self.textLabel setAttributedText:attaStr];
 }
 
 @end

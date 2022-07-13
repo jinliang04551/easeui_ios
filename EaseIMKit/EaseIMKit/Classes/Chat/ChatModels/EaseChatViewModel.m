@@ -18,12 +18,15 @@
 //        _chatViewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
 //        _chatBarBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
         
-        _chatViewBgColor = UIColor.blackColor;
+        _chatViewBgColor = [UIColor colorWithHexString:@"#171717"];
         _chatBarBgColor = [UIColor colorWithHexString:@"#252525"];
         
         _extFuncModel = [[EaseExtFuncModel alloc]init];
-        _msgTimeItemBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
-        _msgTimeItemFontColor = [UIColor colorWithHexString:@"#ADADAD"];
+//        _msgTimeItemBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
+//        _msgTimeItemFontColor = [UIColor colorWithHexString:@"#ADADAD"];
+        _msgTimeItemBgColor = [UIColor colorWithHexString:@"#171717"];
+        _msgTimeItemFontColor = [UIColor colorWithHexString:@"#7F7F7F"];
+        
         _receiveBubbleBgPicture = [UIImage easeUIImageNamed:@"msg_bg_recv"];
         _sendBubbleBgPicture = [UIImage easeUIImageNamed:@"msg_bg_send"];
         _bubbleBgEdgeInset = UIEdgeInsetsMake(8, 8, 8, 8);

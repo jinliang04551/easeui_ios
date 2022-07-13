@@ -20,6 +20,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+    
     self.searchBar = [[EaseSearchBar alloc] init];
     self.searchBar.delegate = self;
     [self.view addSubview:self.searchBar];
@@ -69,6 +71,13 @@
             make.right.equalTo(self.view);
             make.bottom.equalTo(self.view);
         }];
+        
+        
+        [self.view addSubview:self.noDataPromptView];
+        [self.noDataPromptView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.searchBar.mas_bottom).offset(60.0);
+            make.centerX.left.right.equalTo(self.view);
+        }];
     }
 }
 
@@ -83,6 +92,8 @@
     [self.searchResults removeAllObjects];
     [self.searchResultTableView reloadData];
     [self.searchResultTableView removeFromSuperview];
+    [self.noDataPromptView removeFromSuperview];
+
 }
 
 - (void)searchBarSearchButtonClicked:(EaseSearchBar *)searchBar
@@ -149,5 +160,18 @@
         animation();
     }
 }
+
+
+#pragma mark getter and setter
+- (EaseSearchNoDataView *)noDataPromptView {
+    if (_noDataPromptView == nil) {
+        _noDataPromptView = EaseSearchNoDataView.new;
+        [_noDataPromptView.noDataImageView setImage:[UIImage easeUIImageNamed:@"ji_search_nodata"]];
+        _noDataPromptView.prompt.text = @"搜索无结果";
+        _noDataPromptView.hidden = YES;
+    }
+    return _noDataPromptView;
+}
+
 
 @end

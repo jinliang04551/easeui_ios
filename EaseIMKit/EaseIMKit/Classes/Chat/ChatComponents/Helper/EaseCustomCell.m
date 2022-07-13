@@ -7,7 +7,7 @@
 //
 
 #import "EaseCustomCell.h"
-#import "UIColor+EaseUI.h"
+#import "EaseHeaders.h"
 
 #define kAvatarImageHeight 44.0
 
@@ -22,7 +22,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.contentView.backgroundColor = [UIColor colorWithHexString:@"#171717"];
+        self.contentView.backgroundColor = EaseIMKit_ViewCellBgBlackColor;
         [self prepare];
         [self placeSubViews];
     }

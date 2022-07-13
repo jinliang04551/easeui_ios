@@ -48,19 +48,19 @@
     [[EMClient sharedClient].userInfoManager fetchUserInfoById:@[aUid] completion:^(NSDictionary * _Nullable aUserDatas, EMError * _Nullable aError) {
 
         EMUserInfo* userInfo = [aUserDatas objectForKey:aUid];
-        
         if(userInfo) {
-            if(userInfo.avatarUrl.length > 0) {
-                NSURL* url = [NSURL URLWithString:userInfo.avatarUrl];
-                if(url) {
-                    [self.iconImageView sd_setImageWithURL:url completed:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if(userInfo.avatarUrl.length > 0) {
+                    NSURL* url = [NSURL URLWithString:userInfo.avatarUrl];
+                    if(url) {
+                        [self.iconImageView sd_setImageWithURL:url completed:nil];
+                    }
+                }else {
+                    [self.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_user_icon"]];
                 }
-            }else {
-                [self.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_user_icon"]];
-            }
-                 
-            self.nameLabel.text = userInfo.nickname.length > 0 ? userInfo.nickname: userInfo.userId;
-            
+                
+                self.nameLabel.text = userInfo.nickname.length > 0 ? userInfo.nickname: userInfo.userId;
+            });
         }
     }];
 

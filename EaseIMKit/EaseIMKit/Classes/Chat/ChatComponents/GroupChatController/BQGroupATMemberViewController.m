@@ -10,6 +10,7 @@
 #import "EaseRealtimeSearch.h"
 #import "EaseSearchBar.h"
 #import "EaseGroupAtCell.h"
+#import "EaseSearchNoDataView.h"
 
 
 @interface BQGroupATMemberViewController ()<EaseSearchBarDelegate>
@@ -34,7 +35,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+    self.tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+    self.searchResultTableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+    
     [self.tableView registerClass:[EaseGroupAtCell class] forCellReuseIdentifier:NSStringFromClass([EaseGroupAtCell class])];
+    [self.searchResultTableView registerClass:[EaseGroupAtCell class] forCellReuseIdentifier:NSStringFromClass([EaseGroupAtCell class])];
+
     
     [self _setupSubviews];
     [self _fetchGroupMembersWithIsHeader:YES isShowHUD:YES];
@@ -46,7 +53,6 @@
 {
 //    [self addPopBackLeftItemWithTarget:self action:@selector(backAction)];
     self.title = @"选择提醒人";
-    self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
     
     self.showRefreshHeader = YES;
     self.tableView.rowHeight = 60;
@@ -105,9 +111,11 @@
     __weak typeof(self) weakself = self;
     [[EaseRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:nil resultBlock:^(NSArray *results) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            weakself.noDataPromptView.hidden = results.count > 0 ? YES : NO;
             [weakself.searchResults removeAllObjects];
             [weakself.searchResults addObjectsFromArray:results];
             [weakself.searchResultTableView reloadData];
+            
         });
     }];
 }
