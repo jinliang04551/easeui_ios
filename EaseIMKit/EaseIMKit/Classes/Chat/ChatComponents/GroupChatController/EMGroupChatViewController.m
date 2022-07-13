@@ -14,10 +14,13 @@
 #import "EaseTextView.h"
 #import "EaseMessageCell.h"
 #import "EaseChatViewController+EaseUI.h"
+#import "BQGroupATMemberViewController.h"
 
 @interface EMGroupChatViewController () <EMGroupManagerDelegate>
 
 @property (nonatomic, strong) EMGroup *group;
+@property (nonatomic, strong) NSString *conversationId;
+
 
 @end
 
@@ -26,6 +29,7 @@
 - (instancetype)initGroupChatViewControllerWithCoversationid:(NSString *)conversationId
                                                chatViewModel:(EaseChatViewModel *)viewModel
 {
+    self.conversationId = conversationId;
     return [super initChatViewControllerWithCoversationid:conversationId
                        conversationType:EMConversationTypeGroupChat
                           chatViewModel:(EaseChatViewModel *)viewModel];
@@ -42,6 +46,40 @@
     [[EMClient sharedClient].groupManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+
+//@群成员
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if ([text isEqualToString:@"@"]) {
+        [self _willInputAt:textView];
+    }
+    return YES;
+}
+
+//@群成员
+- (void)_willInputAt:(UITextView *)aInputView
+{
+    do {
+        NSString *text = [NSString stringWithFormat:@"%@%@",aInputView.text,@"@"];
+        EMGroup *group = [EMGroup groupWithId:self.conversationId];
+        if (!group) {
+            break;
+        }
+        [self.view endEditing:YES];
+        //选择 @ 某群成员
+        BQGroupATMemberViewController *controller = [[BQGroupATMemberViewController alloc] initWithGroup:group];
+        [self.navigationController pushViewController:controller animated:NO];
+        controller.selectedAtMemberBlock = ^(NSString * _Nonnull userId) {
+            NSString *newStr = [NSString stringWithFormat:@"%@%@ ", text, userId];
+            [aInputView setText:newStr];
+            aInputView.selectedRange = NSMakeRange(newStr.length, 0);
+            [aInputView becomeFirstResponder];
+        };
+        
+    } while (0);
+}
+
 
 #pragma mark - EaseMessageCellDelegate
 

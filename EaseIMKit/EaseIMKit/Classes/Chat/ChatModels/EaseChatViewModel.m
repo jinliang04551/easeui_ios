@@ -15,8 +15,12 @@
 {
     self = [super init];
     if (self) {
-        _chatViewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
-        _chatBarBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
+//        _chatViewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
+//        _chatBarBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
+        
+        _chatViewBgColor = UIColor.blackColor;
+        _chatBarBgColor = [UIColor colorWithHexString:@"#252525"];
+        
         _extFuncModel = [[EaseExtFuncModel alloc]init];
         _msgTimeItemBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
         _msgTimeItemFontColor = [UIColor colorWithHexString:@"#ADADAD"];

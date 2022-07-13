@@ -383,9 +383,57 @@
 		9E6ADA6F26B3186800F620D5 /* UIImage+EaseUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E6AD8F926B3186500F620D5 /* UIImage+EaseUI.h */; };
 		9E6ADA7026B3186800F620D5 /* EaseIMKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9E6AD8FB26B3186600F620D5 /* EaseIMKit.bundle */; };
 		9E6ADA7126B31C1100F620D5 /* EaseHeaders.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E6AD3F426B3097C00F620D5 /* EaseHeaders.h */; };
+		C010BBDD287E6906004B11D7 /* BQGroupATMemberViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C010BBDB287E6906004B11D7 /* BQGroupATMemberViewController.h */; };
+		C010BBDE287E6906004B11D7 /* BQGroupATMemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C010BBDC287E6906004B11D7 /* BQGroupATMemberViewController.m */; };
+		C010BBE2287E6B65004B11D7 /* EaseRealtimeSearch.h in Headers */ = {isa = PBXBuildFile; fileRef = C010BBE0287E6B65004B11D7 /* EaseRealtimeSearch.h */; };
+		C010BBE3287E6B65004B11D7 /* EaseRealtimeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = C010BBE1287E6B65004B11D7 /* EaseRealtimeSearch.m */; };
+		C010BC04287E6E24004B11D7 /* EaseRefreshTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C010BBE8287E6E24004B11D7 /* EaseRefreshTableViewController.m */; };
+		C010BC05287E6E24004B11D7 /* EaseRefreshViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C010BBE9287E6E24004B11D7 /* EaseRefreshViewController.h */; };
+		C010BC06287E6E24004B11D7 /* EaseRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C010BBEA287E6E24004B11D7 /* EaseRefreshViewController.m */; };
+		C010BC07287E6E24004B11D7 /* EaseRefreshTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C010BBEB287E6E24004B11D7 /* EaseRefreshTableViewController.h */; };
+		C010BC14287E6E24004B11D7 /* EaseSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = C010BBFA287E6E24004B11D7 /* EaseSearchResultController.m */; };
+		C010BC15287E6E24004B11D7 /* EaseSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C010BBFB287E6E24004B11D7 /* EaseSearchBar.m */; };
+		C010BC17287E6E24004B11D7 /* EaseSearchBar.h in Headers */ = {isa = PBXBuildFile; fileRef = C010BBFD287E6E24004B11D7 /* EaseSearchBar.h */; };
+		C010BC18287E6E24004B11D7 /* EaseSearchResultController.h in Headers */ = {isa = PBXBuildFile; fileRef = C010BBFE287E6E24004B11D7 /* EaseSearchResultController.h */; };
+		C010BC1E287E73D8004B11D7 /* EaseSearchViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C010BC1C287E73D8004B11D7 /* EaseSearchViewController.h */; };
+		C010BC1F287E73D8004B11D7 /* EaseSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C010BC1D287E73D8004B11D7 /* EaseSearchViewController.m */; };
+		C010BC22287E74EE004B11D7 /* EaseCustomCell.h in Headers */ = {isa = PBXBuildFile; fileRef = C010BC20287E74EE004B11D7 /* EaseCustomCell.h */; };
+		C010BC23287E74EE004B11D7 /* EaseCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C010BC21287E74EE004B11D7 /* EaseCustomCell.m */; };
+		C010BC26287E76FD004B11D7 /* EaseGroupAtCell.h in Headers */ = {isa = PBXBuildFile; fileRef = C010BC24287E76FD004B11D7 /* EaseGroupAtCell.h */; };
+		C010BC27287E76FD004B11D7 /* EaseGroupAtCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C010BC25287E76FD004B11D7 /* EaseGroupAtCell.m */; };
+		C0DCAF9D2861669A00C1D9A6 /* HyphenateChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0DCAF9C2861669A00C1D9A6 /* HyphenateChat.framework */; };
+		C0DCAF9E2861669A00C1D9A6 /* HyphenateChat.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C0DCAF9C2861669A00C1D9A6 /* HyphenateChat.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DE41C2C578C3977759CE140D /* Pods_EaseIMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 206B7987D8525729CDC72433 /* Pods_EaseIMKit.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		C010BC2D287EA807004B11D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C010BC29287EA807004B11D7 /* ioseasemob.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AEAA14C0BC49C1D3DF52719E;
+			remoteInfo = easemob;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C0DCAF9F2861669A00C1D9A6 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C0DCAF9E2861669A00C1D9A6 /* HyphenateChat.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		06DFEDBDC14B11FDDAAEF332 /* Pods-EaseIMKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EaseIMKit.release.xcconfig"; path = "Target Support Files/Pods-EaseIMKit/Pods-EaseIMKit.release.xcconfig"; sourceTree = "<group>"; };
+		1CAF75C8598F1964AEC82FDE /* Pods-EaseIMKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EaseIMKit.debug.xcconfig"; path = "Target Support Files/Pods-EaseIMKit/Pods-EaseIMKit.debug.xcconfig"; sourceTree = "<group>"; };
+		206B7987D8525729CDC72433 /* Pods_EaseIMKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EaseIMKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		90892DDB25764D0900F50368 /* EaseIMKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseIMKit.h; sourceTree = "<group>"; };
 		90A039F0254A6E7600D57B73 /* EaseIMKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EaseIMKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		90A039F4254A6E7600D57B73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -764,6 +812,26 @@
 		9E6AD8F826B3186500F620D5 /* NSObject+Alert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Alert.m"; sourceTree = "<group>"; };
 		9E6AD8F926B3186500F620D5 /* UIImage+EaseUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+EaseUI.h"; sourceTree = "<group>"; };
 		9E6AD8FB26B3186600F620D5 /* EaseIMKit.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = EaseIMKit.bundle; sourceTree = "<group>"; };
+		C010BBDB287E6906004B11D7 /* BQGroupATMemberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BQGroupATMemberViewController.h; sourceTree = "<group>"; };
+		C010BBDC287E6906004B11D7 /* BQGroupATMemberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BQGroupATMemberViewController.m; sourceTree = "<group>"; };
+		C010BBE0287E6B65004B11D7 /* EaseRealtimeSearch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EaseRealtimeSearch.h; sourceTree = "<group>"; };
+		C010BBE1287E6B65004B11D7 /* EaseRealtimeSearch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EaseRealtimeSearch.m; sourceTree = "<group>"; };
+		C010BBE8287E6E24004B11D7 /* EaseRefreshTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseRefreshTableViewController.m; sourceTree = "<group>"; };
+		C010BBE9287E6E24004B11D7 /* EaseRefreshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseRefreshViewController.h; sourceTree = "<group>"; };
+		C010BBEA287E6E24004B11D7 /* EaseRefreshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseRefreshViewController.m; sourceTree = "<group>"; };
+		C010BBEB287E6E24004B11D7 /* EaseRefreshTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseRefreshTableViewController.h; sourceTree = "<group>"; };
+		C010BBFA287E6E24004B11D7 /* EaseSearchResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseSearchResultController.m; sourceTree = "<group>"; };
+		C010BBFB287E6E24004B11D7 /* EaseSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseSearchBar.m; sourceTree = "<group>"; };
+		C010BBFD287E6E24004B11D7 /* EaseSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseSearchBar.h; sourceTree = "<group>"; };
+		C010BBFE287E6E24004B11D7 /* EaseSearchResultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseSearchResultController.h; sourceTree = "<group>"; };
+		C010BC1C287E73D8004B11D7 /* EaseSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EaseSearchViewController.h; sourceTree = "<group>"; };
+		C010BC1D287E73D8004B11D7 /* EaseSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EaseSearchViewController.m; sourceTree = "<group>"; };
+		C010BC20287E74EE004B11D7 /* EaseCustomCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EaseCustomCell.h; sourceTree = "<group>"; };
+		C010BC21287E74EE004B11D7 /* EaseCustomCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EaseCustomCell.m; sourceTree = "<group>"; };
+		C010BC24287E76FD004B11D7 /* EaseGroupAtCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EaseGroupAtCell.h; sourceTree = "<group>"; };
+		C010BC25287E76FD004B11D7 /* EaseGroupAtCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EaseGroupAtCell.m; sourceTree = "<group>"; };
+		C010BC29287EA807004B11D7 /* ioseasemob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ioseasemob.xcodeproj; path = "../../emclient-linux/ios_build/build/ioseasemob.xcodeproj"; sourceTree = "<group>"; };
+		C0DCAF9C2861669A00C1D9A6 /* HyphenateChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = HyphenateChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -771,6 +839,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE41C2C578C3977759CE140D /* Pods_EaseIMKit.framework in Frameworks */,
+				C0DCAF9D2861669A00C1D9A6 /* HyphenateChat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -780,6 +850,8 @@
 		90892DD325764C6900F50368 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C0DCAF9C2861669A00C1D9A6 /* HyphenateChat.framework */,
+				206B7987D8525729CDC72433 /* Pods_EaseIMKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -787,9 +859,11 @@
 		90A039E6254A6E7600D57B73 = {
 			isa = PBXGroup;
 			children = (
+				C010BC29287EA807004B11D7 /* ioseasemob.xcodeproj */,
 				90A039F2254A6E7600D57B73 /* EaseIMKit */,
 				90A039F1254A6E7600D57B73 /* Products */,
 				90892DD325764C6900F50368 /* Frameworks */,
+				C672C3095D7E95B416F62CDF /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -862,8 +936,8 @@
 			isa = PBXGroup;
 			children = (
 				9E6AD75A26B3186400F620D5 /* EMChatBar.h */,
-				9E6AD75B26B3186400F620D5 /* MoreView */,
 				9E6AD76D26B3186400F620D5 /* EMChatBar.m */,
+				9E6AD75B26B3186400F620D5 /* MoreView */,
 			);
 			path = ChatBar;
 			sourceTree = "<group>";
@@ -959,6 +1033,7 @@
 		9E6AD78D26B3186400F620D5 /* ChatComponents */ = {
 			isa = PBXGroup;
 			children = (
+				C010BBDF287E6B2E004B11D7 /* Helper */,
 				9E6AD78E26B3186400F620D5 /* GroupChatController */,
 				9E6AD79126B3186400F620D5 /* ChatroomController */,
 				9E6AD79426B3186400F620D5 /* EaseChatViewController+EaseUI.h */,
@@ -972,6 +1047,8 @@
 			children = (
 				9E6AD78F26B3186400F620D5 /* EMGroupChatViewController.h */,
 				9E6AD79026B3186400F620D5 /* EMGroupChatViewController.m */,
+				C010BBDB287E6906004B11D7 /* BQGroupATMemberViewController.h */,
+				C010BBDC287E6906004B11D7 /* BQGroupATMemberViewController.m */,
 			);
 			path = GroupChatController;
 			sourceTree = "<group>";
@@ -1137,11 +1214,11 @@
 		9E6AD7C726B3186400F620D5 /* BaseTableViewController */ = {
 			isa = PBXGroup;
 			children = (
-				9E6AD7C826B3186400F620D5 /* EaseUserDelegate.h */,
-				9E6AD7C926B3186400F620D5 /* EaseBaseTableViewController.m */,
-				9E6AD7CA26B3186400F620D5 /* EaseBaseTableViewModel.m */,
 				9E6AD7CB26B3186400F620D5 /* EaseBaseTableViewController.h */,
+				9E6AD7C926B3186400F620D5 /* EaseBaseTableViewController.m */,
 				9E6AD7CC26B3186400F620D5 /* EaseBaseTableViewModel.h */,
+				9E6AD7CA26B3186400F620D5 /* EaseBaseTableViewModel.m */,
+				9E6AD7C826B3186400F620D5 /* EaseUserDelegate.h */,
 			);
 			path = BaseTableViewController;
 			sourceTree = "<group>";
@@ -1620,9 +1697,82 @@
 		9E6AD8FA26B3186600F620D5 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C010BC28287E94BA004B11D7 /* Beiqi */,
 				9E6AD8FB26B3186600F620D5 /* EaseIMKit.bundle */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		C010BBDF287E6B2E004B11D7 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				C010BBE4287E6E24004B11D7 /* ViewController */,
+				C010BBE0287E6B65004B11D7 /* EaseRealtimeSearch.h */,
+				C010BBE1287E6B65004B11D7 /* EaseRealtimeSearch.m */,
+				C010BC20287E74EE004B11D7 /* EaseCustomCell.h */,
+				C010BC21287E74EE004B11D7 /* EaseCustomCell.m */,
+				C010BC24287E76FD004B11D7 /* EaseGroupAtCell.h */,
+				C010BC25287E76FD004B11D7 /* EaseGroupAtCell.m */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		C010BBE4287E6E24004B11D7 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C010BBE7287E6E24004B11D7 /* RefreshController */,
+				C010BBF9287E6E24004B11D7 /* SearchController */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		C010BBE7287E6E24004B11D7 /* RefreshController */ = {
+			isa = PBXGroup;
+			children = (
+				C010BBEB287E6E24004B11D7 /* EaseRefreshTableViewController.h */,
+				C010BBE8287E6E24004B11D7 /* EaseRefreshTableViewController.m */,
+				C010BBE9287E6E24004B11D7 /* EaseRefreshViewController.h */,
+				C010BBEA287E6E24004B11D7 /* EaseRefreshViewController.m */,
+			);
+			path = RefreshController;
+			sourceTree = "<group>";
+		};
+		C010BBF9287E6E24004B11D7 /* SearchController */ = {
+			isa = PBXGroup;
+			children = (
+				C010BBFD287E6E24004B11D7 /* EaseSearchBar.h */,
+				C010BBFB287E6E24004B11D7 /* EaseSearchBar.m */,
+				C010BBFE287E6E24004B11D7 /* EaseSearchResultController.h */,
+				C010BBFA287E6E24004B11D7 /* EaseSearchResultController.m */,
+				C010BC1C287E73D8004B11D7 /* EaseSearchViewController.h */,
+				C010BC1D287E73D8004B11D7 /* EaseSearchViewController.m */,
+			);
+			path = SearchController;
+			sourceTree = "<group>";
+		};
+		C010BC28287E94BA004B11D7 /* Beiqi */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Beiqi;
+			sourceTree = "<group>";
+		};
+		C010BC2A287EA807004B11D7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C010BC2E287EA807004B11D7 /* libeasemob.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C672C3095D7E95B416F62CDF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1CAF75C8598F1964AEC82FDE /* Pods-EaseIMKit.debug.xcconfig */,
+				06DFEDBDC14B11FDDAAEF332 /* Pods-EaseIMKit.release.xcconfig */,
+			);
+			name = Pods;
+			path = "../../chat-ios/EaseIM/Pods";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1669,6 +1819,7 @@
 				9E6AD97F26B3186700F620D5 /* NSLayoutConstraint+EaseDebugAdditions.h in Headers */,
 				9E6AD9FF26B3186800F620D5 /* EaseImageTransformer.h in Headers */,
 				9E6AD9BD26B3186700F620D5 /* EaseProgressHUD.h in Headers */,
+				C010BC17287E6E24004B11D7 /* EaseSearchBar.h in Headers */,
 				9E6AD98F26B3186700F620D5 /* EaseZoomingScrollView.h in Headers */,
 				9E6ADA2826B3186800F620D5 /* EaseAnimatedImage.h in Headers */,
 				9E6AD91C26B3186600F620D5 /* EMMsgImageBubbleView.h in Headers */,
@@ -1704,6 +1855,7 @@
 				9E6AD97B26B3186700F620D5 /* EaseConstraint.h in Headers */,
 				9E6AD93326B3186600F620D5 /* EaseChatViewController+EaseUI.h in Headers */,
 				9E6AD9E126B3186700F620D5 /* EaseAnimatedImageView+WebCache.h in Headers */,
+				C010BC1E287E73D8004B11D7 /* EaseSearchViewController.h in Headers */,
 				9E6AD9BA26B3186700F620D5 /* EaseGridLayoutSection.h in Headers */,
 				9E6AD99426B3186700F620D5 /* EaseTapDetectingView.h in Headers */,
 				9E6AD93626B3186600F620D5 /* EaseChatViewController.h in Headers */,
@@ -1713,6 +1865,7 @@
 				9E6AD9D526B3186700F620D5 /* UIImage+EaseExtendedCacheData.h in Headers */,
 				9E6AD98626B3186700F620D5 /* EaseAnimatedImgView.h in Headers */,
 				9E6AD95E26B3186600F620D5 /* EaseDateHelper.h in Headers */,
+				C010BBDD287E6906004B11D7 /* BQGroupATMemberViewController.h in Headers */,
 				9E6AD9B626B3186700F620D5 /* EaseCollectionViewCommon.h in Headers */,
 				9E6AD90826B3186600F620D5 /* HorizontalLayout.h in Headers */,
 				9E6ADA5926B3186800F620D5 /* EaseConversationViewModel.h in Headers */,
@@ -1755,6 +1908,7 @@
 				9E6AD9D326B3186700F620D5 /* UIImageView+EaseWebCache.h in Headers */,
 				9E6ADA4326B3186800F620D5 /* EaseAsyncBlockOperation.h in Headers */,
 				9E6ADA3626B3186800F620D5 /* EaseImageIOAnimatedCoderInternal.h in Headers */,
+				C010BC05287E6E24004B11D7 /* EaseRefreshViewController.h in Headers */,
 				9E6AD90E26B3186600F620D5 /* EMAudioRecordUtil.h in Headers */,
 				9E6ADA7126B31C1100F620D5 /* EaseHeaders.h in Headers */,
 				9E6AD97326B3186700F620D5 /* EaseViewConstraint.h in Headers */,
@@ -1789,14 +1943,17 @@
 				9E6AD9B926B3186700F620D5 /* EaseCollectionViewFlowLayout.h in Headers */,
 				9E6AD9CF26B3186700F620D5 /* EaseWebImageTransition.h in Headers */,
 				9E6AD93F26B3186600F620D5 /* EaseEmoticonGroup.h in Headers */,
+				C010BC22287E74EE004B11D7 /* EaseCustomCell.h in Headers */,
 				9E6AD96926B3186700F620D5 /* EaseAlertView.h in Headers */,
 				9E6ADA6126B3186800F620D5 /* EMConversation+EaseUI.h in Headers */,
 				9E6ADA5A26B3186800F620D5 /* EaseConversationsViewController.h in Headers */,
 				9E6ADA2126B3186800F620D5 /* UIImage+EaseTransform.h in Headers */,
 				9E6AD9E726B3186700F620D5 /* EaseWebImageDownloaderRequestModifier.h in Headers */,
+				C010BC26287E76FD004B11D7 /* EaseGroupAtCell.h in Headers */,
 				9E6AD91F26B3186600F620D5 /* EMMsgTextBubbleView.h in Headers */,
 				9E6AD9E826B3186700F620D5 /* UIView+EaseWebCache.h in Headers */,
 				9E6ADA5626B3186800F620D5 /* EaseConversationModel.h in Headers */,
+				C010BC07287E6E24004B11D7 /* EaseRefreshTableViewController.h in Headers */,
 				9E6ADA2C26B3186800F620D5 /* EaseImageCacheDefine.h in Headers */,
 				9E6AD9AE26B3186700F620D5 /* EaseCollectionViewLayout+Internals.h in Headers */,
 				9E6AD9EE26B3186700F620D5 /* EaseWebImageDownloaderResponseModifier.h in Headers */,
@@ -1807,6 +1964,7 @@
 				9E6ADA5126B3186800F620D5 /* EaseAlertController.h in Headers */,
 				9E6ADA5026B3186800F620D5 /* EaseTextFieldViewController.h in Headers */,
 				9E6AD98226B3186700F620D5 /* EaseViewAttribute.h in Headers */,
+				C010BBE2287E6B65004B11D7 /* EaseRealtimeSearch.h in Headers */,
 				9E6ADA4526B3186800F620D5 /* EaseWebImageTransitionInternal.h in Headers */,
 				9E6AD96226B3186700F620D5 /* amrFileCodec.h in Headers */,
 				9E6ADA1826B3186800F620D5 /* NSData+EaseImageContentType.h in Headers */,
@@ -1827,6 +1985,7 @@
 				9E6AD94C26B3186600F620D5 /* EMPickFileViewController.h in Headers */,
 				9E6ADA0F26B3186800F620D5 /* EaseImageAPNGCoder.h in Headers */,
 				9E6AD8FE26B3186600F620D5 /* EaseChatViewModel.h in Headers */,
+				C010BC18287E6E24004B11D7 /* EaseSearchResultController.h in Headers */,
 				9E6ADA4D26B3186800F620D5 /* EaseMulticastDelegate.h in Headers */,
 				9E6AD9B226B3186700F620D5 /* EaseGridLayoutItem.h in Headers */,
 				9E6AD92626B3186600F620D5 /* EMMsgAudioBubbleView.h in Headers */,
@@ -1847,6 +2006,7 @@
 				90A039ED254A6E7600D57B73 /* Frameworks */,
 				9036F2D525774B45001F62AA /* Resources */,
 				3C0EA82C266B34FB00B6274E /* ShellScript */,
+				C0DCAF9F2861669A00C1D9A6 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1883,12 +2043,28 @@
 			mainGroup = 90A039E6254A6E7600D57B73;
 			productRefGroup = 90A039F1254A6E7600D57B73 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = C010BC2A287EA807004B11D7 /* Products */;
+					ProjectRef = C010BC29287EA807004B11D7 /* ioseasemob.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				90A039EF254A6E7600D57B73 /* EaseIMKit */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		C010BC2E287EA807004B11D7 /* libeasemob.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libeasemob.a;
+			remoteRef = C010BC2D287EA807004B11D7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		9036F2D525774B45001F62AA /* Resources */ = {
@@ -1949,8 +2125,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9E6ADA6D26B3186800F620D5 /* UIViewController+ComponentSize.m in Sources */,
+				C010BBDE287E6906004B11D7 /* BQGroupATMemberViewController.m in Sources */,
 				9E6ADA6226B3186800F620D5 /* UIViewController+HUD.m in Sources */,
 				9E6AD92326B3186600F620D5 /* EMMsgFileBubbleView.m in Sources */,
+				C010BC23287E74EE004B11D7 /* EaseCustomCell.m in Sources */,
 				9E6ADA4C26B3186800F620D5 /* EaseMulticastDelegate.m in Sources */,
 				9E6AD92026B3186600F620D5 /* EMMsgAudioBubbleView.m in Sources */,
 				9E6AD8FF26B3186600F620D5 /* EaseExtMenuModel.m in Sources */,
@@ -1971,6 +2149,7 @@
 				9E6AD93E26B3186600F620D5 /* EMAudioPlayerUtil.mm in Sources */,
 				9E6AD9C826B3186700F620D5 /* NSImage+EaseCompatibility.m in Sources */,
 				9E6AD98826B3186700F620D5 /* EaseAnimatedImgView.m in Sources */,
+				C010BC04287E6E24004B11D7 /* EaseRefreshTableViewController.m in Sources */,
 				9E6AD99E26B3186700F620D5 /* EaseCircularProgressView.m in Sources */,
 				9E6AD9E426B3186700F620D5 /* EaseWebImageCacheKeyFilter.m in Sources */,
 				9E6ADA1026B3186800F620D5 /* EaseAnimatedImagePlayer.m in Sources */,
@@ -2003,6 +2182,7 @@
 				9E6AD93526B3186600F620D5 /* EMSingleChatViewController.m in Sources */,
 				9E6AD9C426B3186700F620D5 /* UIImage+EaseMetadata.m in Sources */,
 				9E6ADA1126B3186800F620D5 /* EaseImageAWebPCoder.m in Sources */,
+				C010BC06287E6E24004B11D7 /* EaseRefreshViewController.m in Sources */,
 				9E6AD9EA26B3186700F620D5 /* EaseImageCacheConfig.m in Sources */,
 				9E6AD93726B3186600F620D5 /* EMImageBrowser.m in Sources */,
 				9E6ADA1A26B3186800F620D5 /* EaseAnimatedImageView+WebCache.m in Sources */,
@@ -2013,6 +2193,7 @@
 				9E6ADA5F26B3186800F620D5 /* EaseBadgeView.m in Sources */,
 				9E6AD9BF26B3186700F620D5 /* UIView+EaseWebCacheOperation.m in Sources */,
 				9E6AD9C026B3186700F620D5 /* EaseGraphicsImageRenderer.m in Sources */,
+				C010BBE3287E6B65004B11D7 /* EaseRealtimeSearch.m in Sources */,
 				9E6AD94F26B3186600F620D5 /* EaseContactModel.m in Sources */,
 				9E6ADA5526B3186800F620D5 /* EaseTextFieldViewController.m in Sources */,
 				9E6ADA0A26B3186800F620D5 /* EaseMemoryCache.m in Sources */,
@@ -2023,6 +2204,7 @@
 				9E6ADA1626B3186800F620D5 /* EaseImageCoderHelper.m in Sources */,
 				9E6AD93026B3186600F620D5 /* EMGroupChatViewController.m in Sources */,
 				9E6AD9C626B3186700F620D5 /* EaseWebImageIndicator.m in Sources */,
+				C010BC14287E6E24004B11D7 /* EaseSearchResultController.m in Sources */,
 				9E6ADA1E26B3186800F620D5 /* EaseWebImageDownloaderDecryptor.m in Sources */,
 				9E6AD91626B3186600F620D5 /* EaseMessageCell.m in Sources */,
 				9E6ADA4626B3186800F620D5 /* EaseImageCachesManagerOperation.m in Sources */,
@@ -2054,6 +2236,7 @@
 				9E6ADA4A26B3186800F620D5 /* EaseInternalMacros.m in Sources */,
 				9E6ADA0826B3186800F620D5 /* UIImageView+EaseWebCache.m in Sources */,
 				9E6AD9DC26B3186700F620D5 /* EaseImageCache.m in Sources */,
+				C010BC1F287E73D8004B11D7 /* EaseSearchViewController.m in Sources */,
 				9E6AD96626B3186700F620D5 /* EaseAvatarNameCell.m in Sources */,
 				9E6AD9ED26B3186700F620D5 /* EaseWebImageOperation.m in Sources */,
 				9E6AD9AB26B3186700F620D5 /* EaseCollectionViewFlowLayout.m in Sources */,
@@ -2063,10 +2246,12 @@
 				9E6AD9AF26B3186700F620D5 /* EaseCollectionViewUpdateItem.m in Sources */,
 				9E6AD91726B3186600F620D5 /* EaseLoadingCALayer.m in Sources */,
 				9E6AD9A526B3186700F620D5 /* EaseGridLayoutItem.m in Sources */,
+				C010BC27287E76FD004B11D7 /* EaseGroupAtCell.m in Sources */,
 				9E6AD93126B3186600F620D5 /* EMChatroomViewController.m in Sources */,
 				9E6ADA6A26B3186800F620D5 /* EMConversation+EaseUI.m in Sources */,
 				9E6AD94526B3186600F620D5 /* EaseEmoticonGroup.m in Sources */,
 				9E6AD90926B3186600F620D5 /* EaseExtFuncModel.m in Sources */,
+				C010BC15287E6E24004B11D7 /* EaseSearchBar.m in Sources */,
 				9E6AD9B126B3186700F620D5 /* EaseGridLayoutInfo.m in Sources */,
 				9E6ADA0926B3186800F620D5 /* UIButton+EaseWebCache.m in Sources */,
 				9E6AD9EF26B3186700F620D5 /* EaseImageCacheDefine.m in Sources */,
@@ -2252,6 +2437,7 @@
 		};
 		90A039F9254A6E7600D57B73 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1CAF75C8598F1964AEC82FDE /* Pods-EaseIMKit.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -2302,6 +2488,7 @@
 		};
 		90A039FA254A6E7600D57B73 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 06DFEDBDC14B11FDDAAEF332 /* Pods-EaseIMKit.release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "Apple Development";

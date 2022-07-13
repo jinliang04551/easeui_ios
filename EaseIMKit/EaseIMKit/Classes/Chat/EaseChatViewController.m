@@ -93,6 +93,9 @@
         if (!_viewModel) {
             _viewModel = [[EaseChatViewModel alloc] init];
         }
+        
+        _viewModel.extFuncModel.viewBgColor = [UIColor colorWithHexString:@"#252525"];
+        
     }
     return self;
 }
@@ -109,6 +112,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+        
     self.msgTimelTag = -1;
     [self _setupChatSubviews];
     /*
@@ -248,6 +252,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     id obj = [self.dataArray objectAtIndex:indexPath.row];
+    
+    
     NSString *cellString = nil;
     EaseWeakRemind type = EaseWeakRemindMsgTime;
     if ([obj isKindOfClass:[NSString class]]) {
@@ -382,6 +388,7 @@
     }
     [self sendMessageWithBody:body ext:nil];
 }
+
 
 #pragma mark - EaseChatBarEmoticonViewDelegate
 

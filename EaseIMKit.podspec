@@ -61,6 +61,15 @@ Pod::Spec.new do |s|
 
     s.dependency 'HyphenateChat', '3.9.4'
     s.dependency 'EMVoiceConvert', '0.1.0'
+    s.dependency 'MBProgressHUD'
+    s.dependency 'Masonry'
+    s.dependency 'MJRefresh'
+    s.dependency 'SDWebImage'
+    # s.dependency 'AgoraRtcEngine_iOS','3.6.1.2'
+    s.dependency 'AgoraRtcEngine_iOS'
+    s.dependency 'FMDB'
+    s.dependency 'Bugly'
+    s.dependency 'EMTranslate'
 
 
 end

@@ -57,7 +57,9 @@
     NSInteger count = [self.groups count];
     
     self.bottomView = [[UIView alloc] init];
-    self.bottomView.backgroundColor = [UIColor whiteColor];;
+//    self.bottomView.backgroundColor = [UIColor whiteColor];
+    self.bottomView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+    
     [self addSubview:self.bottomView];
     [self.bottomView Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.left.equalTo(self);
@@ -85,7 +87,7 @@
     
     self.bottomScrollView = [[UIScrollView alloc] init];
     self.bottomScrollView.scrollEnabled = NO;
-    self.bottomScrollView.backgroundColor = [UIColor whiteColor];;
+    self.bottomScrollView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
     self.bottomScrollView.contentSize = CGSizeMake(itemWidth * count, self.bottomHeight);
     [self addSubview:self.bottomScrollView];
     [self.bottomScrollView Ease_makeConstraints:^(EaseConstraintMaker *make) {
@@ -120,7 +122,7 @@
 - (void)_setupEmotionViews
 {
     self.emotionBgView = [[UIView alloc] init];
-    self.emotionBgView.backgroundColor = [UIColor colorWithHexString:@"#EAEBEC"];
+    self.emotionBgView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
     [self addSubview:self.emotionBgView];
     [self.emotionBgView Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.top.equalTo(self);
@@ -199,7 +201,10 @@
     }
     
     aButton.selected = YES;
-    aButton.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
+    
+// aButton.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
+    aButton.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+
     self.selectedButton = aButton;
     
     if (tag == 0) {

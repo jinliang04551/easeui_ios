@@ -53,7 +53,7 @@
 {
     self.backgroundColor = _viewModel.chatBarBgColor;
     UIView *line = [[UIView alloc] init];
-    line.backgroundColor = [UIColor colorWithHexString:@"#000000"];
+    line.backgroundColor = [UIColor colorWithHexString:@"#2E2E2E"];
     line.alpha = 0.1;
     [self addSubview:line];
     [line Ease_makeConstraints:^(EaseConstraintMaker *make) {
@@ -99,7 +99,8 @@
     
     self.textView = [[EaseTextView alloc] init];
     self.textView.delegate = self;
-    [self.textView setTextColor:[UIColor blackColor]];
+    [self.textView setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
+    self.textView.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
     self.textView.font = [UIFont systemFontOfSize:16];
     self.textView.textAlignment = NSTextAlignmentLeft;
     
@@ -110,7 +111,8 @@
         // Fallback on earlier versions
     }
     self.textView.returnKeyType = UIReturnKeySend;
-    self.textView.backgroundColor = [UIColor whiteColor];
+    self.textView.backgroundColor = [UIColor colorWithHexString:@"#3D3D3D"];
+    self.textView.placeHolder = @"说点啥";
     self.textView.layer.cornerRadius = 16;
     [self addSubview:self.textView];
     [self.textView Ease_makeConstraints:^(EaseConstraintMaker *make) {
