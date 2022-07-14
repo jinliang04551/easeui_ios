@@ -57,7 +57,9 @@
 
 - (void)_setupSubviews
 {
-    self.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
+//    self.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
+  
+    self.backgroundColor = UIColor.yellowColor;
     
     self.recordButton = [[UIButton alloc] init];
     [self.recordButton setBackgroundColor:[UIColor whiteColor]];
@@ -153,6 +155,7 @@
     }];
     
 }
+
 
 #pragma mark - Private Timer
 
@@ -268,6 +271,7 @@
         }
     }];
 }
+
 //停止录语音消息并发送语音消息
 - (void)_stopRecord
 {

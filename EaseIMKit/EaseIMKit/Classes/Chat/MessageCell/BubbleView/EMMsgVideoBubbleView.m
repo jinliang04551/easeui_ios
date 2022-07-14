@@ -36,7 +36,9 @@
 - (void)_setupSubviews
 {
     self.shadowView = [[UIView alloc] init];
-    self.shadowView.backgroundColor = [UIColor colorWithWhite:0.7 alpha:0.5];
+//    self.shadowView.backgroundColor = [UIColor colorWithWhite:0.7 alpha:0.5];
+    self.shadowView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+    
     [self addSubview:self.shadowView];
     [self.shadowView Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.edges.equalTo(self);

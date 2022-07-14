@@ -180,15 +180,27 @@
             return _userDelegate.defaultAvatar;
         }
     }
+//    if (self.type == EMConversationTypeChat) {
+//        if ([self.easeId isEqualToString:EMSYSTEMNOTIFICATIONID]) {
+//            return [UIImage easeUIImageNamed:@"systemNoti"];;
+//        }
+//        return [UIImage easeUIImageNamed:@"defaultAvatar"];
+//    }
+//    if (self.type == EMConversationTypeGroupChat) {
+//        return [UIImage easeUIImageNamed:@"groupChat"];
+//    }
+    
     if (self.type == EMConversationTypeChat) {
         if ([self.easeId isEqualToString:EMSYSTEMNOTIFICATIONID]) {
             return [UIImage easeUIImageNamed:@"systemNoti"];;
         }
-        return [UIImage easeUIImageNamed:@"defaultAvatar"];
+        return [UIImage easeUIImageNamed:@"jh_user_icon"];
     }
     if (self.type == EMConversationTypeGroupChat) {
-        return [UIImage easeUIImageNamed:@"groupChat"];
+        return [UIImage easeUIImageNamed:@"jh_group_icon"];
     }
+
+    
     if (self.type == EMConversationTypeChatRoom) {
         return [UIImage easeUIImageNamed:@"chatRoom"];
     }

@@ -12,6 +12,7 @@
 #import "EaseBadgeView.h"
 #import "Easeonry.h"
 #import "UIImageView+EaseWebCache.h"
+#import "EaseHeaders.h"
 
 @interface EaseConversationCell()
 
@@ -48,6 +49,7 @@
 #pragma mark - private layout subviews
 
 - (void)_addSubViews {
+    
     _avatarView = [[UIImageView alloc] initWithFrame:CGRectZero];
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -108,8 +110,11 @@
     _badgeLabel.badgeColor = _viewModel.badgeLabelTitleColor;
     _badgeLabel.maxNum = _viewModel.badgeMaxNum;
     
-    _redDot.image = [UIImage imageNamed:@"undisturbDot"];
-    _undisturbRing.image = [UIImage imageNamed:@"undisturbRing"];
+//    _redDot.image = [UIImage imageNamed:@"undisturbDot"];
+//    _undisturbRing.image = [UIImage imageNamed:@"undisturbRing"];
+    
+    _redDot.image = [UIImage imageNamed:@"jh_undisturbDot"];
+    _undisturbRing.image = [UIImage imageNamed:@"jh_undisturbRing"];
     
     self.selectionStyle = UITableViewCellSelectionStyleGray;
 }
@@ -194,7 +199,8 @@
     if (_viewModel.defaultAvatarImage && !img) {
         img = _viewModel.defaultAvatarImage;
     }
-    
+  
+
     if ([_model respondsToSelector:@selector(avatarURL)]) {
         [self.avatarView Ease_setImageWithURL:[NSURL URLWithString:_model.avatarURL]
                            placeholderImage:img];
@@ -230,12 +236,14 @@
 {
     [super setSelected:selected animated:animated];
     self.badgeLabel.backgroundColor = _viewModel.badgeLabelBgColor;
+//    self.contentView.backgroundColor = [UIColor colorWithHexString:@"#7F7F7F"];
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
     [super setHighlighted:highlighted animated:animated];
     self.badgeLabel.backgroundColor = _viewModel.badgeLabelBgColor;
+//    self.contentView.backgroundColor = [UIColor colorWithHexString:@"#7F7F7F"];
 }
 
 - (void)resetViewModel:(EaseConversationViewModel *)aViewModel {
@@ -244,5 +252,7 @@
     [self _setupSubViewsConstraints];
     [self _setupViewsProperty];
 }
+
+
 
 @end

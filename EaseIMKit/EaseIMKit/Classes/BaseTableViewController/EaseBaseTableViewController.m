@@ -9,6 +9,7 @@
 #import "UITableView+Refresh.h"
 #import "Easeonry.h"
 #import "EaseDefines.h"
+#import "EaseHeaders.h"
 
 @interface EaseBaseTableViewController ()
 {
@@ -100,6 +101,7 @@
         _tableView.rowHeight = UITableViewAutomaticDimension;
         [_tableView enableRefresh:EaseLocalizableString(@"dropRefresh", nil) color:UIColor.systemGrayColor];
         [_tableView.refreshControl addTarget:self action:@selector(refreshTabView) forControlEvents:UIControlEventValueChanged];
+        _tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
     }
     
     return _tableView;

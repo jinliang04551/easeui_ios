@@ -31,36 +31,52 @@
 
 
 - (void)_setupPropertyDefault {
-
+    
     _canRefresh = NO;
     
     _avatarType = RoundedCorner;
     _avatarSize = CGSizeMake(48, 48);
     _avatarEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     
-    _nameLabelFont = [UIFont systemFontOfSize:16];
-    _nameLabelColor = [UIColor colorWithHexString:@"#333333"];
+//    _nameLabelFont = [UIFont systemFontOfSize:16];
+//    _nameLabelColor = [UIColor colorWithHexString:@"#333333"];
+//    _nameLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+//
+//    _detailLabelFont = [UIFont systemFontOfSize:14];
+//    _detailLabelColor = [UIColor colorWithHexString:@"#A3A3A3"];;
+//    _detailLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+//
+//    _timeLabelFont = [UIFont systemFontOfSize:12];
+//    _timeLabelColor = [UIColor colorWithHexString:@"#A3A3A3"];;
+//    _timeLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+  
+    //jh setting
+    _nameLabelFont = [UIFont systemFontOfSize:14.0];
+    _nameLabelColor = [UIColor colorWithHexString:@"#B9B9B9"];
     _nameLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     
-    _detailLabelFont = [UIFont systemFontOfSize:14];
-    _detailLabelColor = [UIColor colorWithHexString:@"#A3A3A3"];;
+    _detailLabelFont = [UIFont systemFontOfSize:12.0];
+    _detailLabelColor = [UIColor colorWithHexString:@"#7F7F7F"];;
     _detailLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     
-    _timeLabelFont = [UIFont systemFontOfSize:12];
-    _timeLabelColor = [UIColor colorWithHexString:@"#A3A3A3"];;
+    _timeLabelFont = [UIFont systemFontOfSize:12.0];
+    _timeLabelColor = [UIColor colorWithHexString:@"#7F7F7F"];;
     _timeLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+
     
     _badgeLabelFont = [UIFont systemFontOfSize:12];
     _badgeLabelHeight = 14;
-    _badgeLabelBgColor = UIColor.redColor;
+//    _badgeLabelBgColor = UIColor.redColor;
+    _badgeLabelBgColor = [UIColor colorWithHexString:@"#AF2A25"];
     _badgeLabelTitleColor = UIColor.whiteColor;
     _badgeLabelPosition = EMCellRight;
     _badgeLabelCenterVector = CGVectorMake(0, 0);
     _badgeMaxNum = 99;
     
     _topBgColor = [UIColor colorWithHexString:@"#f2f2f2"];
-    _cellBgColor = [UIColor colorWithHexString:@"#FFFFFF"];
-    
+//    _cellBgColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    _cellBgColor = [UIColor colorWithHexString:@"#171717"];
+
     _bgView = [[UIView alloc] init];
     _bgView.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
     
@@ -69,7 +85,10 @@
     
     _bgView = [self defaultBgView];
     
-    _defaultAvatarImage = [UIImage easeUIImageNamed:@"defaultAvatar"];
+//    _defaultAvatarImage = [UIImage easeUIImageNamed:@"defaultAvatar"];
+    _defaultAvatarImage = [UIImage easeUIImageNamed:@"jh_user_icon"];
+    _defaultJhGroupAvatarImage = [UIImage easeUIImageNamed:@"jh_group_icon"];
+    
 }
 
 - (UIView *)defaultBgView {

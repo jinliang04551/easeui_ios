@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 // 默认头像
 @property (nonatomic, strong) UIImage *defaultAvatarImage;
 
+// 默认极狐群组头像
+@property (nonatomic, strong) UIImage *defaultJhGroupAvatarImage;
+
 // 头像尺寸
 @property (nonatomic) CGSize avatarSize;
 

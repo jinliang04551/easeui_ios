@@ -39,22 +39,25 @@
     self.textLabel = [[UILabel alloc] init];
     self.textLabel.font = [UIFont systemFontOfSize:_viewModel.contentFontSize];
     self.textLabel.numberOfLines = 0;
+    self.textLabel.textColor = _viewModel.contentFontColor;
+
     [self addSubview:self.textLabel];
     [self.textLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.top.equalTo(self.ease_top).offset(10);
         make.bottom.equalTo(self.ease_bottom).offset(-10);
     }];
-    self.textLabel.textColor = _viewModel.contentFontColor;
     if (self.direction == EMMessageDirectionSend) {
         [self.textLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
             make.left.equalTo(self.ease_left).offset(10);
             make.right.equalTo(self.ease_right).offset(-10);
         }];
+        
     } else {
         [self.textLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
             make.left.equalTo(self.ease_left).offset(10);
             make.right.equalTo(self.ease_right).offset(-10);
         }];
+        
     }
 }
 

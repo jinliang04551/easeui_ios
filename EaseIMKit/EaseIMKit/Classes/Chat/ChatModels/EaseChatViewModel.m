@@ -30,7 +30,7 @@
         _receiveBubbleBgPicture = [UIImage easeUIImageNamed:@"msg_bg_recv"];
         _sendBubbleBgPicture = [UIImage easeUIImageNamed:@"msg_bg_send"];
         _bubbleBgEdgeInset = UIEdgeInsetsMake(8, 8, 8, 8);
-        _contentFontColor = [UIColor blackColor];
+        _contentFontColor = [UIColor colorWithHexString:@"#7F7F7F"];
         _contentFontSize = 18.f;
         _inputBarStyle = EaseInputBarStyleAll;
         _avatarStyle = RoundedCorner;

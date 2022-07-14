@@ -39,7 +39,7 @@
 {
     _maxWidth= [UIScreen mainScreen].bounds.size.width / 2 - 100;
     [self setupBubbleBackgroundImage];
-    
+        
     self.imgView = [[UIImageView alloc] init];
     self.imgView.contentMode = UIViewContentModeScaleAspectFit;
     self.imgView.clipsToBounds = YES;
@@ -54,12 +54,12 @@
     self.textLabel = [[UILabel alloc] init];
     self.textLabel.font = [UIFont systemFontOfSize:14];
     self.textLabel.numberOfLines = 0;
+    self.textLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
     [self addSubview:self.textLabel];
     [self.textLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.top.equalTo(self).offset(8);
         make.bottom.equalTo(self).offset(-8);
     }];
-    self.textLabel.textColor = [UIColor blackColor];
     if (self.direction == EMMessageDirectionSend) {
         
         [self.imgView Ease_makeConstraints:^(EaseConstraintMaker *make) {
