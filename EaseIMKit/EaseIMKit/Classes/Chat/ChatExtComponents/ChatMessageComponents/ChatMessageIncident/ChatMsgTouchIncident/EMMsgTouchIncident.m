@@ -73,11 +73,19 @@
                 NSString *urlStr = result.URL.absoluteString;
                 [alertController addAction:[UIAlertAction actionWithTitle:urlStr style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlStr] options:[NSDictionary new] completionHandler:nil];
+
+//                    NSString *urlString = urlStr;
+//                    [self.chatController openWebPageWithURLString:urlString];
+
                 }]];
             }
             [self.chatController presentViewController:alertController animated:YES completion:nil];
         }else {//一个链接直接打开
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[checkArr[0] URL].absoluteString] options:[NSDictionary new] completionHandler:nil];
+            
+//            NSString *urlString = [checkArr[0] URL].absoluteString;
+//            [self.chatController openWebPageWithURLString:urlString];
+//            
         }
     }
 }

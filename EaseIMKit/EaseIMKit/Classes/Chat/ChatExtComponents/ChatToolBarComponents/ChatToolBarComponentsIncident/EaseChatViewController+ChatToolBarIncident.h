@@ -15,6 +15,7 @@ typedef NS_ENUM(NSInteger, EMChatToolBarComponentType) {
     EMChatToolBarCamera,
     EMChatToolBarLocation,
     EMChatToolBarFileOpen,
+    EMChatToolBarOrder,
 };
 
 @interface EaseChatViewController (ChatToolBarMeida) <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
@@ -35,5 +36,13 @@ typedef NS_ENUM(NSInteger, EMChatToolBarComponentType) {
 
 - (void)chatToolBarFileOpenAction;
 @end
+
+@interface EaseChatViewController (EMChatToolBarOrder)
+
+- (void)chatToolBarOrderAction;
+
+@end
+
+
 
 NS_ASSUME_NONNULL_END

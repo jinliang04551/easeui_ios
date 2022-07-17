@@ -32,6 +32,8 @@
 #import "EaseHeaders.h"
 #import "EaseEnums.h"
 #import "EaseDefines.h"
+#import "EaseWebViewController.h"
+
 
 @interface EaseChatViewController ()<UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, EMChatManagerDelegate, EMChatBarDelegate, EaseMessageCellDelegate, EaseChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate, EMMoreFunctionViewDelegate>
 {
@@ -273,10 +275,26 @@
     EaseExtMenuModel *locationExtModel = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"location"] funcDesc:EaseLocalizableString(@"location", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
         [weakself chatToolBarLocationAction];
     }];
+    
     EaseExtMenuModel *fileExtModel = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"icloudFile"] funcDesc:EaseLocalizableString(@"file", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
         [weakself chatToolBarFileOpenAction];
     }];
-    NSMutableArray<EaseExtMenuModel*> *extMenuArray = [@[photoAlbumExtModel,cameraExtModel,locationExtModel,fileExtModel] mutableCopy];
+    
+    EaseExtMenuModel *orderExtModel = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"order"] funcDesc:@"订单" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+        [weakself chatToolBarOrderAction];
+    }];
+    
+//    NSMutableArray<EaseExtMenuModel*> *extMenuArray = [@[photoAlbumExtModel,cameraExtModel,locationExtModel,fileExtModel] mutableCopy];
+    
+    NSMutableArray<EaseExtMenuModel*> *extMenuArray = nil;
+    
+    if (self.currentConversation.type == EMChatTypeGroupChat) {
+        extMenuArray = [@[photoAlbumExtModel,cameraExtModel,locationExtModel,fileExtModel,orderExtModel] mutableCopy];
+    }else {
+        extMenuArray = [@[photoAlbumExtModel,cameraExtModel,locationExtModel] mutableCopy];
+    }
+    
+    
     if (self.delegate && [self.delegate respondsToSelector:@selector(inputBarExtMenuItemArray:conversationType:)]) {
         extMenuArray = [self.delegate inputBarExtMenuItemArray:extMenuArray conversationType:_currentConversation.type];
     }
@@ -341,14 +359,16 @@
     }
     
     EaseMessageModel *model = (EaseMessageModel *)obj;
-    if (self.delegate && [self.delegate respondsToSelector:@selector(cellForItem:messageModel:)]) {
-        UITableViewCell *customCell = [self.delegate cellForItem:tableView messageModel:model];
-        if (customCell) {
-            UILongPressGestureRecognizer *customCelllongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(customCellLongPressAction:)];
-            [customCell addGestureRecognizer:customCelllongPress];
-            return customCell;
-        }
-    }
+    //add translate text
+//    if (self.delegate && [self.delegate respondsToSelector:@selector(cellForItem:messageModel:)]) {
+//        UITableViewCell *customCell = [self.delegate cellForItem:tableView messageModel:model];
+//        if (customCell) {
+//            UILongPressGestureRecognizer *customCelllongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(customCellLongPressAction:)];
+//            [customCell addGestureRecognizer:customCelllongPress];
+//            return customCell;
+//        }
+//    }
+    
     NSString *identifier = [EaseMessageCell cellIdentifierWithDirection:model.direction type:model.type];
     EaseMessageCell *cell = (EaseMessageCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
     // Configure the cell...
@@ -1014,6 +1034,17 @@
             [self scrollToBottomRow];
         }
     });
+}
+
+- (void)openWebPageWithURLString:(NSString *)urlString {
+    EaseWebViewController *webVC = [[EaseWebViewController alloc] initWithURLString:urlString];
+    [self.navigationController pushViewController:webVC animated:YES];
+
+//    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:webVC];
+////    nav.view.backgroundColor = UIColor.whiteColor;
+//    nav.modalPresentationStyle = UIModalPresentationFullScreen;
+//    [self.navigationController presentViewController:nav animated:YES completion:nil];
+
 }
 
 #pragma mark - getter

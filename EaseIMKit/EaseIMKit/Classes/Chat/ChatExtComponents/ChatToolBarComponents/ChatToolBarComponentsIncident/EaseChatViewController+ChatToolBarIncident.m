@@ -288,6 +288,7 @@ static const void *imagePickerKey = &imagePickerKey;
     }
 }
 
+
 - (void)_sendLocationAction:(CLLocationCoordinate2D)aCoord
                     address:(NSString *)aAddress
                buildingName:(NSString *)aBuildingName
@@ -366,6 +367,16 @@ static const void *imagePickerKey = &imagePickerKey;
             [self sendMessageWithBody:body ext:nil];
         }];
     }
+}
+
+@end
+
+
+
+@implementation EaseChatViewController (EMChatToolBarOrder)
+
+- (void)chatToolBarOrderAction {
+    
 }
 
 @end

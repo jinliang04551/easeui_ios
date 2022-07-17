@@ -48,6 +48,9 @@ NS_ASSUME_NONNULL_BEGIN
 //停止音频播放
 - (void)stopAudioPlayer;
 
+//打开web页面
+- (void)openWebPageWithURLString:(NSString *)urlString;
+
 @end
 
 NS_ASSUME_NONNULL_END

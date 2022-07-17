@@ -81,16 +81,17 @@
                                     NSStrikethroughColorAttributeName: [UIColor orangeColor]
                                     } range:NSMakeRange(0, 3)];
     [attaStr appendAttributedString:throughlineStr];*/
+   
     //超链接
-//    NSDataDetector *detector= [[NSDataDetector alloc] initWithTypes:NSTextCheckingTypeLink error:nil];
-//    NSArray *checkArr = [detector matchesInString:text options:0 range:NSMakeRange(0, text.length)];
-//    for (NSTextCheckingResult *result in checkArr) {
-//        NSString *urlStr = result.URL.absoluteString;
-//        NSRange range = [text rangeOfString:urlStr options:NSCaseInsensitiveSearch];
-//        if(range.length > 0) {
-//            [attaStr setAttributes:@{NSLinkAttributeName : [NSURL URLWithString:urlStr]} range:NSMakeRange(range.location, urlStr.length)];
-//        }
-//    }
+    NSDataDetector *detector= [[NSDataDetector alloc] initWithTypes:NSTextCheckingTypeLink error:nil];
+    NSArray *checkArr = [detector matchesInString:text options:0 range:NSMakeRange(0, text.length)];
+    for (NSTextCheckingResult *result in checkArr) {
+        NSString *urlStr = result.URL.absoluteString;
+        NSRange range = [text rangeOfString:urlStr options:NSCaseInsensitiveSearch];
+        if(range.length > 0) {
+            [attaStr setAttributes:@{NSLinkAttributeName : [NSURL URLWithString:urlStr]} range:NSMakeRange(range.location, urlStr.length)];
+        }
+    }
     
     /*
     NSString *urlStr = @"http://www.baidu.com";
@@ -106,7 +107,6 @@
     NSAttributedString *attachStr = [NSAttributedString attributedStringWithAttachment:imgAttach];
     [attaStr appendAttributedString:attachStr];*/
     
-
     
     self.textLabel.attributedText = attaStr;
 //    [self.textLabel setAttributedText:attaStr];
