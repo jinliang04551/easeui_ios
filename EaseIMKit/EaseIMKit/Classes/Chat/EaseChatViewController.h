@@ -51,6 +51,9 @@ NS_ASSUME_NONNULL_BEGIN
 //打开web页面
 - (void)openWebPageWithURLString:(NSString *)urlString;
 
+//滚动到指定位置消息
+- (void)scrollToAssignMessage:(EMChatMessage *)message;
+
 @end
 
 NS_ASSUME_NONNULL_END

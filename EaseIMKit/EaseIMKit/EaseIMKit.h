@@ -24,3 +24,6 @@
 #import "EaseChatViewModel.h"
 
 #import "EaseExtMenuModel.h"
+
+//beiqi
+#import "EaseChatRecordImageVideoViewController.h"
