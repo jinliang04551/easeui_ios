@@ -131,7 +131,11 @@
         
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.font = [UIFont systemFontOfSize:13];
-        _nameLabel.textColor = [UIColor grayColor];
+//        _nameLabel.textColor = [UIColor grayColor];
+        
+        //jh_setting
+        _nameLabel.textColor = [UIColor colorWithHexString:@"#999999"];
+
         if (chatType != EMChatTypeChat) {
             [self.contentView addSubview:_nameLabel];
             [_nameLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {

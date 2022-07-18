@@ -90,6 +90,9 @@
         NSRange range = [text rangeOfString:urlStr options:NSCaseInsensitiveSearch];
         if(range.length > 0) {
             [attaStr setAttributes:@{NSLinkAttributeName : [NSURL URLWithString:urlStr]} range:NSMakeRange(range.location, urlStr.length)];
+            
+            self.textLabel.textColor = [UIColor colorWithHexString:@"#4798CB"];
+
         }
     }
     

@@ -8,6 +8,7 @@
 #import "UIImage+EaseUI.h"
 #import <objc/runtime.h>
 #import "EaseIMKitManager.h"
+#import "EMChatBar.h"
 
 @implementation UIImage (EaseUI)
 + (UIImage *)easeUIImageNamed:(NSString *)name {
@@ -15,19 +16,20 @@
 //    NSString *imagePath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",name]];
 //    return [UIImage imageWithContentsOfFile:imagePath];
 
-//    NSBundle *tBundle = [NSBundle bundleForClass:[EaseIMKitManager class]];
-//    NSString* absolutePath = [tBundle pathForResource:@"EaseIMKit" ofType:@"bundle"];
-//    NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];
-//    return [UIImage imageWithContentsOfFile:[bundle pathForResource:name ofType:@"png"]];
+    NSBundle *tBundle = [NSBundle bundleForClass:[EMChatBar class]];
+    NSString* absolutePath = [tBundle pathForResource:@"EaseIMKit" ofType:@"bundle"];
+    NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",bundle.bundlePath,name]];
     
     
-    NSBundle* bundle = [NSBundle bundleForClass:[EaseIMKitManager class]];
-    NSString* path = [NSString stringWithFormat:@"EaseIMKit.bundle/%@",name];
-    NSString *file = [bundle pathForResource:path ofType:@"png"];
-    UIImage *image = [UIImage imageWithContentsOfFile:file];
-
+//    NSBundle* bundle = [NSBundle bundleForClass:[EMChatBar class]];
+//    NSString* path = [NSString stringWithFormat:@"EaseIMKit.bundle/%@",name];
+//    NSString *file = [bundle pathForResource:path ofType:@"png"];
+//    UIImage *image = [UIImage imageWithContentsOfFile:file];
+//
     return image;
      
+    
 }
 
 @end

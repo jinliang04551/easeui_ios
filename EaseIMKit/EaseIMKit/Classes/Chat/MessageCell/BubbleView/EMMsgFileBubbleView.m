@@ -69,7 +69,10 @@
         make.left.equalTo(self.ease_centerX);
         make.right.equalTo(self.textLabel);
     }];
-    self.textLabel.textColor = [UIColor blackColor];
+    
+//    self.textLabel.textColor = [UIColor blackColor];
+    self.textLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+    
     if (self.direction == EMMessageDirectionSend) {
         self.iconView.image = [UIImage easeUIImageNamed:@"msg_file_white"];
         [self.iconView Ease_makeConstraints:^(EaseConstraintMaker *make) {
@@ -125,7 +128,59 @@
         } else {
             self.downloadStatusLabel.text = @"";
         }
+        
+        NSString *filename = [body.displayName pathExtension];
+        [self  displayFileIconWithFilename:filename];
     }
 }
+
+- (void)displayFileIconWithFilename:(NSString *)filename {
+    NSString *fileSurfix = [filename lastPathComponent];
+    
+    BOOL hasSurfix = NO;
+    if ([fileSurfix isEqualToString:@"doc"]) {
+        self.iconView.image = [UIImage easeUIImageNamed:@"msg_file_doc"];
+        hasSurfix = YES;
+    }
+    
+    if ([fileSurfix isEqualToString:@"docx"]) {
+        self.iconView.image = [UIImage easeUIImageNamed:@"msg_file_docx"];
+        hasSurfix = YES;
+    }
+    
+    //xls/xlsx
+    if ([fileSurfix isEqualToString:@"xls"]||[fileSurfix isEqualToString:@"xlsx"]) {
+        self.iconView.image = [UIImage easeUIImageNamed:@"msg_file_exel"];
+        hasSurfix = YES;
+    }
+    
+    if ([fileSurfix isEqualToString:@"png"] ||[fileSurfix isEqualToString:@"jpg"] ||[fileSurfix isEqualToString:@"webp"]) {
+        self.iconView.image = [UIImage easeUIImageNamed:@"msg_file_img"];
+        hasSurfix = YES;
+    }
+    
+    if ([fileSurfix isEqualToString:@"pdf"]) {
+        self.iconView.image = [UIImage easeUIImageNamed:@"msg_file_pdf"];
+        hasSurfix = YES;
+    }
+    
+    if ([fileSurfix isEqualToString:@"ppt"]) {
+        self.iconView.image = [UIImage easeUIImageNamed:@"msg_file_ppt"];
+        hasSurfix = YES;
+    }
+    
+    if ([fileSurfix isEqualToString:@"txt"]) {
+        self.iconView.image = [UIImage easeUIImageNamed:@"msg_file_text"];
+        hasSurfix = YES;
+    }
+    
+
+    if (!hasSurfix) {
+        self.iconView.image = [UIImage easeUIImageNamed:@"msg_file_other"];
+    }
+
+}
+
+
 
 @end

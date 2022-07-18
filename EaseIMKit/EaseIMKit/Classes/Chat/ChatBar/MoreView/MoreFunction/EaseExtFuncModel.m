@@ -14,9 +14,14 @@
 - (instancetype)init
 {
     if (self = [super init]) {
-        _iconBgColor = [UIColor whiteColor];
+//        _iconBgColor = [UIColor whiteColor];
+//        _viewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
+//        _fontColor = [UIColor colorWithHexString:@"#999999"];
+  
+        _iconBgColor = [UIColor clearColor];
         _viewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
-        _fontColor = [UIColor colorWithHexString:@"#999999"];
+        _fontColor = [UIColor colorWithHexString:@"#B9B9B9"];
+              
         _fontSize = 12;
         _collectionViewSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 200);
     }
