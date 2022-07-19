@@ -8,6 +8,7 @@
 
 #import "EaseExtFuncModel.h"
 #import "UIColor+EaseUI.h"
+#import "EaseHeaders.h"
 
 @implementation EaseExtFuncModel
 
@@ -15,7 +16,7 @@
 {
     if (self = [super init]) {
 
-#if kJiHuApp
+#if EaseIMKit_JiHuApp
         _iconBgColor = [UIColor clearColor];
         _viewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
         _fontColor = [UIColor colorWithHexString:@"#B9B9B9"];

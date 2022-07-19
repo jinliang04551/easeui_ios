@@ -96,7 +96,7 @@
             _viewModel = [[EaseChatViewModel alloc] init];
         }
         
-#if kJiHuApp
+#if EaseIMKit_JiHuApp
         _viewModel.extFuncModel.viewBgColor = [UIColor colorWithHexString:@"#252525"];
 #else
         _viewModel.extFuncModel.viewBgColor = [UIColor colorWithHexString:@"#F5F5F5"];
@@ -226,21 +226,43 @@
     
     //更多
     __weak typeof(self) weakself = self;
-    EaseExtMenuModel *photoAlbumExtModel = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"photo-album"] funcDesc:EaseLocalizableString(@"photo", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+    
+    UIImage *photoImage = nil;
+    UIImage *cameraImage = nil;
+    UIImage *locationImage = nil;
+    UIImage *fileImage = nil;
+    UIImage *orderImage = nil;
+
+#if EaseIMKit_JiHuApp
+    photoImage =  [UIImage easeUIImageNamed:@"photo-album"];
+    cameraImage =  [UIImage easeUIImageNamed:@"camera"];
+    locationImage =  [UIImage easeUIImageNamed:@"location"];
+    fileImage =  [UIImage easeUIImageNamed:@"icloudFile"];
+    orderImage =  [UIImage easeUIImageNamed:@"order"];
+#else
+    photoImage =  [UIImage easeUIImageNamed:@"yg_photo-album"];
+    cameraImage =  [UIImage easeUIImageNamed:@"yg_camera"];
+    locationImage =  [UIImage easeUIImageNamed:@"yg_location"];
+    fileImage =  [UIImage easeUIImageNamed:@"yg_icloudFile"];
+    orderImage =  [UIImage easeUIImageNamed:@"yg_order"];
+#endif
+
+    
+    EaseExtMenuModel *photoAlbumExtModel = [[EaseExtMenuModel alloc]initWithData:photoImage funcDesc:EaseLocalizableString(@"photo", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
         [weakself chatToolBarComponentIncidentAction:EMChatToolBarPhotoAlbum];
     }];
-    EaseExtMenuModel *cameraExtModel = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"camera"] funcDesc:EaseLocalizableString(@"camera", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+    EaseExtMenuModel *cameraExtModel = [[EaseExtMenuModel alloc]initWithData:cameraImage funcDesc:EaseLocalizableString(@"camera", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
         [weakself chatToolBarComponentIncidentAction:EMChatToolBarCamera];
     }];
-    EaseExtMenuModel *locationExtModel = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"location"] funcDesc:EaseLocalizableString(@"location", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+    EaseExtMenuModel *locationExtModel = [[EaseExtMenuModel alloc]initWithData:locationImage funcDesc:EaseLocalizableString(@"location", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
         [weakself chatToolBarLocationAction];
     }];
     
-    EaseExtMenuModel *fileExtModel = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"icloudFile"] funcDesc:EaseLocalizableString(@"file", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+    EaseExtMenuModel *fileExtModel = [[EaseExtMenuModel alloc]initWithData:fileImage funcDesc:EaseLocalizableString(@"file", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
         [weakself chatToolBarFileOpenAction];
     }];
     
-    EaseExtMenuModel *orderExtModel = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"order"] funcDesc:@"订单" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+    EaseExtMenuModel *orderExtModel = [[EaseExtMenuModel alloc]initWithData:orderImage funcDesc:@"订单" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
         [weakself chatToolBarOrderAction];
     }];
     

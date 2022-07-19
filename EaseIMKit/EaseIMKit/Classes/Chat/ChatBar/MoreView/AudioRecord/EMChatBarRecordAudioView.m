@@ -57,10 +57,8 @@
 
 - (void)_setupSubviews
 {
-//    self.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
-  
-    self.backgroundColor = UIColor.yellowColor;
-    
+    self.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
+      
     self.recordButton = [[UIButton alloc] init];
     [self.recordButton setBackgroundColor:[UIColor whiteColor]];
     [self.recordButton setImage:[UIImage easeUIImageNamed:@"grayAudioBtn"] forState:UIControlStateNormal];

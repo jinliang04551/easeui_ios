@@ -8,6 +8,7 @@
 #import "EaseChatViewModel.h"
 #import "UIImage+EaseUI.h"
 #import "UIColor+EaseUI.h"
+#import "EaseHeaders.h"
 
 @implementation EaseChatViewModel
 
@@ -15,23 +16,23 @@
 {
     self = [super init];
     if (self) {
-        
-#if kJiHuApp
+  
+#if EaseIMKit_JiHuApp
 //        _chatViewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
 //        _chatBarBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
-        
+
         //jh_setting
         _chatViewBgColor = [UIColor colorWithHexString:@"#171717"];
         _chatBarBgColor = [UIColor colorWithHexString:@"#252525"];
-        
+
         _extFuncModel = [[EaseExtFuncModel alloc]init];
 //        _msgTimeItemBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
 //        _msgTimeItemFontColor = [UIColor colorWithHexString:@"#ADADAD"];
-        
+
         //jh_setting
         _msgTimeItemBgColor = [UIColor colorWithHexString:@"#171717"];
         _msgTimeItemFontColor = [UIColor colorWithHexString:@"#7F7F7F"];
-                
+
         _receiveBubbleBgPicture = [UIImage easeUIImageNamed:@"msg_bg_recv"];
         _sendBubbleBgPicture = [UIImage easeUIImageNamed:@"msg_bg_send"];
         _bubbleBgEdgeInset = UIEdgeInsetsMake(8, 8, 8, 8);
@@ -41,18 +42,17 @@
 #else
         _chatViewBgColor = [UIColor colorWithHexString:@"#FFFFFF"];
         _chatBarBgColor = [UIColor colorWithHexString:@"#F5F5F5"];
-        
+
 
         _extFuncModel = [[EaseExtFuncModel alloc]init];
         _msgTimeItemBgColor = [UIColor colorWithHexString:@"#FFFFFF"];
         _msgTimeItemFontColor = [UIColor colorWithHexString:@"#A5A5A5"];
-        
+
         _receiveBubbleBgPicture = [UIImage easeUIImageNamed:@"msg_bg_recv"];
         _sendBubbleBgPicture = [UIImage easeUIImageNamed:@"msg_bg_send"];
         _bubbleBgEdgeInset = UIEdgeInsetsMake(8, 8, 8, 8);
         _contentFontColor = [UIColor colorWithHexString:@"#171717"];
 #endif
-        
         
         _contentFontSize = 18.f;
         _inputBarStyle = EaseInputBarStyleAll;

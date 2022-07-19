@@ -9,6 +9,7 @@
 #import "EMChatBar.h"
 #import "UIImage+EaseUI.h"
 #import "UIColor+EaseUI.h"
+#import "EaseHeaders.h"
 
 #define kTextViewMinHeight 32
 #define kTextViewMaxHeight 80
@@ -94,7 +95,7 @@
     self.textView = [[EaseTextView alloc] init];
     self.textView.delegate = self;
     
-#if kJiHuApp
+#if EaseIMKit_JiHuApp
     [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"audio-unSelected"] forState:UIControlStateNormal];
     [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
     
