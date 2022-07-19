@@ -101,7 +101,14 @@
         _tableView.rowHeight = UITableViewAutomaticDimension;
         [_tableView enableRefresh:EaseLocalizableString(@"dropRefresh", nil) color:UIColor.systemGrayColor];
         [_tableView.refreshControl addTarget:self action:@selector(refreshTabView) forControlEvents:UIControlEventValueChanged];
-        _tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+        
+        #if EaseIMKit_JiHuApp
+                _tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+        #else
+                _tableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+        #endif
+
+        
     }
     
     return _tableView;

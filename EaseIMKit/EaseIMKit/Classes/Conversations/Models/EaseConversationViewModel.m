@@ -51,6 +51,7 @@
 //    _timeLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
   
     //jh setting
+#if kJiHuApp
     _nameLabelFont = [UIFont systemFontOfSize:14.0];
     _nameLabelColor = [UIColor colorWithHexString:@"#B9B9B9"];
     _nameLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -82,6 +83,42 @@
     
     _cellSeparatorInset = UIEdgeInsetsMake(1, 77, 0, 0);
     _cellSeparatorColor = [UIColor colorWithHexString:@"#F3F3F3"];
+#else
+    _nameLabelFont = [UIFont systemFontOfSize:14.0];
+    _nameLabelColor = [UIColor colorWithHexString:@"#B9B9B9"];
+    _nameLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+    
+    _detailLabelFont = [UIFont systemFontOfSize:12.0];
+    _detailLabelColor = [UIColor colorWithHexString:@"#7F7F7F"];;
+    _detailLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+    
+    _timeLabelFont = [UIFont systemFontOfSize:12.0];
+    _timeLabelColor = [UIColor colorWithHexString:@"#7F7F7F"];;
+    _timeLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+
+    
+    _badgeLabelFont = [UIFont systemFontOfSize:12];
+    _badgeLabelHeight = 14;
+//    _badgeLabelBgColor = UIColor.redColor;
+    _badgeLabelBgColor = [UIColor colorWithHexString:@"#AF2A25"];
+    _badgeLabelTitleColor = UIColor.whiteColor;
+    _badgeLabelPosition = EMCellRight;
+    _badgeLabelCenterVector = CGVectorMake(0, 0);
+    _badgeMaxNum = 99;
+    
+    _topBgColor = [UIColor colorWithHexString:@"#f2f2f2"];
+    _cellBgColor = [UIColor colorWithHexString:@"#FFFFFF"];
+//    _cellBgColor = [UIColor colorWithHexString:@"#171717"];
+
+    _bgView = [[UIView alloc] init];
+    _bgView.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
+    
+    _cellSeparatorInset = UIEdgeInsetsMake(1, 77, 0, 0);
+    _cellSeparatorColor = [UIColor colorWithHexString:@"#F3F3F3"];
+    
+#endif
+
+    
     
     _bgView = [self defaultBgView];
     

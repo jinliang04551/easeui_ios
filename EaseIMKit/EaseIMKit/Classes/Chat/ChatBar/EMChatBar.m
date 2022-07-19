@@ -64,8 +64,6 @@
     }];
     
     self.audioButton = [[UIButton alloc] init];
-    [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"audio-unSelected"] forState:UIControlStateNormal];
-    [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
     [_audioButton addTarget:self action:@selector(audioButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.audioButton];
     [_audioButton Ease_makeConstraints:^(EaseConstraintMaker *make) {
@@ -76,8 +74,6 @@
     }];
     
     self.conversationToolBarBtn = [[UIButton alloc] init];
-    [_conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"more-unselected"] forState:UIControlStateNormal];
-    [_conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"more-selected"] forState:UIControlStateSelected];
     [_conversationToolBarBtn addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_conversationToolBarBtn];
     [_conversationToolBarBtn Ease_makeConstraints:^(EaseConstraintMaker *make) {
@@ -87,8 +83,6 @@
     }];
     
     self.emojiButton = [[UIButton alloc] init];
-    [_emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"face"] forState:UIControlStateNormal];
-    [_emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
     [_emojiButton addTarget:self action:@selector(emoticonButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_emojiButton];
     [_emojiButton Ease_makeConstraints:^(EaseConstraintMaker *make) {
@@ -99,8 +93,36 @@
     
     self.textView = [[EaseTextView alloc] init];
     self.textView.delegate = self;
+    
+#if kJiHuApp
+    [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"audio-unSelected"] forState:UIControlStateNormal];
+    [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
+    
+    [_conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"more-unselected"] forState:UIControlStateNormal];
+    [_conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"more-selected"] forState:UIControlStateSelected];
+    
+    [_emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"face"] forState:UIControlStateNormal];
+    [_emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
+    
+    
     [self.textView setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
     self.textView.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
+    self.textView.backgroundColor = [UIColor colorWithHexString:@"#3D3D3D"];
+
+#else
+    [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_audio-unSelected"] forState:UIControlStateNormal];
+    [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_character"] forState:UIControlStateSelected];
+    
+    [_conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"yg_more-unselected"] forState:UIControlStateNormal];
+    [_conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"yg_more-selected"] forState:UIControlStateSelected];
+    
+    [_emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_face"] forState:UIControlStateNormal];
+    [_emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_character"] forState:UIControlStateSelected];
+
+    self.textView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+#endif
+
+   
     self.textView.font = [UIFont systemFontOfSize:16];
     self.textView.textAlignment = NSTextAlignmentLeft;
     
@@ -111,7 +133,8 @@
         // Fallback on earlier versions
     }
     self.textView.returnKeyType = UIReturnKeySend;
-    self.textView.backgroundColor = [UIColor colorWithHexString:@"#3D3D3D"];
+
+    
     self.textView.placeHolder = @"说点啥";
     self.textView.layer.cornerRadius = 16;
     [self addSubview:self.textView];

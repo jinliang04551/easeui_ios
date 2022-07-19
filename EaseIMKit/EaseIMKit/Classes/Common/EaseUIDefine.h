@@ -78,5 +78,13 @@
 
 #define EaseIMKit_ViewCellBgBlackColor   EaseIMKit_COLOR_HEX(0x1C1C1C)
 
+#define EaseIMKit_ViewBgWhiteColor  EaseIMKit_COLOR_HEX(0xF5F5F5)
+
+#define EaseIMKit_ViewCellBgWhiteColor   EaseIMKit_COLOR_HEX(0xFFFFFF) 
+
+
+
+//是否是极狐app
+#define EaseIMKit_JiHuApp  0
 
 #endif /* EaseUIDefine_h */

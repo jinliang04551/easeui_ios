@@ -96,8 +96,13 @@
             _viewModel = [[EaseChatViewModel alloc] init];
         }
         
+#if kJiHuApp
         _viewModel.extFuncModel.viewBgColor = [UIColor colorWithHexString:@"#252525"];
-        
+#else
+        _viewModel.extFuncModel.viewBgColor = [UIColor colorWithHexString:@"#F5F5F5"];
+#endif
+
+                
     }
     return self;
 }

@@ -15,6 +15,8 @@
 {
     self = [super init];
     if (self) {
+        
+#if kJiHuApp
 //        _chatViewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
 //        _chatBarBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
         
@@ -36,7 +38,22 @@
 //        _contentFontColor = [UIColor colorWithHexString:@"#7F7F7F"];
         //jh_setting
         _contentFontColor = [UIColor colorWithHexString:@"#B9B9B9"];
+#else
+        _chatViewBgColor = [UIColor colorWithHexString:@"#FFFFFF"];
+        _chatBarBgColor = [UIColor colorWithHexString:@"#F5F5F5"];
+        
 
+        _extFuncModel = [[EaseExtFuncModel alloc]init];
+        _msgTimeItemBgColor = [UIColor colorWithHexString:@"#FFFFFF"];
+        _msgTimeItemFontColor = [UIColor colorWithHexString:@"#A5A5A5"];
+        
+        _receiveBubbleBgPicture = [UIImage easeUIImageNamed:@"msg_bg_recv"];
+        _sendBubbleBgPicture = [UIImage easeUIImageNamed:@"msg_bg_send"];
+        _bubbleBgEdgeInset = UIEdgeInsetsMake(8, 8, 8, 8);
+        _contentFontColor = [UIColor colorWithHexString:@"#171717"];
+#endif
+        
+        
         _contentFontSize = 18.f;
         _inputBarStyle = EaseInputBarStyleAll;
         _avatarStyle = RoundedCorner;
