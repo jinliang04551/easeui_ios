@@ -18,6 +18,7 @@
 #import "EMMsgFileBubbleView.h"
 #import "EMMsgExtGifBubbleView.h"
 #import "UIImageView+EaseWebCache.h"
+#import "YGReadReceiptButton.h"
 
 @interface EaseMessageCell()
 
@@ -27,7 +28,10 @@
 
 @property (nonatomic, strong) EaseMessageStatusView *statusView;
 
-@property (nonatomic, strong) UIButton *readReceiptBtn;//阅读回执按钮
+//@property (nonatomic, strong) UIButton *readReceiptBtn;//阅读回执按钮
+
+@property (nonatomic, strong) YGReadReceiptButton *readReceiptBtn;//阅读回执按钮
+
 
 @property (nonatomic, strong) EaseChatViewModel *viewModel;
 
@@ -209,23 +213,26 @@
 }
 
 - (void)setCellIsReadReceipt{
-    _readReceiptBtn = [[UIButton alloc]init];
-    _readReceiptBtn.layer.cornerRadius = 5;
-    _readReceiptBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
-    _readReceiptBtn.backgroundColor = [UIColor lightGrayColor];
-    [_readReceiptBtn.titleLabel setTextColor:[UIColor whiteColor]];
-    _readReceiptBtn.titleLabel.font = [UIFont systemFontOfSize: 10.0];
+    _readReceiptBtn = [[YGReadReceiptButton alloc]initWithFrame:CGRectMake(0, 0, 100, 10)];
+    
+//    _readReceiptBtn.layer.cornerRadius = 5;
+//    _readReceiptBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+//    _readReceiptBtn.backgroundColor = [UIColor lightGrayColor];
+//    [_readReceiptBtn.titleLabel setTextColor:[UIColor whiteColor]];
+//    _readReceiptBtn.titleLabel.font = [UIFont systemFontOfSize: 10.0];
+    
     [_readReceiptBtn addTarget:self action:@selector(readReceiptDetilAction) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:_readReceiptBtn];
     if(self.direction == EMMessageDirectionSend) {
         [_readReceiptBtn Ease_makeConstraints:^(EaseConstraintMaker *make) {
-            make.top.equalTo(self.bubbleView.ease_bottom).offset(2);
-            make.right.equalTo(self.bubbleView.ease_right);
-            make.width.equalTo(@130);
-            make.height.equalTo(@15);
+            make.bottom.equalTo(self.bubbleView.ease_bottom);
+            make.right.equalTo(self.bubbleView.ease_left).offset(-3.0);
+            make.width.equalTo(@(14.0));
+            make.height.equalTo(@(14.0));
         }];
     }
 }
+
 
 - (EMMessageBubbleView *)_getBubbleViewWithType:(EMMessageType)aType
 {
@@ -315,7 +322,21 @@
     }
     if (model.message.isNeedGroupAck) {
         self.readReceiptBtn.hidden = NO;
-        [self.readReceiptBtn setTitle:[NSString stringWithFormat:EaseLocalizableString(@"readers", nil),_model.message.groupAckCount] forState:UIControlStateNormal];
+//        [self.readReceiptBtn setTitle:[NSString stringWithFormat:EaseLocalizableString(@"readers", nil),_model.message.groupAckCount] forState:UIControlStateNormal];
+        
+        //yg_groupChat_allRead yg_groupChat_hasRead
+        //+1 owner -1 oneSelf
+        NSInteger groupMembers = self.messageGroup.adminList.count +self.messageGroup.memberList.count + 1 - 1;
+        
+//        if (_model.message.groupAckCount == groupMembers) {
+//            [self.readReceiptBtn updateStateWithCount:_model.message.groupAckCount isReadAll:YES];
+//        }else {
+//
+//            [self.readReceiptBtn updateStateWithCount:_model.message.groupAckCount isReadAll:NO];
+//        }
+        
+        [self.readReceiptBtn updateStateWithCount:99 isReadAll:NO];
+        
     } else {
         self.readReceiptBtn.hidden = YES;
     }
@@ -371,4 +392,9 @@
     //[aLongPress release];
 }
 
+
+
 @end
+
+
+

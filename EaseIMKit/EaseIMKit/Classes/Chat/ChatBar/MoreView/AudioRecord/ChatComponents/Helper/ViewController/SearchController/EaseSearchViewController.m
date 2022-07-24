@@ -20,7 +20,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+#if EaseIMKit_JiHuApp
     self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+#else
+    self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+#endif
+
     
     self.searchBar = [[EaseSearchBar alloc] init];
     self.searchBar.delegate = self;

@@ -74,6 +74,10 @@
             NSString *newStr = [NSString stringWithFormat:@"%@%@ ", text, userId];
             [aInputView setText:newStr];
             aInputView.selectedRange = NSMakeRange(newStr.length, 0);
+            if ([text isEqualToString:@"@"]) {
+                [self clearTextViewPlaceHolder];
+            }
+            
             [aInputView becomeFirstResponder];
         };
         

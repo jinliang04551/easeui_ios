@@ -40,13 +40,12 @@
 
 - (void)_setupSubviews
 {
+
 //    self.backgroundColor = [UIColor whiteColor];
-    self.backgroundColor = EaseIMKit_ViewBgBlackColor;
     
     self.textField = [[UITextField alloc] init];
     self.textField.delegate = self;
 //    self.textField.backgroundColor = kColor_textViewGray;
-    self.textField.backgroundColor = [UIColor colorWithHexString:@"#252525"];
     
 //    self.textField.font = [UIFont systemFontOfSize:16];
     self.textField.font = [UIFont systemFontOfSize:14.0];
@@ -56,6 +55,18 @@
     self.textField.returnKeyType = UIReturnKeySearch;
     self.textField.layer.cornerRadius = kTextFieldHeight * 0.5;
     
+#if EaseIMKit_JiHuApp
+    self.backgroundColor = EaseIMKit_ViewBgBlackColor;
+    self.textField.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+    [self.textField setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
+    self.textField.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
+    
+#else
+    self.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+    self.textField.backgroundColor = [UIColor whiteColor];
+    
+#endif
+
     
     
     [self addSubview:self.textField];
@@ -79,9 +90,7 @@
     rightView.image = [UIImage imageNamed:@"jh_invite_delete"];
     self.textField.rightView = rightView;
     
-    [self.textField setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
-    self.textField.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
-    
+   
     
     self.cancelButton = [[UIButton alloc] init];
     self.cancelButton.titleLabel.font = [UIFont systemFontOfSize:16];

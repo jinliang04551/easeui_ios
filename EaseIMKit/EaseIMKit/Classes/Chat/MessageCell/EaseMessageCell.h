@@ -28,6 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) EaseMessageModel *model;
 
+@property (nonatomic, strong) EMGroup *messageGroup;
+
 + (NSString *)cellIdentifierWithDirection:(EMMessageDirection)aDirection
                                      type:(EMMessageType)aType;
 

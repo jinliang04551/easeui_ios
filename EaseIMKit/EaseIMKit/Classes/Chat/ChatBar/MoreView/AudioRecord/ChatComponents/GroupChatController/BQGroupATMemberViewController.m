@@ -35,9 +35,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+#if EaseIMKit_JiHuApp
     self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
     self.tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
     self.searchResultTableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+#else
+    self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+    self.tableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+    self.searchResultTableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+
+#endif
+
+    
     
     [self.tableView registerClass:[EaseGroupAtCell class] forCellReuseIdentifier:NSStringFromClass([EaseGroupAtCell class])];
     [self.searchResultTableView registerClass:[EaseGroupAtCell class] forCellReuseIdentifier:NSStringFromClass([EaseGroupAtCell class])];
@@ -52,6 +61,7 @@
 - (void)_setupSubviews
 {
 //    [self addPopBackLeftItemWithTarget:self action:@selector(backAction)];
+    
     self.title = @"选择提醒人";
     
     self.showRefreshHeader = YES;

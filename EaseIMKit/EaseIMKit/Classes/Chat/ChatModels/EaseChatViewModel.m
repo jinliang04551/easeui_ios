@@ -48,8 +48,8 @@
         _msgTimeItemBgColor = [UIColor colorWithHexString:@"#FFFFFF"];
         _msgTimeItemFontColor = [UIColor colorWithHexString:@"#A5A5A5"];
 
-        _receiveBubbleBgPicture = [UIImage easeUIImageNamed:@"msg_bg_recv"];
-        _sendBubbleBgPicture = [UIImage easeUIImageNamed:@"msg_bg_send"];
+        _receiveBubbleBgPicture = [UIImage easeUIImageNamed:@"yg_msg_bg_recv"];
+        _sendBubbleBgPicture = [UIImage easeUIImageNamed:@"yg_msg_bg_send"];
         _bubbleBgEdgeInset = UIEdgeInsetsMake(8, 8, 8, 8);
         _contentFontColor = [UIColor colorWithHexString:@"#171717"];
 #endif

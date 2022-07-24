@@ -269,12 +269,16 @@
 //    NSMutableArray<EaseExtMenuModel*> *extMenuArray = [@[photoAlbumExtModel,cameraExtModel,locationExtModel,fileExtModel] mutableCopy];
     
     NSMutableArray<EaseExtMenuModel*> *extMenuArray = nil;
-    
+#if EaseIMKit_JiHuApp
     if (self.currentConversation.type == EMChatTypeGroupChat) {
         extMenuArray = [@[photoAlbumExtModel,cameraExtModel,locationExtModel,fileExtModel,orderExtModel] mutableCopy];
     }else {
         extMenuArray = [@[photoAlbumExtModel,cameraExtModel,locationExtModel] mutableCopy];
     }
+#else
+    extMenuArray = [@[photoAlbumExtModel,cameraExtModel,locationExtModel,fileExtModel,orderExtModel] mutableCopy];
+#endif
+   
     
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(inputBarExtMenuItemArray:conversationType:)]) {
@@ -953,6 +957,13 @@
     if([aExt objectForKey:MSG_EXT_READ_RECEIPT]) {
         message.isNeedGroupAck = YES;
     }
+    
+//#if EaseIMKit_JiHuApp
+//
+//#else
+//    message.isNeedGroupAck = YES;
+//#endif
+    
     message.chatType = (EMChatType)self.currentConversation.type;
     
     __weak typeof(self) weakself = self;
@@ -1030,6 +1041,14 @@
 }
 
 - (void)scrollToAssignMessage:(EMChatMessage *)message {
+    if (message == nil) {
+        return;
+    }
+    
+    self.chatBar.hidden = YES;
+    [self.tableView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view);
+    }];
     
     if (self.dataArray.count <= 0) {
         return;
@@ -1053,6 +1072,11 @@
     NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:row inSection:0];
     [self.tableView scrollToRowAtIndexPath:toIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
+
+- (void)clearTextViewPlaceHolder {
+    self.chatBar.textView.placeHolder = @"";
+}
+
 
 #pragma mark - getter
 - (UITableView *)tableView {

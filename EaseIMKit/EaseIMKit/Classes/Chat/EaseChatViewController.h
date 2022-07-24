@@ -51,8 +51,11 @@ NS_ASSUME_NONNULL_BEGIN
 //打开web页面
 - (void)openWebPageWithURLString:(NSString *)urlString;
 
-//滚动到指定位置消息
+//滚动到搜索的指定位置消息
 - (void)scrollToAssignMessage:(EMChatMessage *)message;
+
+//群组@人后 清空textview placeholder
+- (void)clearTextViewPlaceHolder;
 
 @end
 
