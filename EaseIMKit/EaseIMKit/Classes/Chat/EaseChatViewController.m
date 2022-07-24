@@ -96,11 +96,11 @@
             _viewModel = [[EaseChatViewModel alloc] init];
         }
         
-#if EaseIMKit_JiHuApp
+    if (EaseIMKitManager.shared.isJiHuApp){
         _viewModel.extFuncModel.viewBgColor = [UIColor colorWithHexString:@"#252525"];
-#else
+    }else {
         _viewModel.extFuncModel.viewBgColor = [UIColor colorWithHexString:@"#F5F5F5"];
-#endif
+    }
 
                 
     }
@@ -233,20 +233,19 @@
     UIImage *fileImage = nil;
     UIImage *orderImage = nil;
 
-#if EaseIMKit_JiHuApp
+if (EaseIMKitManager.shared.isJiHuApp){
     photoImage =  [UIImage easeUIImageNamed:@"photo-album"];
     cameraImage =  [UIImage easeUIImageNamed:@"camera"];
     locationImage =  [UIImage easeUIImageNamed:@"location"];
     fileImage =  [UIImage easeUIImageNamed:@"icloudFile"];
     orderImage =  [UIImage easeUIImageNamed:@"order"];
-#else
+}else {
     photoImage =  [UIImage easeUIImageNamed:@"yg_photo-album"];
     cameraImage =  [UIImage easeUIImageNamed:@"yg_camera"];
     locationImage =  [UIImage easeUIImageNamed:@"yg_location"];
     fileImage =  [UIImage easeUIImageNamed:@"yg_icloudFile"];
     orderImage =  [UIImage easeUIImageNamed:@"yg_order"];
-#endif
-
+}
     
     EaseExtMenuModel *photoAlbumExtModel = [[EaseExtMenuModel alloc]initWithData:photoImage funcDesc:EaseLocalizableString(@"photo", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
         [weakself chatToolBarComponentIncidentAction:EMChatToolBarPhotoAlbum];
@@ -269,15 +268,15 @@
 //    NSMutableArray<EaseExtMenuModel*> *extMenuArray = [@[photoAlbumExtModel,cameraExtModel,locationExtModel,fileExtModel] mutableCopy];
     
     NSMutableArray<EaseExtMenuModel*> *extMenuArray = nil;
-#if EaseIMKit_JiHuApp
+if (EaseIMKitManager.shared.isJiHuApp){
     if (self.currentConversation.type == EMChatTypeGroupChat) {
         extMenuArray = [@[photoAlbumExtModel,cameraExtModel,locationExtModel,fileExtModel,orderExtModel] mutableCopy];
     }else {
         extMenuArray = [@[photoAlbumExtModel,cameraExtModel,locationExtModel] mutableCopy];
     }
-#else
+}else {
     extMenuArray = [@[photoAlbumExtModel,cameraExtModel,locationExtModel,fileExtModel,orderExtModel] mutableCopy];
-#endif
+}
    
     
     
@@ -958,7 +957,7 @@
         message.isNeedGroupAck = YES;
     }
     
-//#if EaseIMKit_JiHuApp
+//if (EaseIMKitManager.shared.isJiHuApp)
 //
 //#else
 //    message.isNeedGroupAck = YES;

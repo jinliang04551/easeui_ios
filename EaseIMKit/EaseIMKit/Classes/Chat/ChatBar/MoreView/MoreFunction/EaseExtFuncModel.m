@@ -9,6 +9,7 @@
 #import "EaseExtFuncModel.h"
 #import "UIColor+EaseUI.h"
 #import "EaseHeaders.h"
+#import "EaseIMKitManager.h"
 
 @implementation EaseExtFuncModel
 
@@ -16,15 +17,15 @@
 {
     if (self = [super init]) {
 
-#if EaseIMKit_JiHuApp
+if (EaseIMKitManager.shared.isJiHuApp){
         _iconBgColor = [UIColor clearColor];
         _viewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
         _fontColor = [UIColor colorWithHexString:@"#B9B9B9"];
-#else
+}else {
         _iconBgColor = [UIColor whiteColor];
         _viewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
         _fontColor = [UIColor colorWithHexString:@"#999999"];
-#endif
+}
         
         _fontSize = 12;
         _collectionViewSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 200);

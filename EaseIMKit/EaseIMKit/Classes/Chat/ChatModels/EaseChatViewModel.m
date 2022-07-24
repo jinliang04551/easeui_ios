@@ -9,6 +9,7 @@
 #import "UIImage+EaseUI.h"
 #import "UIColor+EaseUI.h"
 #import "EaseHeaders.h"
+#import "EaseIMKitManager.h"
 
 @implementation EaseChatViewModel
 
@@ -17,7 +18,7 @@
     self = [super init];
     if (self) {
   
-#if EaseIMKit_JiHuApp
+    if (EaseIMKitManager.shared.isJiHuApp){
 //        _chatViewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
 //        _chatBarBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
 
@@ -39,7 +40,7 @@
 //        _contentFontColor = [UIColor colorWithHexString:@"#7F7F7F"];
         //jh_setting
         _contentFontColor = [UIColor colorWithHexString:@"#B9B9B9"];
-#else
+}else {
         _chatViewBgColor = [UIColor colorWithHexString:@"#FFFFFF"];
         _chatBarBgColor = [UIColor colorWithHexString:@"#F5F5F5"];
 
@@ -52,7 +53,7 @@
         _sendBubbleBgPicture = [UIImage easeUIImageNamed:@"yg_msg_bg_send"];
         _bubbleBgEdgeInset = UIEdgeInsetsMake(8, 8, 8, 8);
         _contentFontColor = [UIColor colorWithHexString:@"#171717"];
-#endif
+}
         
         _contentFontSize = 18.f;
         _inputBarStyle = EaseInputBarStyleAll;

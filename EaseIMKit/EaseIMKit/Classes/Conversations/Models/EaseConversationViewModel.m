@@ -11,6 +11,7 @@
 #import "Easeonry.h"
 #import "EaseDefines.h"
 #import "EaseNoDataPlaceHolderView.h"
+#import "EaseIMKitManager.h"
 
 @interface EaseConversationViewModel ()
 @property (nonatomic, strong) EaseNoDataPlaceHolderView *noDataPromptView;
@@ -56,7 +57,7 @@
 //    _timeLabelColor = [UIColor colorWithHexString:@"#A3A3A3"];;
 //    _timeLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
   
-#if EaseIMKit_JiHuApp
+if (EaseIMKitManager.shared.isJiHuApp){
     _nameLabelFont = [UIFont systemFontOfSize:14.0];
     _nameLabelColor = [UIColor colorWithHexString:@"#B9B9B9"];
     _nameLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -89,7 +90,7 @@
 //    _cellSeparatorInset = UIEdgeInsetsMake(1, 77, 0, 0);
 //    _cellSeparatorColor = [UIColor colorWithHexString:@"#F3F3F3"];
     
-#else
+}else {
     _nameLabelFont = [UIFont systemFontOfSize:14.0];
     _nameLabelColor = [UIColor colorWithHexString:@"#B9B9B9"];
     _nameLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -122,7 +123,7 @@
     _cellSeparatorInset = UIEdgeInsetsMake(1, 77, 0, 0);
     _cellSeparatorColor = [UIColor colorWithHexString:@"#F3F3F3"];
 
-#endif
+}
 
     _bgView = [self defaultBgView];
     

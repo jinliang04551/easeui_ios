@@ -11,6 +11,7 @@
 #import "EaseSearchBar.h"
 #import "EaseGroupAtCell.h"
 #import "EaseSearchNoDataView.h"
+#import "EaseIMKitManager.h"
 
 
 @interface BQGroupATMemberViewController ()<EaseSearchBarDelegate>
@@ -35,16 +36,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-#if EaseIMKit_JiHuApp
+if (EaseIMKitManager.shared.isJiHuApp){
     self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
     self.tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
     self.searchResultTableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
-#else
+}else {
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     self.tableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     self.searchResultTableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 
-#endif
+}
 
     
     

@@ -73,6 +73,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) NSString *version; //UIKit 版本号
 @property (nonatomic) id<EaseIMKitSystemNotiDelegate>systemNotiDelegate; //系统通知回调代理
+//是否是极狐app
+@property (nonatomic, assign,readonly) BOOL isJiHuApp;
+
 + (BOOL)initWithEMOptions:(EMOptions *)options;
 
 /// Description 根据会话 ID 查询当前会话是否设置了免打扰。（ 时间复杂度O(1)：将原来 undisturbList 改造为 undisturbMap 降低查询时间复杂度）
@@ -92,6 +95,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeDelegate:(id<EaseIMKitManagerDelegate>)aDelegate;
 
 - (void)markAllMessagesAsReadWithConversation:(EMConversation *)conversation;
+
+- (void)configuationIMKitIsJiHuApp:(BOOL)isJiHuApp;
 
 @end
 

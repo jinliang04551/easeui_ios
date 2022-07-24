@@ -8,6 +8,7 @@
 
 #import "EaseCustomCell.h"
 #import "EaseHeaders.h"
+#import "EaseIMKitManager.h"
 
 #define kAvatarImageHeight 44.0
 
@@ -24,15 +25,15 @@
     if (self) {
         [self prepare];
         [self placeSubViews];
-#if EaseIMKit_JiHuApp
+if (EaseIMKitManager.shared.isJiHuApp){
         self.contentView.backgroundColor = EaseIMKit_ViewCellBgBlackColor;
         self.nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
 
-#else
+}else {
         self.contentView.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
         self.nameLabel.textColor = [UIColor colorWithHexString:@"#171717"];
 
-#endif
+}
     }
     return self;
 }

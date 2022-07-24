@@ -10,6 +10,7 @@
 #import "Easeonry.h"
 #import "EaseDefines.h"
 #import "EaseHeaders.h"
+#import "EaseIMKitManager.h"
 
 @interface EaseBaseTableViewController ()
 {
@@ -102,12 +103,11 @@
         [_tableView enableRefresh:EaseLocalizableString(@"dropRefresh", nil) color:UIColor.systemGrayColor];
         [_tableView.refreshControl addTarget:self action:@selector(refreshTabView) forControlEvents:UIControlEventValueChanged];
         
-        #if EaseIMKit_JiHuApp
-                _tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
-        #else
-                _tableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
-        #endif
-
+        if (EaseIMKitManager.shared.isJiHuApp){
+            _tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+        }else {
+            _tableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+        }
         
     }
     

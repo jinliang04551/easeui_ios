@@ -10,6 +10,7 @@
 #import "UIImage+EaseUI.h"
 #import "UIColor+EaseUI.h"
 #import "EaseHeaders.h"
+#import "EaseIMKitManager.h"
 
 #define kTextViewMinHeight 32
 #define kTextViewMaxHeight 80
@@ -95,7 +96,7 @@
     self.textView = [[EaseTextView alloc] init];
     self.textView.delegate = self;
     
-#if EaseIMKit_JiHuApp
+if (EaseIMKitManager.shared.isJiHuApp){
     [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"audio-unSelected"] forState:UIControlStateNormal];
     [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
     
@@ -110,7 +111,7 @@
     self.textView.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
     self.textView.backgroundColor = [UIColor colorWithHexString:@"#3D3D3D"];
 
-#else
+}else {
     [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_audio-unSelected"] forState:UIControlStateNormal];
     [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_character"] forState:UIControlStateSelected];
     
@@ -121,7 +122,7 @@
     [_emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_character"] forState:UIControlStateSelected];
 
     self.textView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
-#endif
+}
 
    
     self.textView.font = [UIFont systemFontOfSize:16];

@@ -21,6 +21,10 @@ static NSString *g_UIKitVersion = @"3.9.1";
 @property (nonatomic, assign) NSInteger currentUnreadCount; //当前未读总数
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
 @property (nonatomic, strong) NSMutableDictionary *undisturbMaps;//免打扰会话的map
+
+//是否是极狐app
+@property (nonatomic, assign) BOOL isJiHuApp;
+
 @end
 
 #define IMKitVersion @"3.9.1"
@@ -404,6 +408,10 @@ static NSString *g_UIKitVersion = @"3.9.1";
         return [self.systemNotiDelegate requestDidReceiveConversationExt:conversationId requestUser:requestUser reason:reason];
     }
     return [[NSDictionary alloc]init];
+}
+
+- (void)configuationIMKitIsJiHuApp:(BOOL)isJiHuApp {
+    _isJiHuApp = isJiHuApp;
 }
 
 @end

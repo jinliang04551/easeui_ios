@@ -8,6 +8,7 @@
 
 #import "EaseSearchBar.h"
 #import "EaseHeaders.h"
+#import "EaseIMKitManager.h"
 
 #define kTextFieldHeight 32.0f
 
@@ -55,18 +56,17 @@
     self.textField.returnKeyType = UIReturnKeySearch;
     self.textField.layer.cornerRadius = kTextFieldHeight * 0.5;
     
-#if EaseIMKit_JiHuApp
+if (EaseIMKitManager.shared.isJiHuApp){
     self.backgroundColor = EaseIMKit_ViewBgBlackColor;
     self.textField.backgroundColor = [UIColor colorWithHexString:@"#252525"];
     [self.textField setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
     self.textField.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
     
-#else
+}else {
     self.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     self.textField.backgroundColor = [UIColor whiteColor];
     
-#endif
-
+}
     
     
     [self addSubview:self.textField];

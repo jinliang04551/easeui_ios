@@ -8,6 +8,7 @@
 
 #import "EaseSearchViewController.h"
 #import "EaseHeaders.h"
+#import "EaseIMKitManager.h"
 
 
 @interface EaseSearchViewController ()
@@ -20,11 +21,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-#if EaseIMKit_JiHuApp
+if (EaseIMKitManager.shared.isJiHuApp){
     self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
-#else
+}else {
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
-#endif
+}
 
     
     self.searchBar = [[EaseSearchBar alloc] init];
