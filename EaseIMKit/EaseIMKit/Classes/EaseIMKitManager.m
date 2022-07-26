@@ -10,7 +10,14 @@
 #import "EaseIMKitManager+ExtFunction.h"
 #import "EaseMulticastDelegate.h"
 #import "EaseDefines.h"
-   
+
+#import "EaseIMKitOptions.h"
+#import "EaseIMKitAppStyle.h"
+#import "EaseIMHelper.h"
+#import "EMNotificationHelper.h"
+#import "UserInfoStore.h"
+
+
 bool gInit;
 static EaseIMKitManager *easeIMKit = nil;
 static NSString *g_UIKitVersion = @"3.9.1";
@@ -30,6 +37,47 @@ static NSString *g_UIKitVersion = @"3.9.1";
 #define IMKitVersion @"3.9.1"
 
 @implementation EaseIMKitManager
++ (BOOL)initWithEaseIMKitOptions:(EaseIMKitOptions *)options {
+    if (!gInit) {
+        [EMClient.sharedClient initializeSDKWithOptions:[options toOptions]];
+        [[self shareInstance] configuationIMKitIsJiHuApp:options.isJiHuApp];
+        
+        gInit = YES;
+    }
+    
+    return gInit;
+}
+
+- (void)configIMKitWithOption:(EaseIMKitOptions *)option {
+    [EaseIMKitManager.shared configuationIMKitIsJiHuApp:option.isJiHuApp];
+    
+    //初始化EaseIMHelper，注册 EMClient 监听
+    [EaseIMHelper shareHelper];
+    
+    if (option.isAutoLogin){
+        [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@(YES)];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@(NO)];
+    }
+    
+    [[EMClient sharedClient].pushManager getPushNotificationOptionsFromServerWithCompletion:^(EMPushOptions * _Nonnull aOptions, EMError * _Nonnull aError) {
+        if (!aError) {
+            [[EaseIMKitManager shared] cleanMemoryUndisturbMaps];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"EMUserPushConfigsUpdateSuccess" object:nil];//更新用户重启App时，会话免打扰状态UI同步
+        }
+    }];
+    
+    [[EMClient sharedClient].groupManager getJoinedGroupsFromServerWithPage:0 pageSize:-1 completion:^(NSArray *aList, EMError *aError) {
+        if (!aError) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_LIST_FETCHFINISHED object:nil];
+        }
+    }];
+    
+    [EMNotificationHelper shared];
+    [[UserInfoStore sharedInstance] loadInfosFromLocal];
+}
+    
+
 + (BOOL)initWithEMOptions:(EMOptions *)options {
     if (!gInit) {
         [EMClient.sharedClient initializeSDKWithOptions:options];
@@ -412,6 +460,8 @@ static NSString *g_UIKitVersion = @"3.9.1";
 
 - (void)configuationIMKitIsJiHuApp:(BOOL)isJiHuApp {
     _isJiHuApp = isJiHuApp;
+    [[EaseIMKitAppStyle shareAppStyle] updateNavAndTabbarWithIsJihuApp:isJiHuApp];
+
 }
 
 @end

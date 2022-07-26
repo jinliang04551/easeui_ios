@@ -21,23 +21,29 @@
 
 
 - (void)defaultStyle {
-//    //UITabBarItem
-//    [UITabBarItem.appearance setTitleTextAttributes:@{
-//                                                      NSFontAttributeName : EaseIMKit_NFont(12.0f),
-//                                                      NSForegroundColorAttributeName : EaseIMKit_COLOR_HEX(0x000000)
-//                                                      } forState:UIControlStateNormal];
-//    [UITabBarItem.appearance setTitleTextAttributes:@{
-//                                                      NSFontAttributeName : EaseIMKit_NFont(12.0f),
-//                                                      NSForegroundColorAttributeName : EaseIMKit_COLOR_HEX(0x114EFF)
-//                                                      } forState:UIControlStateSelected];
-
-    //去黑线
-//    [[UITabBar appearance] setShadowImage:[[UIImage alloc] init]];
-//    [UITabBar appearance].layer.borderWidth = 0.0f;
-//    [UITabBar appearance].clipsToBounds = YES;
-//    [[UITabBar appearance] setTranslucent:YES];
 
     
 }
+
+
+- (void)updateNavAndTabbarWithIsJihuApp:(BOOL)isJihuApp {
+    if (isJihuApp) {
+        [UINavigationBar appearance].barStyle = UIBarStyleBlack;
+        [UINavigationBar appearance].translucent = NO;
+        [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgBlackColor;
+        [[UINavigationBar appearance] setBarTintColor:EaseIMKit_ViewBgBlackColor];
+        
+        [[UINavigationBar appearance] setTitleTextAttributes:
+             [NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithHexString:@"#F5F5F5"], NSForegroundColorAttributeName, [UIFont systemFontOfSize:16.0], NSFontAttributeName, nil]];
+    }else {
+        [[UINavigationBar appearance] setTitleTextAttributes:
+         [NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, [UIFont systemFontOfSize:16.0], NSFontAttributeName, nil]];
+
+        [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_white"] forBarMetrics:UIBarMetricsDefault];
+        [[UINavigationBar appearance].layer setMasksToBounds:YES];
+        [UINavigationBar appearance].backgroundColor = [UIColor whiteColor];
+    }
+}
+
 
 @end

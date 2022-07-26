@@ -47,7 +47,11 @@ Pod::Spec.new do |s|
         
         
         #beiqi
-        'EaseIMKit/EaseIMKit/Classes/Chat/BeiQi/EaseChatRecordImageVideoViewController.h'
+        'EaseIMKit/EaseIMKit/Classes/Chat/BeiQi/EaseChatRecordImageVideoViewController.h',
+        'EaseIMKit/EaseIMKit/Classes/Helper/EaseIMKitOptions.h',
+        'EaseIMKit/EaseIMKit/Classes/Chat/BeiQi/EaseLoginViewController.h',
+        'EaseIMKit/EaseIMKit/Classes/Chat/BeiQi/UserInfo/UserInfoStore.h',
+        'EaseIMKit/EaseIMKit/Classes/Chat/BeiQi/Conversation/EMConversationsViewController.h'
         
     ]
     
@@ -75,6 +79,9 @@ Pod::Spec.new do |s|
     s.dependency 'FMDB'
     s.dependency 'Bugly'
     s.dependency 'EMTranslate'
+#    s.dependency 'EaseCallKit'
+    
+    # s.dependency 'EaseCallKit',  :path => "../../easecallkitui-ios"
 
 
 end

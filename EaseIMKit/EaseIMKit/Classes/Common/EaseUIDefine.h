@@ -8,6 +8,9 @@
 #ifndef EaseUIDefine_h
 #define EaseUIDefine_h
 
+#import "UIImage+EaseUI.h"
+
+
 #define EaseIMKit_IsBangsScreen ({\
     BOOL isBangsScreen = NO; \
     if (@available(iOS 11.0, *)) { \
@@ -55,9 +58,6 @@
 #define EaseIMKit_ONE_PX  (1.0f / [UIScreen mainScreen].scale)
 
 
-#define EaseIMKit_ImageWithName(imageName) [UIImage imageNamed:imageName]
-
-#define EaseIMKit_AgroaPadding 10.0f
 #define EaseIMKit_AvatarHeight 38.0f
 #define EaseIMKit_ContactAvatarHeight 40.0f
 #define EaseIMKit_SearchBarHeight 32.0
@@ -82,5 +82,15 @@
 
 #define EaseIMKit_ViewCellBgWhiteColor   EaseIMKit_COLOR_HEX(0xFFFFFF) 
 
+#define EaseIMKit_Color_textViewGray [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0]
+
+#define EaseIMKit_Color_LightGray [UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0]
+
+#define EaseIMKit_Color_Gray [UIColor colorWithRed:229 / 255.0 green:229 / 255.0 blue:229 / 255.0 alpha:1.0]
+
+#define EaseIMKit_Color_Blue [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0]
+
+
+#define EaseIMKit_ImageWithName(imageName) [UIImage easeUIImageNamed:imageName]
 
 #endif /* EaseUIDefine_h */

@@ -27,3 +27,4 @@
 
 //beiqi
 #import "EaseChatRecordImageVideoViewController.h"
+#import "EaseIMKitOptions.h"

@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "EasePublicHeaders.h"
 
+@class EaseIMKitOptions;
 NS_ASSUME_NONNULL_BEGIN
 
 //系统通知接口
@@ -75,6 +76,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) id<EaseIMKitSystemNotiDelegate>systemNotiDelegate; //系统通知回调代理
 //是否是极狐app
 @property (nonatomic, assign,readonly) BOOL isJiHuApp;
+
++ (BOOL)initWithEaseIMKitOptions:(EaseIMKitOptions *)options;
 
 + (BOOL)initWithEMOptions:(EMOptions *)options;
 

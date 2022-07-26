@@ -61,7 +61,7 @@ static NSString *imageVideoCellIndentifier = @"imageVideoCellIndentifier";
 
 - (void)loadDatas {
     
-//    if ([EMDemoOptions sharedOptions].isPriorityGetMsgFromServer) {
+//    if ([EaseIMKitOptions sharedOptions].isPriorityGetMsgFromServer) {
 //        EMConversation *conversation = self.conversation;
 //        [EMClient.sharedClient.chatManager asyncFetchHistoryMessagesFromServer:conversation.conversationId conversationType:conversation.type startMessageId:self.moreMsgId pageSize:10 completion:^(EMCursorResult *aResult, EMError *aError) {
 //            [self.conversation loadMessagesStartFromId:self.moreMsgId count:100 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray<EMChatMessage *> * _Nullable aMessages, EMError * _Nullable aError) {

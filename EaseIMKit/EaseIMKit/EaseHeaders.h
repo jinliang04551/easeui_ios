@@ -20,7 +20,13 @@
 #import "UIColor+EaseUI.h"
 #import "UIImage+EaseUI.h"
 #import "UILabel+LinkUrl.h"
+#import "UIViewController+Util.h"
+#import "NSObject+Alert.h"
 
 #import <Masonry/Masonry.h>
 #import "EaseUIDefine.h"
 #import <SDWebImage/SDWebImage.h>
+#import "EaseIMKitOptions.h"
+
+
+
