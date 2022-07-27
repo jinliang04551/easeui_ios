@@ -127,7 +127,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
 
     _bgView = [self defaultBgView];
     
-//    _defaultAvatarImage = [UIImage easeUIImageNamed:@"defaultAvatar"];
+//    _defaultAvatarImage = [UIImage easeUIImageNamed:@"jh_user_icon"];
     _defaultAvatarImage = [UIImage easeUIImageNamed:@"jh_user_icon"];
     _defaultJhGroupAvatarImage = [UIImage easeUIImageNamed:@"jh_group_icon"];
     

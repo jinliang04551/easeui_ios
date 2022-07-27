@@ -90,10 +90,10 @@
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     self.navigationController.navigationBar.backgroundColor = EaseIMKit_ViewBgBlackColor;
 }else {
-    self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 }
     
-    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+//    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     self.navigationController.navigationBarHidden = NO;
 }
 

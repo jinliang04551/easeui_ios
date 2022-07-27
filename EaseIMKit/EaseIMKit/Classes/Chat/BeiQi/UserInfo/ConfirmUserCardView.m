@@ -44,7 +44,7 @@
     titleLable.font = [UIFont systemFontOfSize:28];
     [self addSubview:titleLable];
     UIImageView* avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(17, 60, 60, 60)];
-    avatarView.image = [UIImage easeUIImageNamed:@"defaultAvatar"];
+    avatarView.image = [UIImage easeUIImageNamed:@"jh_user_icon"];
     if(self.avatarUrl.length > 0) {
         NSURL*url = [NSURL URLWithString:self.avatarUrl];
         if(url){

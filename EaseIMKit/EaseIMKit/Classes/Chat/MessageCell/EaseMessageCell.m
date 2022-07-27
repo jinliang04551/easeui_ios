@@ -313,12 +313,12 @@
     if (_model.userDataDelegate && [_model.userDataDelegate respondsToSelector:@selector(avatarURL)]) {
         if ([_model.userDataDelegate.avatarURL length] > 0) {
             [_avatarView Ease_setImageWithURL:[NSURL URLWithString:_model.userDataDelegate.avatarURL]
-                               placeholderImage:[UIImage easeUIImageNamed:@"defaultAvatar"]];
+                               placeholderImage:[UIImage easeUIImageNamed:@"jh_user_icon"]];
             isCustomAvatar = YES;
         }
     }
     if (!isCustomAvatar) {
-        _avatarView.image = [UIImage easeUIImageNamed:@"defaultAvatar"];
+        _avatarView.image = [UIImage easeUIImageNamed:@"jh_user_icon"];
     }
     if (model.message.isNeedGroupAck) {
         self.readReceiptBtn.hidden = NO;

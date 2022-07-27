@@ -277,7 +277,7 @@
             else self.statusView.hidden = YES;
         }
     }
-    _avatarView.image = [UIImage easeUIImageNamed:@"defaultAvatar"];
+    _avatarView.image = [UIImage easeUIImageNamed:@"jh_user_icon"];
     [_avatarView showUserInfoAvatar:model.message.from];
 }
 

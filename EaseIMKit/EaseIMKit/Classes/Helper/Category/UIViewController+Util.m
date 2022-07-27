@@ -35,6 +35,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 }else {
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"yg_backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:aTarget action:aAction];
 }
+    
 
 }
 

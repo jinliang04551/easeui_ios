@@ -191,10 +191,10 @@
         return [UIImage easeUIImageNamed:@"jh_group_icon"];
     }
 
-    
     if (self.type == EMConversationTypeChatRoom) {
         return [UIImage easeUIImageNamed:@"chatRoom"];
     }
+    
     return nil;
 }
 

@@ -81,7 +81,7 @@
                     
                 }];
         }else{
-            avartView.image = [UIImage easeUIImageNamed:@"defaultAvatar"];
+            avartView.image = [UIImage easeUIImageNamed:@"jh_user_icon"];
         }
         [self addSubview:avartView];
             

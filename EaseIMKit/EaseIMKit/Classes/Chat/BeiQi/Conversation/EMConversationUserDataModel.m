@@ -36,7 +36,7 @@
         if ([easeId isEqualToString:EMSYSTEMNOTIFICATIONID]) {
             return [UIImage imageNamed:@"systemNotify"];
         }
-        return [UIImage imageNamed:@"defaultAvatar"];
+        return [UIImage imageNamed:@"jh_user_icon"];
     }
     if (type == EMConversationTypeGroupChat) {
         return [UIImage imageNamed:@"groupConversation"];
@@ -44,7 +44,7 @@
     if (type == EMConversationTypeChatRoom) {
         return [UIImage imageNamed:@"chatroomConversation"];
     }
-    return [UIImage imageNamed:@"defaultAvatar"];
+    return [UIImage imageNamed:@"jh_user_icon"];
 }
 
 @end
