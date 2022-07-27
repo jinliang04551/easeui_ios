@@ -10,6 +10,11 @@
 #import <HyphenateChat/EMOptions+PrivateDeploy.h>
 #import "EaseHeaders.h"
 
+@interface EaseIMKitOptions ()
+@property (nonatomic, strong) NSMutableDictionary *loginUserTokenDic;
+
+@end
+
 static EaseIMKitOptions *sharedOptions = nil;
 @implementation EaseIMKitOptions
 
@@ -49,6 +54,8 @@ static EaseIMKitOptions *sharedOptions = nil;
         self.isFirstLaunch = NO;
         self.isJiHuApp = YES;
         self.locationAppkeyArray = [[NSMutableArray alloc]init];
+        self.loginUserTokenDic = [NSMutableDictionary dictionary];
+        
     }
     
     return self;
@@ -106,6 +113,8 @@ static EaseIMKitOptions *sharedOptions = nil;
         self.isFirstLaunch = [aDecoder decodeBoolForKey:kOptions_IsFirstLaunch];
         self.isJiHuApp = [aDecoder decodeBoolForKey:kOptions_IsJiHuApp];
         self.language = [aDecoder decodeObjectForKey:kOptions_TranslateLanguage];
+        self.loginUserTokenDic = [aDecoder decodeObjectForKey:kOptions_loginUserTokenDic];
+        
     }
     return self;
 }
@@ -155,6 +164,8 @@ static EaseIMKitOptions *sharedOptions = nil;
     [aCoder encodeBool:self.isJiHuApp forKey:kOptions_IsJiHuApp];
 
     [aCoder encodeObject:self.language forKey:kOptions_TranslateLanguage];
+    
+    [aCoder encodeObject:self.loginUserTokenDic forKey:kOptions_loginUserTokenDic];
 }
 
 - (id)copyWithZone:(nullable NSZone *)zone
@@ -192,6 +203,7 @@ static EaseIMKitOptions *sharedOptions = nil;
     retModel.isFirstLaunch = self.isFirstLaunch;
     retModel.isJiHuApp = self.isJiHuApp;
     retModel.language = self.language;
+    retModel.loginUserTokenDic = self.loginUserTokenDic;
     return retModel;
 }
 
@@ -226,6 +238,7 @@ static EaseIMKitOptions *sharedOptions = nil;
     
     //self.restServer = @"a1.sdb.easemob.com";
     //self.restServer = @"a41-p.easemob.com";
+    
 }
 
 #pragma mark - Public
@@ -261,6 +274,7 @@ static EaseIMKitOptions *sharedOptions = nil;
     retOpt.enableDeliveryAck = self.isAutoDeliveryAck;
     retOpt.enableConsoleLog = YES;
     retOpt.enableFpa = YES;
+    
     return retOpt;
 }
 
@@ -336,5 +350,6 @@ static EaseIMKitOptions *sharedOptions = nil;
     
     [demoOptions archive];
 }
+
 
 @end

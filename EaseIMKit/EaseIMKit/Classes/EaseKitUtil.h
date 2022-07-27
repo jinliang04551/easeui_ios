@@ -13,6 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface EaseKitUtil : NSObject
 + (NSAttributedString *)attributeContent:(NSString *)content color:(UIColor *)color font:(UIFont *)font;
 
++ (void)saveLoginUserToken:(NSString *)token userId:(NSString *)userId;
+
++ (NSString *)getLoginUserToken;
+
++ (void )removeLoginUserToken;
+
 @end
 
 NS_ASSUME_NONNULL_END

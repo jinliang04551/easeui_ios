@@ -7,6 +7,7 @@
 //
 
 #import "EaseKitUtil.h"
+#import <HyphenateChat/HyphenateChat.h>
 
 @implementation EaseKitUtil
 
@@ -17,6 +18,34 @@
           NSFontAttributeName:font
         }];
     return attrString;
+}
+
++ (void)saveLoginUserToken:(NSString *)token userId:(NSString *)userId {
+
+    NSString *key = [NSString stringWithFormat:@"login_token_%@",userId];
+    [[NSUserDefaults standardUserDefaults] setObject:token forKey:key];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+}
+
+
++ (NSString *)getLoginUserToken {
+
+    NSString *key = [NSString stringWithFormat:@"login_token_%@",[EMClient sharedClient].currentUsername];
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+    if (token == nil) {
+        token = @"";
+    }
+    return token;
+    
+}
+
++ (void )removeLoginUserToken {
+
+    NSString *key = [NSString stringWithFormat:@"login_token_%@",[EMClient sharedClient].currentUsername];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
 }
 
 

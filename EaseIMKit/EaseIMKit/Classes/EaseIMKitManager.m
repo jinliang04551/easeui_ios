@@ -20,6 +20,8 @@
 #import "SingleCallController.h"
 #import "ConferenceController.h"
 #import "MBProgressHUD.h"
+#import "EaseHttpRequest.h"
+#import "EaseHeaders.h"
 
 bool gInit;
 static EaseIMKitManager *easeIMKit = nil;
@@ -668,7 +670,34 @@ static NSString *g_UIKitVersion = @"3.9.1";
     [hud hideAnimated:YES afterDelay:2];
 }
 
+- (void)logout {
+    [[EaseHttpRequest sharedManager] logoutWithCompletion:^(NSInteger statusCode, NSString * _Nonnull response) {
+            
+        NSLog(@"%s response:%@ state:%@",__func__,response,@(statusCode));
+        
+        if (response && response.length > 0 && statusCode) {
+            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+            if (statusCode == 200) {
 
+                [[EMClient sharedClient] logout:YES completion:^(EMError * _Nullable aError) {
+                    [EaseKitUtil removeLoginUserToken];
+
+                }];
+                
+                return;
+            }else {
+                [EaseAlertController showErrorAlert:errorDescription];
+            }
+
+        }
+
+        
+        
+    }];
+    
+}
 
 @end
 

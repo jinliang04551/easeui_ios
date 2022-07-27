@@ -50,6 +50,7 @@ static NSString *kOptions_IsCustomServer = @"IsCustomServer";
 static NSString *kOptions_IsFirstLaunch = @"IsFirstLaunch";
 static NSString *kOptions_TranslateLanguage = @"TranslateLanguage";
 static NSString *kOptions_IsJiHuApp = @"IsJiHuApp";
+static NSString *kOptions_loginUserTokenDic = @"loginUserTokenDic";
 
 NS_ASSUME_NONNULL_BEGIN
 

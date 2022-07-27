@@ -7,12 +7,12 @@
 //
 
 #import "EaseLoginViewController.h"
-
 #import "MBProgressHUD.h"
 #import "EaseIMKitOptions.h"
 #import "EaseAlertController.h"
 #import "EMRightViewToolView.h"
 #import "EaseHeaders.h"
+#import "EaseHttpRequest.h"
 
 
 @interface EaseLoginViewController ()<UITextFieldDelegate>
@@ -152,14 +152,14 @@
     }];
 
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        imageView.image = [UIImage imageNamed:@"BootPage"];
-        self.titleTextImageView.image = [UIImage imageNamed:@"titleTextImage"];
-        self.titleImageView.image = [UIImage imageNamed:@"titleImage"];
+        imageView.image = [UIImage easeUIImageNamed:@"BootPage"];
+        self.titleTextImageView.image = [UIImage easeUIImageNamed:@"titleTextImage"];
+        self.titleImageView.image = [UIImage easeUIImageNamed:@"titleImage"];
 
     }else {
-        imageView.image = [UIImage imageNamed:@"yg_BootPage"];
-        self.titleTextImageView.image = [UIImage imageNamed:@"yg_titleTextImage"];
-        self.titleImageView.image = [UIImage imageNamed:@"yg_titleImage"];
+        imageView.image = [UIImage easeUIImageNamed:@"yg_BootPage"];
+        self.titleTextImageView.image = [UIImage easeUIImageNamed:@"yg_titleTextImage"];
+        self.titleImageView.image = [UIImage easeUIImageNamed:@"yg_titleImage"];
 
         [self.backView addSubview:self.bottomMsgLabel];
         [self.bottomMsgLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -339,7 +339,31 @@
         [[EMClient sharedClient] loginWithUsername:[name lowercaseString] token:pswd completion:finishBlock];
         return;
     }
-    [[EMClient sharedClient] loginWithUsername:[name lowercaseString] password:pswd completion:finishBlock];
+    
+    
+    
+    [[EaseHttpRequest sharedManager] loginToApperServer:[name lowercaseString] pwd:pswd completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+        NSLog(@"%s response:%@ state:%@",__func__,response,@(statusCode));
+        
+        if (response && response.length > 0 && statusCode) {
+            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+            if (statusCode == 200) {
+                
+                NSString *token = [responsedict objectForKey:@"token"];
+                [EaseKitUtil saveLoginUserToken:token userId:name];
+                
+                [[EMClient sharedClient] loginWithUsername:[name lowercaseString] password:pswd completion:finishBlock];
+                
+                return;
+            }else {
+                [EaseAlertController showErrorAlert:errorDescription];
+            }
+
+        }
+        
+    }];
 }
 
 
