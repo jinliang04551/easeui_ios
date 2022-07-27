@@ -113,7 +113,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     }];
     
     self.backImageBtn = [[UIButton alloc]init];
-    [self.backImageBtn setImage:[UIImage easeUIImageNamed:@"jh_backleft"] forState:UIControlStateNormal];
+    [self.backImageBtn setImage:[UIImage easeUIImageNamed:@"yg_backleft"] forState:UIControlStateNormal];
     [self.backImageBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.backImageBtn];
     [self.backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -129,7 +129,7 @@ UITableView * tableView;
         cell.textLabel.font = [UIFont systemFontOfSize:14.0];
         cell.textLabel.textColor = [UIColor colorWithHexString:@"#171717"];
     }
-    cell.imageView.image = [UIImage imageNamed:self.imagesData[indexPath.row]];
+    cell.imageView.image = [UIImage easeUIImageNamed:self.imagesData[indexPath.row]];
     cell.textLabel.text = _selectData[indexPath.row];
     if (indexPath.row == self.imagesData.count - 1) {
         cell.contentView.MIS_redDot = [MISRedDot redDotWithConfig:({

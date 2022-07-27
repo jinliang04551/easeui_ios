@@ -7,6 +7,7 @@
 //
 
 #import "EMUserDataModel.h"
+#import "EaseHeaders.h"
 
 @implementation EMUserDataModel
 
@@ -14,7 +15,7 @@
 {
     if (self = [super init]) {
         _easeId = easeId;
-        _defaultAvatar = [UIImage imageNamed:@"defaultAvatar"];
+        _defaultAvatar = [UIImage easeUIImageNamed:@"defaultAvatar"];
     }
     return self;
 }

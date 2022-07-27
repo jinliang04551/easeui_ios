@@ -180,15 +180,6 @@
             return _userDelegate.defaultAvatar;
         }
     }
-//    if (self.type == EMConversationTypeChat) {
-//        if ([self.easeId isEqualToString:EMSYSTEMNOTIFICATIONID]) {
-//            return [UIImage easeUIImageNamed:@"systemNoti"];;
-//        }
-//        return [UIImage easeUIImageNamed:@"defaultAvatar"];
-//    }
-//    if (self.type == EMConversationTypeGroupChat) {
-//        return [UIImage easeUIImageNamed:@"groupChat"];
-//    }
     
     if (self.type == EMConversationTypeChat) {
         if ([self.easeId isEqualToString:EMSYSTEMNOTIFICATIONID]) {

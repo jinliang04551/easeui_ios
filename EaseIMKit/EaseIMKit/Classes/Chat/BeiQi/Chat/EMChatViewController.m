@@ -112,7 +112,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         
         self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
 }else {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage easeUIImageNamed:@"backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage easeUIImageNamed:@"yg_backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
         self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 }
 

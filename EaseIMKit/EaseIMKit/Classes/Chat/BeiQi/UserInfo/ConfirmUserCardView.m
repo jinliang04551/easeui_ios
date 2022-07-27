@@ -8,6 +8,7 @@
 
 #import "ConfirmUserCardView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "EaseHeaders.h"
 
 @interface ConfirmUserCardView ()
 @property (nonatomic,strong) NSString* remoteName;
@@ -43,7 +44,7 @@
     titleLable.font = [UIFont systemFontOfSize:28];
     [self addSubview:titleLable];
     UIImageView* avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(17, 60, 60, 60)];
-    avatarView.image = [UIImage imageNamed:@"defaultAvatar"];
+    avatarView.image = [UIImage easeUIImageNamed:@"defaultAvatar"];
     if(self.avatarUrl.length > 0) {
         NSURL*url = [NSURL URLWithString:self.avatarUrl];
         if(url){

@@ -81,7 +81,7 @@
                     
                 }];
         }else{
-            avartView.image = [UIImage imageNamed:@"defaultAvatar"];
+            avartView.image = [UIImage easeUIImageNamed:@"defaultAvatar"];
         }
         [self addSubview:avartView];
             

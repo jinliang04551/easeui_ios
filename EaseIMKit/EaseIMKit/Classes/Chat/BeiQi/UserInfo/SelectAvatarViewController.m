@@ -111,7 +111,7 @@
     NSInteger width = self.view.bounds.size.width;
     UIImageView* checkView = [[UIImageView alloc] initWithFrame:CGRectMake(width/6-20, width/6-40, 40, 40)];
     [checkView setTintColor:[UIColor blueColor]];
-    UIImage* image = [UIImage imageNamed:@"check-circle"];
+    UIImage* image = [UIImage easeUIImageNamed:@"check-circle"];
     checkView.image = image;
     cell.checkView = checkView;
     UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(30, 10, width/3-60, width/3-60)];

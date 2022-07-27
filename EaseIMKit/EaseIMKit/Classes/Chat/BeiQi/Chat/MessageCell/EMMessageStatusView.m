@@ -49,7 +49,7 @@
 {
     if (_failButton == nil) {
         _failButton = [[UIButton alloc] init];
-        [_failButton setImage:[UIImage imageNamed:@"sendFail"] forState:UIControlStateNormal];
+        [_failButton setImage:[UIImage easeUIImageNamed:@"sendFail"] forState:UIControlStateNormal];
         [_failButton addTarget:self action:@selector(failButtonAction) forControlEvents:UIControlEventTouchUpInside];
     }
     

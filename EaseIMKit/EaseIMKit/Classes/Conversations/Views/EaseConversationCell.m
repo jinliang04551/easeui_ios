@@ -113,8 +113,8 @@
 //    _redDot.image = [UIImage imageNamed:@"undisturbDot"];
 //    _undisturbRing.image = [UIImage imageNamed:@"undisturbRing"];
     
-    _redDot.image = [UIImage imageNamed:@"jh_undisturbDot"];
-    _undisturbRing.image = [UIImage imageNamed:@"jh_undisturbRing"];
+    _redDot.image = [UIImage easeUIImageNamed:@"jh_undisturbDot"];
+    _undisturbRing.image = [UIImage easeUIImageNamed:@"jh_undisturbRing"];
     
     self.selectionStyle = UITableViewCellSelectionStyleGray;
 }

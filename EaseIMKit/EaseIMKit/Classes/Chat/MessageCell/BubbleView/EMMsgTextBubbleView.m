@@ -102,13 +102,6 @@
     [linkStr addAttributes:@{NSLinkAttributeName: [NSURL URLWithString:urlStr]} range:NSMakeRange(0, urlStr.length)];
     [attaStr appendAttributedString:linkStr];
     /*/
-    //图片
-    /*
-    NSTextAttachment *imgAttach =  [[NSTextAttachment alloc] init];
-    imgAttach.image = [UIImage imageNamed:@"dribbble64_imageio"];
-    imgAttach.bounds = CGRectMake(0, 0, 30, 30);
-    NSAttributedString *attachStr = [NSAttributedString attributedStringWithAttachment:imgAttach];
-    [attaStr appendAttributedString:attachStr];*/
     
     
     self.textLabel.attributedText = attaStr;

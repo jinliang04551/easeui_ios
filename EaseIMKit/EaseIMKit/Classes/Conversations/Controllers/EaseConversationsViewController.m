@@ -232,8 +232,6 @@ EMClientDelegate
                         
                         [sub_subview insertSubview:view aboveSubview:topView];
                         
-                        //                        UIButton*deleteButton = sub_subview.subviews[1];
-                        //                        [deleteButton setImage:[UIImage imageNamed:@"contact_de"] forState:UIControlStateNormal];
                     }
                 }
             }
@@ -245,7 +243,7 @@ EMClientDelegate
             if ([subview isKindOfClass:NSClassFromString(@"UISwipeActionPullView")] )
             {
                 UIButton*addButton = subview.subviews[0];
-                [addButton setImage:[UIImage imageNamed:@"alert_error"] forState:UIControlStateNormal];
+                [addButton setImage:[UIImage easeUIImageNamed:@"alert_error"] forState:UIControlStateNormal];
             }
         }
     }else{

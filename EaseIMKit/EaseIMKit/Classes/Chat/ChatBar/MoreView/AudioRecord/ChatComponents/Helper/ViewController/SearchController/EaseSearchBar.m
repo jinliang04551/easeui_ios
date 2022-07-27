@@ -80,14 +80,14 @@ if (EaseIMKitManager.shared.isJiHuApp){
     
     UIImageView *leftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 15)];
     leftView.contentMode = UIViewContentModeScaleAspectFit;
-//    leftView.image = [UIImage imageNamed:@"search_gray"];
-    leftView.image = [UIImage imageNamed:@"jh_search_leftIcon"];
+//    leftView.image = [UIImage easeUIImageNamed:@"search_gray"];
+    leftView.image = [UIImage easeUIImageNamed:@"jh_search_leftIcon"];
     self.textField.leftView = leftView;
     
     UIImageView *rightView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 15)];
     rightView.contentMode = UIViewContentModeScaleAspectFit;
-//    leftView.image = [UIImage imageNamed:@"search_gray"];
-    rightView.image = [UIImage imageNamed:@"jh_invite_delete"];
+//    leftView.image = [UIImage easeUIImageNamed:@"search_gray"];
+    rightView.image = [UIImage easeUIImageNamed:@"jh_invite_delete"];
     self.textField.rightView = rightView;
     
    

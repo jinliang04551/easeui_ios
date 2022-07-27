@@ -11,6 +11,7 @@
 #import "EasePhotoBrowser.h"
 #import "EasePhotoBrowserPrivate.h"
 #import "UIImage+EasePhotoBrowser.h"
+#import "EaseHeaders.h"
 
 #define PADDING                  10
 
@@ -831,7 +832,7 @@ static void * EaseVideoPlayerObservation = &EaseVideoPlayerObservation;
                 [selectedButton setImage:[UIImage imageForResourcePath:@"ImageSelectedOff" ofType:@"png" inBundle:[NSBundle bundleForClass:[self class]]] forState:UIControlStateNormal];
                 UIImage *selectedOnImage;
                 if (self.customImageSelectedIconName) {
-                    selectedOnImage = [UIImage imageNamed:self.customImageSelectedIconName];
+                    selectedOnImage = [UIImage easeUIImageNamed:self.customImageSelectedIconName];
                 } else {
                     selectedOnImage = [UIImage imageForResourcePath:@"ImageSelectedOn" ofType:@"png" inBundle:[NSBundle bundleForClass:[self class]]];
                 }
