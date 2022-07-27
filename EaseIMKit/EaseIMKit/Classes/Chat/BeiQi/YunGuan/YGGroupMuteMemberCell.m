@@ -56,7 +56,7 @@
     
     self.userId = username;
     self.nameLabel.text = username;
-    self.imageView.image = EaseIMKit_ImageWithName(@"jh_user_icon");
+    self.imageView.image = [UIImage easeUIImageNamed:@"jh_user_icon"];
     EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:username];
     if(userInfo) {
         if(userInfo.nickName.length > 0) {
@@ -88,7 +88,7 @@
     if (_unBanButton == nil) {
         _unBanButton = [[UIButton alloc] init];
 
-        [_unBanButton setImage:EaseIMKit_ImageWithName(@"yg_unMute") forState:UIControlStateNormal];
+        [_unBanButton setImage:[UIImage easeUIImageNamed:@"yg_unMute"] forState:UIControlStateNormal];
         [_unBanButton addTarget:self action:@selector(unBanButtonAction) forControlEvents:UIControlEventTouchUpInside];
         _unBanButton.backgroundColor = [UIColor colorWithHexString:@"#4798CB"];
         _unBanButton.layer.cornerRadius = 4.0;

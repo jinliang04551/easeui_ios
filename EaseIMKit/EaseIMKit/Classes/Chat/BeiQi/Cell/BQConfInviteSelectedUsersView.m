@@ -9,6 +9,7 @@
 #import "BQConfInviteSelectedUsersView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UserInfoStore.h"
+#import "EaseHeaders.h"
 
 #define kAvatarImageHeight 38.0
 
@@ -37,7 +38,7 @@
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView);
         make.centerX.equalTo(self.contentView);
-        make.size.mas_equalTo(kAvatarImageHeight);
+        make.size.mas_equalTo(@(38.0));
     }];
 
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -63,7 +64,7 @@
                 [self.iconImageView sd_setImageWithURL:url completed:nil];
             }
         }else {
-            [self.iconImageView setImage:EaseIMKit_ImageWithName(@"jh_user_icon")];
+            [self.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_user_icon"]];
         }
                 
         self.nameLabel.text = userInfo.nickName.length > 0 ? userInfo.nickName: userInfo.userId;

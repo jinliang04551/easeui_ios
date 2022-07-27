@@ -90,7 +90,7 @@
     //reset original state
     self.nameLabel.text = @"";
     self.groupUserType = BQGroupUserTypeNone;
-    [self.iconImageView setImage:EaseIMKit_ImageWithName(@"jh_user_icon")];
+    [self.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_user_icon"]];
     self.nameLabel.text = aUid;
 
     
@@ -99,10 +99,10 @@
 //        if(userInfo.avatarUrl.length > 0) {
 //            NSURL* url = [NSURL URLWithString:userInfo.avatarUrl];
 //            if(url) {
-//                [self.iconImageView sd_setImageWithURL:url placeholderImage:EaseIMKit_ImageWithName(@"jh_user_icon")];
+//                [self.iconImageView sd_setImageWithURL:url placeholderImage:[UIImage easeUIImageNamed:@"jh_user_icon"]];
 //            }
 //        }else {
-//            [self.iconImageView setImage:EaseIMKit_ImageWithName(@"jh_user_icon")];
+//            [self.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_user_icon"]];
 //        }
 //
 //        self.nameLabel.text = userInfo.nickName.length > 0 ? userInfo.nickName: userInfo.userId;
@@ -185,11 +185,11 @@
 - (void)setGroupUserType:(BQGroupUserType)groupUserType {
     
     if(groupUserType == BQGroupUserTypeServicer) {
-        [self.servicerButton setImage:EaseIMKit_ImageWithName(@"jh_user_check") forState:UIControlStateNormal];
+        [self.servicerButton setImage:[UIImage easeUIImageNamed:@"jh_user_check"] forState:UIControlStateNormal];
         [self.customerButton setImage:self.normalImage forState:UIControlStateNormal];
     }else if(groupUserType == BQGroupUserTypeCustomer) {
         [self.servicerButton setImage:self.normalImage forState:UIControlStateNormal];
-        [self.customerButton setImage:EaseIMKit_ImageWithName(@"jh_user_check") forState:UIControlStateNormal];
+        [self.customerButton setImage:[UIImage easeUIImageNamed:@"jh_user_check"] forState:UIControlStateNormal];
     }else {
         [self.servicerButton setImage:self.normalImage forState:UIControlStateNormal];
         [self.customerButton setImage:self.normalImage forState:UIControlStateNormal];
@@ -201,16 +201,16 @@
 
 - (UIImage *)normalImage {
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    _normalImage = EaseIMKit_ImageWithName(@"jh_user_normal");
+    _normalImage = [UIImage easeUIImageNamed:@"jh_user_normal"];
 }else {
-    _normalImage = EaseIMKit_ImageWithName(@"yg_user_normal");
+    _normalImage = [UIImage easeUIImageNamed:@"yg_user_normal"];
 }
 
     return _normalImage;
 }
 
 - (UIImage *)selectedImage {
-    _selectedImage = EaseIMKit_ImageWithName(@"jh_user_check");
+    _selectedImage = [UIImage easeUIImageNamed:@"jh_user_check"];
     return _selectedImage;
 }
 

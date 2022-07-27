@@ -9,6 +9,7 @@
 #import "BQChatRecordImageVideoViewController.h"
 #import "BQRecordImageVideoCell.h"
 #import "EaseHeaders.h"
+#import "MISScrollPage.h"
 
 @interface BQChatRecordImageVideoViewController ()<MISScrollPageControllerContentSubViewControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
 
@@ -42,8 +43,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    self.view.backgroundColor = ViewBgBlackColor;
-    self.collectionView.backgroundColor = ViewBgBlackColor;
+    self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+    self.collectionView.backgroundColor = EaseIMKit_ViewBgBlackColor;
 }else {
 
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;

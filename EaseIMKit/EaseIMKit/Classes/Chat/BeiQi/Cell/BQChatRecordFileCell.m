@@ -106,7 +106,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 //    EMChatMessage *msg = (EMChatMessage *)obj;
 //    self.detailTextLabel.text =
 //
-//    self.avatarView.image = EaseIMKit_ImageWithName(@"jh_user_icon");
+//    self.avatarView.image = [UIImage easeUIImageNamed:@"jh_user_icon"];
 //    EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:msg.from];
 //    if(userInfo) {
 //        if(userInfo.nickName.length > 0) {

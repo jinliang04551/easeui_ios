@@ -354,7 +354,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (BQNoDataPlaceHolderView *)noDataPromptView {
     if (_noDataPromptView == nil) {
         _noDataPromptView = BQNoDataPlaceHolderView.new;
-        [_noDataPromptView.noDataImageView setImage:EaseIMKit_ImageWithName(@"ji_search_nodata")];
+        [_noDataPromptView.noDataImageView setImage:[UIImage easeUIImageNamed:@"ji_search_nodata"]];
         _noDataPromptView.prompt.text = @"搜索无结果";
         _noDataPromptView.hidden = YES;
     }

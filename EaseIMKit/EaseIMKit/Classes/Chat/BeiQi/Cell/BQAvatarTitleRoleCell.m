@@ -58,7 +58,7 @@
                 [self.iconImageView sd_setImageWithURL:url completed:nil];
             }
         }else {
-            [self.iconImageView setImage:EaseIMKit_ImageWithName(@"jh_user_icon")];
+            [self.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_user_icon"]];
         }
              
         self.nameLabel.text = userInfo.nickname.length > 0 ? userInfo.nickname: userInfo.userId;
@@ -76,10 +76,10 @@
     if (_roleImageView == nil) {
         _roleImageView = [[UIImageView alloc] init];
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        [_roleImageView setImage:EaseIMKit_ImageWithName(@"jh_group_owner")];
+    [_roleImageView setImage:[UIImage easeUIImageNamed:@"jh_group_owner"]];
 
 }else {
-        [_roleImageView setImage:EaseIMKit_ImageWithName(@"yg_group_owner")];
+    [_roleImageView setImage:[UIImage easeUIImageNamed:@"yg_group_owner"]];
 }
 
         _roleImageView.contentMode = UIViewContentModeScaleAspectFit;

@@ -70,7 +70,7 @@
 - (UIImageView *)accessoryImageView {
     if (_accessoryImageView == nil) {
         _accessoryImageView = [[UIImageView alloc] init];
-        [_accessoryImageView setImage:EaseIMKit_ImageWithName(@"jh_right_access")];
+        [_accessoryImageView setImage:[UIImage easeUIImageNamed:@"jh_right_access"]];
         _accessoryImageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _accessoryImageView;

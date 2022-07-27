@@ -20,7 +20,7 @@
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.nameLabel];
     
-    self.iconImageView.image = EaseIMKit_ImageWithName(@"yg_add_mute");
+    self.iconImageView.image = [UIImage easeUIImageNamed:@"yg_add_mute"];
     self.nameLabel.text = @"添加禁言人员";
     [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
 }

@@ -117,45 +117,45 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     
     BOOL hasSurfix = NO;
     if ([fileSurfix isEqualToString:@"doc"]) {
-        self.iconImageView.image = EaseIMKit_ImageWithName(@"msg_file_doc");
+        self.iconImageView.image = [UIImage easeUIImageNamed:@"msg_file_doc"];
         hasSurfix = YES;
     }
     
     
     if ([fileSurfix isEqualToString:@"docx"]) {
-        self.iconImageView.image = EaseIMKit_ImageWithName(@"msg_file_docx");
+        self.iconImageView.image = [UIImage easeUIImageNamed:@"msg_file_docx"];
         hasSurfix = YES;
     }
     
     //xls/xlsx
     if ([fileSurfix isEqualToString:@"xls"]||[fileSurfix isEqualToString:@"xlsx"]) {
-        self.iconImageView.image = EaseIMKit_ImageWithName(@"msg_file_exel");
+        self.iconImageView.image = [UIImage easeUIImageNamed:@"msg_file_exel"];
         hasSurfix = YES;
     }
     
     if ([fileSurfix isEqualToString:@"png"] ||[fileSurfix isEqualToString:@"jpg"] ||[fileSurfix isEqualToString:@"webp"]) {
-        self.iconImageView.image = EaseIMKit_ImageWithName(@"msg_file_img");
+        self.iconImageView.image = [UIImage easeUIImageNamed:@"msg_file_img"];
         hasSurfix = YES;
     }
     
     if ([fileSurfix isEqualToString:@"pdf"]) {
-        self.iconImageView.image = EaseIMKit_ImageWithName(@"msg_file_pdf");
+        self.iconImageView.image = [UIImage easeUIImageNamed:@"msg_file_pdf"];
         hasSurfix = YES;
     }
     
     if ([fileSurfix isEqualToString:@"ppt"]) {
-        self.iconImageView.image = EaseIMKit_ImageWithName(@"msg_file_ppt");
+        self.iconImageView.image = [UIImage easeUIImageNamed:@"msg_file_ppt"];
         hasSurfix = YES;
     }
     
     if ([fileSurfix isEqualToString:@"txt"]) {
-        self.iconImageView.image = EaseIMKit_ImageWithName(@"msg_file_text");
+        self.iconImageView.image = [UIImage easeUIImageNamed:@"msg_file_text"];
         hasSurfix = YES;
     }
     
 
     if (!hasSurfix) {
-        self.iconImageView.image = EaseIMKit_ImageWithName(@"msg_file_other");
+        self.iconImageView.image = [UIImage easeUIImageNamed:@"msg_file_other"];
     }
 
 }

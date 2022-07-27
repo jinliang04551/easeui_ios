@@ -107,7 +107,7 @@
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             titleAvatarCell.nameLabel.text = @"群头像";
-            [titleAvatarCell.iconImageView setImage:EaseIMKit_ImageWithName(@"jh_group_icon")];
+            [titleAvatarCell.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_group_icon"]];
             return titleAvatarCell;
         }else {
             [self.operationMemberCell updateWithObj:self.memberArray];

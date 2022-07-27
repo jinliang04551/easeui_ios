@@ -23,6 +23,9 @@
 #import "EaseConversationsViewController.h"
 #import "EaseHeaders.h"
 #import "EaseConversationCell.h"
+#import "EMRefreshViewController.h"
+#import "EaseHeaders.h"
+
 
 @interface EMConversationsViewController() <EaseConversationsViewControllerDelegate, EMSearchControllerDelegate, EMGroupManagerDelegate>
 
@@ -89,7 +92,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     }];
     
     self.backImageBtn = [[UIButton alloc]init];
-    [self.backImageBtn setImage:EaseIMKit_ImageWithName(@"jh_backleft") forState:UIControlStateNormal];
+    [self.backImageBtn setImage:[UIImage easeUIImageNamed:@"jh_backleft"] forState:UIControlStateNormal];
     [self.backImageBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.backImageBtn];
     [self.backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -110,7 +113,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     }];
     
     self.backImageBtn = [[UIButton alloc]init];
-    [self.backImageBtn setImage:EaseIMKit_ImageWithName(@"jh_backleft") forState:UIControlStateNormal];
+    [self.backImageBtn setImage:[UIImage easeUIImageNamed:@"jh_backleft"] forState:UIControlStateNormal];
     [self.backImageBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.backImageBtn];
     [self.backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -121,7 +124,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     
     
     self.rightNavBarBtn = [[UIButton alloc]init];
-    [self.rightNavBarBtn setImage:EaseIMKit_ImageWithName(@"icon-add") forState:UIControlStateNormal];
+    [self.rightNavBarBtn setImage:[UIImage easeUIImageNamed:@"icon-add"] forState:UIControlStateNormal];
     [self.rightNavBarBtn addTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.rightNavBarBtn];
     [self.rightNavBarBtn mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class EMChatMessage;
 
 NS_ASSUME_NONNULL_BEGIN
 

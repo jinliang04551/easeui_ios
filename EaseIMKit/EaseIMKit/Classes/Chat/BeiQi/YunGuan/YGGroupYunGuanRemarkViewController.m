@@ -83,7 +83,7 @@
     if (_iconImageView == nil) {
         _iconImageView = [[UIImageView alloc] init];
         _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
-        [_iconImageView setImage:EaseIMKit_ImageWithName(@"yg_edit_icon")];
+        [_iconImageView setImage:[UIImage easeUIImageNamed:@"yg_edit_icon"]];
     }
     
     return _iconImageView;

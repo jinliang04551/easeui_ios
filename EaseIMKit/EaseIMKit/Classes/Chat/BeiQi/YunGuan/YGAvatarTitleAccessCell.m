@@ -53,7 +53,7 @@
 //    
 //    self.groupId = group.groupId;
 //    self.nameLabel.text = group.groupName;
-//    self.iconImageView.image = EaseIMKit_ImageWithName(@"jh_group_icon");
+//    self.iconImageView.image = [UIColor colorWithHexString:@"jh_group_icon");
 //    
 //    if (self.isGroupMember) {
 //        self.selectionStyle = UITableViewCellSelectionStyleGray;

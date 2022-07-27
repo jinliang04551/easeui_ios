@@ -180,9 +180,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         
         UIImage *avatarImage = nil;
         if (self.conversation.type == EMConversationTypeGroupChat) {
-            avatarImage = EaseIMKit_ImageWithName(@"jh_group_icon");
+            avatarImage = [UIImage easeUIImageNamed:@"jh_group_icon"];
         }else {
-            avatarImage = EaseIMKit_ImageWithName(@"jh_user_icon");
+            avatarImage = [UIImage easeUIImageNamed:@"jh_user_icon"];
         }
         
         EMAvatarNameModel *model = [[EMAvatarNameModel alloc]initWithInfo:_keyWord img:avatarImage msg:msg time:timeStr];

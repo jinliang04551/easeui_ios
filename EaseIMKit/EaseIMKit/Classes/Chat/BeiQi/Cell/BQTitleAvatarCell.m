@@ -60,7 +60,7 @@
 - (UIImageView *)accessoryImageView {
     if (_accessoryImageView == nil) {
         _accessoryImageView = [[UIImageView alloc] init];
-        [_accessoryImageView setImage:EaseIMKit_ImageWithName(@"gray_right_arrow")];
+        [_accessoryImageView setImage:[UIImage easeUIImageNamed:@"gray_right_arrow"]];
         _accessoryImageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _accessoryImageView;

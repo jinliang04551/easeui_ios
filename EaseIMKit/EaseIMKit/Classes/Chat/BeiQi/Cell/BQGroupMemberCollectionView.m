@@ -62,9 +62,9 @@
         _operationImageView.layer.masksToBounds = YES;
         
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        [_operationImageView setImage:EaseIMKit_ImageWithName(@"jh_addMember")];
+    [_operationImageView setImage:[UIImage easeUIImageNamed:@"jh_addMember"]];
 }else {
-        [_operationImageView setImage:EaseIMKit_ImageWithName(@"yg_operate_member")];
+    [_operationImageView setImage:[UIImage easeUIImageNamed:@"yg_operate_member"]];
 }
 
     }
@@ -141,7 +141,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
                 [self.iconImageView sd_setImageWithURL:url completed:nil];
             }
         }else {
-            [self.iconImageView setImage:EaseIMKit_ImageWithName(@"jh_user_icon")];
+            [self.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_user_icon"]];
         }
                 
         self.nameLabel.text = userInfo.nickName.length > 0 ? userInfo.nickName: userInfo.userId;
@@ -355,7 +355,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (UIImageView *)accessoryImageView {
     if (_accessoryImageView == nil) {
         _accessoryImageView = [[UIImageView alloc] init];
-        [_accessoryImageView setImage:EaseIMKit_ImageWithName(@"jh_right_access")];
+        [_accessoryImageView setImage:[UIImage easeUIImageNamed:@"jh_right_access"]];
         _accessoryImageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _accessoryImageView;

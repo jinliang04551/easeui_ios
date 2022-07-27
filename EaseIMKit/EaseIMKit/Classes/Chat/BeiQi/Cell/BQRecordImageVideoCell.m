@@ -70,13 +70,13 @@
     }
     
     if (imgPath.length > 0) {
-        [self.iconImageView setImage:EaseIMKit_ImageWithName(imgPath)];
+        [self.iconImageView setImage:[UIImage easeUIImageNamed:imgPath]];
     }else {
         BOOL isAutoDownloadThumbnail = ([EMClient sharedClient].options.isAutoDownloadThumbnail);
         if (isAutoDownloadThumbnail) {
-            [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:urlString] placeholderImage:EaseIMKit_ImageWithName(@"msg_img_broken")];
+            [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:urlString] placeholderImage:[UIImage easeUIImageNamed:@"msg_img_broken"]];
         } else {
-            [self.iconImageView setImage:EaseIMKit_ImageWithName(@"msg_img_broken")];
+            [self.iconImageView setImage:[UIImage easeUIImageNamed:@"msg_img_broken"]];
         }
     }
 }

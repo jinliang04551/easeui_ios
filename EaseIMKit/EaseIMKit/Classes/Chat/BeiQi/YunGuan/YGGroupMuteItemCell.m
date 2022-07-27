@@ -55,7 +55,7 @@
     NSString *username = (NSString *)obj;
     
     self.nameLabel.text = username;
-    self.iconImageView.image = EaseIMKit_ImageWithName(@"jh_user_icon");
+    self.iconImageView.image = [UIImage easeUIImageNamed:@"jh_user_icon"];
     EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:username];
     if(userInfo) {
         if(userInfo.nickName.length > 0) {

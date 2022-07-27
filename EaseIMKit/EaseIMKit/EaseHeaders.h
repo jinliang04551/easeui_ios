@@ -27,6 +27,7 @@
 #import "EaseUIDefine.h"
 #import <SDWebImage/SDWebImage.h>
 #import "EaseIMKitOptions.h"
+#import "EaseCallManager.h"
 
 
 

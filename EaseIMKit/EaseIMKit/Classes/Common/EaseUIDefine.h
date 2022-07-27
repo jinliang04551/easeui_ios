@@ -91,6 +91,4 @@
 #define EaseIMKit_Color_Blue [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0]
 
 
-#define EaseIMKit_ImageWithName(imageName) [UIImage easeUIImageNamed:imageName]
-
 #endif /* EaseUIDefine_h */

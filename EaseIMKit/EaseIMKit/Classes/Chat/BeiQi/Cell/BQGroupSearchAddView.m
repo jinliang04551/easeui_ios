@@ -120,7 +120,7 @@
         _deleteButton = [[UIButton alloc] init];
         _deleteButton.contentMode = UIViewContentModeScaleAspectFit;
 
-        [_deleteButton setImage:EaseIMKit_ImageWithName(@"jh_invite_delete") forState:UIControlStateNormal];
+        [_deleteButton setImage:[UIImage easeUIImageNamed:@"jh_invite_delete"] forState:UIControlStateNormal];
         [_deleteButton addTarget:self action:@selector(deleteButtonAction) forControlEvents:UIControlEventTouchUpInside];
     }
     return _deleteButton;

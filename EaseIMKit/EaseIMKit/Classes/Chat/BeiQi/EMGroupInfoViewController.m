@@ -166,7 +166,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         if (indexPath.row == 0) {
             titleAvatarCell.nameLabel.text = @"群头像";
-            [titleAvatarCell.iconImageView setImage:EaseIMKit_ImageWithName(@"jh_group_icon")];
+            [titleAvatarCell.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_group_icon"]];
             return titleAvatarCell;
         }else {
             [self.groupMemberCell updateWithObj:self.memberArray];
@@ -176,12 +176,12 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         if (indexPath.row == 0) {
             if (self.group.permissionType == EMGroupPermissionTypeOwner) {
                 titleAvatarAccessCell.nameLabel.text = @"群头像";
-                [titleAvatarAccessCell.iconImageView setImage:EaseIMKit_ImageWithName(@"jh_group_icon")];
+                [titleAvatarAccessCell.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_group_icon"]];
                 return titleAvatarAccessCell;
                 
             }else {
                 titleAvatarCell.nameLabel.text = @"群头像";
-                [titleAvatarCell.iconImageView setImage:EaseIMKit_ImageWithName(@"jh_group_icon")];
+                [titleAvatarCell.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_group_icon"]];
                 return titleAvatarCell;
             }
         }else {

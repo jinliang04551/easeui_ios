@@ -81,7 +81,7 @@
 
     
     self.backImageBtn = [[UIButton alloc]init];
-    [self.backImageBtn setImage:EaseIMKit_ImageWithName(@"jh_backleft") forState:UIControlStateNormal];
+    [self.backImageBtn setImage:[UIImage easeUIImageNamed:@"jh_backleft"] forState:UIControlStateNormal];
     [self.backImageBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
     
     [self.backView addSubview:self.backImageBtn];
@@ -392,7 +392,7 @@
                 
         UIView *iconBgView = [[UIView alloc] init];
         UIImageView *iconImageView = [[UIImageView alloc] init];
-        [iconImageView setImage:EaseIMKit_ImageWithName(@"yg_usr_input_icon")];
+        [iconImageView setImage:[UIImage easeUIImageNamed:@"yg_usr_input_icon"]];
         [iconBgView addSubview:iconImageView];
         [iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(iconBgView).insets(UIEdgeInsetsMake(0, 8.0, 0, 0));
@@ -427,7 +427,7 @@
         
         UIView *iconBgView = [[UIView alloc] init];
         UIImageView *iconImageView = [[UIImageView alloc] init];
-        [iconImageView setImage:EaseIMKit_ImageWithName(@"yg_pwd_input_icon")];
+        [iconImageView setImage:[UIImage easeUIImageNamed:@"yg_pwd_input_icon"]];
         [iconBgView addSubview:iconImageView];
         [iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(iconBgView).insets(UIEdgeInsetsMake(0, 8.0, 0, 0));

@@ -110,7 +110,7 @@
         titleLabel.text = @"查看更多群成员";
         
         UIImageView *accImageView = [[UIImageView alloc] init];
-        [accImageView setImage:EaseIMKit_ImageWithName(@"jh_right_access")];
+        [accImageView setImage:[UIImage easeUIImageNamed:@"jh_right_access"]];
         accImageView.contentMode = UIViewContentModeScaleAspectFit;
         
         [_moreButton addSubview:titleLabel];

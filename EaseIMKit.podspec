@@ -46,17 +46,20 @@ Pod::Spec.new do |s|
         'EaseIMKit/EaseIMKit/Classes/BaseTableViewController/EaseBaseTableViewController.h',
         
         
+#        'EaseIMKit/EaseIMKit/Classes/Chat/BeiQi/UserInfo/UserInfoStore.h',
         #beiqi
-        'EaseIMKit/EaseIMKit/Classes/Chat/BeiQi/EaseChatRecordImageVideoViewController.h',
+        'EaseIMKit/EaseIMKit/Classes/Chat/BeiQi/Conversation/EMConversationsViewController.h',
+        'EaseIMKit/EaseIMKit/Classes/Helper/ViewController/RefreshController/EMRefreshViewController.h',
         'EaseIMKit/EaseIMKit/Classes/Helper/EaseIMKitOptions.h',
-        'EaseIMKit/EaseIMKit/Classes/Chat/BeiQi/EaseLoginViewController.h',
-        'EaseIMKit/EaseIMKit/Classes/Chat/BeiQi/UserInfo/UserInfoStore.h',
-        'EaseIMKit/EaseIMKit/Classes/Chat/BeiQi/Conversation/EMConversationsViewController.h'
+        'EaseIMKit/EaseIMKit/Classes/Chat/BeiQi/EaseLoginViewController.h'
+        
         
     ]
     
     s.static_framework = true
-    s.resource = 'EaseIMKit/EaseIMKit/Resources/EaseIMKit.bundle'
+#    s.resource = 'EaseIMKit/EaseIMKit/Resources/EaseIMKit.bundle'
+   s.resources  = ['EaseIMKit/EaseIMKit/Resources/EaseIMKit.bundle','EaseIMKit/EaseIMKit/EaseCall/EaseCall.bundle']
+
     #s.resources = ['Images/*.png', 'Sounds/*']
     
     #s.ios.resource_bundle = { 'EaseIMKit' => 'EaseIMKit/EaseIMKit/Assets/*.png' }
@@ -79,9 +82,6 @@ Pod::Spec.new do |s|
     s.dependency 'FMDB'
     s.dependency 'Bugly'
     s.dependency 'EMTranslate'
-#    s.dependency 'EaseCallKit'
     
-    # s.dependency 'EaseCallKit',  :path => "../../easecallkitui-ios"
-
 
 end

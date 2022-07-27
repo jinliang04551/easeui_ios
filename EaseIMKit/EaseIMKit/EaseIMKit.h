@@ -26,5 +26,9 @@
 #import "EaseExtMenuModel.h"
 
 //beiqi
-#import "EaseChatRecordImageVideoViewController.h"
 #import "EaseIMKitOptions.h"
+#import "EaseLoginViewController.h"
+#import "EMConversationsViewController.h"
+#import "EMRefreshViewController.h"
+
+

@@ -168,7 +168,7 @@
 - (UIButton *)leftBackButton {
     if (_leftBackButton == nil) {
         _leftBackButton = [[UIButton alloc] init];
-        [_leftBackButton setImage:EaseIMKit_ImageWithName(@"yg_backleft") forState:UIControlStateNormal];
+        [_leftBackButton setImage:[UIImage easeUIImageNamed:@"yg_backleft"] forState:UIControlStateNormal];
         
         [_leftBackButton addTarget:self action:@selector(leftBackButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -217,7 +217,7 @@
 - (UIImageView *)triangleImageView {
     if (_triangleImageView == nil) {
         _triangleImageView = UIImageView.new;
-        [_triangleImageView setImage:EaseIMKit_ImageWithName(@"yg_drop_down")];
+        [_triangleImageView setImage:[UIImage easeUIImageNamed:@"yg_drop_down"]];
     }
     return _triangleImageView;
 }

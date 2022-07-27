@@ -7,6 +7,8 @@
 //
 
 #import "BQChatRecordFileModel.h"
+#import <HyphenateChat/HyphenateChat.h>
+#import "EaseHeaders.h"
 
 @implementation BQChatRecordFileModel
 
@@ -14,7 +16,7 @@
 {
     self = [super init];
     if (self) {
-        _avatarImg = EaseIMKit_ImageWithName(@"jh_user_icon");
+        _avatarImg = [UIImage easeUIImageNamed:@"jh_user_icon"];
         _message = msg;
         _from = msg.from;
         NSString *fileName = [NSString stringWithFormat:@"[%@]",((EMFileMessageBody *)msg.body).displayName];
