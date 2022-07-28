@@ -163,6 +163,7 @@
     
 }
 
+
 #pragma mark private method
 - (void)searchGroupWithKeyword:(NSString *)keyword {
     if (keyword.length == 0) {
@@ -171,6 +172,7 @@
     [self buildTempData];
     self.noDataPromptView.hidden = self.dataArray.count > 0 ? YES:NO;
     [self.tableView reloadData];
+    
 }
 
 - (void)buildTempData {

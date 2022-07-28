@@ -10,9 +10,10 @@
 //群组申请审批
 
 NS_ASSUME_NONNULL_BEGIN
+@class BQGroupApplyApprovalModel;
 
 @interface YGGroupApplyApprovalCell : BQCustomCell
-@property (nonatomic, copy) void (^approvalBlock)(BOOL agree);
+@property (nonatomic, copy) void (^approvalBlock)(BQGroupApplyApprovalModel *model);
 
 
 @end

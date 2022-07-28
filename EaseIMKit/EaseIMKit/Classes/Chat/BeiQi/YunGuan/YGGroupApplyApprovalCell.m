@@ -12,7 +12,7 @@
 #import "UserInfoStore.h"
 #import "EaseHeaders.h"
 #import "EaseKitUtil.h"
-#import "BQEaseJoinGroupApplyModel.h"
+#import "BQGroupApplyApprovalModel.h"
 
 @interface YGGroupApplyApprovalCell ()
 
@@ -21,6 +21,10 @@
 @property (nonatomic, strong) UILabel *groupNameLabel;
 @property (nonatomic, strong) UIButton *agreeButton;
 @property (nonatomic, strong) UIButton *declineButton;
+@property (nonatomic, strong) UILabel *resultLabel;
+
+@property (nonatomic, strong) BQGroupApplyApprovalModel *model;
+
 
 @end
 
@@ -75,36 +79,44 @@
 
 - (void)updateWithObj:(id)obj {
     
-    BQEaseJoinGroupApplyModel *model = (BQEaseJoinGroupApplyModel *)obj;
+    self.model = (BQGroupApplyApprovalModel *)obj;
     
-    self.applyLabel.text = @"111";
-    self.groupNameLabel.text = @"123";
-    self.inviteLabel.text = @"1234";
+    NSString *state = self.model.state;
+    if ([state isEqualToString:@""]) {
+        
+    }else {
+        
+        
+    }
     
+    
+    self.applyLabel.text = self.model.userName;
+    self.inviteLabel.text = self.model.inviter;
     
     NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] init];
     
     NSAttributedString *tString = [EaseKitUtil attributeContent:@"申请加入" color:[UIColor colorWithHexString:@"#7F7F7F"] font:self.groupNameLabel.font];
     
-    NSAttributedString *gString = [EaseKitUtil attributeContent:@"s" color:[UIColor colorWithHexString:@"#171717"] font:self.groupNameLabel.font];
+    NSAttributedString *gString = [EaseKitUtil attributeContent:self.model.groupId color:[UIColor colorWithHexString:@"#171717"] font:self.groupNameLabel.font];
     
     [mutableAttString appendAttributedString:tString];
     [mutableAttString appendAttributedString:gString];
-
-
     self.groupNameLabel.attributedText = mutableAttString;
 }
 
 
 - (void)declineButtonAction {
+    self.model.state = @"fail";
+
     if (self.approvalBlock) {
-        self.approvalBlock(NO);
+        self.approvalBlock(self.model);
     }
 }
 
 - (void)agreeButtonAction {
+    self.model.state = @"success";
     if (self.approvalBlock) {
-        self.approvalBlock(YES);
+        self.approvalBlock(self.model);
     }
 }
 
@@ -173,6 +185,18 @@
     }
     return _agreeButton;
 
+}
+
+- (UILabel *)resultLabel {
+    if (_resultLabel == nil) {
+        _resultLabel = [[UILabel alloc] init];
+        _resultLabel.font = EaseIMKit_NFont(14.0);
+        _resultLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
+        _resultLabel.textAlignment = NSTextAlignmentLeft;
+        _resultLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    }
+    return _resultLabel;
+    
 }
 
 

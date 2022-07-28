@@ -9,7 +9,7 @@
 #import "YGGroupApplyApprovalController.h"
 #import "YGGroupApplyApprovalCell.h"
 #import "EaseHeaders.h"
-#import "BQEaseJoinGroupApplyModel.h"
+#import "BQGroupApplyApprovalModel.h"
 
 @interface YGGroupApplyApprovalController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) NSMutableArray *dataArray;
@@ -34,13 +34,34 @@
     
     [self fetchGroupApplyList];
     
-    self.dataArray = [@[@(1),@(2)] mutableCopy];
-    [self.tableView reloadData];
 }
 
 - (void)fetchGroupApplyList {
+    
     [[EaseHttpManager sharedManager] fetchGroupApplyListWithPageNumber:self.pageNumber pageSize:20 completion:^(NSInteger statusCode, NSString * _Nonnull response) {
-       
+        [self hideHud];
+        
+        if (response && response.length > 0 && statusCode) {
+            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+            if (statusCode == 200) {
+                NSDictionary *entity = responsedict[@"entity"];
+                NSArray *appvovalArray = entity[@"data"];
+                NSMutableArray *tArray = [NSMutableArray array];
+                for (int i = 0; i < appvovalArray.count; ++i) {
+                    BQGroupApplyApprovalModel *model = [[BQGroupApplyApprovalModel alloc] initWithDic:appvovalArray[i]];
+                    if (model) {
+                        [tArray addObject:model];
+                    }
+                }
+                self.dataArray = tArray;
+                [self.tableView reloadData];
+                
+            }else {
+                [EaseAlertController showErrorAlert:errorDescription];
+            }
+        }
         
         
     }];
@@ -71,16 +92,32 @@
     YGGroupApplyApprovalCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([YGGroupApplyApprovalCell class]) forIndexPath:indexPath];
     id obj = self.dataArray[indexPath.row];
     [cell updateWithObj:obj];
-    cell.approvalBlock = ^(BOOL agree) {
-        
+    
+    EaseIMKit_WS
+    cell.approvalBlock = ^(BQGroupApplyApprovalModel * _Nonnull model) {
+        [weakSelf approvalJoinGroupApplyWithModel:model];
     };
     
     return cell;
 }
 
-- (void)approvalJoinGroupApplyWithGroupId:(NSString *)groupId {
-    [[EaseHttpManager sharedManager] approvalGroupWithGroupId:groupId username:@"" role:@"" option:@"" completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+- (void)approvalJoinGroupApplyWithModel:(BQGroupApplyApprovalModel *)model {
+    [[EaseHttpManager sharedManager] approvalGroupWithGroupId:model.groupId username:model.userName role:model.role option:model.state completion:^(NSInteger statusCode, NSString * _Nonnull response) {
             
+        
+        if (response && response.length > 0 && statusCode) {
+            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+            if (statusCode == 200) {
+                [self fetchGroupApplyList];
+                
+            }else {
+                [EaseAlertController showErrorAlert:errorDescription];
+            }
+        }
+        
+
     }];
 }
 

@@ -159,6 +159,7 @@
     
     NSString *username = self.isSearching ? [self.searchDataArray objectAtIndex:indexPath.row] : [self.dataArray objectAtIndex:indexPath.row];
     
+    
     [cell updateWithObj:username];
         
     return cell;
