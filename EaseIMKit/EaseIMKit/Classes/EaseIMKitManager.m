@@ -20,7 +20,7 @@
 #import "SingleCallController.h"
 #import "ConferenceController.h"
 #import "MBProgressHUD.h"
-#import "EaseHttpRequest.h"
+#import "EaseHttpManager.h"
 #import "EaseHeaders.h"
 
 bool gInit;
@@ -473,6 +473,7 @@ static NSString *g_UIKitVersion = @"3.9.1";
 }
 
 - (void)configuationIMKitIsJiHuApp:(BOOL)isJiHuApp {
+
     _isJiHuApp = isJiHuApp;
     [[EaseIMKitAppStyle shareAppStyle] updateNavAndTabbarWithIsJihuApp:isJiHuApp];
 }
@@ -671,7 +672,7 @@ static NSString *g_UIKitVersion = @"3.9.1";
 }
 
 - (void)logout {
-    [[EaseHttpRequest sharedManager] logoutWithCompletion:^(NSInteger statusCode, NSString * _Nonnull response) {
+    [[EaseHttpManager sharedManager] logoutWithCompletion:^(NSInteger statusCode, NSString * _Nonnull response) {
             
         NSLog(@"%s response:%@ state:%@",__func__,response,@(statusCode));
         

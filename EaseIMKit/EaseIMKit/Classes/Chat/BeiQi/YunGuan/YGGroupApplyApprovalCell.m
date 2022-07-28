@@ -12,6 +12,7 @@
 #import "UserInfoStore.h"
 #import "EaseHeaders.h"
 #import "EaseKitUtil.h"
+#import "BQEaseJoinGroupApplyModel.h"
 
 @interface YGGroupApplyApprovalCell ()
 
@@ -73,6 +74,9 @@
 }
 
 - (void)updateWithObj:(id)obj {
+    
+    BQEaseJoinGroupApplyModel *model = (BQEaseJoinGroupApplyModel *)obj;
+    
     self.applyLabel.text = @"111";
     self.groupNameLabel.text = @"123";
     self.inviteLabel.text = @"1234";

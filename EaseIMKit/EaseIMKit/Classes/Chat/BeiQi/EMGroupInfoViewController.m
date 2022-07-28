@@ -38,6 +38,8 @@
 @property (nonatomic, strong) BQGroupMemberCell *groupMemberCell;
 //群组成员
 @property (nonatomic, strong) NSMutableArray *memberArray;
+@property (nonatomic, strong) NSMutableArray *userArray;
+@property (nonatomic, strong) NSMutableArray *serverArray;
 
 @end
 
@@ -726,6 +728,70 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     }];
 }
 
+- (void)getGroupMembers {
+    NSMutableArray *tArray = [NSMutableArray array];
+    [tArray addObject:self.group.owner];
+    if (self.group.adminList.count > 0) {
+        [tArray addObjectsFromArray:self.group.adminList];
+    }
+    if (self.group.memberList.count > 0) {
+        [tArray addObjectsFromArray:self.group.memberList];
+    }
+    self.memberArray = [tArray mutableCopy];
+}
+
+- (void)goAddGroupMemberPage {
+    BQGroupEditMemberViewController *controller = [[BQGroupEditMemberViewController alloc] initWithMemberArray:self.memberArray];
+    EaseIMKit_WS
+    controller.addedMemberBlock = ^(NSMutableArray * _Nonnull userArray, NSMutableArray * _Nonnull serverArray) {
+        weakSelf.userArray = userArray;
+        weakSelf.serverArray = serverArray;
+        
+        [weakSelf updateUI];
+    };
+    
+    
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)updateUI {
+    [self.memberArray addObjectsFromArray:self.userArray];
+    [self.memberArray addObjectsFromArray:self.serverArray];
+
+    [self.tableView reloadData];
+    
+    [[EaseHttpManager sharedManager] inviteGroupMemberWithGroupId:self.group.groupId customerUserIds:self.userArray waiterUserIds:self.serverArray completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+       
+        if (response && response.length > 0 && statusCode) {
+            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+            if (statusCode == 200) {
+                NSDictionary *entityDic = responsedict[@"entity"];
+
+                
+            }else {
+                [EaseAlertController showErrorAlert:errorDescription];
+            }
+        }
+
+        
+    }];
+}
+
+
+
+- (void)goCheckGroupMemberPage {
+    EMGroupMembersViewController *controller = [[EMGroupMembersViewController alloc]initWithGroup:self.group];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)goSettingMutePage {
+    YGGroupMuteSettingViewController *controller = [[YGGroupMuteSettingViewController alloc] initWithGroup:self.group];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+
     
 #pragma mark - Private
 
@@ -779,38 +845,20 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     return _memberArray;
 }
 
-- (void)getGroupMembers {
-    NSMutableArray *tArray = [NSMutableArray array];
-    [tArray addObject:self.group.owner];
-    if (self.group.adminList.count > 0) {
-        [tArray addObjectsFromArray:self.group.adminList];
+- (NSMutableArray *)userArray {
+    if (_userArray == nil) {
+        _userArray = [[NSMutableArray alloc] init];
     }
-    if (self.group.memberList.count > 0) {
-        [tArray addObjectsFromArray:self.group.memberList];
+    return _userArray;
+}
+
+- (NSMutableArray *)serverArray {
+    if (_serverArray == nil) {
+        _serverArray = [[NSMutableArray alloc] init];
     }
-    self.memberArray = [tArray mutableCopy];
+    return _serverArray;
 }
 
-- (void)goAddGroupMemberPage {
-    BQGroupEditMemberViewController *controller = [[BQGroupEditMemberViewController alloc] initWithMemberArray:self.memberArray];
-    EaseIMKit_WS
-    controller.addedMemberBlock = ^(NSMutableArray * _Nonnull memberArray) {
-        weakSelf.memberArray = memberArray;
-        [self.tableView reloadData];
-    };
-    
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
-- (void)goCheckGroupMemberPage {
-    EMGroupMembersViewController *controller = [[EMGroupMembersViewController alloc]initWithGroup:self.group];
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
-- (void)goSettingMutePage {
-    YGGroupMuteSettingViewController *controller = [[YGGroupMuteSettingViewController alloc] initWithGroup:self.group];
-    [self.navigationController pushViewController:controller animated:YES];
-}
 
 
 @end

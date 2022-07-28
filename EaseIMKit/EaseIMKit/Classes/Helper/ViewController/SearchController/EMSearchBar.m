@@ -13,7 +13,7 @@
 
 @interface EMSearchBar()<UITextFieldDelegate>
 
-@property (nonatomic, strong) UIButton *cancelButton;
+@property (nonatomic, strong) UIButton *operateButton;
 
 @end
 
@@ -86,22 +86,14 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     [self.textField setTextColor:UIColor.blackColor];
     
 }
-
-   
-    
-    self.cancelButton = [[UIButton alloc] init];
-    self.cancelButton.titleLabel.font = [UIFont systemFontOfSize:16];
-    [self.cancelButton setTitle:NSLocalizedString(@"cancel", nil) forState:UIControlStateNormal];
-    [self.cancelButton setTitleColor:EaseIMKit_Color_Blue forState:UIControlStateNormal];
-    [self.cancelButton addTarget:self action:@selector(searchCancelButtonClicked) forControlEvents:UIControlEventTouchUpInside];
 }
 
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    [self addSubview:self.cancelButton];
-    [self.cancelButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self addSubview:self.operateButton];
+    [self.operateButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
         make.right.equalTo(self).offset(-5);
         make.width.equalTo(@50);
@@ -122,6 +114,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
+    if (textField.text.length == 0) {
+        return NO;
+    }
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarSearchButtonClicked:)]) {
         [self.delegate searchBarSearchButtonClicked:textField.text];
@@ -134,14 +129,29 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 - (void)textFieldTextDidChange
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(searchTextDidChangeWithString:)]) {
-        [self.delegate searchTextDidChangeWithString:self.textField.text];
+    if (self.textField.text.length > 0) {
+        [self.operateButton setTitle:@"搜索" forState:UIControlStateNormal];
+    }else {
+        [self.operateButton setTitle:NSLocalizedString(@"cancel", nil) forState:UIControlStateNormal];
+    }
+    
+    
+//    if (self.delegate && [self.delegate respondsToSelector:@selector(searchTextDidChangeWithString:)]) {
+//        [self.delegate searchTextDidChangeWithString:self.textField.text];
+//    }
+}
+
+- (void)operateButtonAction
+{
+    if (self.textField.text > 0) {
+        [self searchAction];
+    }else {
+        [self cancelAction];
     }
 }
 
-- (void)searchCancelButtonClicked
-{
-    [self.cancelButton removeFromSuperview];
+- (void)cancelAction {
+    [self.operateButton removeFromSuperview];
     
     [self.textField resignFirstResponder];
     self.textField.text = nil;
@@ -152,6 +162,23 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarCancelButtonAction:)]) {
         [self.delegate searchBarCancelButtonAction:self];
     }
+}
+
+- (void)searchAction {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(searchTextDidChangeWithString:)]) {
+        [self.delegate searchTextDidChangeWithString:self.textField.text];
+    }
+}
+
+- (UIButton *)operateButton {
+    if (_operateButton == nil) {
+        _operateButton = [[UIButton alloc] init];
+        _operateButton.titleLabel.font = [UIFont systemFontOfSize:16];
+        [_operateButton setTitle:NSLocalizedString(@"cancel", nil) forState:UIControlStateNormal];
+        [_operateButton setTitleColor:EaseIMKit_TitleBlueColor forState:UIControlStateNormal];
+        [_operateButton addTarget:self action:@selector(operateButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _operateButton;
 }
 
 @end

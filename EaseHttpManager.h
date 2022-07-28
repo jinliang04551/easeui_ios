@@ -8,7 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EaseHttpRequest : NSObject
+@interface EaseHttpManager : NSObject
 
 + (instancetype)sharedManager;
 

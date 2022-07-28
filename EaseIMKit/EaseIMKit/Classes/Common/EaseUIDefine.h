@@ -82,6 +82,9 @@
 
 #define EaseIMKit_ViewCellBgWhiteColor   EaseIMKit_COLOR_HEX(0xFFFFFF) 
 
+#define EaseIMKit_TitleBlueColor  EaseIMKit_COLOR_HEX(0x4798CB)
+
+
 #define EaseIMKit_Color_textViewGray [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0]
 
 #define EaseIMKit_Color_LightGray [UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0]

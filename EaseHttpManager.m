@@ -4,7 +4,7 @@
 //  Created by zhangchong on 2021/8/23.
 //
 
-#import "EaseHttpRequest.h"
+#import "EaseHttpManager.h"
 #import <HyphenateChat/HyphenateChat.h>
 #import "EaseHeaders.h"
 
@@ -19,17 +19,17 @@
 #define kSearchCustomOrderURL @"/v4/gov/arcfox/transport"
 
 
-@interface EaseHttpRequest() <NSURLSessionDelegate>
+@interface EaseHttpManager() <NSURLSessionDelegate>
 @property (readonly, nonatomic, strong) NSURLSession *session;
 @end
-@implementation EaseHttpRequest
+@implementation EaseHttpManager
 
 + (instancetype)sharedManager
 {
     static dispatch_once_t onceToken;
-    static EaseHttpRequest *sharedInstance;
+    static EaseHttpManager *sharedInstance;
     dispatch_once(&onceToken, ^{
-        sharedInstance = [[EaseHttpRequest alloc] init];
+        sharedInstance = [[EaseHttpManager alloc] init];
     });
     
     return sharedInstance;
@@ -110,14 +110,17 @@
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/logout",kServerHost,kLogoutURL,[EMClient sharedClient].currentUsername]];
     
+    NSLog(@"%s url:%@",__func__,url);
+
+    
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];
     request.HTTPMethod = @"GET";
     
     NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
-    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
     NSString *token = [EaseKitUtil getLoginUserToken];
     [headerDict setObject:token forKey:@"Authorization"];
+    [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
 
     request.allHTTPHeaderFields = headerDict;
 

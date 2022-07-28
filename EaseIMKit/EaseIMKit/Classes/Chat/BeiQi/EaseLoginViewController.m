@@ -12,7 +12,7 @@
 #import "EaseAlertController.h"
 #import "EMRightViewToolView.h"
 #import "EaseHeaders.h"
-#import "EaseHttpRequest.h"
+#import "EaseHttpManager.h"
 
 
 @interface EaseLoginViewController ()<UITextFieldDelegate>
@@ -342,7 +342,7 @@
     
     
     
-    [[EaseHttpRequest sharedManager] loginToApperServer:[name lowercaseString] pwd:pswd completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+    [[EaseHttpManager sharedManager] loginToApperServer:[name lowercaseString] pwd:pswd completion:^(NSInteger statusCode, NSString * _Nonnull response) {
         NSLog(@"%s response:%@ state:%@",__func__,response,@(statusCode));
         
         if (response && response.length > 0 && statusCode) {
@@ -350,8 +350,8 @@
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
             if (statusCode == 200) {
-                
-                NSString *token = [responsedict objectForKey:@"token"];
+                NSDictionary *entityDic = responsedict[@"entity"];
+                NSString *token = [entityDic objectForKey:@"token"];
                 [EaseKitUtil saveLoginUserToken:token userId:name];
                 
                 [[EMClient sharedClient] loginWithUsername:[name lowercaseString] password:pswd completion:finishBlock];

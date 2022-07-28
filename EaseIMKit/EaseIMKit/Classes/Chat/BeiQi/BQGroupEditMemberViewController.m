@@ -10,6 +10,7 @@
 #import "BQGroupSearchAddView.h"
 #import "BQGroupSearchCell.h"
 #import "EaseHeaders.h"
+#import "BQEaseUserModel.h"
 
 
 @interface BQGroupEditMemberViewController ()<UITableViewDelegate,UITableViewDataSource,BQGroupSearchAddViewDelegate>
@@ -17,7 +18,9 @@
 @property (nonatomic, strong) BQGroupSearchAddView *groupSearchAddView;
 @property (nonatomic, strong) NSMutableArray *searchResultArray;
 @property (nonatomic, strong) UITableView *searchResultTableView;
-@property (nonatomic, strong) NSMutableArray *groupAddedArray;
+@property (nonatomic, strong) NSMutableArray *memberArray;
+@property (nonatomic, strong) NSMutableArray *userArray;
+@property (nonatomic, strong) NSMutableArray *serverArray;
 
 @property (nonatomic, strong) BQGroupSearchCell *groupSearchCell;
 
@@ -27,7 +30,7 @@
 - (instancetype)initWithMemberArray:(NSMutableArray *)memberArray {
     self = [super init];
     if (self) {
-        self.groupAddedArray = memberArray;
+        self.memberArray = memberArray;
     }
     return self;
 }
@@ -35,19 +38,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
-}else {
-    self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
-}
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+    }else {
+        self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+    }
 
     self.title = @"选择用户";
     [self addPopBackLeftItemWithTarget:self action:@selector(backItemAction)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(completionAction)];
 
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:EaseIMKit_TitleBlueColor, NSForegroundColorAttributeName,[UIFont boldSystemFontOfSize:14],NSFontAttributeName, nil] forState:UIControlStateNormal];
+
     
     [self placeAndLayoutSubviews];
-    [self.groupSearchAddView updateUIWithMemberArray:self.groupAddedArray];
+    [self.groupSearchAddView updateUIWithMemberArray:self.memberArray];
 }
 
 - (void)backItemAction {
@@ -56,11 +61,12 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 
 - (void)completionAction {
-        if (self.addedMemberBlock) {
-            self.addedMemberBlock(self.groupAddedArray);
-        }
-        [self showHint:@"群主同意后，您邀请的成员将会自动加入本群聊"];
-        [self.navigationController popViewControllerAnimated:YES];
+    if (self.addedMemberBlock) {
+        self.addedMemberBlock(self.userArray,self.serverArray);
+    }
+    
+    [self showHint:@"群主同意后，您邀请的成员将会自动加入本群聊"];
+    [self.navigationController popViewControllerAnimated:YES];
     
 }
 
@@ -128,7 +134,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     
     [self.searchResultArray removeAllObjects];
     [_searchResultTableView reloadData];
-//    [_searchResultTableView removeFromSuperview];
 }
 
 - (void)searchBarSearchButtonClicked:(EMSearchBar *)searchBar
@@ -137,11 +142,33 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 }
 
 - (void)searchTextDidChangeWithString:(NSString *)aString {
-    [self.searchResultArray removeAllObjects];
-    if (aString.length > 0) {
-        [self.searchResultArray addObject:aString];
-    }
-    [self.searchResultTableView reloadData];
+    
+    [[EaseHttpManager sharedManager] searchGroupMemberWithUsername:aString completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+       
+        if (response && response.length > 0 && statusCode) {
+            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+            if (statusCode == 200) {
+                NSArray *tArray = responsedict[@"entities"];
+
+                NSMutableArray *dArray = [NSMutableArray array];
+                for (int i = 0 ; i < tArray.count; ++i) {
+                    BQEaseUserModel *model = [[BQEaseUserModel alloc] initWithDic:tArray[i]];
+                    [dArray addObject:model.displayName];
+                }
+                
+                self.searchResultArray = dArray;
+                [self.searchResultTableView reloadData];
+                
+            }else {
+                [EaseAlertController showErrorAlert:errorDescription];
+            }
+        }
+        
+    }];
+    
+    
 }
 
 
@@ -223,12 +250,26 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
  
 - (void)updateUIWithAddUserId:(NSString *)userId
                    isServicer:(BOOL)isServicer {
-    
-    if (![self.groupAddedArray containsObject:userId]) {
-        [self.groupAddedArray addObject:userId];
-        [self.groupSearchAddView updateUIWithMemberArray:self.groupAddedArray];
+    if (userId.length == 0) {
+        return;
     }
     
+    if (isServicer) {
+        if (![self.serverArray containsObject:userId]) {
+            [self.serverArray addObject:userId];
+        }
+    }else {
+        if (![self.userArray containsObject:userId]) {
+            [self.userArray addObject:userId];
+        }
+    }
+    
+    if (![self.memberArray containsObject:userId]) {
+        [self.memberArray addObject:userId];
+    }
+        
+    [self.groupSearchAddView updateUIWithMemberArray:self.memberArray];
+
    
 }
 
@@ -282,8 +323,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         
         EaseIMKit_WS
         _groupSearchAddView.deleteMemberBlock = ^(NSString * _Nonnull userId) {
-            if ([weakSelf.groupAddedArray containsObject:userId]) {
-                [weakSelf.groupAddedArray removeObject:userId];
+            if ([weakSelf.userArray containsObject:userId]) {
+                [weakSelf.userArray removeObject:userId];
             }
         };
         
@@ -330,13 +371,27 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     return _searchBar;
 }
 
-- (NSMutableArray *)groupAddedArray {
-    if (_groupAddedArray == nil) {
-        _groupAddedArray = [[NSMutableArray alloc] init];
+- (NSMutableArray *)memberArray {
+    if (_memberArray == nil) {
+        _memberArray = [[NSMutableArray alloc] init];
     }
-    return _groupAddedArray;
+    return _memberArray;
 }
 
+- (NSMutableArray *)userArray {
+    if (_userArray == nil) {
+        _userArray = [[NSMutableArray alloc] init];
+    }
+    return _userArray;
+}
+
+- (NSMutableArray *)serverArray {
+    if (_serverArray == nil) {
+        _serverArray = [[NSMutableArray alloc] init];
+    }
+    return _serverArray;
+}
+     
 - (BQGroupSearchCell *)groupSearchCell {
     if (_groupSearchCell == nil) {
         _groupSearchCell = [self.searchResultTableView dequeueReusableCellWithIdentifier:[BQGroupSearchCell reuseIdentifier]];

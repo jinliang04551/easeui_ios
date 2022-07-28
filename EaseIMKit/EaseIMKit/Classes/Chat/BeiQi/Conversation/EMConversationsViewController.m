@@ -62,13 +62,13 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-//    self.navigationController.navigationBarHidden = YES;
+    self.navigationController.navigationBarHidden = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-//    self.navigationController.navigationBarHidden = NO;
+    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)dealloc
@@ -363,6 +363,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (void)messageAlertAction {
     EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
     options.isReceiveNewMsgNotice = !options.isReceiveNewMsgNotice;
+    NSString *msg = [NSString stringWithFormat:@"%@消息提醒",options.isReceiveNewMsgNotice ? @"打开":@"关闭"];
+    [EaseAlertController showInfoAlert:msg];
 }
 
 - (void)createGroupAction {

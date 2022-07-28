@@ -9,10 +9,12 @@
 #import "YGGroupApplyApprovalController.h"
 #import "YGGroupApplyApprovalCell.h"
 #import "EaseHeaders.h"
+#import "BQEaseJoinGroupApplyModel.h"
 
 @interface YGGroupApplyApprovalController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, assign) NSInteger pageNumber;
 
 
 @end
@@ -30,9 +32,22 @@
 
     [self placeAndLayoutSubviews];
     
+    [self fetchGroupApplyList];
+    
     self.dataArray = [@[@(1),@(2)] mutableCopy];
     [self.tableView reloadData];
 }
+
+- (void)fetchGroupApplyList {
+    [[EaseHttpManager sharedManager] fetchGroupApplyListWithPageNumber:self.pageNumber pageSize:20 completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+       
+        
+        
+    }];
+    
+}
+
+
 
 - (void)placeAndLayoutSubviews {
     [self.view addSubview:self.tableView];
@@ -63,6 +78,11 @@
     return cell;
 }
 
+- (void)approvalJoinGroupApplyWithGroupId:(NSString *)groupId {
+    [[EaseHttpManager sharedManager] approvalGroupWithGroupId:groupId username:@"" role:@"" option:@"" completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+            
+    }];
+}
 
 #pragma mark getter and setter
 - (UITableView *)tableView

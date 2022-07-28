@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void )removeLoginUserToken;
 
++ (UIView *)customNavViewWithTitle:(NSString *)title backAction:(SEL)backAction;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

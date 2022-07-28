@@ -29,6 +29,9 @@
 @property (nonatomic, strong) NSString *groupName;
 @property (nonatomic, strong) NSString *groupInterduce;
 @property (nonatomic, strong) UIView *footerView;
+@property (nonatomic, strong) NSMutableArray *userArray;
+@property (nonatomic, strong) NSMutableArray *serverArray;
+
 
 @end
 
@@ -37,9 +40,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.groupName = @"";
+    self.groupInterduce = @"";
+    
     [self registeCell];
     [self placeAndLayoutSubviews];
 //    [self buildTestData];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)registeCell {
@@ -54,15 +65,43 @@
 
 
 #pragma mark - Subviews
+//- (void)placeAndLayoutSubviews
+//{
+////    [self addPopBackLeftItem];
+////    self.title = @"创建群组";
+//
+//    UIView *navView = [EaseKitUtil customNavViewWithTitle:@"创建群组" backAction:@selector(backAction)];
+//
+//    [self.view addSubview:navView];
+//
+//    self.tableView.rowHeight = 60;
+//    self.tableView.tableFooterView = [self footerView];
+//
+//    [navView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN + 35);
+//        make.left.equalTo(self.view);
+//        make.right.equalTo(self.view);
+//        make.height.equalTo(@(44.0));
+//    }];
+//
+//    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(navView.mas_bottom);
+//        make.left.equalTo(self.view);
+//        make.right.equalTo(self.view);
+//        make.bottom.equalTo(self.view);
+//    }];
+//
+//}
+
 - (void)placeAndLayoutSubviews
 {
     [self addPopBackLeftItem];
     self.title = @"创建群组";
     
+    
     self.tableView.rowHeight = 60;
     self.tableView.tableFooterView = [self footerView];
 
-    
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view);
         make.left.equalTo(self.view);
@@ -70,6 +109,10 @@
         make.bottom.equalTo(self.view);
     }];
         
+}
+
+- (void)backAction {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -214,6 +257,31 @@
 {
     NSLog(@"%s",__func__);
     
+    if (self.groupName.length == 0) {
+        [self showHint:@"群名称为空"];
+        return;
+    }
+    
+    
+    [[EaseHttpManager sharedManager] createGroupWithGroupName:self.groupName groupInterduce:self.groupInterduce customerUserIds:self.userArray waiterUserIds:self.serverArray completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+          
+        if (response && response.length > 0 && statusCode) {
+            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+            if (statusCode == 200) {
+                NSString *groupId = responsedict[@"entity"];
+                if (groupId.length > 0) {
+                    [self showHint:@"创建群组成功"];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                
+            }else {
+                [EaseAlertController showErrorAlert:errorDescription];
+            }
+        }
+        
+    }];
 }
 
 
@@ -235,14 +303,25 @@
 - (void)addGroupMemberPage {
     BQGroupEditMemberViewController *controller = [[BQGroupEditMemberViewController alloc] initWithMemberArray:self.memberArray];
     EaseIMKit_WS
-    controller.addedMemberBlock = ^(NSMutableArray * _Nonnull memberArray) {
-        weakSelf.memberArray = memberArray;
-        [weakSelf updateConfirmState];
-        [weakSelf.tableView reloadData];
+    controller.addedMemberBlock = ^(NSMutableArray * _Nonnull userArray, NSMutableArray * _Nonnull serverArray) {
+        [weakSelf updateUIWithUserArray:userArray serverArray:serverArray];
     };
     
     [self.navigationController pushViewController:controller animated:YES];
     
+}
+
+- (void)updateUIWithUserArray:(NSMutableArray *)userArray
+                  serverArray:(NSMutableArray *)serverArray {
+    
+    [self.userArray addObjectsFromArray:userArray];
+    [self.serverArray addObjectsFromArray:serverArray];
+    
+    [self.memberArray addObjectsFromArray:self.userArray];
+    [self.memberArray addObjectsFromArray:self.serverArray];
+
+    [self updateConfirmState];
+    [self.tableView reloadData];
 }
 
 - (void)updateConfirmState {
@@ -289,5 +368,28 @@
     }
     return _footerView;
 }
+
+- (NSMutableArray *)memberArray {
+    if (_memberArray == nil) {
+        _memberArray = [[NSMutableArray alloc] init];
+    }
+    return _memberArray;
+}
+
+
+- (NSMutableArray *)userArray {
+    if (_userArray == nil) {
+        _userArray = [[NSMutableArray alloc] init];
+    }
+    return _userArray;
+}
+
+- (NSMutableArray *)serverArray {
+    if (_serverArray == nil) {
+        _serverArray = [[NSMutableArray alloc] init];
+    }
+    return _serverArray;
+}
+
 
 @end

@@ -29,6 +29,7 @@
 #import "EaseIMKitOptions.h"
 #import "EaseCallManager.h"
 #import "EaseKitUtil.h"
+#import "EaseHttpManager.h"
 
 
 
