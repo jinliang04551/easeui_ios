@@ -51,6 +51,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)searchCustomOrderWithUserId:(NSString *)userId
                           orderType:(NSString *)orderType
                          completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+
+- (void)fetchYunGuanNoteWithGroupId:(NSString *)groupId
+                         completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+
+- (void)editServeNoteWithGroupId:(NSString *)groupId
+                            note:(NSString *)note
+                      completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+
+- (void)editGroupNameWithGroupId:(NSString *)groupId
+                       groupname:(NSString *)groupname
+                      completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

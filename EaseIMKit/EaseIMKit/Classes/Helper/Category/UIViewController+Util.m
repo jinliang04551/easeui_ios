@@ -19,6 +19,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage easeUIImageNamed:@"jh_backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(popBackLeftItemAction)];
 }else {
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage easeUIImageNamed:@"yg_backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(popBackLeftItemAction)];
+    
+    [self setRightNavBarItemTitleColor];
 }
 
 
@@ -34,6 +36,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage easeUIImageNamed:@"jh_backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:aTarget action:aAction];
 }else {
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage easeUIImageNamed:@"yg_backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:aTarget action:aAction];
+    
+    [self setRightNavBarItemTitleColor];
 }
     
 
@@ -65,6 +69,10 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     [alertController addAction:okAction];
     alertController.modalPresentationStyle = 0;
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)setRightNavBarItemTitleColor {
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:EaseIMKit_TitleBlueColor, NSForegroundColorAttributeName,[UIFont boldSystemFontOfSize:14],NSFontAttributeName, nil] forState:UIControlStateNormal];
 }
 
 

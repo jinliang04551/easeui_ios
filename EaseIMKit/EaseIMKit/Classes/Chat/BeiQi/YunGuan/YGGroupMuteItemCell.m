@@ -13,6 +13,8 @@
 @interface YGGroupMuteItemCell()
 
 @property (nonatomic, strong) UIButton *checkButton;
+@property (nonatomic, strong) NSString *userId;
+
 
 @end
 
@@ -30,7 +32,8 @@
     
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.nameLabel];
-    [self.contentView addSubview:self.nameLabel];
+    [self.contentView addSubview:self.checkButton];
+    
 }
 
 
@@ -38,7 +41,7 @@
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.nameLabel);
         make.left.equalTo(self.contentView).offset(16.0f);
-        make.size.mas_equalTo(@(20.0));
+        make.size.mas_equalTo(@(38.0));
     }];
     
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -47,12 +50,20 @@
 
     }];
     
+    [self.checkButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.contentView);
+        make.right.equalTo(self.contentView).offset(-16.0f);
+        make.size.equalTo(@(24.0));
+    }];
+
 }
 
 
 
 - (void)updateWithObj:(id)obj {
     NSString *username = (NSString *)obj;
+    
+    self.userId = username;
     
     self.nameLabel.text = username;
     self.iconImageView.image = [UIImage easeUIImageNamed:@"jh_user_icon"];
@@ -85,20 +96,26 @@
     if (_isChecked != isChecked) {
         _isChecked = isChecked;
         if (isChecked) {
-            [self.checkButton setImage:[UIImage easeUIImageNamed:@"check"] forState:UIControlStateNormal];
+            
+            [self.checkButton setImage:[UIImage easeUIImageNamed:@"yg_slected"] forState:UIControlStateNormal];
         } else {
-if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            [self.checkButton setImage:[UIImage easeUIImageNamed:@"unSlected"] forState:UIControlStateNormal];
-}else {
-            [self.checkButton setImage:[UIImage easeUIImageNamed:@"yg_unSlected"] forState:UIControlStateNormal];
-}
+            if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+                        [self.checkButton setImage:[UIImage easeUIImageNamed:@"unSlected"] forState:UIControlStateNormal];
+            }else {
+                        [self.checkButton setImage:[UIImage easeUIImageNamed:@"yg_unSlected"] forState:UIControlStateNormal];
+            }
 
         }
     }
 }
 
+
+
 - (void)checkButtonAction {
-    
+    self.isChecked = !self.isChecked;
+    if (self.checkBlcok) {
+        self.checkBlcok(self.userId, self.isChecked);
+    }
     
 }
 

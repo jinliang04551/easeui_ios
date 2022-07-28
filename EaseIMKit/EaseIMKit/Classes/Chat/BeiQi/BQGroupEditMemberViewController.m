@@ -65,7 +65,6 @@
         self.addedMemberBlock(self.userArray,self.serverArray);
     }
     
-    [self showHint:@"群主同意后，您邀请的成员将会自动加入本群聊"];
     [self.navigationController popViewControllerAnimated:YES];
     
 }

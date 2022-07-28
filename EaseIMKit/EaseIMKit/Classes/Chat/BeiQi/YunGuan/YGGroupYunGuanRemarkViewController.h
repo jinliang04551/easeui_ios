@@ -13,10 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface YGGroupYunGuanRemarkViewController : UIViewController
 @property (nonatomic, copy) void (^doneCompletion)(NSString *aString);
 
-- (instancetype)initWithSystemmark:(NSString *)aSystemString
-                          yGString:(NSString *)aString
-                       placeholder:(NSString *)aPlaceholder
-                        isEditable:(BOOL)aIsEditable;
+//- (instancetype)initWithSystemmark:(NSString *)aSystemString
+//                          yGString:(NSString *)aString
+//                       placeholder:(NSString *)aPlaceholder
+//                        isEditable:(BOOL)aIsEditable;
+
+- (instancetype)initWithGroupId:(NSString *)groupId;
 
 @end
 

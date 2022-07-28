@@ -6,11 +6,11 @@
 //  Copyright © 2019 XieYajie. All rights reserved.
 //
 
-#import "EMTextViewController.h"
+#import "EaseTextViewController.h"
 #import "EMTextView.h"
 #import "EaseHeaders.h"
 
-@interface EMTextViewController ()<UITextViewDelegate>
+@interface EaseTextViewController ()<UITextViewDelegate>
 
 @property (nonatomic, strong) NSString *originalString;
 @property (nonatomic, strong) NSString *placeholder;
@@ -20,7 +20,7 @@
 
 @end
 
-@implementation EMTextViewController
+@implementation EaseTextViewController
 
 - (instancetype)initWithString:(NSString *)aString
                    placeholder:(NSString *)aPlaceholder
@@ -73,6 +73,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     bgView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     self.textView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+    
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:EaseIMKit_TitleBlueColor, NSForegroundColorAttributeName,[UIFont boldSystemFontOfSize:14],NSFontAttributeName, nil] forState:UIControlStateNormal];
 }
     
     if (!self.isEditable){

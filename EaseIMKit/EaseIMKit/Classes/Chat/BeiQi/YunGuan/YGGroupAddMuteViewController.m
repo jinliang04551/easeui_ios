@@ -39,7 +39,11 @@
 
     [self addPopBackLeftItem];
 
+    self.title = @"添加禁言人员";
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
+    
+    [self setRightNavBarItemTitleColor];
     
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 
@@ -94,7 +98,16 @@
     NSString *username = self.isSearching ? [self.searchArray objectAtIndex:indexPath.row] : [self.dataArray objectAtIndex:indexPath.row];
     
     [cell updateWithObj:username];
-        
+    
+    EaseIMKit_WS
+    cell.checkBlcok = ^(NSString * _Nonnull userId, BOOL isChecked) {
+        if ([weakSelf.selectedArray containsObject:userId]) {
+            [self.selectedArray removeObject:userId];
+        } else {
+            [self.selectedArray addObject:userId];
+        }
+    };
+    
     return cell;
 }
 
@@ -102,15 +115,15 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    NSString *username = self.isSearching ? [self.searchArray objectAtIndex:indexPath.row] : [self.dataArray objectAtIndex:indexPath.row];
-    YGGroupMuteItemCell *cell = (YGGroupMuteItemCell *)[tableView cellForRowAtIndexPath:indexPath];
-    BOOL isChecked = [self.selectedArray containsObject:username];
-    if (isChecked) {
-        [self.selectedArray removeObject:username];
-    } else {
-        [self.selectedArray addObject:username];
-    }
-    cell.isChecked = !isChecked;
+//    NSString *username = self.isSearching ? [self.searchArray objectAtIndex:indexPath.row] : [self.dataArray objectAtIndex:indexPath.row];
+//    YGGroupMuteItemCell *cell = (YGGroupMuteItemCell *)[tableView cellForRowAtIndexPath:indexPath];
+//    BOOL isChecked = [self.selectedArray containsObject:username];
+//    if (isChecked) {
+//        [self.selectedArray removeObject:username];
+//    } else {
+//        [self.selectedArray addObject:username];
+//    }
+//    cell.isChecked = !isChecked;
     
 }
 

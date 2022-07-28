@@ -8,7 +8,7 @@
 
 #import "YGGroupCreateViewController.h"
 #import "EMTextFieldViewController.h"
-#import "EMTextViewController.h"
+#import "EaseTextViewController.h"
 
 #import "BQTitleAvatarCell.h"
 #import "BQTitleValueAccessCell.h"
@@ -241,7 +241,7 @@
 - (void)editGroupInterduce
 {
     __weak typeof(self) weakself = self;
-    EMTextViewController *controller = [[EMTextViewController alloc] initWithString:self.groupInterduce placeholder:NSLocalizedString(@"inputGroupDescription", nil) isEditable:YES];
+    EaseTextViewController *controller = [[EaseTextViewController alloc] initWithString:self.groupInterduce placeholder:NSLocalizedString(@"inputGroupDescription", nil) isEditable:YES];
     controller.title = NSLocalizedString(@"groupDescritption", nil);
     [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
         weakself.groupInterduce = aString;

@@ -24,4 +24,6 @@
 
 - (void)showAlertControllerWithMessage:(NSString *)aMsg title:(NSString*)title handler:(void (^ __nullable)(UIAlertAction *action))handler;
 
+- (void)setRightNavBarItemTitleColor;
+
 @end

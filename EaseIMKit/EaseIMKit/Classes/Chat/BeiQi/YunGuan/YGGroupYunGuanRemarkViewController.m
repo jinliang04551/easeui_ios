@@ -47,9 +47,10 @@
     }];
     
     [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleLabel).offset(8.0);
+        make.top.equalTo(self.titleLabel.mas_bottom).offset(8.0);
         make.left.equalTo(self.titleLabel);
         make.right.equalTo(self).offset(-16.0);
+        make.height.equalTo(@(150.0));
     }];
     
 }
@@ -74,7 +75,7 @@
         _textView.font = [UIFont systemFontOfSize:14.0];
         _textView.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
         _textView.returnKeyType = UIReturnKeyDone;
-        _textView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+        _textView.backgroundColor = UIColor.clearColor;
     }
     return _textView;
 }
@@ -102,6 +103,7 @@
 @property (nonatomic, strong) YGTextView *systemTextView;
 @property (nonatomic, strong) YGTextView *yunGuanTextView;
 @property (nonatomic, strong) NSString *systemString;
+@property (nonatomic, strong) NSString *groupId;
 
 @end
 
@@ -123,14 +125,51 @@
     return self;
 }
 
+
+- (instancetype)initWithGroupId:(NSString *)groupId {
+    self = [super init];
+    if (self) {
+        self.groupId = groupId;
+        self.isEditable = YES;
+    }
+    return self;
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"运营备注";
     [self _setupSubviews];
+    [self fetchNoteInfo];
     
 }
 
-- (float) heightForString:(UITextView *)textView andWidth:(float)width{
+- (void)fetchNoteInfo {
+    
+    [[EaseHttpManager sharedManager] fetchYunGuanNoteWithGroupId:self.groupId completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+        
+        if (response && response.length > 0 && statusCode) {
+            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+            if (statusCode == 200) {
+                NSDictionary *entity = responsedict[@"entity"];
+                NSString *note = entity[@"noteAdmin"];
+                self.yunGuanTextView.textView.text = note;
+                
+            }else {
+                [EaseAlertController showErrorAlert:errorDescription];
+            }
+        }
+        
+    }];
+    
+    [self.yunGuanTextView.textView becomeFirstResponder];
+    
+}
+
+
+- (float)heightForString:(UITextView *)textView andWidth:(float)width{
      CGSize sizeToFit = [textView sizeThatFits:CGSizeMake(width, MAXFLOAT)];
     return sizeToFit.height;
 }
@@ -142,10 +181,13 @@
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 
     [self addPopBackLeftItem];
+    
     if (self.isEditable) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"save", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
     }
-       
+    
+    [self setRightNavBarItemTitleColor];
+
     
     [self.view addSubview:self.systemTextView];
     [self.view addSubview:self.yunGuanTextView];
@@ -162,7 +204,6 @@
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
-        
     }];
     
 }
@@ -184,11 +225,30 @@
 - (void)doneAction
 {
     [self.view endEditing:YES];
-    if (self.doneCompletion) {
-        self.doneCompletion(self.systemTextView.textView.text);
-    }
-    [self.navigationController popViewControllerAnimated:YES];
     
+    [[EaseHttpManager sharedManager] editServeNoteWithGroupId:self.groupId note:self.yunGuanTextView.textView.text completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+            
+        if (response && response.length > 0 && statusCode) {
+            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+            if (statusCode == 200) {
+                NSDictionary *entity = responsedict[@"entity"];
+                NSString *groupId = entity[@"groupId"];
+                
+                if (groupId.length > 0) {
+                    [self showHint:@"修改运管备注成功"];
+                    if(self.doneCompletion) {
+                        self.doneCompletion(self.systemTextView.textView.text);
+                    }
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+            }else {
+                [EaseAlertController showErrorAlert:errorDescription];
+            }
+        }
+        
+    }];
 }
 
 
@@ -200,6 +260,7 @@
         _systemTextView.iconImageView.hidden = YES;
         _systemTextView.textView.editable = NO;
         _systemTextView.textView.text = self.systemString;
+        
     }
     return _systemTextView;
 }
@@ -210,17 +271,18 @@
         _yunGuanTextView = [[YGTextView alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
         _yunGuanTextView.titleLabel.text = @"服务备注";
         _yunGuanTextView.textView.delegate = self;
+        _yunGuanTextView.textView.textColor = [UIColor colorWithHexString:@"#171717"];
         
-        if (!self.isEditable){
-            _yunGuanTextView.textView.placeholder = NSLocalizedString(@"editRight", nil);
-        }else {
-            _yunGuanTextView.textView.placeholder = self.placeholder;
-        }
-
-        if (self.originalString && ![self.originalString isEqualToString:@""]) {
-            _yunGuanTextView.textView.text = self.originalString;
-        }
-        _yunGuanTextView.textView.editable = self.isEditable;
+//        if (!self.isEditable){
+//            _yunGuanTextView.textView.placeholder = NSLocalizedString(@"editRight", nil);
+//        }else {
+//            _yunGuanTextView.textView.placeholder = self.placeholder;
+//        }
+//
+//        if (self.originalString && ![self.originalString isEqualToString:@""]) {
+//            _yunGuanTextView.textView.text = self.originalString;
+//        }
+//        _yunGuanTextView.textView.editable = self.isEditable;
 
     }
     return _yunGuanTextView;

@@ -10,7 +10,7 @@
 #import "EMAvatarNameCell.h"
 
 #import "EMTextFieldViewController.h"
-#import "EMTextViewController.h"
+#import "EaseTextViewController.h"
 #import "EMGroupMembersViewController.h"
 #import "EMChatRecordViewController.h"
 
@@ -52,6 +52,11 @@
         _groupId = aConversation.conversationId;
         _conversation = aConversation;
         _conversationModel = [[EaseConversationModel alloc]initWithConversation:aConversation];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupInfoUpdated:) name:GROUP_INFO_UPDATED object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupInfoUpdated:) name:GROUP_INFO_REFRESH object:nil];
+
     }
     
     return self;
@@ -67,8 +72,7 @@
     [self _fetchGroupWithId:self.groupId isShowHUD:YES];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupInfoUpdated:) name:GROUP_INFO_UPDATED object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadInfo) name:GROUP_INFO_REFRESH object:nil];
+   
 }
 
 - (void)registeCell {
@@ -85,27 +89,30 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    __weak typeof(self) weakself = self;
+    [super viewWillAppear:animated];
+    [self fetchGroupInfo];
+}
+
+
+- (void)fetchGroupInfo {
+    EaseIMKit_WS
     [EMClient.sharedClient.groupManager getGroupSpecificationFromServerWithId:self.groupId completion:^(EMGroup *aGroup, EMError *aError) {
         if (!aError) {
-            weakself.group = aGroup;
-            [weakself _resetGroup:aGroup];
+            weakSelf.group = aGroup;
+            [weakSelf _resetGroup:aGroup];
         } else {
             [EaseAlertController showErrorAlert:[NSString stringWithFormat:NSLocalizedString(@"fetchGroupSubjectFail", nil),aError.description]];
         }
     }];
 }
 
-- (void)reloadInfo
-{
-    [self.tableView reloadData];
-}
 
 - (void)dealloc
 {
     [[EMClient sharedClient].groupManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 
 #pragma mark - Subviews
 
@@ -176,16 +183,10 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         }
 }else {
         if (indexPath.row == 0) {
-            if (self.group.permissionType == EMGroupPermissionTypeOwner) {
-                titleAvatarAccessCell.nameLabel.text = @"群头像";
-                [titleAvatarAccessCell.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_group_icon"]];
-                return titleAvatarAccessCell;
-                
-            }else {
-                titleAvatarCell.nameLabel.text = @"群头像";
-                [titleAvatarCell.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_group_icon"]];
-                return titleAvatarCell;
-            }
+            titleAvatarCell.nameLabel.text = @"群头像";
+            [titleAvatarCell.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_group_icon"]];
+            return titleAvatarCell;
+            
         }else {
             [self.groupMemberCell updateWithObj:self.memberArray];
             return self.groupMemberCell;
@@ -582,7 +583,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             } else {
                 hint = NSLocalizedString(@"noGroupAnn", nil);
             }
-            EMTextViewController *controller = [[EMTextViewController alloc] initWithString:aAnnouncement placeholder:hint isEditable:isEditable];
+            EaseTextViewController *controller = [[EaseTextViewController alloc] initWithString:aAnnouncement placeholder:hint isEditable:isEditable];
             controller.title = @"群公告";
             
             __weak typeof(controller) weakController = controller;
@@ -688,7 +689,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 - (void)_updateGroupYunGuanRemark
 {
-    YGGroupYunGuanRemarkViewController *controller = [[YGGroupYunGuanRemarkViewController alloc] initWithSystemmark:self.group.description yGString:self.group.description placeholder:@"" isEditable:YES];
+    YGGroupYunGuanRemarkViewController *controller = [[YGGroupYunGuanRemarkViewController alloc] initWithGroupId:self.groupId];
     
     controller.doneCompletion = ^(NSString * _Nonnull aString) {
         NSLog(@"%s aString:%@",__func__,aString);
@@ -702,7 +703,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (void)_updateGroupDetailAction
 {
     BOOL isEditable = self.group.permissionType == EMGroupPermissionTypeOwner ? YES : NO;
-    EMTextViewController *controller = [[EMTextViewController alloc] initWithString:self.group.description placeholder:NSLocalizedString(@"inputGroupDescription", nil) isEditable:isEditable];
+    EaseTextViewController *controller = [[EaseTextViewController alloc] initWithString:self.group.description placeholder:NSLocalizedString(@"inputGroupDescription", nil) isEditable:isEditable];
     if (isEditable) {
          controller.title = NSLocalizedString(@"editGroupDescription", nil);
     } else {
@@ -767,15 +768,20 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
             if (statusCode == 200) {
-                NSDictionary *entityDic = responsedict[@"entity"];
-
+                NSDictionary *data = responsedict[@"data"];
+                NSMutableArray *members = data[@"newmembers"];
+                if (members.count > 0) {
+                    if (self.group.permissionType != EMGroupPermissionTypeOwner) {
+                        [self showHint:@"群主同意后，您邀请的成员将会自动加入本群聊"];
+                    }else {
+                        [self showHint:@"邀请成员成功"];
+                    }
+                }
                 
             }else {
                 [EaseAlertController showErrorAlert:errorDescription];
             }
         }
-
-        
     }];
 }
 

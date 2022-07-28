@@ -1,4 +1,3 @@
-//
 //  EMHttpRequest.m
 //
 //  Created by zhangchong on 2021/8/23.
@@ -17,6 +16,10 @@
 #define kInviteGroupMemberURL @"/v2/group/chatgroups"
 #define kSearchGroupMemberURL @"/v1/gov/arcfox/user"
 #define kSearchCustomOrderURL @"/v4/gov/arcfox/transport"
+#define kFetchGroupYunGuanNoteURL @"/v2/group/chatgroups"
+#define kEditGroupServeNoteURL @"/v2/group/chatgroups"
+#define kEditGroupNameURL @"/v2/group"
+
 
 
 @interface EaseHttpManager() <NSURLSessionDelegate>
@@ -412,6 +415,114 @@
     [task resume];
 }
 
+//获取群服务备注接口
+//URL: /v2/group/chatgroups/{groupId}/users/note
+// groupId是需要查询的群id 响应结果中的noteAdmin字段是运管服务备注
+//Method:GETPOST
+
+- (void)fetchYunGuanNoteWithGroupId:(NSString *)groupId
+                         completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
+{
+
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/users/note",kServerHost,kFetchGroupYunGuanNoteURL,groupId]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest
+                                                requestWithURL:url];
+    request.HTTPMethod = @"GET";
+    
+    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
+    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
+    NSString *token = [EaseKitUtil getLoginUserToken];
+    [headerDict setObject:token forKey:@"Authorization"];
+    [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
+    request.allHTTPHeaderFields = headerDict;
+
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+    
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+        if (aCompletionBlock) {
+            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
+        }
+    }];
+    [task resume];
+}
+
+//编辑群服务备注接口
+//URL: /v2/group/chatgroups/{groupId}/users/{username}/note
+// URL上的username 是登录的账号 groupId是需要查询的群id
+//请求体中的note中传如内容
+//Method:POSTP
+
+- (void)editServeNoteWithGroupId:(NSString *)groupId
+                            note:(NSString *)note
+                      completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
+{
+
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/users/%@/note",kServerHost,kEditGroupServeNoteURL,groupId,[EMClient sharedClient].currentUsername]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest
+                                                requestWithURL:url];
+    request.HTTPMethod = @"POST";
+    
+    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
+    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
+    NSString *token = [EaseKitUtil getLoginUserToken];
+    [headerDict setObject:token forKey:@"Authorization"];
+    [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
+    request.allHTTPHeaderFields = headerDict;
+
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+    [dict setObject:note forKey:@"note"];
+
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+        if (aCompletionBlock) {
+            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
+        }
+    }];
+    [task resume];
+}
+
+
+
+//URL: /v2/group/{groupId}/updateGroup
+// URLgroupId是需要查询的群id
+//Method:POSTPOST
+
+- (void)editGroupNameWithGroupId:(NSString *)groupId
+                       groupname:(NSString *)groupname
+                      completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
+{
+
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/updateGroup",kServerHost,kEditGroupNameURL,groupId]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest
+                                                requestWithURL:url];
+    request.HTTPMethod = @"POST";
+    
+    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
+    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
+    NSString *token = [EaseKitUtil getLoginUserToken];
+    [headerDict setObject:token forKey:@"Authorization"];
+    [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
+    request.allHTTPHeaderFields = headerDict;
+
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+    [dict setObject:groupname forKey:@"groupname"];
+
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+        if (aCompletionBlock) {
+            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
+        }
+    }];
+    [task resume];
+}
 
 
 #pragma mark NSURLSessionDelegate
@@ -423,8 +534,6 @@
                 completionHandler(NSURLSessionAuthChallengeUseCredential,credential);
         }
 }
-
-
 
 
 @end

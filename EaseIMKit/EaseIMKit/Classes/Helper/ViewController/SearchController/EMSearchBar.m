@@ -135,15 +135,11 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         [self.operateButton setTitle:NSLocalizedString(@"cancel", nil) forState:UIControlStateNormal];
     }
     
-    
-//    if (self.delegate && [self.delegate respondsToSelector:@selector(searchTextDidChangeWithString:)]) {
-//        [self.delegate searchTextDidChangeWithString:self.textField.text];
-//    }
 }
 
 - (void)operateButtonAction
 {
-    if (self.textField.text > 0) {
+    if (self.textField.text.length > 0) {
         [self searchAction];
     }else {
         [self cancelAction];

@@ -230,7 +230,6 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 #define GROUP_LIST_PUSHVIEWCONTROLLER @"EMPushGroupsViewController"
 #define GROUP_INFO_UPDATED @"EMGroupInfoUpdated"
 #define GROUP_SUBJECT_UPDATED @"EMGroupSubjectUpdated"
-#define GROUP_INFO_REFRESH @"EMGroupInfoRefresh"
 #define GROUP_INFO_PUSHVIEWCONTROLLER @"EMPushGroupInfoViewController"
 #define GROUP_INFO_CLEARRECORD @"EMGroupInfoClearRecord"
 #define GROUP_LIST_FETCHFINISHED @"EMGroupListFetchFinished"
