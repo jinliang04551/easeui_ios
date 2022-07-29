@@ -118,9 +118,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         return NO;
     }
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarSearchButtonClicked:)]) {
-        [self.delegate searchBarSearchButtonClicked:textField.text];
-    }
+    [self searchAction];
     
     return YES;
 }

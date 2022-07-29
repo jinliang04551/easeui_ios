@@ -7,7 +7,7 @@
 //
 
 #import "YGGroupCreateViewController.h"
-#import "EMTextFieldViewController.h"
+#import "EaseTextFieldViewController.h"
 #import "EaseTextViewController.h"
 
 #import "BQTitleAvatarCell.h"
@@ -219,7 +219,7 @@
 
 
 - (void)editGroupNameAction {
-    EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.groupName  placeholder:NSLocalizedString(@"inputGroupSubject", nil) isEditable:YES];
+    EaseTextFieldViewController *controller = [[EaseTextFieldViewController alloc] initWithString:self.groupName  placeholder:NSLocalizedString(@"inputGroupSubject", nil) isEditable:YES];
     controller.title = NSLocalizedString(@"editGroupSubject", nil);
     [self.navigationController pushViewController:controller animated:YES];
     

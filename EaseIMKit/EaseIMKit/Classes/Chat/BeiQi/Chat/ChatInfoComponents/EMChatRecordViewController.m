@@ -119,6 +119,10 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 - (void)searchBarSearchButtonClicked:(NSString *)aString
 {
+    
+}
+
+- (void)searchTextDidChangeWithString:(NSString *)aString {
     _keyWord = aString;
     [self.view endEditing:YES];
     if ([_keyWord length] < 1)
@@ -156,8 +160,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             });
         }
     }];
-}
 
+}
 
 #pragma mark - Data
 

@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EMTextFieldViewController : UIViewController
+@interface EaseTextFieldViewController : UIViewController
 
 @property (nonatomic, copy) BOOL (^doneCompletion)(NSString *aString);
 

@@ -1,5 +1,5 @@
 //
-//  EaseTextFieldViewController.m
+//  EMTextFieldViewController.m
 //  ChatDemo-UI3.0
 //
 //  Created by XieYajie on 2019/1/16.
@@ -8,7 +8,6 @@
 
 #import "EaseTextFieldViewController.h"
 #import "EaseHeaders.h"
-#import "UIColor+EaseUI.h"
 
 @interface EaseTextFieldViewController ()<UITextFieldDelegate>
 
@@ -46,15 +45,19 @@
 
 - (void)_setupSubviews
 {
+    [self addPopBackLeftItem];
     if (self.isEditable) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:EaseLocalizableString(@"done", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"done", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
     }
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    [self setRightNavBarItemTitleColor];
+
+    self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+    
     UIView *bgView = [[UIView alloc] init];
     bgView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:bgView];
-    [bgView Ease_makeConstraints:^(EaseConstraintMaker *make) {
+    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(20);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
@@ -73,7 +76,7 @@
         self.textField.placeholder = self.placeholder;
     }
     [self.view addSubview:self.textField];
-    [self.textField Ease_makeConstraints:^(EaseConstraintMaker *make) {
+    [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(bgView);
         make.top.equalTo(bgView).offset(5);
         make.left.equalTo(bgView).offset(10);

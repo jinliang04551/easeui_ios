@@ -364,8 +364,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
     options.isReceiveNewMsgNotice = !options.isReceiveNewMsgNotice;
     NSString *msg = [NSString stringWithFormat:@"%@消息提醒",options.isReceiveNewMsgNotice ? @"打开":@"关闭"];
-    [EaseAlertController showInfoAlert:msg];
+    [self showHint:msg];
 }
+
 
 - (void)createGroupAction {
     YGGroupCreateViewController *vc = [[YGGroupCreateViewController alloc] init];

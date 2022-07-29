@@ -104,12 +104,12 @@
 - (void)approvalJoinGroupApplyWithModel:(BQGroupApplyApprovalModel *)model {
     [[EaseHttpManager sharedManager] approvalGroupWithGroupId:model.groupId username:model.userName role:model.role option:model.state completion:^(NSInteger statusCode, NSString * _Nonnull response) {
             
-        
         if (response && response.length > 0 && statusCode) {
             NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
             if (statusCode == 200) {
+                
                 [self fetchGroupApplyList];
                 
             }else {

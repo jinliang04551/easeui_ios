@@ -9,7 +9,7 @@
 #import "EMGroupInfoViewController.h"
 #import "EMAvatarNameCell.h"
 
-#import "EMTextFieldViewController.h"
+#import "EaseTextFieldViewController.h"
 #import "EaseTextViewController.h"
 #import "EMGroupMembersViewController.h"
 #import "EMChatRecordViewController.h"
@@ -53,6 +53,9 @@
         _conversation = aConversation;
         _conversationModel = [[EaseConversationModel alloc]initWithConversation:aConversation];
         
+        [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
+        [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupInfoUpdated:) name:GROUP_INFO_UPDATED object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupInfoUpdated:) name:GROUP_INFO_REFRESH object:nil];
@@ -70,9 +73,7 @@
 
     self.showRefreshHeader = NO;
     [self _fetchGroupWithId:self.groupId isShowHUD:YES];
-    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
-    [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
-   
+  
 }
 
 - (void)registeCell {
@@ -90,7 +91,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self fetchGroupInfo];
 }
 
 
@@ -167,8 +167,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     BQTitleValueCell *titleValueCell = [tableView dequeueReusableCellWithIdentifier:[BQTitleValueCell reuseIdentifier]];
 
     BQTitleSwitchCell *titleSwitchCell = [tableView dequeueReusableCellWithIdentifier:[BQTitleSwitchCell reuseIdentifier]];
-
-    BQTitleAvatarAccessCell *titleAvatarAccessCell = [tableView dequeueReusableCellWithIdentifier:[BQTitleAvatarAccessCell reuseIdentifier]];
     
     
     if (indexPath.section == 0) {
@@ -291,13 +289,11 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
                 titleValueAccessCell.nameLabel.text = @"运营备注";
                 titleValueAccessCell.detailLabel.text = @"";
                 titleValueAccessCell.tapCellBlock = ^{
-                    [self _updateGroupDetailAction];
+                    [self _updateGroupYunGuanRemark];
                 };
                 return titleValueAccessCell;
             }
         }
-
-
 }
         
     }else {
@@ -405,7 +401,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             [ext setObject:[NSNumber numberWithBool:aGroup.isPublic] forKey:@"isPublic"];
             _conversation.ext = ext;
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_SUBJECT_UPDATED object:aGroup];
         }
     }
     
@@ -607,63 +602,18 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         }
     }];
 }
-/*
-//获取我的群昵称
-- (NSString *)acquireGroupNickNamkeOfMine
-{
-    NSMutableDictionary *nickNameDict = [self changeStringToDictionary:self.group.setting.ext];
-    if (nickNameDict) {
-        return [nickNameDict objectForKey:EMClient.sharedClient.currentUsername];
-    }
-    return EMClient.sharedClient.currentUsername;
-}
 
-//修改我的群昵称
-- (void)_updateGroupNickNameOfMine
-{
-    EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:[self acquireGroupNickNamkeOfMine] placeholder:NSLocalizedString(@"inputGroupNickname", nil) isEditable:YES];
-    controller.title = NSLocalizedString(@"editGroupSubject", nil);
-    [self.navigationController pushViewController:controller animated:YES];
-    
-    __weak typeof(self) weakself = self;
-    __weak typeof(controller) weakController = controller;
-    [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
-        NSMutableDictionary *nickNameDic = [weakself changeStringToDictionary:weakself.group.setting.ext];
-        if (!nickNameDic) {
-            nickNameDic = [[NSMutableDictionary alloc]init];
-        }
-        if ([aString length] == 0) {
-            [nickNameDic setObject:EMClient.sharedClient.currentUsername forKey:EMClient.sharedClient.currentUsername];
-        } else {
-            [nickNameDic setObject:aString forKey:EMClient.sharedClient.currentUsername];
-        }
-        [weakController showHudInView:weakController.view hint:NSLocalizedString(@"updateNickname...", nil)];
-        [weakController hideHud];
-        //修改我的群昵称
-        NSData *data=[NSJSONSerialization dataWithJSONObject:nickNameDic options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *str=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-        //[weakself.group.setting setExt:str];
-        [EMClient.sharedClient.groupManager updateGroupExtWithId:weakself.group.groupId ext:str completion:^(EMGroup *aGroup, EMError *aError) {
-            NSLog(@"%@", [NSString stringWithFormat:@"ext :    %@",weakself.group.setting.ext]);
-            [weakself.tableView reloadData];
-            [weakController.navigationController popViewControllerAnimated:YES];
 
-        }];
-        return NO;
-    }];
-}
-*/
 - (void)_updateGroupNameAction
 {
     BOOL isEditable = self.group.permissionType == EMGroupPermissionTypeOwner ? YES : NO;
     if (!isEditable) {
         return;
     }
-    EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.group.groupName placeholder:NSLocalizedString(@"inputGroupSubject", nil) isEditable:isEditable];
+    EaseTextFieldViewController *controller = [[EaseTextFieldViewController alloc] initWithString:self.group.groupName placeholder:NSLocalizedString(@"inputGroupSubject", nil) isEditable:isEditable];
     controller.title = NSLocalizedString(@"editGroupSubject", nil);
     [self.navigationController pushViewController:controller animated:YES];
     
-    __weak typeof(self) weakself = self;
     __weak typeof(controller) weakController = controller;
     [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
         if ([aString length] == 0) {
@@ -672,14 +622,32 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         }
         
         [weakController showHudInView:weakController.view hint:NSLocalizedString(@"updateGroupName...", nil)];
-        [[EMClient sharedClient].groupManager updateGroupSubject:aString forGroup:weakself.groupId completion:^(EMGroup *aGroup, EMError *aError) {
-            [weakController hideHud];
-            if (!aError) {
-                [weakself _resetGroup:aGroup];
-                [weakController.navigationController popViewControllerAnimated:YES];
-            } else {
-                [EaseAlertController showErrorAlert:NSLocalizedString(@"updateGroupSubjectFail", nil)];
+//        [[EMClient sharedClient].groupManager updateGroupSubject:aString forGroup:weakself.groupId completion:^(EMGroup *aGroup, EMError *aError) {
+//            [weakController hideHud];
+//            if (!aError) {
+//                [weakself _resetGroup:aGroup];
+//                [weakController.navigationController popViewControllerAnimated:YES];
+//            } else {
+//                [EaseAlertController showErrorAlert:NSLocalizedString(@"updateGroupSubjectFail", nil)];
+//            }
+//        }];
+        
+        EaseIMKit_WS
+        [[EaseHttpManager sharedManager] editGroupNameWithGroupId:weakSelf.groupId groupname:aString completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+           
+            if (response && response.length > 0 && statusCode) {
+                NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+                NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+                if (statusCode == 200) {
+                    [weakController.navigationController popViewControllerAnimated:YES];
+                    [weakSelf showHint:@"修改群名称成功"];
+                    [weakSelf fetchGroupInfo];
+                }else {
+                    [EaseAlertController showErrorAlert:errorDescription];
+                }
             }
+            
         }];
         
         return NO;
@@ -800,12 +768,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
     
 #pragma mark - Private
-
-- (NSInteger)_tagWithIndexPath:(NSIndexPath *)aIndexPath
-{
-    NSInteger tag = aIndexPath.section * 10 + aIndexPath.row;
-    return tag;
-}
 
 - (NSIndexPath *)_indexPathWithTag:(NSInteger)aTag
 {

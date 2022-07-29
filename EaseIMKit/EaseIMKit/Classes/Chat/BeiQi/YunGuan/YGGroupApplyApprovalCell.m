@@ -37,6 +37,7 @@
     [self.contentView addSubview:self.inviteLabel];
     [self.contentView addSubview:self.declineButton];
     [self.contentView addSubview:self.agreeButton];
+    [self.contentView addSubview:self.resultLabel];
 
 }
 
@@ -60,7 +61,6 @@
         make.right.equalTo(self.declineButton.mas_left);
     }];
 
-    
     [self.declineButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.agreeButton);
         make.right.equalTo(self.agreeButton.mas_left).offset(-16.0);
@@ -74,21 +74,35 @@
         make.width.equalTo(@(60.0));
         make.height.equalTo(@(28.0));
     }];
+    
+    [self.resultLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.contentView).offset(36.0);
+        make.right.equalTo(self.contentView).offset(-16.0);
+        make.width.equalTo(@(60.0));
+        make.height.equalTo(@(28.0));
+    }];
+    
+   
 
 }
 
+//fail是拒绝 success 是同意 wait是邀请加入的初始状态
 - (void)updateWithObj:(id)obj {
     
     self.model = (BQGroupApplyApprovalModel *)obj;
     
     NSString *state = self.model.state;
-    if ([state isEqualToString:@""]) {
-        
+    if ([state isEqualToString:@"wait"]) {
+        [self updateResultLabelWithIsHidden:YES];
     }else {
-        
-        
+        [self updateResultLabelWithIsHidden:NO];
+
+        if([state isEqualToString:@"success"]) {
+            self.resultLabel.text = @"已同意";
+        }else {
+            self.resultLabel.text = @"已拒绝";
+        }
     }
-    
     
     self.applyLabel.text = self.model.userName;
     self.inviteLabel.text = self.model.inviter;
@@ -104,6 +118,11 @@
     self.groupNameLabel.attributedText = mutableAttString;
 }
 
+- (void)updateResultLabelWithIsHidden:(BOOL)isHidden {
+    self.resultLabel.hidden = isHidden;
+    self.declineButton.hidden = !isHidden;
+    self.agreeButton.hidden = !isHidden;
+}
 
 - (void)declineButtonAction {
     self.model.state = @"fail";
@@ -194,6 +213,7 @@
         _resultLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
         _resultLabel.textAlignment = NSTextAlignmentLeft;
         _resultLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        _resultLabel.hidden = YES;
     }
     return _resultLabel;
     

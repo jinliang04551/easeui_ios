@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BQGroupApplyApprovalModel : NSObject
 @property (nonatomic, strong, readonly) NSString *userName;
 @property (nonatomic, strong, readonly) NSString *groupId;
+//fail是拒绝 success 是同意 wait是邀请加入的初始状态
 @property (nonatomic, strong) NSString *state;
 @property (nonatomic, strong, readonly) NSString *role;
 @property (nonatomic, strong, readonly) NSString *inviter;

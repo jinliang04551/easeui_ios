@@ -10,12 +10,13 @@
 
 #import "EMRealtimeSearch.h"
 #import "ConferenceController.h"
-#import "ConfInviteUserCell.h"
+//#import "YGGroupMuteItemCell.h"
 #import "UserInfoStore.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 #import "BQConfInviteSelectedUsersView.h"
 #import "EaseHeaders.h"
+#import "YGGroupMuteItemCell.h"
 
 @interface ConfInviteUsersViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 
@@ -135,11 +136,9 @@
 
     
     self.tableView.rowHeight = 64.0;
-    UINib *nib = [UINib nibWithNibName:@"ConfInviteUserCell" bundle:nil];
-    [self.tableView registerNib:nib forCellReuseIdentifier:@"ConfInviteUserCell"];
-    [self.searchTableView registerNib:nib forCellReuseIdentifier:@"ConfInviteUserCell"];
+    
+    [self.tableView registerClass:[YGGroupMuteItemCell class] forCellReuseIdentifier:NSStringFromClass([YGGroupMuteItemCell class])];
 }
-
 
 
 
@@ -154,8 +153,8 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"ConfInviteUserCell";
-    ConfInviteUserCell *cell = (ConfInviteUserCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    static NSString *CellIdentifier = @"YGGroupMuteItemCell";
+    YGGroupMuteItemCell *cell = (YGGroupMuteItemCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     NSString *username = self.isSearching ? [self.searchDataArray objectAtIndex:indexPath.row] : [self.dataArray objectAtIndex:indexPath.row];
     
@@ -170,7 +169,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     NSString *username = self.isSearching ? [self.searchDataArray objectAtIndex:indexPath.row] : [self.dataArray objectAtIndex:indexPath.row];
-    ConfInviteUserCell *cell = (ConfInviteUserCell *)[tableView cellForRowAtIndexPath:indexPath];
+    YGGroupMuteItemCell *cell = (YGGroupMuteItemCell *)[tableView cellForRowAtIndexPath:indexPath];
     BOOL isChecked = [self.inviteUsers containsObject:username];
     if (isChecked) {
         [self.inviteUsers removeObject:username];
