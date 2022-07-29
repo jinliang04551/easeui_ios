@@ -51,10 +51,10 @@
     self.detailLabel.numberOfLines = 0;
     [self addSubview:self.detailLabel];
     [self.detailLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.top.equalTo(self.textLabel.ease_bottom).offset(16);
+        make.top.equalTo(self.textLabel.ease_bottom).offset(0);
         make.bottom.equalTo(self).offset(-10);
         make.left.equalTo(self.textLabel);
-        make.right.equalTo(self.ease_centerX);
+        make.right.equalTo(self).offset(-15);
     }];
     
     self.downloadStatusLabel = [[UILabel alloc] init];

@@ -671,7 +671,7 @@ static NSString *g_UIKitVersion = @"3.9.1";
     [hud hideAnimated:YES afterDelay:2];
 }
 
-- (void)logout {
+- (void)logoutWithCompletion:(void (^)(BOOL success,NSString *errorMsg))completion {
     [[EaseHttpManager sharedManager] logoutWithCompletion:^(NSInteger statusCode, NSString * _Nonnull response) {
             
         NSLog(@"%s response:%@ state:%@",__func__,response,@(statusCode));
@@ -683,11 +683,23 @@ static NSString *g_UIKitVersion = @"3.9.1";
             if (statusCode == 200) {
 
                 [[EMClient sharedClient] logout:YES completion:^(EMError * _Nullable aError) {
-                    [EaseKitUtil removeLoginUserToken];
-
+                    if (aError == nil) {
+                        [EaseKitUtil removeLoginUserToken];
+                        
+                        EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
+                        options.isAutoLogin = NO;
+                        options.loggedInUsername = @"";
+                        [options archive];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
+                        
+                        completion(YES,nil);
+                    }else {
+                        [self showHint:aError.errorDescription];
+                        completion(NO,aError.errorDescription);
+                    }
+                                        
                 }];
                 
-                return;
             }else {
                 [EaseAlertController showErrorAlert:errorDescription];
             }

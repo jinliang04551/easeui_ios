@@ -17,7 +17,7 @@
     self = [super initWithDirection:aDirection type:aType viewModel:viewModel];
     if (self) {
         if (self.direction == EMMessageDirectionSend) {
-            self.iconView.image = [UIImage easeUIImageNamed:@"msg_location_white"];
+            self.iconView.image = [UIImage easeUIImageNamed:@"locationMsg"];
         } else {
             self.iconView.image = [UIImage easeUIImageNamed:@"locationMsg"];
         }
@@ -33,8 +33,11 @@
     EMMessageType type = model.type;
     if (type == EMMessageTypeLocation) {
         EMLocationMessageBody *body = (EMLocationMessageBody *)model.message.body;
-        self.textLabel.text = body.address;
-        self.detailLabel.text = [NSString stringWithFormat:EaseLocalizableString(@"locationvalue", nil), body.latitude, body.longitude];
+//        self.textLabel.text = body.address;
+//        self.detailLabel.text = [NSString stringWithFormat:EaseLocalizableString(@"locationvalue", nil), body.latitude, body.longitude];
+        
+        self.textLabel.text = body.buildingName;
+        self.detailLabel.text = body.address;
     }
 }
 
