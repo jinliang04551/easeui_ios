@@ -43,7 +43,7 @@
 
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.iconImageView.mas_bottom).offset(3.0);
-        make.centerX.equalTo(self.contentView);
+        make.left.right.equalTo(self.contentView);
         make.bottom.equalTo(self.contentView);
     }];
 }
@@ -94,6 +94,7 @@
         _nameLabel.font = EaseIMKit_NFont(12.0);
         _nameLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
         _nameLabel.textAlignment = NSTextAlignmentCenter;
+        _nameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     }
     return _nameLabel;
 }

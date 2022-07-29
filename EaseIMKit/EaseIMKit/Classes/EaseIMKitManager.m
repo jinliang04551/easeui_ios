@@ -542,7 +542,7 @@ static NSString *g_UIKitVersion = @"3.9.1";
         }
         [[EaseCallManager sharedManager] startInviteUsers:aInviteUsers ext:aExt completion:nil];
     }];
-    confVC.modalPresentationStyle = UIModalPresentationPopover;
+    confVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
     [vc presentViewController:confVC animated:NO completion:nil];
 }
 

@@ -242,6 +242,11 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 //用户属性更新
 #define USERINFO_UPDATE @"EMUserInfoUpdated"
 
+
+//收到群申请CMD消息
+#define RequestJoinGroupEvent @"requestJoinGroupEvent"
+
+
 //#define DEF_APPKEY @"easemob-demo#easeim"
 //#define DEF_APPKEY @"easemob-demo#chatdemoui"
 #define DEF_APPKEY @"1100220704109048#arcfox-server"

@@ -17,12 +17,14 @@
 #import "BQConfInviteSelectedUsersView.h"
 #import "EaseHeaders.h"
 #import "YGGroupMuteItemCell.h"
+#import "EaseIMKitManager.h"
 
 @interface ConfInviteUsersViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) UIView *customNavBarView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIButton *confirmButton;
+@property (nonatomic, strong) UIButton *cancelButton;
 
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UITableView *searchTableView;
@@ -85,8 +87,20 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
+}
+
 
 - (void)dealloc
 {
@@ -104,7 +118,7 @@
 
 
     [self.customNavBarView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(0);
+        make.top.equalTo(self.view).offset(EaseIMKit_StatusBarHeight);
         make.left.right.equalTo(self.view);
         make.height.equalTo(@(48.0));
     }];
@@ -135,9 +149,10 @@
     }];
 
     
+    [self updateCustomNavView];
     self.tableView.rowHeight = 64.0;
-    
     [self.tableView registerClass:[YGGroupMuteItemCell class] forCellReuseIdentifier:NSStringFromClass([YGGroupMuteItemCell class])];
+    
 }
 
 
@@ -153,33 +168,41 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"YGGroupMuteItemCell";
-    YGGroupMuteItemCell *cell = (YGGroupMuteItemCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+
+    YGGroupMuteItemCell *cell = (YGGroupMuteItemCell *)[tableView dequeueReusableCellWithIdentifier:NSStringFromClass([YGGroupMuteItemCell class])];
     
     NSString *username = self.isSearching ? [self.searchDataArray objectAtIndex:indexPath.row] : [self.dataArray objectAtIndex:indexPath.row];
-    
-    
     [cell updateWithObj:username];
-        
+    
+    EaseIMKit_WS
+    cell.checkBlcok = ^(NSString * _Nonnull userId, BOOL isChecked) {
+        if ([weakSelf.inviteUsers containsObject:username]) {
+            [weakSelf.inviteUsers removeObject:username];
+        } else {
+            [weakSelf.inviteUsers addObject:username];
+        }
+        [self updateUI];
+
+    };
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    NSString *username = self.isSearching ? [self.searchDataArray objectAtIndex:indexPath.row] : [self.dataArray objectAtIndex:indexPath.row];
-    YGGroupMuteItemCell *cell = (YGGroupMuteItemCell *)[tableView cellForRowAtIndexPath:indexPath];
-    BOOL isChecked = [self.inviteUsers containsObject:username];
-    if (isChecked) {
-        [self.inviteUsers removeObject:username];
-    } else {
-        [self.inviteUsers addObject:username];
-    }
-    cell.isChecked = !isChecked;
-    
-    [self updateUI];
-}
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//
+//    NSString *username = self.isSearching ? [self.searchDataArray objectAtIndex:indexPath.row] : [self.dataArray objectAtIndex:indexPath.row];
+//    YGGroupMuteItemCell *cell = (YGGroupMuteItemCell *)[tableView cellForRowAtIndexPath:indexPath];
+//    BOOL isChecked = [self.inviteUsers containsObject:username];
+//    if (isChecked) {
+//        [self.inviteUsers removeObject:username];
+//    } else {
+//        [self.inviteUsers addObject:username];
+//    }
+//    cell.isChecked = !isChecked;
+//
+//    [self updateUI];
+//}
 
 - (void)updateUI {
     
@@ -404,11 +427,6 @@
 - (void)cancelAction
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-//    if (self.isCreate) {
-//        [self dismissViewControllerAnimated:YES completion:nil];
-//    } else {
-//        [self.navigationController popViewControllerAnimated:YES];
-//    }
 }
 
 - (void)confirmButtonAction {
@@ -436,15 +454,8 @@
         _customNavBarView = [[UIView alloc] init];
         _customNavBarView.backgroundColor = UIColor.clearColor;
         
-        UIButton *cancelButton = [[UIButton alloc] init];
-        cancelButton.titleLabel.font = EaseIMKit_NFont(14.0);
-        [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
-        [cancelButton setTitleColor:[UIColor colorWithHexString:@"#B9B9B9"] forState:UIControlStateNormal];
-        [cancelButton setTitleColor:[UIColor colorWithHexString:@"#B9B9B9"] forState:UIControlStateHighlighted];
-        [cancelButton addTarget:self action:@selector(cancelAction) forControlEvents:UIControlEventTouchUpInside];
-        
         [_customNavBarView addSubview:self.titleLabel];
-        [_customNavBarView addSubview:cancelButton];
+        [_customNavBarView addSubview:self.cancelButton];
         [_customNavBarView addSubview:self.confirmButton];
     
         [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -453,7 +464,7 @@
             make.width.equalTo(@(100.0));
         }];
         
-        [cancelButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        [self.cancelButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_customNavBarView).offset(16.0);
             make.centerY.equalTo(self.titleLabel);
             make.width.equalTo(@(60.0));
@@ -462,15 +473,30 @@
         [self.confirmButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.titleLabel);
             make.right.equalTo(_customNavBarView).offset(-16.0);
-            make.size.equalTo(cancelButton);
+            make.size.equalTo(self.cancelButton);
         }];
     }
     return _customNavBarView;
 }
+
+
+- (UIButton *)cancelButton {
+    if (_cancelButton == nil) {
+        _cancelButton = [[UIButton alloc] init];
+        _cancelButton.titleLabel.font = EaseIMKit_NFont(14.0);
+        [_cancelButton setTitle:@"取消" forState:UIControlStateNormal];
+        [_cancelButton setTitleColor:[UIColor colorWithHexString:@"#B9B9B9"] forState:UIControlStateNormal];
+        
+        [_cancelButton addTarget:self action:@selector(cancelAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _cancelButton;
+}
+
 - (UIButton *)confirmButton {
     if (_confirmButton == nil) {
         _confirmButton = [[UIButton alloc] init];
         _confirmButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
+        _confirmButton.layer.cornerRadius = 4.0;
         [_confirmButton setTitle:@"确定" forState:UIControlStateNormal];
         [_confirmButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
         [_confirmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
@@ -490,6 +516,19 @@
     return _titleLabel;
 }
 
+- (void)updateCustomNavView {
+    if (EaseIMKitManager.shared.isJiHuApp){
+        [self.cancelButton setTitleColor:[UIColor colorWithHexString:@"#B9B9B9"] forState:UIControlStateNormal];
+
+        [self.titleLabel setTextColor:[UIColor whiteColor]];
+        
+    }else {
+        [self.cancelButton setTitleColor:[UIColor colorWithHexString:@"#171717"] forState:UIControlStateNormal];
+
+        [self.titleLabel setTextColor:[UIColor colorWithHexString:@"#171717"]];
+    }
+}
+
 - (UISearchBar *)searchBar {
     if (_searchBar == nil) {
         _searchBar = [[UISearchBar alloc] init];
@@ -502,6 +541,17 @@
         searchField.backgroundColor = [UIColor colorWithHexString:@"#252525"];
         [searchField setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
         searchField.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
+        
+        if (EaseIMKitManager.shared.isJiHuApp){
+            searchField.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+            [searchField setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
+            searchField.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
+                    
+        }else {
+            searchField.backgroundColor = [UIColor whiteColor];
+            [searchField setTextColor:UIColor.blackColor];
+        }
+
         searchField.layer.cornerRadius = 32.0 * 0.5;
         _searchBar.placeholder = @"搜索";
     }
