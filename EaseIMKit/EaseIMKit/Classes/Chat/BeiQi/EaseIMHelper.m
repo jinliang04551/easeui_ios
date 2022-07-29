@@ -150,6 +150,22 @@ static EaseIMHelper *helper = nil;
     }
 }
 
+
+- (void)cmdMessagesDidReceive:(NSArray<EMChatMessage *> *)aCmdMessages {
+
+    NSLog(@"%s aCmdMessages:%@",__func__,aCmdMessages);
+    
+    for (int i = 0; i < aCmdMessages.count; ++i) {
+        EMChatMessage *msg = aCmdMessages[i];
+        if (msg.body.type == EMMessageBodyTypeCmd) {
+            EMCmdMessageBody *cmdBody = (EMCmdMessageBody *)msg.body;
+            if ([cmdBody.action isEqualToString:RequestJoinGroupEvent]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:RequestJoinGroupEventNotification object:nil];
+            }
+        }
+    }
+}
+
 #pragma mark - EMGroupManagerDelegate
 
 - (void)didJoinGroup:(EMGroup *)aGroup inviter:(NSString *)aInviter message:(NSString *)aMessage

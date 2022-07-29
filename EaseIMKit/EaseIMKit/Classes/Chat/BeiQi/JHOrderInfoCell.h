@@ -6,10 +6,12 @@
 //
 
 #import "BQCustomCell.h"
+@class JHOrderViewModel;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface JHOrderInfoCell : BQCustomCell
+@property (nonatomic, copy) void (^sendOrderBlock)(JHOrderViewModel *orderModel);
 
 @end
 

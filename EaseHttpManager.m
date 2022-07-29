@@ -435,6 +435,8 @@
 
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/getOrders",kServerHost,kSearchCustomOrderURL,[EMClient sharedClient].currentUsername]];
     
+    NSLog(@"%s url:%@",__func__,url);
+    
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];
     request.HTTPMethod = @"POST";
@@ -452,11 +454,19 @@
     //    "orderType":"MAIN",
     //    "token":"ad8s8d9adhka"
 
-    [dict setObject:userId forKey:@"aid"];
-    [dict setObject:orderType forKey:@"orderType"];
-    [dict setObject:token forKey:@"token"];
+    [dict setObject:@"222600" forKey:@"aid"];
+    [dict setObject:@"MAIN" forKey:@"orderType"];
+    [dict setObject:@"ad8s8d9adhka" forKey:@"token"];
 
+    
+//    [dict setObject:userId forKey:@"aid"];
+//    [dict setObject:orderType forKey:@"orderType"];
+//    [dict setObject:token forKey:@"token"];
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+    
+    NSLog(@"%s request dict:%@",__func__,dict);
+
+    
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
         if (aCompletionBlock) {

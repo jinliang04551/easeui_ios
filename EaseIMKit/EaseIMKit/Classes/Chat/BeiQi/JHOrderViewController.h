@@ -8,8 +8,17 @@
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
+typedef NS_ENUM(NSUInteger, EaseJHOrderType) {
+    EaseJHOrderTypeMain = 1,
+    EaseJHOrderTypeGetOrSend,
+    EaseJHOrderTypeGood,
+    EaseJHOrderTypeServe,
+};
 
-@interface JHOrderViewController : UIViewController
+@class JHOrderViewModel;
+@interface JHOrderViewController : UITableViewController
+- (instancetype)initWithOrderType:(EaseJHOrderType)orderType;
+@property (nonatomic, copy) void (^sendOrderBlock)(JHOrderViewModel *orderModel);
 
 @end
 

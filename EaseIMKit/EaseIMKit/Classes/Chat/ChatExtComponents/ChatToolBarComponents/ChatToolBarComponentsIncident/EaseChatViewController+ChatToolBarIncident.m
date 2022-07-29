@@ -16,6 +16,8 @@
 #import "EaseAlertController.h"
 #import "EaseAlertView.h"
 #import "UIViewController+HUD.h"
+#import "JHOrderContainerViewController.h"
+#import "JHOrderViewModel.h"
 
 /**
     媒体库
@@ -376,7 +378,21 @@ static const void *imagePickerKey = &imagePickerKey;
 @implementation EaseChatViewController (EMChatToolBarOrder)
 
 - (void)chatToolBarOrderAction {
-    
+    JHOrderContainerViewController *vc = [[JHOrderContainerViewController alloc] init];
+    vc.sendOrderBlock = ^(JHOrderViewModel * _Nonnull orderModel) {
+        [self sendOrderMessage:orderModel];
+        
+    };
+    [self.navigationController pushViewController:vc animated:YES];
+
+}
+
+- (void)sendOrderMessage:(JHOrderViewModel *)orderModel {
+    NSLog(@"%s",__func__);
+        
+    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:orderModel.messageInfo];
+    [self sendMessageWithBody:body ext:nil];
+
 }
 
 @end

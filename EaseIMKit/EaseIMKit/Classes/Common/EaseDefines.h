@@ -247,6 +247,10 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 #define RequestJoinGroupEvent @"requestJoinGroupEvent"
 
 
+//通知notificatoin
+#define RequestJoinGroupEventNotification @"RequestJoinGroupEventNotification"
+
+
 //#define DEF_APPKEY @"easemob-demo#easeim"
 //#define DEF_APPKEY @"easemob-demo#chatdemoui"
 #define DEF_APPKEY @"1100220704109048#arcfox-server"
