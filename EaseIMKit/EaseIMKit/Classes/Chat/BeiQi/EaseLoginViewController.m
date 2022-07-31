@@ -336,12 +336,13 @@
     };
     
     if (isTokenLogin) {
+        [self showHudInView:self.view hint:@"登录中"];
         [[EMClient sharedClient] loginWithUsername:[name lowercaseString] token:pswd completion:finishBlock];
         return;
     }
     
     
-    
+    [self showHudInView:self.view hint:@"登录中"];
     [[EaseHttpManager sharedManager] loginToApperServer:[name lowercaseString] pwd:pswd completion:^(NSInteger statusCode, NSString * _Nonnull response) {
         NSLog(@"%s response:%@ state:%@",__func__,response,@(statusCode));
         
@@ -358,6 +359,7 @@
                 
                 return;
             }else {
+                [self hideHud];
                 [EaseAlertController showErrorAlert:errorDescription];
             }
 

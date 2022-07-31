@@ -25,7 +25,7 @@
 #import "EaseConversationCell.h"
 #import "EMRefreshViewController.h"
 #import "EaseHeaders.h"
-
+#import "EaseIMKitManager.h"
 
 @interface EMConversationsViewController() <EaseConversationsViewControllerDelegate, EMSearchControllerDelegate, EMGroupManagerDelegate>
 
@@ -69,6 +69,20 @@
 {
     [super viewWillDisappear:animated];
     self.navigationController.navigationBarHidden = NO;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    //运管端
+    if (![EaseIMKitManager shared].isJiHuApp) {
+        if ([EaseIMKitMessageHelper shareMessageHelper].hasJoinGroupApply) {
+            self.rightNavBarBtn.MIS_redDot.hidden = NO;
+        }else {
+            self.rightNavBarBtn.MIS_redDot.hidden = YES;
+        }
+    }
+   
 }
 
 - (void)dealloc
@@ -123,9 +137,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     }];
     
     
-    self.rightNavBarBtn = [[UIButton alloc]init];
-    [self.rightNavBarBtn setImage:[UIImage easeUIImageNamed:@"icon-add"] forState:UIControlStateNormal];
-    [self.rightNavBarBtn addTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
+    
     [self.view addSubview:self.rightNavBarBtn];
     [self.rightNavBarBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@35);
@@ -133,15 +145,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         make.right.equalTo(self.view).offset(-16);
     }];
 
-    self.rightNavBarBtn.MIS_redDot = [MISRedDot redDotWithConfig:({
-        MISRedDotConfig *config = [[MISRedDotConfig alloc] init];
-        config.offsetY = 2;
-        config.offsetX = -2;
-        config;
-    })];
-    self.rightNavBarBtn.MIS_redDot.hidden = NO;
-
-    
 }
     
 
@@ -381,6 +384,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 - (void)groupApplyAction {
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationClearRequestJoinGroupEvent object:nil];
+
     YGGroupApplyApprovalController *vc = [[YGGroupApplyApprovalController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 
@@ -518,5 +523,24 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         }];
     }];
 }
+
+#pragma mark getter and setter
+- (UIButton *)rightNavBarBtn {
+    if (_rightNavBarBtn == nil) {
+        _rightNavBarBtn = [[UIButton alloc]init];
+        [_rightNavBarBtn setImage:[UIImage easeUIImageNamed:@"icon-add"] forState:UIControlStateNormal];
+        [_rightNavBarBtn addTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
+        _rightNavBarBtn.MIS_redDot = [MISRedDot redDotWithConfig:({
+            MISRedDotConfig *config = [[MISRedDotConfig alloc] init];
+            config.offsetY = 2;
+            config.offsetX = -2;
+            config;
+        })];
+        _rightNavBarBtn.MIS_redDot.hidden = YES;
+    }
+    
+    return _rightNavBarBtn;
+}
+
 
 @end

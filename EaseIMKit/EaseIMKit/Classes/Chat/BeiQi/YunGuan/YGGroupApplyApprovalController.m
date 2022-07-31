@@ -24,6 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
     [self addPopBackLeftItem];
     self.title = @"群组申请";
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;

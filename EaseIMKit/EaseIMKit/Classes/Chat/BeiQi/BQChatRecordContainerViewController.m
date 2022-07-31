@@ -8,13 +8,14 @@
 
 #import "BQChatRecordContainerViewController.h"
 #import "MISScrollPage.h"
+#import "EaseHeaders.h"
 
 #import "EMChatRecordViewController.h"
 #import "BQChatRecordFileViewController.h"
 #import "BQChatRecordImageVideoViewController.h"
 #import "EMChatViewController.h"
 #import "BQChatRecordFilePreviewViewController.h"
-#import "EaseHeaders.h"
+#import "EaseChatRecordImageVideoPreViewController.h"
 
 
 #define kViewTopPadding  200.0f

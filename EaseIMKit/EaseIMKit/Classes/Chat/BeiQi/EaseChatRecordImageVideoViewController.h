@@ -10,8 +10,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol EaseChatRecordImageVideoViewControllerDelegate <NSObject>
+@optional
+- (void)didTapImageOrVideoMessage:(EMChatMessage *)message;
+
+@end
+
+
 @interface EaseChatRecordImageVideoViewController : UIViewController
 - (instancetype)initWithCoversationModel:(EMConversation *)conversation;
+
+@property (nonatomic, assign) id<EaseChatRecordImageVideoViewControllerDelegate> delegate;
 
 @end
 

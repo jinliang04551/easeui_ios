@@ -10,6 +10,7 @@
 #import "BQRecordImageVideoCell.h"
 #import "EaseHeaders.h"
 #import "MISScrollPage.h"
+#import "EMImageBrowser.h"
 
 @interface BQChatRecordImageVideoViewController ()<MISScrollPageControllerContentSubViewControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
 
@@ -137,8 +138,10 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     NSString *localPath = [(EMImageMessageBody *)self.selectedMessage.body localPath];
     UIImage *image = [UIImage imageWithContentsOfFile:localPath];
     
-//    [[EMImageBrowser sharedBrowser] showImages:@[image] fromController:weakself];
+    [[EMImageBrowser sharedBrowser] showImages:@[image] fromController:weakself];
 
+    
+    
 }
 
 

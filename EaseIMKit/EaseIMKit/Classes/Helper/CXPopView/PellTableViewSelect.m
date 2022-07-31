@@ -82,12 +82,10 @@ UITableView * tableView;
     [backgroundView addGestureRecognizer:tap];
     backgroundView.action = action;
     backgroundView.selectData = selectData;
-//    tableView.layer.anchorPoint = CGPointMake(100, 64);
 
 
     if (animate == YES) {
         backgroundView.alpha = 0;
-//        tableView.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 80, 70, frame.size.width, 40 * selectData.count);
         [UIView animateWithDuration:0.3 animations:^{
             backgroundView.alpha = 0.5;
            tableView.transform = CGAffineTransformMakeScale(1.0, 1.0);
@@ -138,7 +136,11 @@ UITableView * tableView;
             config.offsetX = 5.0;
             config;
         })];
-        cell.contentView.MIS_redDot.hidden = NO;
+        if ([EaseIMKitMessageHelper shareMessageHelper].hasJoinGroupApply) {
+            cell.contentView.MIS_redDot.hidden = NO;
+        }else {
+            cell.contentView.MIS_redDot.hidden = YES;
+        }
     }
     
     return cell;

@@ -246,9 +246,16 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 //收到群申请CMD消息
 #define RequestJoinGroupEvent @"requestJoinGroupEvent"
 
+//多人音视频开始，结束 CMD action
+#define MutiCallStartAction @"MutiCallStartAction"
+#define MutiCallFinishAction @"MutiCallFinishAction"
+
+
+
 
 //通知notificatoin
-#define RequestJoinGroupEventNotification @"RequestJoinGroupEventNotification"
+#define EaseNotificationRequestJoinGroupEvent @"EaseNotificationRequestJoinGroupEvent"
+#define EaseNotificationClearRequestJoinGroupEvent @"EaseNotificationClearRequestJoinGroupEvent"
 
 
 //#define DEF_APPKEY @"easemob-demo#easeim"

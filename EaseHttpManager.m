@@ -464,8 +464,7 @@
 //Method:GETPOST
 
 - (void)fetchYunGuanNoteWithGroupId:(NSString *)groupId
-                         completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
-{
+                         completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock {
 
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/users/note",kServerHost,kFetchGroupYunGuanNoteURL,groupId]];
     
@@ -480,9 +479,9 @@
     [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
     request.allHTTPHeaderFields = headerDict;
 
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-
-    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+//    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+//
+//    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
     
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;

@@ -160,11 +160,14 @@ static EaseIMHelper *helper = nil;
         if (msg.body.type == EMMessageBodyTypeCmd) {
             EMCmdMessageBody *cmdBody = (EMCmdMessageBody *)msg.body;
             if ([cmdBody.action isEqualToString:RequestJoinGroupEvent]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:RequestJoinGroupEventNotification object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationRequestJoinGroupEvent object:nil];
             }
+            
+            
         }
     }
 }
+
 
 #pragma mark - EMGroupManagerDelegate
 

@@ -71,15 +71,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @interface EaseIMKitManager : NSObject
-
-@property (nonatomic, strong, readonly) NSString *version; //UIKit 版本号
-@property (nonatomic) id<EaseIMKitSystemNotiDelegate>systemNotiDelegate; //系统通知回调代理
+//UIKit 版本号
+@property (nonatomic, strong, readonly) NSString *version;
+//系统通知回调代理
+@property (nonatomic) id<EaseIMKitSystemNotiDelegate>systemNotiDelegate;
 //是否是极狐app
 @property (nonatomic, assign,readonly) BOOL isJiHuApp;
 
 + (BOOL)initWithEaseIMKitOptions:(EaseIMKitOptions *)options;
-
-+ (BOOL)initWithEMOptions:(EMOptions *)options;
 
 /// Description 根据会话 ID 查询当前会话是否设置了免打扰。（ 时间复杂度O(1)：将原来 undisturbList 改造为 undisturbMap 降低查询时间复杂度）
 /// @param conversationId 会话 ID /// @result return - `YES`：是； - （默认） `NO` ：否。 不在undisturbMap中查询结果为NO

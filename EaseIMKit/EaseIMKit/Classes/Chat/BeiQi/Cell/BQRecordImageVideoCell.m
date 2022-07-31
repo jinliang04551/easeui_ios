@@ -106,7 +106,7 @@
 - (UIImageView *)iconImageView {
     if (_iconImageView == nil) {
         _iconImageView = [[UIImageView alloc] init];
-        _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _iconImageView.contentMode = UIViewContentModeScaleAspectFill;
         _iconImageView.layer.cornerRadius = 8.0f;
         _iconImageView.clipsToBounds = YES;
         _iconImageView.layer.masksToBounds = YES;

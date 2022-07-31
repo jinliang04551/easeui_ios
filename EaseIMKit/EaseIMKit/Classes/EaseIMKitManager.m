@@ -22,6 +22,7 @@
 #import "MBProgressHUD.h"
 #import "EaseHttpManager.h"
 #import "EaseHeaders.h"
+#import "EaseIMKitMessageHelper.h"
 
 bool gInit;
 static EaseIMKitManager *easeIMKit = nil;
@@ -81,6 +82,8 @@ static NSString *g_UIKitVersion = @"3.9.1";
     [EMNotificationHelper shared];
     [SingleCallController sharedManager];
     [ConferenceController sharedManager];
+    [EaseIMKitMessageHelper shareMessageHelper];
+    
     [[UserInfoStore sharedInstance] loadInfosFromLocal];
           
     EaseCallConfig* config = [[EaseCallConfig alloc] init];
@@ -91,17 +94,6 @@ static NSString *g_UIKitVersion = @"3.9.1";
     
 }
     
-
-+ (BOOL)initWithEMOptions:(EMOptions *)options {
-    if (!gInit) {
-        [EMClient.sharedClient initializeSDKWithOptions:options];
-        [self shareInstance];
-        gInit = YES;
-    }
-    
-    return gInit;
-}
-
 + (EaseIMKitManager *)shared {
     return easeIMKit;
 }
@@ -515,6 +507,13 @@ static NSString *g_UIKitVersion = @"3.9.1";
     if([msg length] > 0){
         [self showHint:msg];
     }
+    
+//    EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:MutiCallFinishAction];
+//    body.isDeliverOnlineOnly = YES;
+//    EMChatMessage *message = [[EMChatMessage alloc] initWithConversationID:groupId from:[EMClient sharedClient].currentUsername to:groupId body:body ext:nil];
+//    message.chatType = EMChatTypeChat;
+//    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+    
 }
 
 // 多人音视频邀请按钮的回调
@@ -544,6 +543,14 @@ static NSString *g_UIKitVersion = @"3.9.1";
     }];
     confVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
     [vc presentViewController:confVC animated:NO completion:nil];
+    
+    
+    EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:MutiCallStartAction];
+    body.isDeliverOnlineOnly = YES;
+    EMChatMessage *message = [[EMChatMessage alloc] initWithConversationID:groupId from:[EMClient sharedClient].currentUsername to:groupId body:body ext:nil];
+    message.chatType = EMChatTypeChat;
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+
 }
 
 // 振铃时增加回调
