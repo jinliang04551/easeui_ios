@@ -63,6 +63,13 @@ NS_ASSUME_NONNULL_BEGIN
                        groupname:(NSString *)groupname
                       completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
 
+- (void)searchGroupListWithAid:(NSString *)aid
+                        mobile:(NSString *)mobile
+                       orderId:(NSString *)orderId
+                           vin:(NSString *)vin
+                     groupname:(NSString *)groupName
+                    completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+
 
 @end
 

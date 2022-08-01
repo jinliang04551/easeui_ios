@@ -29,7 +29,6 @@
 
 
 - (void)placeAndLayoutSubViews {
-    self.contentView.backgroundColor = UIColor.yellowColor;
     
     [self.contentView addSubview:self.iconImageView];
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -154,6 +154,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cleanPopupControllerView) name:CALL_MAKE1V1 object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cleanPopupControllerView) name:CALL_MAKECONFERENCE object:nil];
+    
+    [self refreshTableView:YES];
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -191,7 +194,7 @@
 
 #pragma mark NSNotification
 - (void)updateUIWithCallCMDMessage:(NSNotification *)notify {
-    //
+    
     EMChatMessage *msg = (EMChatMessage *)notify.object;
     if (msg.ext.count > 0) {
         
@@ -205,6 +208,8 @@
             msgText = [NSString stringWithFormat:@"%@ 语音通话已经结束",callUser];
         }
         
+        NSLog(@"%s msgText:%@",__func__,msgText);
+
         [self insertCallMsgFrom:EMClient.sharedClient.currentUsername to:self.currentConversation.conversationId text:msgText];
     }
     
@@ -350,6 +355,12 @@ if (EaseIMKitManager.shared.isJiHuApp){
             
             type = EaseWeakRemindSystemHint;
         }
+        
+        if (model.type == EMMessageTypeExtCallState) {
+            cellString = ((EMTextMessageBody *)(model.message.body)).text;
+            type = EaseWeakRemindSystemHint;
+        }
+        
         if (model.type == EMMessageTypeExtNewFriend || model.type == EMMessageTypeExtAddGroup) {
             if ([model.message.body isKindOfClass:[EMTextMessageBody class]]) {
                 cellString = ((EMTextMessageBody *)(model.message.body)).text;

@@ -29,6 +29,15 @@
 @property (nonatomic, strong) YGGroupSearchTypeTableView *searchTypeTableView;
 @property (nonatomic, assign) YGSearchGroupType searchGroupType;
 
+
+@property (nonatomic, strong) NSString *searchkeyword;
+
+//search keyword
+@property (nonatomic, strong) NSString *searchGroupName;
+@property (nonatomic, strong) NSString *searchMobile;
+@property (nonatomic, strong) NSString *searchOrderId;
+@property (nonatomic, strong) NSString *searchVin;
+
 @end
 
 @implementation YGGroupSearchViewController
@@ -38,6 +47,7 @@
     self = [super init];
     if (self) {
         self.group = aGroup;
+
     }
     
     return self;
@@ -47,14 +57,67 @@
     
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 
+    self.searchGroupType = self.searchTypeTableView.searchGroupType;
+    
     [self placeAndLayoutSubviews];
     
     [self.tableView reloadData];
 }
 
+//searchGroupListWithAid:@"" mobile:@"" orderId:@"" vin:@"" groupname:@""
+
+- (void)updateSearchKeyword {
+    self.searchGroupName = @"";
+    self.searchOrderId = @"";
+    self.searchMobile = @"";
+    self.searchVin = @"";
+
+    if (self.searchGroupType == YGSearchGroupTypeGroupName) {
+        self.searchGroupName = self.searchkeyword;
+    }
+    
+    if (self.searchGroupType == YGSearchGroupTypeOrderId) {
+        self.searchOrderId = self.searchkeyword;
+    }
+
+    if (self.searchGroupType == YGSearchGroupTypePhone) {
+        self.searchMobile = self.searchkeyword;
+    }
+
+    if (self.searchGroupType == YGSearchGroupTypeWINCode) {
+        self.searchVin = self.searchkeyword;
+    }
+
+}
+
+- (void)searchGroupChat {
+    [self updateSearchKeyword];
+    
+    [[EaseHttpManager sharedManager] searchGroupListWithAid:[EMClient sharedClient].currentUsername mobile:self.searchMobile orderId:self.searchOrderId vin:self.searchVin groupname:self.searchGroupName completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+    
+        if (response && response.length > 0 && statusCode) {
+            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+            if (statusCode == 200) {
+                NSString *groupId = responsedict[@"entity"];
+                if (groupId.length > 0) {
+                    [self showHint:@"创建群组成功"];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                
+            }else {
+                [EaseAlertController showErrorAlert:errorDescription];
+            }
+        }
+
+        
+    }];
+    
+}
+
 - (void)tapAction {
     self.searchTypeTableView.hidden = YES;
-    
 }
 
 #pragma mark - Subviews
@@ -166,12 +229,16 @@
 
 #pragma mark private method
 - (void)searchGroupWithKeyword:(NSString *)keyword {
-    if (keyword.length == 0) {
-        [self.dataArray removeAllObjects];
-    }
-    [self buildTempData];
-    self.noDataPromptView.hidden = self.dataArray.count > 0 ? YES:NO;
-    [self.tableView reloadData];
+    self.searchkeyword = keyword;
+  
+    [self searchGroupChat];
+    
+//    if (keyword.length == 0) {
+//        [self.dataArray removeAllObjects];
+//    }
+//    [self buildTempData];
+//    self.noDataPromptView.hidden = self.dataArray.count > 0 ? YES:NO;
+//    [self.tableView reloadData];
     
 }
 

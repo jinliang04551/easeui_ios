@@ -18,6 +18,8 @@ typedef NS_ENUM(NSUInteger, YGSearchGroupType) {
 };
 
 @interface YGGroupSearchTypeTableView : UIView
+@property (nonatomic, assign, readonly) YGSearchGroupType searchGroupType;
+
 @property (nonatomic, copy) void (^selectedBlock)(NSString *selectedName, NSInteger selectedType);
 
 @end

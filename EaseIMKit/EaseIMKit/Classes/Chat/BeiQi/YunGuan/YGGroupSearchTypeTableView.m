@@ -17,6 +17,7 @@
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataArray;
+@property (nonatomic, assign) YGSearchGroupType searchGroupType;
 
 @end
 
@@ -24,7 +25,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-
+        self.searchGroupType = YGSearchGroupTypeGroupName;
         [self placeAndLayoutSubviews];
         [self updateUI];
     }
@@ -93,6 +94,7 @@ static NSString *CellIdentifier = @"YGAvatarTitleAccessCell";
     NSDictionary *dic = self.dataArray[indexPath.row];
     if (self.selectedBlock) {
         self.selectedBlock(dic[kSearchTypeKey], [dic[kSearchTypeValue] integerValue]);
+        self.searchGroupType = [dic[kSearchTypeValue] integerValue];
     }
     
 }

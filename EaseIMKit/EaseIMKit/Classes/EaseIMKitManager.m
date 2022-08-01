@@ -535,34 +535,12 @@ static NSString *g_UIKitVersion = @"3.9.1";
             }
         }
         [[EaseCallManager sharedManager] startInviteUsers:aInviteUsers ext:aExt completion:nil];
+        
     }];
     confVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
     [vc presentViewController:confVC animated:NO completion:nil];
     
-    [self sendStartCallCMDMsgWithGroupId:groupId];
 }
-
-- (void)sendStartCallCMDMsgWithGroupId:(NSString *)groupId {
-    EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:MutiCallAction];
-    body.isDeliverOnlineOnly = YES;
-    NSDictionary *ext = @{
-        MutiCallCallState:MutiCallCreateCall,
-        MutiCallCallUser:[EMClient sharedClient].currentUsername
-    };
-    
-    EMChatMessage *message = [[EMChatMessage alloc] initWithConversationID:groupId from:[EMClient sharedClient].currentUsername to:groupId body:body ext:ext];
-    message.chatType = EMChatTypeChat;
-    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMChatMessage * _Nullable message, EMError * _Nullable error) {
-        if (error == nil) {
-            //fasongchengg
-            [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationSendCallCreateCMDMessage object:message];
-        }else {
-            [self showAlertWithMessage:error.errorDescription];
-        }
-    }];
-    
-}
-
 
 
 // 振铃时增加回调

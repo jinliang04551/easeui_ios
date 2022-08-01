@@ -14,7 +14,7 @@
                      text:(NSString *)text {
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
         
-    EMChatMessage *message = [[EMChatMessage alloc] initWithConversationID:to from:from to:to body:body ext:@{MSG_EXT_RECALL:@(YES), MSG_EXT_RECALLBY:[[EMClient sharedClient] currentUsername]}];
+    EMChatMessage *message = [[EMChatMessage alloc] initWithConversationID:to from:from to:to body:body ext:nil];
     message.chatType = (EMChatType)self.currentConversation.type;
     message.isRead = YES;
 //    message.timestamp = model.message.timestamp;
@@ -24,7 +24,7 @@
     EaseMessageModel *model = [[EaseMessageModel alloc] initWithEMMessage:message];
 //    [self.dataArray addObject:model];
 //    [self.tableView reloadData];
-    
+    model.type = EMMessageTypeExtCallState;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.dataArray addObject:model];
         [self refreshTableView:YES];
