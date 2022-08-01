@@ -138,6 +138,7 @@
 - (void)userDidJoinGroup:(EMGroup *)aGroup
                     user:(NSString *)aUsername
 {
+    
 }
 
 @end

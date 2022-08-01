@@ -247,15 +247,20 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 #define RequestJoinGroupEvent @"requestJoinGroupEvent"
 
 //多人音视频开始，结束 CMD action
-#define MutiCallStartAction @"MutiCallStartAction"
-#define MutiCallFinishAction @"MutiCallFinishAction"
+#define MutiCallAction @"MutiCallAction"
 
-
+#define MutiCallCallState @"callState"
+#define MutiCallCallUser @"callUser"
+#define MutiCallCreateCall @"createCall"
+#define MutiCallEndCall @"endCall"
 
 
 //通知notificatoin
 #define EaseNotificationRequestJoinGroupEvent @"EaseNotificationRequestJoinGroupEvent"
 #define EaseNotificationClearRequestJoinGroupEvent @"EaseNotificationClearRequestJoinGroupEvent"
+
+#define EaseNotificationSendCallCreateCMDMessage @"EaseNotificationSendCallCreateCMDMessage"
+#define EaseNotificationSendCallEndCMDMessage @"EaseNotificationSendCallEndCMDMessage"
 
 
 //#define DEF_APPKEY @"easemob-demo#easeim"

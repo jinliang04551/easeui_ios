@@ -33,6 +33,7 @@
 #import "EaseEnums.h"
 #import "EaseDefines.h"
 #import "EaseWebViewController.h"
+#import "EaseChatViewController+EaseCall.h"
 
 
 @interface EaseChatViewController ()<UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, EMChatManagerDelegate, EMChatBarDelegate, EaseMessageCellDelegate, EaseChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate, EMMoreFunctionViewDelegate>
@@ -101,6 +102,9 @@
     }else {
         _viewModel.extFuncModel.viewBgColor = [UIColor colorWithHexString:@"#F5F5F5"];
     }
+
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithCallCMDMessage:) name:EaseNotificationSendCallCreateCMDMessage object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithCallCMDMessage:) name:EaseNotificationSendCallEndCMDMessage object:nil];
 
                 
     }
@@ -184,6 +188,28 @@
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+#pragma mark NSNotification
+- (void)updateUIWithCallCMDMessage:(NSNotification *)notify {
+    //
+    EMChatMessage *msg = (EMChatMessage *)notify.object;
+    if (msg.ext.count > 0) {
+        
+        NSString *callState = msg.ext[MutiCallCallState];
+        NSString *callUser = msg.ext[MutiCallCallUser];
+
+        NSString *msgText = @"";
+        if ([callState isEqualToString:MutiCallCreateCall]) {
+            msgText = [NSString stringWithFormat:@"%@ 发起了语音通话",callUser];
+        }else {
+            msgText = [NSString stringWithFormat:@"%@ 语音通话已经结束",callUser];
+        }
+        
+        [self insertCallMsgFrom:EMClient.sharedClient.currentUsername to:self.currentConversation.conversationId text:msgText];
+    }
+    
+}
+
 
 #pragma mark - Subviews
 
@@ -650,6 +676,46 @@ if (EaseIMKitManager.shared.isJiHuApp){
 }
 
 #pragma mark - EMChatManagerDelegate
+- (void)cmdMessagesDidReceive:(NSArray<EMChatMessage *> *)aCmdMessages {
+
+    EaseIMKit_WS
+    dispatch_async(self.msgQueue, ^{
+        NSString *conId = weakSelf.currentConversation.conversationId;
+        NSMutableArray *msgArray = [[NSMutableArray alloc] init];
+        for (int i = 0; i < [aCmdMessages count]; i++) {
+            EMChatMessage *msg = aCmdMessages[i];
+            if (![msg.conversationId isEqualToString:conId]) {
+                continue;
+            }
+            if (msg.body.type == EMMessageBodyTypeCmd) {
+                EMCmdMessageBody *cmdBody = (EMCmdMessageBody *)msg.body;
+                
+                if (msg.ext.count > 0 && [cmdBody.action isEqualToString:MutiCallAction]) {
+                    NSString *callState = msg.ext[MutiCallCallState];
+                    NSString *callUser = msg.ext[MutiCallCallUser];
+                    
+                    NSString *msgText = @"";
+                    if ([callState isEqualToString:MutiCallCreateCall]) {
+                        msgText = [NSString stringWithFormat:@"%@ 发起了语音通话",callUser];
+                    }else {
+                        msgText = [NSString stringWithFormat:@"%@ 语音通话已经结束",callUser];
+
+                    }
+                    
+                    [self insertCallMsgFrom:callUser to:self.currentConversation.conversationId text:msgText];
+                    
+                    break;
+                }
+            }
+        }
+//
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [weakSelf refreshTableView:YES];
+//        });
+    });
+    
+    
+}
 
 - (void)messagesDidReceive:(NSArray *)aMessages
 {

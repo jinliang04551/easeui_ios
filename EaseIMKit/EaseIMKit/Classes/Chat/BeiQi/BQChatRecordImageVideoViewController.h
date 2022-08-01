@@ -11,9 +11,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol BQChatRecordImageVideoViewControllererDelegate <NSObject>
+@optional
+- (void)didTapImageOrVideoMessage:(EMChatMessage *)message;
+
+@end
+
 @interface BQChatRecordImageVideoViewController : UIViewController
 - (instancetype)initWithCoversationModel:(EMConversation *)conversation;
 
+@property (nonatomic, assign) id<BQChatRecordImageVideoViewControllererDelegate> delegate;
 
 @end
 

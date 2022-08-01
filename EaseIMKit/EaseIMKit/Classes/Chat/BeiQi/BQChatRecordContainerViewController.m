@@ -21,7 +21,7 @@
 #define kViewTopPadding  200.0f
 
 @interface BQChatRecordContainerViewController ()<MISScrollPageControllerDataSource,
-MISScrollPageControllerDelegate,EMChatRecordViewControllerDelegate,BQChatRecordFileViewControllerDelegate>
+MISScrollPageControllerDelegate,EMChatRecordViewControllerDelegate,BQChatRecordFileViewControllerDelegate,BQChatRecordImageVideoViewControllererDelegate>
 
 @property (nonatomic, strong) MISScrollPageController *pageController;
 @property (nonatomic, strong) MISScrollPageSegmentView *segView;
@@ -132,7 +132,13 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-
+#pragma mark BQChatRecordImageVideoViewControllererDelegate
+- (void)didTapImageOrVideoMessage:(EMChatMessage *)message {
+    
+    EaseChatRecordImageVideoPreViewController *vc = [[EaseChatRecordImageVideoPreViewController alloc] initWithMessage:message];
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
 
 #pragma mark - scrool pager data source and delegate
 - (NSUInteger)numberOfChildViewControllers {
@@ -239,6 +245,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (BQChatRecordImageVideoViewController *)imageVideoRecordVC {
     if (_imageVideoRecordVC == nil) {
         _imageVideoRecordVC = [[BQChatRecordImageVideoViewController alloc] initWithCoversationModel:self.conversation];
+        _imageVideoRecordVC.delegate = self;
     }
     return _imageVideoRecordVC;
 }

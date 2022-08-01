@@ -9,7 +9,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class EMChatMessage;
 @interface EaseChatRecordImageVideoPreViewController : UIViewController
+- (instancetype)initWithMessage:(EMChatMessage *)message;
+
 
 @end
 

@@ -131,18 +131,22 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     
     EMChatMessage *msg = self.dataArray[indexPath.row];
     self.selectedMessage = msg;
-    [self openImageOrVideo];
-}
-
-- (void)openImageOrVideo {
-    NSString *localPath = [(EMImageMessageBody *)self.selectedMessage.body localPath];
-    UIImage *image = [UIImage imageWithContentsOfFile:localPath];
     
-    [[EMImageBrowser sharedBrowser] showImages:@[image] fromController:weakself];
-
+    if (self.delegate && [self.delegate respondsToSelector:@selector(didTapImageOrVideoMessage:)]) {
+        [self.delegate didTapImageOrVideoMessage:msg];
+    }
     
     
 }
+
+//- (void)openImageOrVideo {
+//    NSString *localPath = [(EMImageMessageBody *)self.selectedMessage.body localPath];
+//    UIImage *image = [UIImage imageWithContentsOfFile:localPath];
+//    
+//    EaseIMKit_WS
+////    [[EMImageBrowser sharedBrowser] showImages:@[image] fromController:weakSelf];
+//    
+//}
 
 
 #pragma mark - getter and setter

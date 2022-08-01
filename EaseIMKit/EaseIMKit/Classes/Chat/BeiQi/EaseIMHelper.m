@@ -162,8 +162,6 @@ static EaseIMHelper *helper = nil;
             if ([cmdBody.action isEqualToString:RequestJoinGroupEvent]) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationRequestJoinGroupEvent object:nil];
             }
-            
-            
         }
     }
 }

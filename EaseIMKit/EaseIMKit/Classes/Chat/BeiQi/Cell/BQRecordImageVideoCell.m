@@ -70,7 +70,7 @@
     }
     
     if (imgPath.length > 0) {
-        [self.iconImageView setImage:[UIImage easeUIImageNamed:imgPath]];
+        [self.iconImageView setImage:[UIImage imageNamed:imgPath]];
     }else {
         BOOL isAutoDownloadThumbnail = ([EMClient sharedClient].options.isAutoDownloadThumbnail);
         if (isAutoDownloadThumbnail) {

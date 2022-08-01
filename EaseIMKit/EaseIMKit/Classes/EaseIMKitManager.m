@@ -162,6 +162,7 @@ static NSString *g_UIKitVersion = @"3.9.1";
     [self _resetConversationsUnreadCount];
 }
  
+
 #pragma mark - EMContactManagerDelegate
 
 //收到好友请求
@@ -508,12 +509,6 @@ static NSString *g_UIKitVersion = @"3.9.1";
         [self showHint:msg];
     }
     
-//    EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:MutiCallFinishAction];
-//    body.isDeliverOnlineOnly = YES;
-//    EMChatMessage *message = [[EMChatMessage alloc] initWithConversationID:groupId from:[EMClient sharedClient].currentUsername to:groupId body:body ext:nil];
-//    message.chatType = EMChatTypeChat;
-//    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
-    
 }
 
 // 多人音视频邀请按钮的回调
@@ -544,14 +539,31 @@ static NSString *g_UIKitVersion = @"3.9.1";
     confVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
     [vc presentViewController:confVC animated:NO completion:nil];
     
-    
-    EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:MutiCallStartAction];
-    body.isDeliverOnlineOnly = YES;
-    EMChatMessage *message = [[EMChatMessage alloc] initWithConversationID:groupId from:[EMClient sharedClient].currentUsername to:groupId body:body ext:nil];
-    message.chatType = EMChatTypeChat;
-    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
-
+    [self sendStartCallCMDMsgWithGroupId:groupId];
 }
+
+- (void)sendStartCallCMDMsgWithGroupId:(NSString *)groupId {
+    EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:MutiCallAction];
+    body.isDeliverOnlineOnly = YES;
+    NSDictionary *ext = @{
+        MutiCallCallState:MutiCallCreateCall,
+        MutiCallCallUser:[EMClient sharedClient].currentUsername
+    };
+    
+    EMChatMessage *message = [[EMChatMessage alloc] initWithConversationID:groupId from:[EMClient sharedClient].currentUsername to:groupId body:body ext:ext];
+    message.chatType = EMChatTypeChat;
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMChatMessage * _Nullable message, EMError * _Nullable error) {
+        if (error == nil) {
+            //fasongchengg
+            [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationSendCallCreateCMDMessage object:message];
+        }else {
+            [self showAlertWithMessage:error.errorDescription];
+        }
+    }];
+    
+}
+
+
 
 // 振铃时增加回调
 - (void)callDidReceive:(EaseCallType)aType inviter:(NSString*_Nonnull)username ext:(NSDictionary*)aExt
