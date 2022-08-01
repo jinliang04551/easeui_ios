@@ -567,6 +567,51 @@
 }
 
 
+//URL: /v4/users/{username}/group/listGroup
+// URL中的username是是登录的账号
+
+//"source":"MANAGE",
+//"aid":"15811252011"
+
+- (void)searchGroupListWithGroupId:(NSString *)groupId
+                       groupname:(NSString *)groupname
+                      completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock {
+
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/updateGroup",kServerHost,kEditGroupNameURL,groupId]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest
+                                                requestWithURL:url];
+    request.HTTPMethod = @"POST";
+    
+    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
+    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
+    NSString *token = [EaseKitUtil getLoginUserToken];
+    [headerDict setObject:token forKey:@"Authorization"];
+    [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
+    request.allHTTPHeaderFields = headerDict;
+
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+    [dict setObject:groupname forKey:@"source"];
+    [dict setObject:groupname forKey:@"aid"];
+    [dict setObject:groupname forKey:@"mobile"];
+    [dict setObject:groupname forKey:@"orderId"];
+    [dict setObject:groupname forKey:@"vin"];
+    [dict setObject:groupname forKey:@"vin"];
+    [dict setObject:groupname forKey:@"vin"];
+
+    
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+        if (aCompletionBlock) {
+            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
+        }
+    }];
+    [task resume];
+}
+
+
+
 #pragma mark NSURLSessionDelegate
 - (void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler
 {

@@ -375,6 +375,10 @@ EMClientDelegate
         NSMutableArray *topConvs = [NSMutableArray array];
         
         for (EMConversation *conv in conversations) {
+//            if (self.enterType == EMConversationent) {
+//                <#statements#>
+//            }
+            
 #warning  temp note for generate local null conv
 //            if (!conv.latestMessage) {
 //                /*[EMClient.sharedClient.chatManager deleteConversation:conv.conversationId

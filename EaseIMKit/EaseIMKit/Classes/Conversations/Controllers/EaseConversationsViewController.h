@@ -42,6 +42,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) id <EaseConversationsViewControllerDelegate> delegate;
 @property (nonatomic, weak) id <EMMultiDevicesDelegate> multiDelegate;
 - (instancetype)initWithModel:(EaseConversationViewModel *)aModel;
+
+//@property (nonatomic, assign) EMConversationEnterType enterType;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

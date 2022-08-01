@@ -33,6 +33,9 @@
 
 @property (nonatomic, strong) UIView *countView;
 @property (nonatomic, strong) UILabel *countLabel;
+//图片后缀
+@property (nonatomic, strong) NSString *iconSurfix;
+
 
 @end
 
@@ -57,11 +60,9 @@
 
 - (void)_setupSubviews
 {
-    self.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
       
     self.recordButton = [[UIButton alloc] init];
     [self.recordButton setBackgroundColor:[UIColor whiteColor]];
-    [self.recordButton setImage:[UIImage easeUIImageNamed:@"grayAudioBtn"] forState:UIControlStateNormal];
     self.recordButton.layer.cornerRadius = 40;
     [self.recordButton addTarget:self action:@selector(recordButtonTouchBegin) forControlEvents:UIControlEventTouchDown];
     [self.recordButton addTarget:self action:@selector(recordButtonTouchEnd) forControlEvents:UIControlEventTouchUpInside];
@@ -79,6 +80,7 @@
     self.titleLabel.font = [UIFont systemFontOfSize:18];
     self.titleLabel.textColor = [UIColor grayColor];
     self.titleLabel.text = EaseLocalizableString(@"holdTalk", nil);
+    
     [self addSubview:self.titleLabel];
     [self.titleLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.top.equalTo(self).offset(30);
@@ -89,6 +91,24 @@
     
     self.countView.hidden = YES;
     [self _setupAnimationViews];
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        self.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+        self.titleLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+        self.countLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+        [self.recordButton setBackgroundColor:[UIColor colorWithHexString:@"#3C3C3C"]];
+
+        [self.recordButton setImage:[UIImage easeUIImageNamed:@"yg_grayAudioBtn"] forState:UIControlStateNormal];
+        self.iconSurfix = @"green";
+    }else {
+        self.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
+        self.titleLabel.textColor = [UIColor grayColor];
+        self.countLabel.textColor = [UIColor grayColor];
+        [self.recordButton setBackgroundColor:[UIColor whiteColor]];
+        [self.recordButton setImage:[UIImage easeUIImageNamed:@"grayAudioBtn"] forState:UIControlStateNormal];
+        self.iconSurfix = @"blue";
+
+    }
     
 }
 
@@ -205,19 +225,25 @@
 - (void)_setupImgAnimation:(int)duration
 {
     int selected = duration % 3;
+    NSString *iconName = @"";
     switch (selected) {
         case 1:
+            iconName = [NSString stringWithFormat:@"audioSlide01-%@",self.iconSurfix];
             [self _setupImgs];
-            self.img_left_1.image = [UIImage easeUIImageNamed:@"audioSlide01-blue"];
-            self.img_right_1.image = [UIImage easeUIImageNamed:@"audioSlide01-blue"];
+            self.img_left_1.image = [UIImage easeUIImageNamed:iconName];
+            self.img_right_1.image = [UIImage easeUIImageNamed:iconName];
             break;
         case 2:
-            self.img_left_2.image = [UIImage easeUIImageNamed:@"audioSlide02-blue"];
-            self.img_right_2.image = [UIImage easeUIImageNamed:@"audioSlide02-blue"];
+            iconName = [NSString stringWithFormat:@"audioSlide02-%@",self.iconSurfix];
+
+            self.img_left_2.image = [UIImage easeUIImageNamed:iconName];
+            self.img_right_2.image = [UIImage easeUIImageNamed:iconName];
             break;
         case 0:
-            self.img_left_3.image = [UIImage easeUIImageNamed:@"audioSlide03-blue"];
-            self.img_right_3.image = [UIImage easeUIImageNamed:@"audioSlide03-blue"];
+            iconName = [NSString stringWithFormat:@"audioSlide03-%@",self.iconSurfix];
+
+            self.img_left_3.image = [UIImage easeUIImageNamed:iconName];
+            self.img_right_3.image = [UIImage easeUIImageNamed:iconName];
             break;
         default:
             break;
@@ -306,7 +332,9 @@
     [self _stopRecord];
     
     self.titleLabel.text = EaseLocalizableString(@"holdTalk", nil);
-    [self.recordButton setImage:[UIImage easeUIImageNamed:@"grayAudioBtn"] forState:UIControlStateNormal];
+    
+    [self resetRecordButton];
+    
 }
 
 - (void)recordButtonTouchCancelBegin
@@ -328,9 +356,18 @@
 - (void)recordButtonTouchCancelEnd
 {
     self.titleLabel.text = EaseLocalizableString(@"holdTalk", nil);
-    [self.recordButton setImage:[UIImage easeUIImageNamed:@"grayAudioBtn"] forState:UIControlStateNormal];
-    
+    [self resetRecordButton];
     [self _cancelRecord];
+}
+
+- (void)resetRecordButton {
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        [self.recordButton setImage:[UIImage easeUIImageNamed:@"yg_grayAudioBtn"] forState:UIControlStateNormal];
+        
+    }else {
+        [self.recordButton setImage:[UIImage easeUIImageNamed:@"grayAudioBtn"] forState:UIControlStateNormal];
+
+    }
 }
 
 @end

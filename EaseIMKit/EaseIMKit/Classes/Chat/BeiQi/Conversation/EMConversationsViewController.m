@@ -36,11 +36,19 @@
 @property (nonatomic, strong) EaseConversationViewModel *viewModel;
 @property (nonatomic, strong) UINavigationController *resultNavigationController;
 @property (nonatomic, strong) EMSearchResultController *resultController;
+@property (nonatomic, assign) EMConversationEnterType enterType;
 
 
 @end
 
 @implementation EMConversationsViewController
+- (instancetype)initWithEnterType:(EMConversationEnterType)enterType {
+    self = [super init];
+    if (self) {
+        self.enterType = enterType;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

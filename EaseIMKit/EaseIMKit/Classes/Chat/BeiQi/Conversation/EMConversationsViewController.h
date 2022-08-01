@@ -9,9 +9,18 @@
 #import "EMRefreshViewController.h"
 NS_ASSUME_NONNULL_BEGIN
 
+//会话列表入口类型
+typedef NS_ENUM(NSUInteger, EMConversationEnterType) {
+    EMConversationEnterTypeExclusiveGroup,
+    EMConversationEnterTypeMyChat,
+};
+
 @interface EMConversationsViewController : EMRefreshViewController
 
 @property (nonatomic, copy) void (^deleteConversationCompletion)(BOOL isDelete);
+
+
+- (instancetype)initWithEnterType:(EMConversationEnterType)enterType;
 
 @end
 
