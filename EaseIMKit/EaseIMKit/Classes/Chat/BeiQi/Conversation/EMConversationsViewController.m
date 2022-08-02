@@ -26,6 +26,8 @@
 #import "EMRefreshViewController.h"
 #import "EaseHeaders.h"
 #import "EaseIMKitManager.h"
+#import "UserInfoStore.h"
+
 
 @interface EMConversationsViewController() <EaseConversationsViewControllerDelegate, EMSearchControllerDelegate, EMGroupManagerDelegate>
 
@@ -66,6 +68,11 @@
         [[EaseIMKitOptions sharedOptions] archive];
         [self refreshTableViewWithData];
     }
+    [self fetchOwnUserInfo];
+}
+
+- (void)fetchOwnUserInfo {
+    [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[[EMClient sharedClient].currentUsername]];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -155,12 +162,17 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 }
     
-
     self.viewModel = [[EaseConversationViewModel alloc] init];
     self.viewModel.canRefresh = YES;
     self.viewModel.badgeLabelPosition = EMAvatarTopRight;
     
+    
     self.easeConvsVC = [[EaseConversationsViewController alloc] initWithModel:self.viewModel];
+
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        self.easeConvsVC.enterType = self.enterType;
+    }
+    
     self.easeConvsVC.delegate = self;
     [self addChildViewController:self.easeConvsVC];
     [self.view addSubview:self.easeConvsVC.view];
@@ -327,6 +339,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             [weakself.easeConvsVC refreshTable];
         }
     }];
+    
+    
 }
 
 #pragma mark - searchButtonAction

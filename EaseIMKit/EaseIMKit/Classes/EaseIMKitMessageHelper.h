@@ -13,7 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
 //收到申请加入群组
 @property (nonatomic, assign, readonly) BOOL  hasJoinGroupApply;
 
+@property (nonatomic, strong, readonly) NSMutableArray *exGroupIds;
+
 + (instancetype)shareMessageHelper;
+
 
 @end
 

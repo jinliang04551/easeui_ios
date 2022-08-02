@@ -23,6 +23,7 @@
 #import "EaseHttpManager.h"
 #import "EaseHeaders.h"
 #import "EaseIMKitMessageHelper.h"
+#import <HyphenateChat/HyphenateChat.h>
 
 bool gInit;
 static EaseIMKitManager *easeIMKit = nil;
@@ -37,6 +38,7 @@ static NSString *g_UIKitVersion = @"3.9.1";
 
 //是否是极狐app
 @property (nonatomic, assign) BOOL isJiHuApp;
+
 
 @end
 
@@ -59,6 +61,8 @@ static NSString *g_UIKitVersion = @"3.9.1";
     
     //初始化EaseIMHelper，注册 EMClient 监听
     [EaseIMHelper shareHelper];
+    [EaseIMKitMessageHelper shareMessageHelper];
+
     
     if (option.isAutoLogin){
         [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@(YES)];
@@ -82,7 +86,6 @@ static NSString *g_UIKitVersion = @"3.9.1";
     [EMNotificationHelper shared];
     [SingleCallController sharedManager];
     [ConferenceController sharedManager];
-    [EaseIMKitMessageHelper shareMessageHelper];
     
     [[UserInfoStore sharedInstance] loadInfosFromLocal];
           
@@ -702,12 +705,10 @@ static NSString *g_UIKitVersion = @"3.9.1";
             }
 
         }
-
-        
-        
     }];
     
 }
+
 
 @end
 

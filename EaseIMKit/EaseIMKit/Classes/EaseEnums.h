@@ -48,3 +48,13 @@ typedef NS_ENUM(NSInteger, EaseWeakRemind) {
     EaseWeakRemindSystemHint = 0,   //系统提示
     EaseWeakRemindMsgTime = 10,             //消息时间
 };
+
+
+//会话列表入口类型
+typedef NS_ENUM(NSUInteger, EMConversationEnterType) {
+    EMConversationEnterTypeNone = 0,
+    EMConversationEnterTypeExclusiveGroup,
+    EMConversationEnterTypeMyChat,
+};
+
+

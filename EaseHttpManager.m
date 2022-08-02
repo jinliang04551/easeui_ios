@@ -8,6 +8,7 @@
 #import "EaseHeaders.h"
 
 #define kServerHost @"http://182.92.236.214:12005"
+//运管接口
 #define kLoginURL @"/v2/gov/arcfox/login"
 #define kLogoutURL @"/v2/gov/arcfox/transport"
 //#define kCreateGroupURL @"/v2/group/createGroup"
@@ -17,12 +18,18 @@
 #define kGroupApplyApprovalURL @"/v2/group/chatgroups/users"
 #define kInviteGroupMemberURL @"/v2/group/chatgroups"
 #define kSearchGroupMemberURL @"/v1/gov/arcfox/user"
-#define kSearchCustomOrderURL @"/v4/gov/arcfox/transport"
 #define kFetchGroupYunGuanNoteURL @"/v2/group/chatgroups"
 #define kEditGroupServeNoteURL @"/v2/group/chatgroups"
 //#define kEditGroupNameURL @"/v2/group"
 #define kEditGroupNameURL @"/v4/users"
 #define kSearchGroupChatURL @"/v4/users"
+
+//极狐接口
+//获取专属服务群列表接口
+#define kExclusiveServerGroupListURL @"/v2/group/chatgroups/users"
+//查询客户订单列表信息
+//URL: /v4/gov/arcfox/transport/{username}/getOrders
+#define kSearchCustomOrderURL @"/v4/gov/arcfox/transport"
 
 
 @interface EaseHttpManager() <NSURLSessionDelegate>
@@ -465,60 +472,6 @@
 }
 
 
-//查询客户订单列表信息
-//URL: /v4/gov/arcfox/transport/{username}/getOrders
-
-// "aid":"222600",
-//    "orderType":"MAIN",
-//    "token":"ad8s8d9adhka"
-
-- (void)searchCustomOrderWithUserId:(NSString *)userId
-                          orderType:(NSString *)orderType
-                         completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
-{
-
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/getOrders",kServerHost,kSearchCustomOrderURL,[EMClient sharedClient].currentUsername]];
-    
-    NSLog(@"%s url:%@",__func__,url);
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest
-                                                requestWithURL:url];
-    request.HTTPMethod = @"POST";
-    
-    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
-    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
-    NSString *token = [EaseKitUtil getLoginUserToken];
-    [headerDict setObject:token forKey:@"Authorization"];
-    [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
-    request.allHTTPHeaderFields = headerDict;
-
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-        
-    // "aid":"222600",
-    //    "orderType":"MAIN",
-    //    "token":"ad8s8d9adhka"
-
-    [dict setObject:@"222600" forKey:@"aid"];
-    [dict setObject:@"MAIN" forKey:@"orderType"];
-    [dict setObject:@"ad8s8d9adhka" forKey:@"token"];
-
-    
-//    [dict setObject:userId forKey:@"aid"];
-//    [dict setObject:orderType forKey:@"orderType"];
-//    [dict setObject:token forKey:@"token"];
-    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
-    
-    NSLog(@"%s request dict:%@",__func__,dict);
-
-    
-    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
-        if (aCompletionBlock) {
-            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
-        }
-    }];
-    [task resume];
-}
 
 //获取群服务备注接口
 //URL: /v2/group/chatgroups/{groupId}/users/note
@@ -718,6 +671,91 @@
     [task resume];
 }
 
+
+#pragma mark 极狐接口
+
+//URL: /v2/group/chatgroups/users/{username}/action
+- (void)fetchExclusiveServerGroupListWithCompletion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock {
+
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/action",kServerHost,kExclusiveServerGroupListURL
+,[EMClient sharedClient].currentUsername]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest
+                                                requestWithURL:url];
+    request.HTTPMethod = @"GET";
+    
+    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
+    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
+    NSString *imToken = [EMClient sharedClient].accessUserToken;
+    [headerDict setObject:imToken forKey:@"Authorization"];
+    [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
+    request.allHTTPHeaderFields = headerDict;
+
+    NSLog(@"%s url:%@ headerDict:%@",__func__,url,headerDict);
+    
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+        if (aCompletionBlock) {
+            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
+        }
+    }];
+    [task resume];
+}
+
+
+//查询客户订单列表信息
+//URL: /v4/gov/arcfox/transport/{username}/getOrders
+
+// "aid":"222600",
+//    "orderType":"MAIN",
+//    "token":"ad8s8d9adhka"
+
+- (void)searchCustomOrderWithUserId:(NSString *)userId
+                          orderType:(NSString *)orderType
+                         completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
+{
+
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/getOrders",kServerHost,kSearchCustomOrderURL,[EMClient sharedClient].currentUsername]];
+    
+    NSLog(@"%s url:%@",__func__,url);
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest
+                                                requestWithURL:url];
+    request.HTTPMethod = @"POST";
+    
+    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
+    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
+    NSString *imToken = [EMClient sharedClient].accessUserToken;
+    [headerDict setObject:imToken forKey:@"Authorization"];
+    [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
+    request.allHTTPHeaderFields = headerDict;
+
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+        
+    // "aid":"222600",
+    //    "orderType":"MAIN",
+    //    "token":"ad8s8d9adhka"
+
+    [dict setObject:@"222600" forKey:@"aid"];
+    [dict setObject:@"MAIN" forKey:@"orderType"];
+    [dict setObject:@"ad8s8d9adhka" forKey:@"token"];
+
+//    [dict setObject:userId forKey:@"aid"];
+//    [dict setObject:orderType forKey:@"orderType"];
+//    [dict setObject:token forKey:@"token"];
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+    
+    NSLog(@"%s request dict:%@",__func__,dict);
+
+    
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+        if (aCompletionBlock) {
+            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
+        }
+    }];
+    [task resume];
+}
 
 
 #pragma mark NSURLSessionDelegate

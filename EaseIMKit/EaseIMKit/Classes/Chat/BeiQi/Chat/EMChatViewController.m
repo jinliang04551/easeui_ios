@@ -312,16 +312,18 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         [menuArray addObject:defaultLongPressItems[0]];
     }
     [menuArray addObject:defaultLongPressItems[1]];
-    //转发
-    __weak typeof(self) weakself = self;
-    if (message.body.type == EMMessageBodyTypeText || message.body.type == EMMessageBodyTypeImage || message.body.type == EMMessageBodyTypeLocation || message.body.type == EMMessageBodyTypeVideo) {
-        EaseExtMenuModel *forwardMenu = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"forward"] funcDesc:NSLocalizedString(@"forward", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
-            if (isExecuted) {
-                [weakself forwardMenuItemAction:message];
-            }
-        }];
-        [menuArray addObject:forwardMenu];
-    }
+//    //转发
+//    __weak typeof(self) weakself = self;
+//    if (message.body.type == EMMessageBodyTypeText || message.body.type == EMMessageBodyTypeImage || message.body.type == EMMessageBodyTypeLocation || message.body.type == EMMessageBodyTypeVideo) {
+//        EaseExtMenuModel *forwardMenu = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"forward"] funcDesc:NSLocalizedString(@"forward", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+//            if (isExecuted) {
+//                [weakself forwardMenuItemAction:message];
+//            }
+//        }];
+//        [menuArray addObject:forwardMenu];
+//    }
+    
+    
     if ([defaultLongPressItems count] >= 3 && [message.from isEqualToString:EMClient.sharedClient.currentUsername]) {
         [menuArray addObject:defaultLongPressItems[2]];
     }

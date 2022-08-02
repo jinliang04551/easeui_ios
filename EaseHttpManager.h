@@ -71,6 +71,9 @@ NS_ASSUME_NONNULL_BEGIN
                     completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
 
 
+#pragma mark 极狐接口
+- (void)fetchExclusiveServerGroupListWithCompletion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+
 @end
 
 NS_ASSUME_NONNULL_END

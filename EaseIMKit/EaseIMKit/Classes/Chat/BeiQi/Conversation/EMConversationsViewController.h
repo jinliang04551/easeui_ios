@@ -7,13 +7,9 @@
 //
 
 #import "EMRefreshViewController.h"
-NS_ASSUME_NONNULL_BEGIN
+#import "EaseEnums.h"
 
-//会话列表入口类型
-typedef NS_ENUM(NSUInteger, EMConversationEnterType) {
-    EMConversationEnterTypeExclusiveGroup,
-    EMConversationEnterTypeMyChat,
-};
+NS_ASSUME_NONNULL_BEGIN
 
 @interface EMConversationsViewController : EMRefreshViewController
 

@@ -15,6 +15,8 @@
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
         
     EMChatMessage *message = [[EMChatMessage alloc] initWithConversationID:to from:from to:to body:body ext:nil];
+    
+    
     message.chatType = (EMChatType)self.currentConversation.type;
     message.isRead = YES;
 //    message.timestamp = model.message.timestamp;

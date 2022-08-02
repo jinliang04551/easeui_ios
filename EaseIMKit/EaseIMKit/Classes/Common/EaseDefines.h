@@ -253,6 +253,8 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 #define MutiCallCallUser @"callUser"
 #define MutiCallCreateCall @"createCall"
 #define MutiCallEndCall @"endCall"
+#define MutiCallUserInfo @"userInfo"
+
 
 
 //通知notificatoin

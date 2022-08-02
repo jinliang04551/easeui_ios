@@ -357,6 +357,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
         }
         
         if (model.type == EMMessageTypeExtCallState) {
+            
             cellString = ((EMTextMessageBody *)(model.message.body)).text;
             type = EaseWeakRemindSystemHint;
         }
