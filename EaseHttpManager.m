@@ -10,7 +10,9 @@
 #define kServerHost @"http://182.92.236.214:12005"
 #define kLoginURL @"/v2/gov/arcfox/login"
 #define kLogoutURL @"/v2/gov/arcfox/transport"
-#define kCreateGroupURL @"/v2/group/createGroup"
+//#define kCreateGroupURL @"/v2/group/createGroup"
+#define kCreateGroupURL @"/v4/users"
+
 #define kGroupApplyListURL @"/v2/group/chatgroups/users/state"
 #define kGroupApplyApprovalURL @"/v2/group/chatgroups/users"
 #define kInviteGroupMemberURL @"/v2/group/chatgroups"
@@ -18,7 +20,8 @@
 #define kSearchCustomOrderURL @"/v4/gov/arcfox/transport"
 #define kFetchGroupYunGuanNoteURL @"/v2/group/chatgroups"
 #define kEditGroupServeNoteURL @"/v2/group/chatgroups"
-#define kEditGroupNameURL @"/v2/group"
+//#define kEditGroupNameURL @"/v2/group"
+#define kEditGroupNameURL @"/v4/users"
 #define kSearchGroupChatURL @"/v4/users"
 
 
@@ -239,10 +242,11 @@
                   groupInterduce:(NSString *)groupInterduce
                  customerUserIds:(NSArray *)customerUserIds
                    waiterUserIds:(NSArray *)waiterUserIds
-                      completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
-{
+                      completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock {
 
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kServerHost,kCreateGroupURL]];
+    //    /v4/users/{username}/group/createGroup
+
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/group/createGroup",kServerHost,kCreateGroupURL,[EMClient sharedClient].currentUsername]];
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];
     request.HTTPMethod = @"POST";
@@ -271,6 +275,9 @@
     [dict setObject:customerUserIds forKey:@"customerAids"];
     [dict setObject:waiterUserIds forKey:@"waiterAids"];
     [dict setObject:@"MANUAL" forKey:@"groupType"];
+    [dict setObject:@(YES) forKey:@"action"];
+
+    NSLog(@"%s url:%@\n headerDict:%@\n request dict:%@\n",__func__,url,headerDict,dict);
 
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -590,12 +597,44 @@
 // URLgroupId是需要查询的群id
 //Method:POSTPOST
 
+//- (void)editGroupNameWithGroupId:(NSString *)groupId
+//                       groupname:(NSString *)groupname
+//                      completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
+//{
+//
+//    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/updateGroup",kServerHost,kEditGroupNameURL,groupId]];
+//
+//    NSMutableURLRequest *request = [NSMutableURLRequest
+//                                                requestWithURL:url];
+//    request.HTTPMethod = @"POST";
+//
+//    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
+//    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
+//    NSString *token = [EaseKitUtil getLoginUserToken];
+//    [headerDict setObject:token forKey:@"Authorization"];
+//    [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
+//    request.allHTTPHeaderFields = headerDict;
+//
+//    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+//    [dict setObject:groupname forKey:@"groupname"];
+//
+//    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+//    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+//        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+//        if (aCompletionBlock) {
+//            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
+//        }
+//    }];
+//    [task resume];
+//}
+
+///v4/users/{username}/group/{groupId}/modGroup
 - (void)editGroupNameWithGroupId:(NSString *)groupId
                        groupname:(NSString *)groupname
                       completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
 {
 
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/updateGroup",kServerHost,kEditGroupNameURL,groupId]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/group/%@/modGroup",kServerHost,kEditGroupNameURL,[EMClient sharedClient].currentUsername,groupId]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];
@@ -609,8 +648,11 @@
     request.allHTTPHeaderFields = headerDict;
 
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+    [dict setObject:groupId forKey:@"groupId"];
     [dict setObject:groupname forKey:@"groupname"];
+    [dict setObject:@"" forKey:@"bussinessRemark"];
 
+    
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
@@ -620,7 +662,6 @@
     }];
     [task resume];
 }
-
 
 //URL: /v4/users/{username}/group/listGroup
 // URL中的username是是登录的账号

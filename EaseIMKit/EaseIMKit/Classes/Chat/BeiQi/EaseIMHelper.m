@@ -152,8 +152,6 @@ static EaseIMHelper *helper = nil;
 
 
 - (void)cmdMessagesDidReceive:(NSArray<EMChatMessage *> *)aCmdMessages {
-
-    NSLog(@"%s aCmdMessages:%@",__func__,aCmdMessages);
     
     for (int i = 0; i < aCmdMessages.count; ++i) {
         EMChatMessage *msg = aCmdMessages[i];
@@ -162,6 +160,10 @@ static EaseIMHelper *helper = nil;
             if ([cmdBody.action isEqualToString:RequestJoinGroupEvent]) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationRequestJoinGroupEvent object:nil];
             }
+            
+            NSLog(@"%s imHelper msg.ext:%@",__func__,msg.ext);
+
+            
         }
     }
 }
@@ -436,6 +438,7 @@ static EaseIMHelper *helper = nil;
     UIViewController *rootViewController = window.rootViewController;
     if ([rootViewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *nav = (UINavigationController *)rootViewController;
+        nav.modalPresentationStyle = UIModalPresentationFullScreen;
         [nav pushViewController:controller animated:YES];
     }
 }

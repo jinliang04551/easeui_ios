@@ -94,7 +94,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 }
     
 //    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-    self.navigationController.navigationBarHidden = NO;
+//    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated

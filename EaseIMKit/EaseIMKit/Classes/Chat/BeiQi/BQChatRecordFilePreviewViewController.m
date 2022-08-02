@@ -98,17 +98,29 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     
     self.nameLabel.text = fileBody.displayName;
     self.sizeLabel.text = [NSString stringWithFormat:@"%1.fKB",fileBody.fileLength/1024.0];
-
-//    if (body.downloadStatus == EMDownloadStatusSuccessed && [fileManager fileExistsAtPath:body.localPath]) {
-//        checkFileBlock(body.localPath);
-//        return;
-//    }
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if (fileBody.downloadStatus == EMDownloadStatusSucceed &&[fileManager fileExistsAtPath:fileBody.localPath]) {
         [self.operateButton setTitle:@"打开文件" forState:UIControlStateNormal];
+        self.progressView.hidden = YES;
+        
     }else {
         [self.operateButton setTitle:@"开始下载" forState:UIControlStateNormal];
+        self.progressView.hidden = NO;
+        
+        [[EMClient sharedClient].chatManager downloadMessageAttachment:self.message progress:^(int progress) {
+            self.progressView.progress = progress;
+            
+        } completion:^(EMChatMessage * _Nullable message, EMError * _Nullable error) {
+        
+            if (error) {
+                [EaseAlertController showErrorAlert:EaseLocalizableString(@"downFileFail", nil)];
+            } else {
+                [self operateButtonAction];
+            }
+
+            
+        }];
     }
 }
 
@@ -163,24 +175,20 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 - (void)operateButtonAction {
 
+#if TARGET_IPHONE_SIMULATOR
+    [EaseAlertController showErrorAlert:@"模拟器无法打开文件"];
+#elif TARGET_OS_IPHONE
     NSString *fileLocalPath = [(EMFileMessageBody*)self.message.body localPath];
-                            
-    EaseIMKit_WS
-//    NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:fileLocalPath];
-//    NSLog(@"%s fileHandle:%@",__func__,[fileHandle readDataToEndOfFile]);
-//
-//    [fileHandle closeFile];
     
+    NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:fileLocalPath];
+    NSLog(@"\nfile  --    :%@",[fileHandle readDataToEndOfFile]);
+    [fileHandle closeFile];
     UIDocumentInteractionController *docVc = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:fileLocalPath]];
-    docVc.delegate = weakSelf;
-//    [docVc presentPreviewAnimated:YES];
-    BOOL result = [docVc presentOptionsMenuFromRect:CGRectMake(0, 0, 200, 200) inView:self.view animated:NO];
-       
-    if (!result) {
-        [EaseAlertController showInfoAlert:@"暂时无法打开此类型的文件"];
-    }
+    docVc.delegate = self;
+    [docVc presentPreviewAnimated:YES];
 
-               
+#endif
+
 }
 
 

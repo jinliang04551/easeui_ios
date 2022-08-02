@@ -359,9 +359,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (void)goSearchChatRecord {
     //查找聊天记录
     EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:self.groupId type:EMConversationTypeGroupChat createIfNotExist:NO];
-    BQChatRecordContainerViewController *chatRrcordController = [[BQChatRecordContainerViewController alloc]initWithCoversationModel:conversation];
+    BQChatRecordContainerViewController *vc = [[BQChatRecordContainerViewController alloc]initWithCoversationModel:conversation];
   
-    [self.navigationController pushViewController:chatRrcordController animated:YES];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - EMMultiDevicesDelegate

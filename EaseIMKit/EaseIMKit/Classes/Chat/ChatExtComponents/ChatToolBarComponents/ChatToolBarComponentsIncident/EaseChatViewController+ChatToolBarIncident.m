@@ -71,7 +71,10 @@ static const void *imagePickerKey = &imagePickerKey;
                 //已获取权限
                 self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
                 self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
-                [self presentViewController:self.imagePicker animated:YES completion:nil];
+                
+                [self presentViewController:self.imagePicker animated:YES completion:^{
+
+                }];
             }
             if (status == PHAuthorizationStatusDenied) {
                 //用户已经明确否认了这一照片数据的应用程序访问

@@ -321,12 +321,20 @@
     }
     __weak typeof(self.chatController) weakself = self.chatController;
     void (^checkFileBlock)(NSString *aPath) = ^(NSString *aPathe) {
+
+#if TARGET_IPHONE_SIMULATOR
+    [EaseAlertController showErrorAlert:@"模拟器无法打开文件"];
+#elif TARGET_OS_IPHONE
         NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:aPathe];
         NSLog(@"\nfile  --    :%@",[fileHandle readDataToEndOfFile]);
         [fileHandle closeFile];
         UIDocumentInteractionController *docVc = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:aPathe]];
         docVc.delegate = weakself;
         [docVc presentPreviewAnimated:YES];
+
+#endif
+       
+        
     };
     
     if (body.downloadStatus == EMDownloadStatusSuccessed && [fileManager fileExistsAtPath:body.localPath]) {

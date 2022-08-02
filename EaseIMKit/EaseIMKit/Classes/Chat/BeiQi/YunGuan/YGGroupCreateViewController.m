@@ -117,13 +117,13 @@
 
 
 - (void)buildTestData {
-    NSMutableArray *tArray = NSMutableArray.array;
-    for (int i = 0; i < 20; ++i) {
-        NSString *member = [NSString stringWithFormat:@"gMember_%@",@(i)];
-        [tArray addObject:member];
-    }
-    self.memberArray = [tArray mutableCopy];
-    [self.tableView reloadData];
+//    NSMutableArray *tArray = NSMutableArray.array;
+//    for (int i = 0; i < 20; ++i) {
+//        NSString *member = [NSString stringWithFormat:@"gMember_%@",@(i)];
+//        [tArray addObject:member];
+//    }
+//    self.memberArray = [tArray mutableCopy];
+//    [self.tableView reloadData];
 }
 
 
@@ -301,6 +301,7 @@
 }
 
 - (void)addGroupMemberPage {
+    
     BQGroupEditMemberViewController *controller = [[BQGroupEditMemberViewController alloc] initWithMemberArray:self.memberArray];
     EaseIMKit_WS
     controller.addedMemberBlock = ^(NSMutableArray * _Nonnull userArray, NSMutableArray * _Nonnull serverArray) {
@@ -314,11 +315,19 @@
 - (void)updateUIWithUserArray:(NSMutableArray *)userArray
                   serverArray:(NSMutableArray *)serverArray {
     
-    [self.userArray addObjectsFromArray:userArray];
-    [self.serverArray addObjectsFromArray:serverArray];
+    NSMutableSet *oUserSet = [NSMutableSet setWithArray:self.userArray];
+    [oUserSet addObjectsFromArray:userArray];
+    self.userArray = [[oUserSet allObjects] mutableCopy];
     
-    [self.memberArray addObjectsFromArray:self.userArray];
-    [self.memberArray addObjectsFromArray:self.serverArray];
+    NSMutableSet *oSerSet = [NSMutableSet setWithArray:self.serverArray];
+    [oSerSet addObjectsFromArray:serverArray];
+    self.serverArray = [[oSerSet allObjects] mutableCopy];
+    
+    NSMutableArray *memberArray = [NSMutableArray array];
+    [memberArray addObjectsFromArray:self.userArray];
+    [memberArray addObjectsFromArray:self.serverArray];
+    self.memberArray = memberArray;
+    
 
     [self updateConfirmState];
     [self.tableView reloadData];

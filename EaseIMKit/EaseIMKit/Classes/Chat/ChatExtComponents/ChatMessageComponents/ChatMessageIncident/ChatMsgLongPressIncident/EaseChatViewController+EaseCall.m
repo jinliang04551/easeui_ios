@@ -22,9 +22,10 @@
     [self.currentConversation insertMessage:message error:nil];
     
     EaseMessageModel *model = [[EaseMessageModel alloc] initWithEMMessage:message];
+    model.type = EMMessageTypeExtCallState;
+
 //    [self.dataArray addObject:model];
 //    [self.tableView reloadData];
-    model.type = EMMessageTypeExtCallState;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.dataArray addObject:model];
         [self refreshTableView:YES];

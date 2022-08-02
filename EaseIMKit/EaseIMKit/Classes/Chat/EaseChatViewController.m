@@ -205,7 +205,7 @@
         if ([callState isEqualToString:MutiCallCreateCall]) {
             msgText = [NSString stringWithFormat:@"%@ 发起了语音通话",callUser];
         }else {
-            msgText = [NSString stringWithFormat:@"%@ 语音通话已经结束",callUser];
+            msgText = @"语音通话已经结束";
         }
         
         NSLog(@"%s msgText:%@",__func__,msgText);
@@ -220,7 +220,7 @@
 
 - (void)_setupChatSubviews
 {
-    self.view.backgroundColor = [UIColor clearColor];
+//    self.view.backgroundColor = [UIColor clearColor];
     
     self.chatBar = [[EMChatBar alloc] initWithViewModel:_viewModel];
     self.chatBar.delegate = self;
@@ -692,7 +692,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
     EaseIMKit_WS
     dispatch_async(self.msgQueue, ^{
         NSString *conId = weakSelf.currentConversation.conversationId;
-        NSMutableArray *msgArray = [[NSMutableArray alloc] init];
+
         for (int i = 0; i < [aCmdMessages count]; i++) {
             EMChatMessage *msg = aCmdMessages[i];
             if (![msg.conversationId isEqualToString:conId]) {
@@ -700,7 +700,8 @@ if (EaseIMKitManager.shared.isJiHuApp){
             }
             if (msg.body.type == EMMessageBodyTypeCmd) {
                 EMCmdMessageBody *cmdBody = (EMCmdMessageBody *)msg.body;
-                
+                NSLog(@"%s easeChat msg.ext:%@",__func__,msg.ext);
+
                 if (msg.ext.count > 0 && [cmdBody.action isEqualToString:MutiCallAction]) {
                     NSString *callState = msg.ext[MutiCallCallState];
                     NSString *callUser = msg.ext[MutiCallCallUser];
@@ -709,13 +710,14 @@ if (EaseIMKitManager.shared.isJiHuApp){
                     if ([callState isEqualToString:MutiCallCreateCall]) {
                         msgText = [NSString stringWithFormat:@"%@ 发起了语音通话",callUser];
                     }else {
-                        msgText = [NSString stringWithFormat:@"%@ 语音通话已经结束",callUser];
+                        msgText = @"语音通话已经结束";
 
                     }
                     
-                    [self insertCallMsgFrom:callUser to:self.currentConversation.conversationId text:msgText];
+                    NSLog(@"%s msgtext:%@",__func__,msgText);
                     
-                    break;
+                [self insertCallMsgFrom:callUser to:self.currentConversation.conversationId text:msgText];
+                    
                 }
             }
         }
