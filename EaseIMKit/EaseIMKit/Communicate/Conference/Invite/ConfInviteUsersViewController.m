@@ -126,8 +126,7 @@
     
     [self.confInviteSelectedUsersView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.customNavBarView.mas_bottom);
-        make.left.right.equalTo(self.view);
-//        make.height.equalTo(@(70.0));
+        make.centerX.equalTo(self.view);
         make.height.equalTo(@(0));
     }];
     
@@ -207,8 +206,16 @@
 - (void)updateUI {
     
     CGFloat inviteHeight = self.inviteUsers.count > 0 ? 70 : 0;
+    CGFloat inviteWidth = self.inviteUsers.count * [BQConfInviteSelectedUsersView itemSize].width + [BQConfInviteSelectedUsersView itemSpacing] * (self.inviteUsers.count -1) + [BQConfInviteSelectedUsersView collectionLeftRightPadding] * 2;
+//    if (inviteWidth >= EaseIMKit_ScreenWidth) {
+//        inviteWidth = EaseIMKit_ScreenWidth;
+//    }
+    
+    
     [self.confInviteSelectedUsersView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@(inviteHeight));
+        make.width.equalTo(@(inviteWidth));
+        make.left.lessThanOrEqualTo(self.view);
     }];
     
     NSString *confirmTitle = [NSString stringWithFormat:@"确定(%@)",@([self.inviteUsers count])];

@@ -12,6 +12,7 @@
 #import "EaseHeaders.h"
 
 #define kAvatarImageHeight 38.0
+#define KCollectionItemMaxCount 6
 
 @interface BQConfInviteMemberCell : UICollectionViewCell
 @property (nonatomic, strong) UIImageView *iconImageView;
@@ -178,9 +179,10 @@
         _collectionView.dataSource = self;
         _collectionView.showsVerticalScrollIndicator = NO;
         _collectionView.showsHorizontalScrollIndicator = NO;
-        _collectionView.alwaysBounceVertical = YES;
+        _collectionView.alwaysBounceVertical = NO;
+        _collectionView.alwaysBounceHorizontal = YES;
         _collectionView.pagingEnabled = NO;
-        _collectionView.scrollEnabled = NO;
+        _collectionView.scrollEnabled = YES;
         _collectionView.userInteractionEnabled = YES;
 
     }
@@ -190,14 +192,26 @@
 - (UICollectionViewFlowLayout *)collectionViewLayout {
     UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    CGFloat itemWidth = (EaseIMKit_ScreenWidth - 6* 12.0 - 16.0 *2)/6.0;
-    CGFloat itemHeight = 70.0;
-    flowLayout.itemSize = CGSizeMake(itemWidth, itemHeight);
+    flowLayout.itemSize = [BQConfInviteSelectedUsersView itemSize];
     flowLayout.minimumLineSpacing = 14.0;
-    flowLayout.minimumInteritemSpacing = 12.0;
-    flowLayout.sectionInset = UIEdgeInsetsMake(0, 16.0, 0, 16.0);
+    flowLayout.minimumInteritemSpacing = [BQConfInviteSelectedUsersView itemSpacing];
+    flowLayout.sectionInset = UIEdgeInsetsMake(0, [BQConfInviteSelectedUsersView collectionLeftRightPadding], 0, [BQConfInviteSelectedUsersView collectionLeftRightPadding]);
     
     return flowLayout;
+}
+
++ (CGSize)itemSize {
+    CGFloat itemWidth = (EaseIMKit_ScreenWidth - (KCollectionItemMaxCount - 1)* [BQConfInviteSelectedUsersView itemSpacing] - [BQConfInviteSelectedUsersView collectionLeftRightPadding] *2)/KCollectionItemMaxCount;
+    CGFloat itemHeight = 70.0;
+    return CGSizeMake(itemWidth, itemHeight);
+}
+
++ (CGFloat)itemSpacing {
+    return 12.0;
+}
+
++ (CGFloat)collectionLeftRightPadding {
+    return 16.0;
 }
 
 - (NSMutableArray*)dataArray
@@ -212,3 +226,5 @@
 @end
 
 #undef kAvatarImageHeight
+#undef KCollectionItemMaxCount
+

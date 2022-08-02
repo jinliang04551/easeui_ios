@@ -14,6 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) UICollectionView *collectionView;
 
++ (CGSize)itemSize;
++ (CGFloat)itemSpacing;
++ (CGFloat)collectionLeftRightPadding;
+
 - (void)updateUIWithMemberArray:(NSMutableArray *)memberArray;
 
 @end

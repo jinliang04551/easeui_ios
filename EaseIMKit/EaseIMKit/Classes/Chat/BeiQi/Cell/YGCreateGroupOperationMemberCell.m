@@ -64,7 +64,6 @@
     return height;
 }
 
-#pragma mark action
 
 #pragma mark getter and setter
 - (BQGroupMemberCollectionView *)groupMemberView {
