@@ -242,7 +242,7 @@
 {
     __weak typeof(self) weakself = self;
     EaseTextViewController *controller = [[EaseTextViewController alloc] initWithString:self.groupInterduce placeholder:NSLocalizedString(@"inputGroupDescription", nil) isEditable:YES];
-    controller.title = NSLocalizedString(@"groupDescritption", nil);
+    controller.title = @"群介绍";
     [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
         weakself.groupInterduce = aString;
         return YES;
@@ -258,10 +258,14 @@
     NSLog(@"%s",__func__);
     
     if (self.groupName.length == 0) {
-        [self showHint:@"群名称为空"];
+        [self showHint:@"群名称不能为空"];
         return;
     }
     
+    if (self.userArray.count == 0) {
+        [self showHint:@"客户列表不能为空"];
+        return;
+    }
     
     [[EaseHttpManager sharedManager] createGroupWithGroupName:self.groupName groupInterduce:self.groupInterduce customerUserIds:self.userArray waiterUserIds:self.serverArray completion:^(NSInteger statusCode, NSString * _Nonnull response) {
           
@@ -270,7 +274,7 @@
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
             if (statusCode == 200) {
-                NSString *groupId = responsedict[@"entity"];
+                NSString *groupId = responsedict[@"data"];
                 if (groupId.length > 0) {
                     [self showHint:@"创建群组成功"];
                     [self.navigationController popViewControllerAnimated:YES];

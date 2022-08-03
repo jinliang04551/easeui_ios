@@ -160,7 +160,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 - (void)searchAction {
     if (self.delegate && [self.delegate respondsToSelector:@selector(searchTextDidChangeWithString:)]) {
-        [self.delegate searchTextDidChangeWithString:self.textField.text];
+        NSString *trimmedString = [self.textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+        [self.delegate searchTextDidChangeWithString:trimmedString];
     }
 }
 

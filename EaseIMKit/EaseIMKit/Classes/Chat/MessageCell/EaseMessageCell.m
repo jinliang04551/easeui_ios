@@ -302,7 +302,6 @@
         } else {
             self.nameLabel.text = model.message.from;
         }
-//        self.nameLabel.text = @"ssdfsd";
     }
     BOOL isCustomAvatar = NO;
     if (model.userDataDelegate && [model.userDataDelegate respondsToSelector:@selector(defaultAvatar)]) {

@@ -17,6 +17,7 @@
 @interface EaseConversationCell()
 
 @property (nonatomic, strong) EaseConversationViewModel *viewModel;
+@property (nonatomic, strong) UILabel *groupIdLabel;
 
 @end
 
@@ -67,6 +68,10 @@
     [self.contentView addSubview:_badgeLabel];
     [self.avatarView addSubview:_redDot];
     [self.contentView addSubview:_undisturbRing];
+    
+    if (![EaseIMKitOptions sharedOptions].isJiHuApp) {
+        [self.contentView addSubview:self.groupIdLabel];
+    }
 }
 
 - (void)_setupViewsProperty {
@@ -137,11 +142,26 @@
         make.left.equalTo(weakSelf.avatarView.ease_right).offset(weakSelf.viewModel.avatarEdgeInsets.right + weakSelf.viewModel.nameLabelEdgeInsets.left + 12);
     }];
     
-    [_detailLabel Ease_remakeConstraints:^(EaseConstraintMaker *make) {
-        make.top.equalTo(weakSelf.nameLabel.ease_bottom).offset(weakSelf.viewModel.nameLabelEdgeInsets.bottom + weakSelf.viewModel.detailLabelEdgeInsets.top);
-        make.left.equalTo(weakSelf.avatarView.ease_right).offset(weakSelf.viewModel.avatarEdgeInsets.right + weakSelf.viewModel.detailLabelEdgeInsets.left + 12);
-        make.bottom.equalTo(weakSelf.contentView.ease_bottom).offset(weakSelf.viewModel.detailLabelEdgeInsets.bottom - 18);
-    }];
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        [_detailLabel Ease_remakeConstraints:^(EaseConstraintMaker *make) {
+            make.top.equalTo(weakSelf.nameLabel.ease_bottom).offset(weakSelf.viewModel.nameLabelEdgeInsets.bottom + weakSelf.viewModel.detailLabelEdgeInsets.top);
+            make.left.equalTo(weakSelf.avatarView.ease_right).offset(weakSelf.viewModel.avatarEdgeInsets.right + weakSelf.viewModel.detailLabelEdgeInsets.left + 12);
+            make.bottom.equalTo(weakSelf.contentView.ease_bottom).offset(weakSelf.viewModel.detailLabelEdgeInsets.bottom - 18);
+        }];
+        
+    }else {
+        
+        [self.groupIdLabel Ease_remakeConstraints:^(EaseConstraintMaker *make) {
+            make.top.equalTo(weakSelf.nameLabel.ease_bottom).offset(4.0);
+            make.left.equalTo(weakSelf.nameLabel);
+        }];
+        
+        [_detailLabel Ease_remakeConstraints:^(EaseConstraintMaker *make) {
+            make.top.equalTo(weakSelf.groupIdLabel.ease_bottom).offset(4.0);
+            make.left.equalTo(weakSelf.avatarView.ease_right).offset(weakSelf.viewModel.avatarEdgeInsets.right + weakSelf.viewModel.detailLabelEdgeInsets.left + 12);
+        }];
+        
+    }
     
     [_timeLabel Ease_remakeConstraints:^(EaseConstraintMaker *make) {
         make.top.equalTo(weakSelf.contentView.ease_top).offset(weakSelf.viewModel.timeLabelEdgeInsets.top + 12);
@@ -219,6 +239,7 @@
         self.backgroundColor = _viewModel.cellBgColor;
     }
     
+    self.groupIdLabel.text = _model.easeId;
     self.detailLabel.attributedText = _model.showInfo;
     self.timeLabel.text = [EaseDateHelper formattedTimeFromTimeInterval:_model.lastestUpdateTime];
     if (model.showBadgeValue == YES) {
@@ -254,5 +275,18 @@
 }
 
 
+
+#pragma mark getter and setter
+- (UILabel *)groupIdLabel {
+    if (_groupIdLabel == nil) {
+        _groupIdLabel = [[UILabel alloc] init];
+        _groupIdLabel.font = EaseIMKit_NFont(12.0);
+        _groupIdLabel.textColor = [UIColor colorWithHexString:@"#A5A5A5"];
+        _groupIdLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        _groupIdLabel.backgroundColor = [UIColor clearColor];
+        
+    }
+    return _groupIdLabel;
+}
 
 @end

@@ -272,9 +272,10 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         if(userInfo.avatarUrl.length > 0) {
             model.avatarURL = userInfo.avatarUrl;
         }
-        if(userInfo.nickName.length > 0) {
-            model.showName = userInfo.nickName;
-        }
+//        if(userInfo.nickName.length > 0) {
+//            model.showName = userInfo.nickName;
+//        }
+        model.showName = userInfo.nickName ?: userInfo.userId;
     }else{
         [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[huanxinID]];
     }

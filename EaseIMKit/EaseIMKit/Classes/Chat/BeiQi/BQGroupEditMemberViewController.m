@@ -256,10 +256,19 @@
     if (isServicer) {
         if (![self.serverArray containsObject:userId]) {
             [self.serverArray addObject:userId];
+            //去掉重复选择身份的id
+            if ([self.userArray containsObject:userId]) {
+                [self.userArray removeObject:userId];
+            }
         }
+        
     }else {
         if (![self.userArray containsObject:userId]) {
             [self.userArray addObject:userId];
+            //去掉重复选择身份的id
+            if ([self.serverArray containsObject:userId]) {
+                [self.serverArray removeObject:userId];
+            }
         }
     }
     

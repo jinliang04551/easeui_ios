@@ -51,7 +51,9 @@
 - (void)loginStateChanged:(NSNotification *)notify {
     BOOL loginSuccess = [notify.object boolValue];
     if (loginSuccess) {
-        [self fetchJiHuExGroupList];
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            [self fetchJiHuExGroupList];
+        }
     }
 }
 

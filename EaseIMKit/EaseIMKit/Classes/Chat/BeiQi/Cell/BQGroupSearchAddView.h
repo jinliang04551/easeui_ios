@@ -24,6 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateUIWithMemberArray:(NSMutableArray *)memberArray;
 
++ (CGSize)itemSize;
++ (CGFloat)itemSpacing;
++ (CGFloat)collectionLeftRightPadding;
 
 @end
 

@@ -369,8 +369,6 @@ EMClientDelegate
 
 - (void)_loadAllConversationsFromDB {
         
-
-    
     __weak typeof(self) weakSelf = self;
     dispatch_async(_loadDataQueue, ^{
         NSMutableArray<id<EaseUserDelegate>> *totals = [NSMutableArray<id<EaseUserDelegate>> array];
@@ -384,10 +382,13 @@ EMClientDelegate
             
             if (self.enterType == EMConversationEnterTypeExclusiveGroup) {
                 BOOL isExgroup = conv.ext[@"JiHuExGroupChat"];
+                NSLog(@"conv:%@ isExgroup:%@",conv.conversationId,@(isExgroup));
 
                 //非极狐专属群过滤
                 if (!isExgroup) {
                     continue;
+                }else {
+                    NSLog(@"======isExgroup=========");
                 }
             }
 
@@ -445,7 +446,6 @@ EMClientDelegate
         [totals addObjectsFromArray:topConvList];
         [totals addObjectsFromArray:normalConvList];
         
-        weakSelf.dataAry = (NSMutableArray *)totals;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
             if ([self.tableView.refreshControl isRefreshing]) {
@@ -454,13 +454,12 @@ EMClientDelegate
         });
         
         dispatch_async(dispatch_get_main_queue(), ^{
-         [self.tableView reloadData];
-         [weakSelf _updateBackView];
+             weakSelf.dataAry = (NSMutableArray *)totals;
+             [weakSelf.tableView reloadData];
+             [weakSelf _updateBackView];
         });
     });
 }
-
-
 
 
 - (void)refreshTabView

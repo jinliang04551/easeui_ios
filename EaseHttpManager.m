@@ -275,7 +275,7 @@
     
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
     
-    [dict setObject:groupName forKey:@"groupname"];
+    [dict setObject:groupName forKey:@"groupName"];
     [dict setObject:groupInterduce forKey:@"desc"];
 
     [dict setObject:[EMClient sharedClient].currentUsername forKey:@"ownerAid"];

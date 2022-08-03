@@ -13,6 +13,7 @@
 
 #define kMaxNameLabelWidth 70.0
 #define kCollectionItemHeight 24.0
+#define KCollectionItemMaxCount 4
 
 @interface BQGroupAddItemCell : UICollectionViewCell
 @property (nonatomic, strong) UIView *bgView;
@@ -254,7 +255,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
        
         CGFloat aWidth = 0;
         CGFloat rowHeight = 1;
-        CGFloat aMaxWidth = EaseIMKit_ScreenWidth - 16.0 *2 - 10.0 * 5;
+        CGFloat aMaxWidth = [BQGroupSearchAddView maxItemWidth];
         
         for (int i = 0; i< self.dataArray.count; ++i) {
             NSString *userId = self.dataArray[i];
@@ -303,12 +304,29 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (UICollectionViewFlowLayout *)collectionViewLayout {
     UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    flowLayout.minimumLineSpacing = 10.0;
-    flowLayout.minimumInteritemSpacing = 10.0;
-    flowLayout.sectionInset = UIEdgeInsetsMake(0, 16.0, 0, 16.0);
+   
+    flowLayout.minimumLineSpacing = [BQGroupSearchAddView itemSpacing];
+    flowLayout.minimumInteritemSpacing = [BQGroupSearchAddView itemSpacing];
+    flowLayout.sectionInset = UIEdgeInsetsMake(0, [BQGroupSearchAddView collectionLeftRightPadding], 0, [BQGroupSearchAddView collectionLeftRightPadding]);
     
     return flowLayout;
 }
+
+
++ (CGFloat)itemSpacing {
+    return 10.0;
+}
+
++ (CGFloat)collectionLeftRightPadding {
+    return 16.0;
+}
+
+
++ (CGFloat)maxItemWidth {
+    CGFloat itemWidth = (EaseIMKit_ScreenWidth - (KCollectionItemMaxCount - 1)* [BQGroupSearchAddView itemSpacing] - [BQGroupSearchAddView collectionLeftRightPadding] *2)/KCollectionItemMaxCount;
+    return itemWidth;
+}
+
 
 - (NSMutableArray*)dataArray
 {
@@ -335,3 +353,4 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 #undef kMaxNameLabelWidth
 #undef kCollectionItemHeight
+#undef KCollectionItemMaxCount
