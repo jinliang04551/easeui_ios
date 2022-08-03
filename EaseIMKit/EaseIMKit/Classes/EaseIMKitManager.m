@@ -27,7 +27,7 @@
 
 bool gInit;
 static EaseIMKitManager *easeIMKit = nil;
-static NSString *g_UIKitVersion = @"3.9.1";
+static NSString *g_UIKitVersion = @"1.0.0";
 
 @interface EaseIMKitManager ()<EMMultiDevicesDelegate, EMContactManagerDelegate, EMGroupManagerDelegate, EMChatManagerDelegate,EaseCallDelegate>
 @property (nonatomic, strong) EaseMulticastDelegate<EaseIMKitManagerDelegate> *delegates;
@@ -38,12 +38,14 @@ static NSString *g_UIKitVersion = @"3.9.1";
 
 //是否是极狐app
 @property (nonatomic, assign) BOOL isJiHuApp;
+//专属群未读数
+@property (nonatomic, assign) NSInteger exclusivegroupUnReadCount;
 
 @property (nonatomic, strong) NSMutableArray *joinedGroupIdArray;
 
 @end
 
-#define IMKitVersion @"3.9.1"
+#define IMKitVersion @"1.0.0"
 
 @implementation EaseIMKitManager
 + (BOOL)initWithEaseIMKitOptions:(EaseIMKitOptions *)options {
@@ -413,7 +415,10 @@ static NSString *g_UIKitVersion = @"3.9.1";
 //未读总数变化
 - (void)_resetConversationsUnreadCount
 {
-    NSInteger unreadCount = 0,undisturbCount = 0;
+    NSInteger unreadCount = 0;
+    NSInteger undisturbCount = 0;
+    NSInteger exclusivegroupUnReadCount = 0;
+
     NSArray *conversationList = [EMClient.sharedClient.chatManager getAllConversations];
     for (EMConversation *conversation in conversationList) {
         if ([conversation.conversationId isEqualToString:_currentConversationId]) {
@@ -430,8 +435,15 @@ static NSString *g_UIKitVersion = @"3.9.1";
             continue;
         }
         unreadCount += conversation.unreadMessagesCount;
+        
+        //专属群未读
+        if ([[EaseIMKitMessageHelper shareMessageHelper].exGroupIds containsObject:conversation.conversationId]) {
+            exclusivegroupUnReadCount += conversation.unreadMessagesCount;
+        }
     }
+    
     _currentUnreadCount = unreadCount;
+    _exclusivegroupUnReadCount = exclusivegroupUnReadCount;
     [self coversationsUnreadCountUpdate:unreadCount undisturbCount:undisturbCount];
 }
 

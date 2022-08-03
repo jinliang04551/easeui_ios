@@ -78,6 +78,10 @@ NS_ASSUME_NONNULL_BEGIN
 //是否是极狐app
 @property (nonatomic, assign,readonly) BOOL isJiHuApp;
 
+//专属群未读数
+@property (nonatomic, assign,readonly) NSInteger exclusivegroupUnReadCount;
+
+
 + (BOOL)initWithEaseIMKitOptions:(EaseIMKitOptions *)options;
 
 /// Description 根据会话 ID 查询当前会话是否设置了免打扰。（ 时间复杂度O(1)：将原来 undisturbList 改造为 undisturbMap 降低查询时间复杂度）

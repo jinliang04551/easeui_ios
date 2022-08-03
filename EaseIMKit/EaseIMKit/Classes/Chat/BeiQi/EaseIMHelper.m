@@ -162,7 +162,6 @@ static EaseIMHelper *helper = nil;
             }
             
             NSLog(@"%s imHelper msg.ext:%@",__func__,msg.ext);
-
             
         }
     }

@@ -7,11 +7,11 @@
 //
 
 #import "YGGroupYunGuanRemarkViewController.h"
-#import "EMTextView.h"
+#import "EaseTextView.h"
 #import "EaseHeaders.h"
 
 @interface YGTextView : UIView
-@property (nonatomic, strong) EMTextView *textView;
+@property (nonatomic, strong) EaseTextView *textView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIImageView *iconImageView;
 
@@ -69,9 +69,9 @@
 }
 
 
-- (EMTextView *)textView {
+- (EaseTextView *)textView {
     if (_textView == nil) {
-        _textView = [[EMTextView alloc] init];
+        _textView = [[EaseTextView alloc] init];
         _textView.font = [UIFont systemFontOfSize:14.0];
         _textView.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
         _textView.returnKeyType = UIReturnKeyDone;
