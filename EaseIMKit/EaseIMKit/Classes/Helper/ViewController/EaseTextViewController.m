@@ -77,12 +77,13 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:EaseIMKit_TitleBlueColor, NSForegroundColorAttributeName,[UIFont boldSystemFontOfSize:14],NSFontAttributeName, nil] forState:UIControlStateNormal];
 }
     
-    if (!self.isEditable){
-        self.textView.placeholder = NSLocalizedString(@"editRight", nil);
-    }else {
-        self.textView.placeholder = self.placeholder;
-    }
+//    if (!self.isEditable){
+//        self.textView.placeholder = NSLocalizedString(@"editRight", nil);
+//    }else {
+//    }
     
+    self.textView.placeholder = self.placeholder;
+
     self.textView.returnKeyType = UIReturnKeyDone;
     if (self.originalString && ![self.originalString isEqualToString:@""]) {
         self.textView.text = self.originalString;

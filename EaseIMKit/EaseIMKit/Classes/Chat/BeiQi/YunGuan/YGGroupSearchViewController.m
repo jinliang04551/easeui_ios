@@ -14,7 +14,7 @@
 #import "YGAvatarTitleAccessCell.h"
 #import "BQNoDataPlaceHolderView.h"
 #import "YGGroupSearchTypeTableView.h"
-#import "YGSearchGroup.h"
+#import "YGSearchGroupModel.h"
 #import "EMChatViewController.h"
 #import "EaseHeaders.h"
 
@@ -100,11 +100,17 @@
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
             if (statusCode == 200) {
-                NSString *groupId = responsedict[@"entity"];
-                if (groupId.length > 0) {
-                    [self showHint:@"创建群组成功"];
-                    [self.navigationController popViewControllerAnimated:YES];
+                NSArray *dataArray = responsedict[@"data"];
+
+                NSMutableArray *tArray = [NSMutableArray array];
+                for (int i = 0; i < dataArray.count; ++i) {
+                    YGSearchGroupModel *model = [[YGSearchGroupModel alloc] initWithDic:dataArray[i]];
+                    if (model) {
+                        [tArray addObject:model];
+                    }
                 }
+                self.dataArray = tArray;
+                [self.tableView reloadData];
                 
             }else {
                 [EaseAlertController showErrorAlert:errorDescription];
@@ -233,30 +239,8 @@
   
     [self searchGroupChat];
     
-//    if (keyword.length == 0) {
-//        [self.dataArray removeAllObjects];
-//    }
-//    [self buildTempData];
-//    self.noDataPromptView.hidden = self.dataArray.count > 0 ? YES:NO;
-//    [self.tableView reloadData];
-    
 }
 
-- (void)buildTempData {
-    NSMutableArray *tempArray = [NSMutableArray array];
-    for (int i = 0; i < 3; ++i) {
-        YGSearchGroup *group = YGSearchGroup.new;
-        group.groupId = [NSString stringWithFormat:@"%@",@(i)];
-        group.groupName = [NSString stringWithFormat:@"group_%@",@(i)];
-        
-        if (i/2 == 0) {
-            group.isGroupMember = YES;
-        }
-        [tempArray addObject:group];
-    }
-    
-    self.dataArray = tempArray;
-}
 
 
 #pragma mark getter and setter
@@ -321,7 +305,8 @@
             weakSelf.searchTypeTableView.hidden = YES;
         };
         _searchTypeTableView.layer.shadowOffset = CGSizeMake(2.0, 2.0);
-        _searchTypeTableView.layer.shadowColor = UIColor.grayColor.CGColor;
+        _searchTypeTableView.layer.shadowColor = UIColor.blueColor.CGColor;
+        
     }
     return _searchTypeTableView;
 }

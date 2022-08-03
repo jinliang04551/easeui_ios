@@ -16,5 +16,6 @@
 
 @property(strong, nonatomic) NSString *placeHolder;
 @property(strong, nonatomic) UIColor *placeHolderColor;
+@property (nonatomic ,strong, readonly) UILabel *placeHolderLabel;
 
 @end

@@ -52,7 +52,7 @@ UITableView * tableView;
     backgroundView.action = action;
     backgroundView.imagesData = images ;
     backgroundView.selectData = selectData;
-    backgroundView.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.6];
+    backgroundView.backgroundColor = UIColor.clearColor;
     [win addSubview:backgroundView];
 
     // TAB

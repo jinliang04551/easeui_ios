@@ -274,7 +274,9 @@
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
             if (statusCode == 200) {
-                NSString *groupId = responsedict[@"data"];
+                NSDictionary *dataDic = responsedict[@"data"];
+                NSString *groupId = dataDic[@"groupId"];
+
                 if (groupId.length > 0) {
                     [self showHint:@"创建群组成功"];
                     [self.navigationController popViewControllerAnimated:YES];

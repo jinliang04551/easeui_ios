@@ -39,6 +39,7 @@ static NSString *g_UIKitVersion = @"3.9.1";
 //是否是极狐app
 @property (nonatomic, assign) BOOL isJiHuApp;
 
+@property (nonatomic, strong) NSMutableArray *joinedGroupIdArray;
 
 @end
 
@@ -77,9 +78,20 @@ static NSString *g_UIKitVersion = @"3.9.1";
         }
     }];
     
-    [[EMClient sharedClient].groupManager getJoinedGroupsFromServerWithPage:0 pageSize:-1 completion:^(NSArray *aList, EMError *aError) {
+    [[EMClient sharedClient].groupManager getJoinedGroupsFromServerWithPage:0 pageSize:-1 completion:^(NSArray<EMGroup *> *aList, EMError * _Nullable aError) {
+        
         if (!aError) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_LIST_FETCHFINISHED object:nil];
+            
+            NSMutableArray *tArray = [NSMutableArray array];
+            for (int i = 0; i < aList.count; ++i) {
+                EMGroup *group = aList[i];
+                if (group) {
+                    [tArray addObject:group.groupId];
+                }
+            }
+            self.joinedGroupIdArray = [tArray mutableCopy];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_LIST_FETCHFINISHED object:self.joinedGroupIdArray];
         }
     }];
     
@@ -707,6 +719,14 @@ static NSString *g_UIKitVersion = @"3.9.1";
         }
     }];
     
+}
+
+
+- (NSMutableArray *)joinedGroupIdArray {
+    if (_joinedGroupIdArray == nil) {
+        _joinedGroupIdArray = [NSMutableArray array];
+    }
+    return _joinedGroupIdArray;
 }
 
 

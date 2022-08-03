@@ -33,9 +33,10 @@
 }
 
 - (void)placeAndLayoutSubviews {
+
     [self addSubview:self.placeHolderLabel];
     [self.placeHolderLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.top.equalTo(self).offset(7.0);
+        make.top.equalTo(self).offset(10.0);
         make.left.equalTo(self).offset(14.0);
         make.right.equalTo(self).offset(-14.0);
     }];
@@ -55,7 +56,7 @@
 - (UILabel *)placeHolderLabel {
     if (_placeHolderLabel == nil) {
         _placeHolderLabel = [[UILabel alloc] init];
-        _placeHolderLabel.font = self.font;
+        _placeHolderLabel.font = EaseIMKit_NFont(14.0);
         _placeHolderLabel.textColor = [UIColor lightGrayColor];
         _placeHolderLabel.textAlignment = NSTextAlignmentLeft;
         _placeHolderLabel.lineBreakMode = NSLineBreakByTruncatingTail;

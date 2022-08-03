@@ -14,7 +14,7 @@
 
 #define kTextViewMinHeight 32
 #define kTextViewMaxHeight 80
-#define kIconwidth 22
+#define kIconwidth 28
 #define kModuleMargin 10
 
 @interface EMChatBar()<UITextViewDelegate>
@@ -71,8 +71,8 @@
     [_audioButton Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.top.equalTo(self).offset(10);
         make.left.equalTo(self).offset(16);
-        make.width.Ease_equalTo(@16);
-        make.height.Ease_equalTo(kIconwidth);
+        make.width.Ease_equalTo(@(28));
+        make.height.Ease_equalTo(@(28));
     }];
     
     self.conversationToolBarBtn = [[UIButton alloc] init];
@@ -81,7 +81,7 @@
     [_conversationToolBarBtn Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.top.equalTo(self).offset(10);
         make.right.equalTo(self).offset(-16);
-        make.width.height.Ease_equalTo(kIconwidth);
+        make.size.equalTo(_audioButton);
     }];
     
     self.emojiButton = [[UIButton alloc] init];
@@ -90,7 +90,7 @@
     [_emojiButton Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.top.equalTo(self).offset(10);
         make.right.equalTo(self.conversationToolBarBtn.ease_left).offset(-kModuleMargin);
-        make.width.height.Ease_equalTo(kIconwidth);
+        make.size.equalTo(_audioButton);
     }];
     
     self.textView = [[EaseTextView alloc] init];
@@ -318,6 +318,8 @@ if (EaseIMKitManager.shared.isJiHuApp){
 {
     if ([aText length] > 0) {
         self.textView.text = [NSString stringWithFormat:@"%@%@", self.textView.text, aText];
+        self.textView.placeHolderLabel.hidden = self.textView.text.length > 0 > 0 ? YES : NO;
+
         [self _updatetextViewHeight];
     }
     if (self.moreEmoticonView) {
@@ -351,7 +353,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
     }
     if (!self.audioButton.isSelected) {
         [self.audioButton Ease_updateConstraints:^(EaseConstraintMaker *make) {
-            make.width.Ease_equalTo(@16);
+            make.width.Ease_equalTo(@(28));
         }];
     } else {
         [self.audioButton Ease_updateConstraints:^(EaseConstraintMaker *make) {
@@ -389,7 +391,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
     }
     if (!self.audioButton.isSelected) {
         [self.audioButton Ease_updateConstraints:^(EaseConstraintMaker *make) {
-            make.width.Ease_equalTo(@16);
+            make.width.Ease_equalTo(@(28));
         }];
     } else {
         [self.audioButton Ease_updateConstraints:^(EaseConstraintMaker *make) {

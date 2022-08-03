@@ -12,6 +12,8 @@
 @property (nonatomic, assign) BOOL  hasJoinGroupApply;
 //极狐专属服务群id列表
 @property (nonatomic, strong) NSMutableArray *exGroupIds;
+//获取到的所有加入的groupIds，搜索群聊判断是否加入的群聊
+@property (nonatomic, strong) NSMutableArray *joinedGroupIdArray;
 
 @end
 
@@ -30,11 +32,15 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChanged:) name:ACCOUNT_LOGIN_CHANGED object:nil];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveJoinGroupApply) name:EaseNotificationRequestJoinGroupEvent object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearJoinGroupApply) name:EaseNotificationClearRequestJoinGroupEvent object:nil];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChanged:) name:ACCOUNT_LOGIN_CHANGED object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchAllGroupList:) name:GROUP_LIST_FETCHFINISHED object:nil];
+       
     }
     return self;
 }
@@ -98,6 +104,11 @@
         groupConv.ext = @{@"JiHuExGroupChat":@(YES)};
     }
     
+}
+
+
+- (void)fetchAllGroupList:(NSNotification *)notify {
+    self.joinedGroupIdArray = notify.object;    
 }
 
 - (NSMutableArray *)exGroupIds {

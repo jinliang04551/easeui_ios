@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) NSMutableArray *exGroupIds;
 
+@property (nonatomic, strong, readonly) NSMutableArray *joinedGroupIdArray;
+
 + (instancetype)shareMessageHelper;
 
 
