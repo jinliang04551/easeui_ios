@@ -59,9 +59,11 @@ NS_ASSUME_NONNULL_BEGIN
                             note:(NSString *)note
                       completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
 
-- (void)editGroupNameWithGroupId:(NSString *)groupId
-                       groupname:(NSString *)groupname
-                      completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+- (void)modifyGroupInfoWithGroupId:(NSString *)groupId
+                       groupname:(NSString *)groupName
+                 bussinessRemark:(NSString *)bussinessRemark
+                        completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+
 
 - (void)searchGroupListWithAid:(NSString *)aid
                         mobile:(NSString *)mobile

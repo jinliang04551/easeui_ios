@@ -633,23 +633,27 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 //        }];
         
         EaseIMKit_WS
-        [[EaseHttpManager sharedManager] editGroupNameWithGroupId:weakSelf.groupId groupname:aString completion:^(NSInteger statusCode, NSString * _Nonnull response) {
-           
-            if (response && response.length > 0 && statusCode) {
-                NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
-                NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-                NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
-                if (statusCode == 200) {
-                    [weakController.navigationController popViewControllerAnimated:YES];
-                    [weakSelf showHint:@"修改群名称成功"];
-                    [weakSelf fetchGroupInfo];
-                }else {
-                    [EaseAlertController showErrorAlert:errorDescription];
-                }
-            }
+        [[EaseHttpManager sharedManager] modifyGroupInfoWithGroupId:weakSelf.group.groupId groupname:aString bussinessRemark:@"" completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+            
+             if (response && response.length > 0 && statusCode) {
+                 NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+                 NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+                 NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+                 if (statusCode == 200) {
+                     NSString *status = responsedict[@"status"];
+                     
+                     if ([status isEqualToString:@"SUCCEED"]) {
+                         [weakController.navigationController popViewControllerAnimated:YES];
+                         [weakSelf showHint:@"修改群名称成功"];
+                         [weakSelf fetchGroupInfo];
+                     }
+                    
+                 }else {
+                     [EaseAlertController showErrorAlert:errorDescription];
+                 }
+             }
             
         }];
-        
         return NO;
     }];
 }

@@ -14,7 +14,7 @@
 
 @property (nonatomic, strong) UIButton *checkButton;
 @property (nonatomic, strong) NSString *userId;
-
+@property (nonatomic, assign) BOOL isChecked;
 
 @end
 
@@ -61,9 +61,14 @@
 
 
 - (void)updateWithObj:(id)obj {
+    
+}
+
+- (void)updateWithObj:(id)obj isChecked:(BOOL)isChecked {
     NSString *username = (NSString *)obj;
     
     self.userId = username;
+    self.isChecked = isChecked;
     
     self.nameLabel.text = username;
     self.iconImageView.image = [UIImage easeUIImageNamed:@"jh_user_icon"];
@@ -83,8 +88,8 @@
     }else{
         [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[username]];
     }
+    
 }
-
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
@@ -112,7 +117,7 @@
 
 
 - (void)checkButtonAction {
-    self.isChecked = !self.isChecked;
+//    self.isChecked = !self.isChecked;
     if (self.checkBlcok) {
         self.checkBlcok(self.userId, self.isChecked);
     }

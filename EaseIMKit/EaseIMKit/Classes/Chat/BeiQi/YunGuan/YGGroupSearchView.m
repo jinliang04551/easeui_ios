@@ -92,14 +92,19 @@
 {
     [textField resignFirstResponder];
     
-//    if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarSearchButtonClicked:)]) {
-//        [self.delegate searchBarSearchButtonClicked:textField.text];
-//    }
-    
     [self searchButtonClicked];
     
     return YES;
 }
+
+- (BOOL)textFieldShouldClear:(UITextField *)textField {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(clearSearchText)]) {
+            [self.delegate clearSearchText];
+        }
+
+    return YES;
+}
+
 
 #pragma mark - Action
 

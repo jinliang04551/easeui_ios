@@ -148,14 +148,25 @@
     
     [[EaseHttpManager sharedManager] fetchYunGuanNoteWithGroupId:self.groupId completion:^(NSInteger statusCode, NSString * _Nonnull response) {
         
-        if (response && response.length > 0 && statusCode) {
+        if (response && response.length > 0) {
             NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
             if (statusCode == 200) {
-                NSDictionary *entity = responsedict[@"entity"];
-                NSString *note = entity[@"noteAdmin"];
-                self.yunGuanTextView.textView.text = note;
+                NSDictionary *dataDic = responsedict[@"data"];
+                NSString *symNote = dataDic[@"sysDesc"];
+                NSString *ygNote = dataDic[@"businessRemark"];
+                
+                if ([symNote isKindOfClass:[NSNull class]]) {
+                    symNote = @"";
+                }
+                
+                if ([ygNote isKindOfClass:[NSNull class]]) {
+                    ygNote = @"";
+                }
+                
+                self.systemTextView.textView.text = symNote;
+                self.yunGuanTextView.textView.text = ygNote;
                 
             }else {
                 [EaseAlertController showErrorAlert:errorDescription];
@@ -226,17 +237,15 @@
 {
     [self.view endEditing:YES];
     
-    [[EaseHttpManager sharedManager] editServeNoteWithGroupId:self.groupId note:self.yunGuanTextView.textView.text completion:^(NSInteger statusCode, NSString * _Nonnull response) {
-            
-        if (response && response.length > 0 && statusCode) {
+    [[EaseHttpManager sharedManager] modifyGroupInfoWithGroupId:self.groupId groupname:@"" bussinessRemark:self.yunGuanTextView.textView.text completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+        if (response && response.length > 0) {
             NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
             if (statusCode == 200) {
-                NSDictionary *entity = responsedict[@"entity"];
-                NSString *groupId = entity[@"groupId"];
+                NSString *status = responsedict[@"status"];
                 
-                if (groupId.length > 0) {
+                if ([status isEqualToString:@"SUCCEED"]) {
                     [self showHint:@"修改运管备注成功"];
                     if(self.doneCompletion) {
                         self.doneCompletion(self.systemTextView.textView.text);
@@ -247,8 +256,8 @@
                 [EaseAlertController showErrorAlert:errorDescription];
             }
         }
-        
     }];
+
 }
 
 

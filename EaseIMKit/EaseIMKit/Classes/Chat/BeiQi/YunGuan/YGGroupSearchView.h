@@ -33,10 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 //
 //- (void)searchBarCancelButtonAction:(YGGroupSearchView *)searchView;
-//
-//- (void)searchBarSearchButtonClicked:(NSString *)aString;
-//
-//- (void)searchTextDidChangeWithString:(NSString *)aString;
+
+- (void)clearSearchText;
 
 @end
 

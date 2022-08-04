@@ -95,7 +95,7 @@
     
     [[EaseHttpManager sharedManager] searchGroupListWithAid:[EMClient sharedClient].currentUsername mobile:self.searchMobile orderId:self.searchOrderId vin:self.searchVin groupname:self.searchGroupName completion:^(NSInteger statusCode, NSString * _Nonnull response) {
     
-        if (response && response.length > 0 && statusCode) {
+        if (response && response.length > 0) {
             NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
@@ -111,6 +111,8 @@
                 }
                 self.dataArray = tArray;
                 [self.tableView reloadData];
+
+                self.noDataPromptView.hidden = self.dataArray.count > 0 ? YES : NO;
                 
             }else {
                 [EaseAlertController showErrorAlert:errorDescription];
@@ -232,11 +234,13 @@
     
 }
 
+- (void)clearSearchText {
+    self.noDataPromptView.hidden = YES;
+}
 
 #pragma mark private method
 - (void)searchGroupWithKeyword:(NSString *)keyword {
     self.searchkeyword = keyword;
-  
     [self searchGroupChat];
     
 }

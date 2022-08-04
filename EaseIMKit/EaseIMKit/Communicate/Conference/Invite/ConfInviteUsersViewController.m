@@ -18,15 +18,16 @@
 #import "EaseHeaders.h"
 #import "YGGroupMuteItemCell.h"
 #import "EaseIMKitManager.h"
+#import "EMSearchBar.h"
 
-@interface ConfInviteUsersViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
+@interface ConfInviteUsersViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate,EMSearchBarDelegate>
 
 @property (nonatomic, strong) UIView *customNavBarView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIButton *confirmButton;
 @property (nonatomic, strong) UIButton *cancelButton;
 
-@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) EMSearchBar  *searchBar;
 @property (nonatomic, strong) UITableView *searchTableView;
 
 @property (nonatomic) BOOL isCreate;
@@ -171,7 +172,9 @@
     YGGroupMuteItemCell *cell = (YGGroupMuteItemCell *)[tableView dequeueReusableCellWithIdentifier:NSStringFromClass([YGGroupMuteItemCell class])];
     
     NSString *username = self.isSearching ? [self.searchDataArray objectAtIndex:indexPath.row] : [self.dataArray objectAtIndex:indexPath.row];
-    [cell updateWithObj:username];
+    BOOL isChecked = [self userIsChecked:username];
+
+    [cell updateWithObj:username isChecked:isChecked];
     
     EaseIMKit_WS
     cell.checkBlcok = ^(NSString * _Nonnull userId, BOOL isChecked) {
@@ -186,22 +189,10 @@
     return cell;
 }
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//
-//    NSString *username = self.isSearching ? [self.searchDataArray objectAtIndex:indexPath.row] : [self.dataArray objectAtIndex:indexPath.row];
-//    YGGroupMuteItemCell *cell = (YGGroupMuteItemCell *)[tableView cellForRowAtIndexPath:indexPath];
-//    BOOL isChecked = [self.inviteUsers containsObject:username];
-//    if (isChecked) {
-//        [self.inviteUsers removeObject:username];
-//    } else {
-//        [self.inviteUsers addObject:username];
-//    }
-//    cell.isChecked = !isChecked;
-//
-//    [self updateUI];
-//}
+- (BOOL)userIsChecked:(NSString *)userId {
+    return [self.inviteUsers containsObject:userId];
+}
+
 
 - (void)updateUI {
     
@@ -223,64 +214,102 @@
     
     [self.confInviteSelectedUsersView updateUIWithMemberArray:self.inviteUsers];
     
-}
-
-
-#pragma mark - UISearchBarDelegate
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
-{
-    [searchBar setShowsCancelButton:YES];
-    return YES;
-}
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-    if (!self.isSearching) {
-        self.isSearching = YES;
-        [self.view addSubview:self.searchTableView];
-        [self.searchTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.tableView);
-            make.left.equalTo(self.tableView);
-            make.right.equalTo(self.tableView);
-            make.bottom.equalTo(self.tableView);
-        }];
-    }
-    
-    __weak typeof(self) weakSelf = self;
-    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:searchBar.text collationStringSelector:nil resultBlock:^(NSArray *results) {
-        if ([results count] > 0) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.searchDataArray removeAllObjects];
-                [weakSelf.searchDataArray addObjectsFromArray:results];
-                [self.searchTableView reloadData];
-            });
-        }
-    }];
-}
-
-- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    if ([text isEqualToString:@"\n"]) {
-        [searchBar resignFirstResponder];
-
-        return NO;
-    }
-
-    return YES;
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    [[EMRealtimeSearch shared] realtimeSearchStop];
-    [searchBar setShowsCancelButton:NO];
-    [searchBar resignFirstResponder];
-
-    self.isSearching = NO;
-    [self.searchDataArray removeAllObjects];
-    [self.searchTableView removeFromSuperview];
-    [self.searchTableView reloadData];
     [self.tableView reloadData];
 }
+
+
+//#pragma mark - UISearchBarDelegate
+//- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+//{
+//    [searchBar setShowsCancelButton:YES];
+//    return YES;
+//}
+//
+//- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+//{
+//    if (!self.isSearching) {
+//        self.isSearching = YES;
+//        [self.view addSubview:self.searchTableView];
+//        [self.searchTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.tableView);
+//            make.left.equalTo(self.tableView);
+//            make.right.equalTo(self.tableView);
+//            make.bottom.equalTo(self.tableView);
+//        }];
+//    }
+//
+//    __weak typeof(self) weakSelf = self;
+//    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:searchBar.text collationStringSelector:nil resultBlock:^(NSArray *results) {
+//        if ([results count] > 0) {
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [weakSelf.searchDataArray removeAllObjects];
+//                [weakSelf.searchDataArray addObjectsFromArray:results];
+//                [self.searchTableView reloadData];
+//            });
+//        }
+//    }];
+//}
+//
+//- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+//{
+//    if ([text isEqualToString:@"\n"]) {
+//        [searchBar resignFirstResponder];
+//
+//        return NO;
+//    }
+//
+//    return YES;
+//}
+//
+//- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+//{
+//    [[EMRealtimeSearch shared] realtimeSearchStop];
+//    [searchBar setShowsCancelButton:NO];
+//    [searchBar resignFirstResponder];
+//
+//    self.isSearching = NO;
+//    [self.searchDataArray removeAllObjects];
+//    [self.searchTableView removeFromSuperview];
+//    [self.searchTableView reloadData];
+//    [self.tableView reloadData];
+//}
+
+#pragma mark - EMSearchBarDelegate
+- (void)searchBarShouldBeginEditing:(EMSearchBar *)searchBar
+{
+    self.isSearching = YES;
+}
+
+- (void)searchBarCancelButtonAction:(EMSearchBar *)searchBar
+{
+    [[EMRealtimeSearch shared] realtimeSearchStop];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.isSearching = NO;
+    
+    [self.searchDataArray removeAllObjects];
+    [self.tableView reloadData];
+}
+
+- (void)searchBarSearchButtonClicked:(EMSearchBar *)searchBar
+{
+    
+}
+
+- (void)searchTextDidChangeWithString:(NSString *)aString {
+    
+    EaseIMKit_WS
+    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:nil resultBlock:^(NSArray *results) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.searchDataArray removeAllObjects];
+            [weakSelf.searchDataArray addObjectsFromArray:results];
+            [self.tableView reloadData];
+        });
+    }];
+    
+    
+}
+
 
 - (void)refreshTableView
 {
@@ -466,7 +495,7 @@
         [_customNavBarView addSubview:self.confirmButton];
     
         [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_customNavBarView);
+            make.centerY.equalTo(_customNavBarView);
             make.centerX.equalTo(_customNavBarView);
             make.width.equalTo(@(100.0));
         }];
@@ -536,34 +565,43 @@
     }
 }
 
-- (UISearchBar *)searchBar {
+- (EMSearchBar *)searchBar {
     if (_searchBar == nil) {
-        _searchBar = [[UISearchBar alloc] init];
+        _searchBar = [[EMSearchBar alloc] init];
         _searchBar.delegate = self;
-        _searchBar.barTintColor = [UIColor whiteColor];
-        _searchBar.searchBarStyle = UISearchBarStyleMinimal;
-        _searchBar.layer.cornerRadius = 32.0 * 0.5;
-
-        UITextField *searchField = [_searchBar valueForKey:@"searchField"];
-        searchField.backgroundColor = [UIColor colorWithHexString:@"#252525"];
-        [searchField setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
-        searchField.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
-        
-        if (EaseIMKitManager.shared.isJiHuApp){
-            searchField.backgroundColor = [UIColor colorWithHexString:@"#252525"];
-            [searchField setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
-            searchField.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
-                    
-        }else {
-            searchField.backgroundColor = [UIColor whiteColor];
-            [searchField setTextColor:UIColor.blackColor];
-        }
-
-        searchField.layer.cornerRadius = 32.0 * 0.5;
-        _searchBar.placeholder = @"搜索";
     }
     return _searchBar;
 }
+
+
+//- (UISearchBar *)searchBar {
+//    if (_searchBar == nil) {
+//        _searchBar = [[UISearchBar alloc] init];
+//        _searchBar.delegate = self;
+//        _searchBar.barTintColor = [UIColor whiteColor];
+//        _searchBar.searchBarStyle = UISearchBarStyleMinimal;
+//        _searchBar.layer.cornerRadius = 32.0 * 0.5;
+//
+//        UITextField *searchField = [_searchBar valueForKey:@"searchField"];
+//        searchField.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+//        [searchField setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
+//        searchField.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
+//
+//        if (EaseIMKitManager.shared.isJiHuApp){
+//            searchField.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+//            [searchField setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
+//            searchField.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
+//
+//        }else {
+//            searchField.backgroundColor = [UIColor whiteColor];
+//            [searchField setTextColor:UIColor.blackColor];
+//        }
+//
+//        searchField.layer.cornerRadius = 32.0 * 0.5;
+//        _searchBar.placeholder = @"搜索";
+//    }
+//    return _searchBar;
+//}
 
 - (UITableView *)searchTableView {
     if (_searchTableView == nil) {
