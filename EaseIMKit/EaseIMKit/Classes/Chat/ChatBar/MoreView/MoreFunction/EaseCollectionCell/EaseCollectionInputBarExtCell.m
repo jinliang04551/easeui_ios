@@ -36,10 +36,10 @@
     self.toolLabel.textAlignment = NSTextAlignmentCenter;
     [self.contentView addSubview:self.toolLabel];
     [self.toolLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.top.equalTo(self.toolBtn.ease_bottom).offset(3);
+        make.top.equalTo(self.toolBtn.ease_bottom).offset(6);
         make.width.Ease_equalTo(@(self.cellLonger));
         make.left.equalTo(self.contentView);
-        make.bottom.equalTo(self.contentView).offset(-10);
+        make.bottom.equalTo(self.contentView);
     }];
 }
 

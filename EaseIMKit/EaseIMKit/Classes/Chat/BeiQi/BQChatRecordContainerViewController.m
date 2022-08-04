@@ -206,7 +206,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (MISScrollPageContentView*)contentView {
     if(!_contentView){
         _contentView = [self.pageController contentViewWithFrame:CGRectMake(0, 50, EaseIMKit_ScreenWidth, EaseIMKit_ScreenHeight-EaseIMKit_NavBarAndStatusBarHeight - 50.0)];
-        _contentView.backgroundColor = UIColor.blueColor;
     }
     return _contentView;
 }

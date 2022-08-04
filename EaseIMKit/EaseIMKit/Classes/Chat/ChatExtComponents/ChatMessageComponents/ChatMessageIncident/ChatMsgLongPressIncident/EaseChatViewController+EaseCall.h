@@ -10,9 +10,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EaseChatViewController (EaseCall)
-- (void)insertCallMsgFrom:(NSString *)from
-                       to:(NSString *)to
-                     text:(NSString *)text;
+
+- (void)insertMsgWithCMDMessage:(EMChatMessage  *)cmdMessage;
+
 @end
 
 NS_ASSUME_NONNULL_END

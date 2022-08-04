@@ -105,8 +105,6 @@
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithCallCMDMessage:) name:EaseNotificationSendCallCreateCMDMessage object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithCallCMDMessage:) name:EaseNotificationSendCallEndCMDMessage object:nil];
-
-                
     }
     return self;
 }
@@ -196,23 +194,8 @@
 - (void)updateUIWithCallCMDMessage:(NSNotification *)notify {
     
     EMChatMessage *msg = (EMChatMessage *)notify.object;
-    if (msg.ext.count > 0) {
+    [self insertMsgWithCMDMessage:msg];
         
-        NSString *callState = msg.ext[MutiCallCallState];
-        NSString *callUser = msg.ext[MutiCallCallUser];
-
-        NSString *msgText = @"";
-        if ([callState isEqualToString:MutiCallCreateCall]) {
-            msgText = [NSString stringWithFormat:@"%@ 发起了语音通话",callUser];
-        }else {
-            msgText = @"语音通话已经结束";
-        }
-        
-        NSLog(@"%s msgText:%@",__func__,msgText);
-
-        [self insertCallMsgFrom:EMClient.sharedClient.currentUsername to:self.currentConversation.conversationId text:msgText];
-    }
-    
 }
 
 
@@ -223,6 +206,7 @@
 //    self.view.backgroundColor = [UIColor clearColor];
     
     self.chatBar = [[EMChatBar alloc] initWithViewModel:_viewModel];
+    
     self.chatBar.delegate = self;
     [self.view addSubview:self.chatBar];
     [self.chatBar Ease_makeConstraints:^(EaseConstraintMaker *make) {
@@ -357,7 +341,6 @@ if (EaseIMKitManager.shared.isJiHuApp){
         }
         
         if (model.type == EMMessageTypeExtCallState) {
-            
             cellString = ((EMTextMessageBody *)(model.message.body)).text;
             type = EaseWeakRemindSystemHint;
         }
@@ -704,28 +687,13 @@ if (EaseIMKitManager.shared.isJiHuApp){
                 NSLog(@"%s easeChat msg.ext:%@",__func__,msg.ext);
 
                 if (msg.ext.count > 0 && [cmdBody.action isEqualToString:MutiCallAction]) {
-                    NSString *callState = msg.ext[MutiCallCallState];
-                    NSString *callUser = msg.ext[MutiCallCallUser];
                     
-                    NSString *msgText = @"";
-                    if ([callState isEqualToString:MutiCallCreateCall]) {
-                        msgText = [NSString stringWithFormat:@"%@ 发起了语音通话",callUser];
-                    }else {
-                        msgText = @"语音通话已经结束";
-
-                    }
-                    
-                    NSLog(@"%s msgtext:%@",__func__,msgText);
-                    
-                [self insertCallMsgFrom:callUser to:self.currentConversation.conversationId text:msgText];
+                    [self insertMsgWithCMDMessage:msg];
                     
                 }
             }
         }
-//
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [weakSelf refreshTableView:YES];
-//        });
+
     });
     
     
@@ -836,7 +804,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
     NSDictionary *userInfo = [NSDictionary dictionaryWithDictionary:note.userInfo];
     // 获取键盘高度
     CGRect keyBoardBounds  = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGFloat keyBoardHeight = keyBoardBounds.size.height;
+    CGFloat keyBoardHeight = keyBoardBounds.size.height - EaseIMKit_BottomSafeHeight;
     
     // 定义好动作
     void (^animation)(void) = ^void(void) {

@@ -42,8 +42,6 @@
                 return self;
             }
             
-            
-            
             NSString *conferenceId = [aMsg.ext objectForKey:@"conferenceId"];
             if ([conferenceId length] == 0)
                 conferenceId = [aMsg.ext objectForKey:MSG_EXT_CALLID];

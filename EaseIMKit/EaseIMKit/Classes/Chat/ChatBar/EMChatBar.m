@@ -69,8 +69,8 @@
     [_audioButton addTarget:self action:@selector(audioButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.audioButton];
     [_audioButton Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.top.equalTo(self).offset(10);
-        make.left.equalTo(self).offset(16);
+        make.top.equalTo(self).offset(14.0);
+        make.left.equalTo(self).offset(12.0);
         make.width.Ease_equalTo(@(28));
         make.height.Ease_equalTo(@(28));
     }];
@@ -79,7 +79,7 @@
     [_conversationToolBarBtn addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_conversationToolBarBtn];
     [_conversationToolBarBtn Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.top.equalTo(self).offset(10);
+        make.centerY.equalTo(_audioButton);
         make.right.equalTo(self).offset(-16);
         make.size.equalTo(_audioButton);
     }];
@@ -88,7 +88,7 @@
     [_emojiButton addTarget:self action:@selector(emoticonButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_emojiButton];
     [_emojiButton Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.top.equalTo(self).offset(10);
+        make.centerY.equalTo(_audioButton);
         make.right.equalTo(self.conversationToolBarBtn.ease_left).offset(-kModuleMargin);
         make.size.equalTo(_audioButton);
     }];
@@ -125,23 +125,21 @@ if (EaseIMKitManager.shared.isJiHuApp){
 }
 
    
-    self.textView.font = [UIFont systemFontOfSize:16];
+    self.textView.font = [UIFont systemFontOfSize:14.0];
     self.textView.textAlignment = NSTextAlignmentLeft;
-    
     self.textView.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 0);
     if (@available(iOS 11.1, *)) {
         self.textView.verticalScrollIndicatorInsets = UIEdgeInsetsMake(12, 20, 2, 0);
     } else {
         // Fallback on earlier versions
     }
-    self.textView.returnKeyType = UIReturnKeySend;
-
-    
+    self.textView.returnKeyType = UIReturnKeySend;    
     self.textView.placeHolder = @"说点啥";
-    self.textView.layer.cornerRadius = 16;
+    self.textView.layer.cornerRadius = kTextViewMinHeight * 0.5;
     [self addSubview:self.textView];
+    
     [self.textView Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.top.equalTo(self).offset(5);
+        make.top.equalTo(self).offset(12.0);
         make.height.Ease_equalTo(kTextViewMinHeight);
         if (_viewModel.inputBarStyle == EaseInputBarStyleAll) {
             make.left.equalTo(self.audioButton.ease_right).offset(kModuleMargin);
@@ -185,11 +183,13 @@ if (EaseIMKitManager.shared.isJiHuApp){
     [self.audioDescBtn addTarget:self action:@selector(recordButtonTouchCancelEnd) forControlEvents:UIControlEventTouchUpOutside];*/
     
     self.bottomLine = [[UIView alloc] init];
-    _bottomLine.backgroundColor = [UIColor colorWithHexString:@"#000000"];
+//    _bottomLine.backgroundColor = [UIColor colorWithHexString:@"#000000"];
+    self.bottomLine.backgroundColor = UIColor.blackColor;
+    
     _bottomLine.alpha = 0.1;
     [self addSubview:self.bottomLine];
     [_bottomLine Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.top.equalTo(self.textView.ease_bottom).offset(5);
+        make.top.equalTo(self.textView.ease_bottom).offset(12.0);
         make.left.equalTo(self);
         make.right.equalTo(self);
         make.height.equalTo(@0.5);
@@ -273,11 +273,12 @@ if (EaseIMKitManager.shared.isJiHuApp){
     }];
 }
 
+
 - (void)_remakeButtonsViewConstraints
 {
     if (self.currentMoreView) {
         [self.bottomLine Ease_remakeConstraints:^(EaseConstraintMaker *make) {
-            make.top.equalTo(self.textView.ease_bottom).offset(5);
+            make.top.equalTo(self.textView.ease_bottom).offset(12.0);
             make.left.equalTo(self);
             make.right.equalTo(self);
             make.height.equalTo(@1);
@@ -285,7 +286,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
         }];
     } else {
         [self.bottomLine Ease_remakeConstraints:^(EaseConstraintMaker *make) {
-            make.top.equalTo(self.textView.ease_bottom).offset(5);
+            make.top.equalTo(self.textView.ease_bottom).offset(12.0);
             make.left.equalTo(self);
             make.right.equalTo(self);
             make.height.equalTo(@1);
@@ -357,7 +358,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
         }];
     } else {
         [self.audioButton Ease_updateConstraints:^(EaseConstraintMaker *make) {
-            make.width.Ease_equalTo(kIconwidth);
+            make.width.Ease_equalTo(@(28));
         }];
     }
 }

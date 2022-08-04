@@ -6,6 +6,8 @@
 #import "EaseHttpManager.h"
 #import <HyphenateChat/HyphenateChat.h>
 #import "EaseHeaders.h"
+#import "EaseIMKitOptions.h"
+
 
 #define kServerHost @"http://182.92.236.214:12005"
 //运管接口
@@ -24,6 +26,7 @@
 #define kEditGroupNameURL @"/v4/users"
 #define kSearchGroupChatURL @"/v4/users"
 
+
 //极狐接口
 //获取专属服务群列表接口
 #define kExclusiveServerGroupListURL @"/v2/group/chatgroups/users"
@@ -33,8 +36,11 @@
 
 
 @interface EaseHttpManager() <NSURLSessionDelegate>
-@property (readonly, nonatomic, strong) NSURLSession *session;
+@property (nonatomic, strong) NSURLSession *session;
+@property (nonatomic, strong) NSString *restSeverHost;
+
 @end
+
 @implementation EaseHttpManager
 
 + (instancetype)sharedManager
@@ -56,6 +62,10 @@
         _session = [NSURLSession sessionWithConfiguration:configuration
                                                  delegate:self
                                             delegateQueue:[NSOperationQueue mainQueue]];
+        if ([EaseIMKitOptions sharedOptions]) {
+            self.restSeverHost = @"";
+            
+        }
     }
     return self;
 }

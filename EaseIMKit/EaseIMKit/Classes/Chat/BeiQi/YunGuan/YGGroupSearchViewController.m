@@ -304,8 +304,14 @@
             weakSelf.searchGroupType = selectedType;
             weakSelf.searchTypeTableView.hidden = YES;
         };
-        _searchTypeTableView.layer.shadowOffset = CGSizeMake(2.0, 2.0);
-        _searchTypeTableView.layer.shadowColor = UIColor.blueColor.CGColor;
+//        _searchTypeTableView.layer.shadowOffset = CGSizeMake(2.0, 2.0);
+//        _searchTypeTableView.layer.shadowColor = UIColor.blueColor.CGColor;
+        
+        _searchTypeTableView.layer.shadowColor = [UIColor colorWithHexString:@"#6C8AB6"].CGColor;
+        _searchTypeTableView.layer.shadowOpacity = 1.0f;
+        _searchTypeTableView.layer.shadowRadius = 4.f;
+        _searchTypeTableView.layer.shadowOffset = CGSizeMake(1,1);
+        
         
     }
     return _searchTypeTableView;
