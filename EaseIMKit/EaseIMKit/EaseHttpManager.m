@@ -21,6 +21,7 @@
 //查询客户订单列表信息
 //URL: /v4/gov/arcfox/transport/{username}/getOrders
 #define kSearchCustomOrderURL @"/v4/gov/arcfox/transport"
+#define kJiHuSearchGroupMemberURL @"/v1/gov/arcfox/user"
 
 
 /*
@@ -35,8 +36,10 @@
 
 #define kGroupApplyListURL @"/v2/group/chatgroups/users/state"
 #define kGroupApplyApprovalURL @"/v2/group/chatgroups/users"
-#define kInviteGroupMemberURL @"/v2/group/chatgroups"
-#define kSearchGroupMemberURL @"/v1/gov/arcfox/user"
+#define kInviteGroupMemberURL @"/v4/users"
+#define kSearchGroupMemberURL @"/v2/gov/arcfox/user"
+
+
 #define kModifyGroupServeNoteURL @"/v2/group/chatgroups"
 //#define kModifyGroupInfoURL @"/v2/group"
 #define kModifyGroupInfoURL @"/v4/users"
@@ -426,8 +429,19 @@
                        waiterUserIds:(NSArray *)waiterUserIds
                           completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
 {
+//    v4/users/{username}/group/{groupId}/addUsers/inviter/{inviter}/APP 极狐APP调用这个
 
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/users/inviter/%@",kServerHost,kInviteGroupMemberURL,groupId,[EMClient sharedClient].currentUsername]];
+    NSString *urlString = @"";
+
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        urlString = [NSString stringWithFormat:@"%@%@/%@/group/%@/addUsers/inviter/%@/APP",kServerHost,kInviteGroupMemberURL,[EMClient sharedClient].currentUsername,groupId,[EMClient sharedClient].currentUsername];
+    }else {
+        urlString = [NSString stringWithFormat:@"%@%@/%@/group/%@/addUsers/inviter/%@",kServerHost,kInviteGroupMemberURL,[EMClient sharedClient].currentUsername,groupId,[EMClient sharedClient].currentUsername];
+    }
+    
+    
+    
+    NSURL *url = [NSURL URLWithString:urlString];
     
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];
@@ -442,8 +456,11 @@
 
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
         
-    [dict setObject:customerUserIds forKey:@"customerUser"];
-    [dict setObject:waiterUserIds forKey:@"waiterUser"];
+    
+    [dict setObject:customerUserIds forKey:@"customerAids"];
+    [dict setObject:waiterUserIds forKey:@"waiterAids"];
+
+    NSLog(@"%s url:%@ headerDict:%@ dict:%@",__func__,url,headerDict,dict);
 
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -464,7 +481,14 @@
                            completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
 {
 
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@",kServerHost,kSearchGroupMemberURL,[EMClient sharedClient].currentUsername]];
+    NSString *subString = @"";
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        subString = kJiHuSearchGroupMemberURL;
+    }else {
+        subString = kSearchGroupMemberURL;
+    }
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@",kServerHost,subString,[EMClient sharedClient].currentUsername]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];

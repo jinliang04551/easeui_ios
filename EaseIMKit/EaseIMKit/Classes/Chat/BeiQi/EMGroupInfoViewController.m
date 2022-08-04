@@ -714,12 +714,12 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 }
 
 - (void)goAddGroupMemberPage {
-    BQGroupEditMemberViewController *controller = [[BQGroupEditMemberViewController alloc] initWithMemberArray:self.memberArray];
+    BQGroupEditMemberViewController *controller = [[BQGroupEditMemberViewController alloc] init];
     EaseIMKit_WS
     controller.addedMemberBlock = ^(NSMutableArray * _Nonnull userArray, NSMutableArray * _Nonnull serverArray) {
         weakSelf.userArray = userArray;
         weakSelf.serverArray = serverArray;
-        
+
         [weakSelf updateUI];
     };
     

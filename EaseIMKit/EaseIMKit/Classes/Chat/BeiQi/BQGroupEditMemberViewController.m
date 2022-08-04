@@ -24,6 +24,9 @@
 
 @property (nonatomic, strong) BQGroupSearchCell *groupSearchCell;
 
+//是否修改
+@property (nonatomic) BOOL isModify;
+
 @end
 
 @implementation BQGroupEditMemberViewController
@@ -31,6 +34,7 @@
     self = [super init];
     if (self) {
         self.memberArray = memberArray;
+        self.isModify = YES;
     }
     return self;
 }
