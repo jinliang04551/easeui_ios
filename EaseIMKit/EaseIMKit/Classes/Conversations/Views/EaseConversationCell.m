@@ -48,6 +48,11 @@
 }
 
 #pragma mark - private layout subviews
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    [self.groupIdLabel removeFromSuperview];
+}
+
 
 - (void)_addSubViews {
     
@@ -69,9 +74,6 @@
     [self.avatarView addSubview:_redDot];
     [self.contentView addSubview:_undisturbRing];
     
-    if (![EaseIMKitOptions sharedOptions].isJiHuApp) {
-        [self.contentView addSubview:self.groupIdLabel];
-    }
 }
 
 - (void)_setupViewsProperty {
@@ -142,53 +144,13 @@
         make.left.equalTo(weakSelf.avatarView.ease_right).offset(weakSelf.viewModel.avatarEdgeInsets.right + weakSelf.viewModel.nameLabelEdgeInsets.left + 12);
     }];
     
-    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        [_detailLabel Ease_remakeConstraints:^(EaseConstraintMaker *make) {
-            make.top.equalTo(weakSelf.nameLabel.ease_bottom).offset(weakSelf.viewModel.nameLabelEdgeInsets.bottom + weakSelf.viewModel.detailLabelEdgeInsets.top);
-            make.left.equalTo(weakSelf.avatarView.ease_right).offset(weakSelf.viewModel.avatarEdgeInsets.right + weakSelf.viewModel.detailLabelEdgeInsets.left + 12);
-            make.bottom.equalTo(weakSelf.contentView.ease_bottom).offset(weakSelf.viewModel.detailLabelEdgeInsets.bottom - 18);
-        }];
-        
-    }else {
-        
-        [self.groupIdLabel Ease_remakeConstraints:^(EaseConstraintMaker *make) {
-            make.top.equalTo(weakSelf.nameLabel.ease_bottom).offset(4.0);
-            make.left.equalTo(weakSelf.nameLabel);
-        }];
-        
-        [_detailLabel Ease_remakeConstraints:^(EaseConstraintMaker *make) {
-            make.top.equalTo(weakSelf.groupIdLabel.ease_bottom).offset(4.0);
-            make.left.equalTo(weakSelf.avatarView.ease_right).offset(weakSelf.viewModel.avatarEdgeInsets.right + weakSelf.viewModel.detailLabelEdgeInsets.left + 12);
-        }];
-        
-    }
-    
     [_timeLabel Ease_remakeConstraints:^(EaseConstraintMaker *make) {
         make.top.equalTo(weakSelf.contentView.ease_top).offset(weakSelf.viewModel.timeLabelEdgeInsets.top + 12);
         make.right.equalTo(weakSelf.contentView.ease_right).offset(-weakSelf.viewModel.timeLabelEdgeInsets.right - 18);
         make.left.greaterThanOrEqualTo(weakSelf.nameLabel.ease_right).offset(weakSelf.viewModel.nameLabelEdgeInsets.right + weakSelf.viewModel.timeLabelEdgeInsets.left + 8);
     }];
 
-  
-    if (_viewModel.badgeLabelPosition == EMAvatarTopRight) {
-        [_badgeLabel Ease_remakeConstraints:^(EaseConstraintMaker *make) {
-            make.height.offset(_viewModel.badgeLabelHeight);
-            make.width.Ease_greaterThanOrEqualTo(weakSelf.viewModel.badgeLabelHeight).priority(1000);
-            make.centerY.equalTo(weakSelf.avatarView.ease_top).offset(weakSelf.viewModel.badgeLabelCenterVector.dy + 4);
-            make.centerX.equalTo(weakSelf.avatarView.ease_right).offset(weakSelf.viewModel.badgeLabelCenterVector.dx - 8);
-        }];
-        
-        [_detailLabel Ease_updateConstraints:^(EaseConstraintMaker *make) {
-            make.right.equalTo(weakSelf.contentView.ease_right).offset(-weakSelf.viewModel.detailLabelEdgeInsets.right - 18);
-        }];
-    }else {
-        [_badgeLabel Ease_remakeConstraints:^(EaseConstraintMaker *make) {
-            make.height.offset(_viewModel.badgeLabelHeight);
-            make.width.Ease_greaterThanOrEqualTo(weakSelf.viewModel.badgeLabelHeight).priority(1000);
-            make.centerY.equalTo(weakSelf.avatarView.ease_top).offset(weakSelf.viewModel.badgeLabelCenterVector.dy + 4);
-            make.centerX.equalTo(weakSelf.avatarView.ease_right).offset(weakSelf.viewModel.badgeLabelCenterVector.dx - 8);
-        }];
-    }
+    
     CGFloat r = _viewModel.avatarSize.width/2.0;
     CGFloat padding = r - ceilf(r/sqrt(2)) - 6;//求得以内切圆半径为斜边的等直角边直角三角形的单直角边长度，用内切圆半径减去它再减去红点视图的一半距离求得偏移量
 
@@ -239,6 +201,50 @@
         self.backgroundColor = _viewModel.cellBgColor;
     }
     
+    EaseIMKit_WS
+    if (![EaseIMKitOptions sharedOptions].isJiHuApp && self.model.type == EMConversationTypeGroupChat) {
+       
+        [self.contentView addSubview:self.groupIdLabel];
+
+        [self.groupIdLabel Ease_remakeConstraints:^(EaseConstraintMaker *make) {
+            make.top.equalTo(weakSelf.nameLabel.ease_bottom).offset(4.0);
+            make.left.equalTo(weakSelf.nameLabel);
+        }];
+        
+        [_detailLabel Ease_remakeConstraints:^(EaseConstraintMaker *make) {
+            make.top.equalTo(weakSelf.groupIdLabel.ease_bottom).offset(4.0);
+            make.left.equalTo(weakSelf.avatarView.ease_right).offset(weakSelf.viewModel.avatarEdgeInsets.right + weakSelf.viewModel.detailLabelEdgeInsets.left + 12);
+        }];
+    }else {
+        [_detailLabel Ease_remakeConstraints:^(EaseConstraintMaker *make) {
+            make.top.equalTo(weakSelf.nameLabel.ease_bottom).offset(weakSelf.viewModel.nameLabelEdgeInsets.bottom + weakSelf.viewModel.detailLabelEdgeInsets.top);
+            make.left.equalTo(weakSelf.avatarView.ease_right).offset(weakSelf.viewModel.avatarEdgeInsets.right + weakSelf.viewModel.detailLabelEdgeInsets.left + 12);
+            make.bottom.equalTo(weakSelf.contentView.ease_bottom).offset(weakSelf.viewModel.detailLabelEdgeInsets.bottom - 18);
+        }];
+
+    }
+    
+      
+    if (_viewModel.badgeLabelPosition == EMAvatarTopRight) {
+        [_badgeLabel Ease_remakeConstraints:^(EaseConstraintMaker *make) {
+            make.height.offset(_viewModel.badgeLabelHeight);
+            make.width.Ease_greaterThanOrEqualTo(weakSelf.viewModel.badgeLabelHeight).priority(1000);
+            make.centerY.equalTo(weakSelf.avatarView.ease_top).offset(weakSelf.viewModel.badgeLabelCenterVector.dy + 4);
+            make.centerX.equalTo(weakSelf.avatarView.ease_right).offset(weakSelf.viewModel.badgeLabelCenterVector.dx - 8);
+        }];
+        
+        [_detailLabel Ease_updateConstraints:^(EaseConstraintMaker *make) {
+            make.right.equalTo(weakSelf.contentView.ease_right).offset(-weakSelf.viewModel.detailLabelEdgeInsets.right - 18);
+        }];
+    }else {
+        [_badgeLabel Ease_remakeConstraints:^(EaseConstraintMaker *make) {
+            make.height.offset(_viewModel.badgeLabelHeight);
+            make.width.Ease_greaterThanOrEqualTo(weakSelf.viewModel.badgeLabelHeight).priority(1000);
+            make.centerY.equalTo(weakSelf.avatarView.ease_top).offset(weakSelf.viewModel.badgeLabelCenterVector.dy + 4);
+            make.centerX.equalTo(weakSelf.avatarView.ease_right).offset(weakSelf.viewModel.badgeLabelCenterVector.dx - 8);
+        }];
+    }
+
     self.groupIdLabel.text = _model.easeId;
     self.detailLabel.attributedText = _model.showInfo;
     self.timeLabel.text = [EaseDateHelper formattedTimeFromTimeInterval:_model.lastestUpdateTime];

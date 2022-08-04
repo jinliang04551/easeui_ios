@@ -60,6 +60,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:CHAT_BACKOFF object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:GROUP_LIST_FETCHFINISHED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:USERINFO_UPDATE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveJoinGroupApply) name:EaseNotificationRequestJoinGroupEvent object:nil];
+    
     [EMClient.sharedClient.groupManager addDelegate:self delegateQueue:dispatch_get_main_queue()];
     
     [self _setupSubviews];
@@ -243,6 +246,11 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     [subView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(control);
     }];
+}
+
+#pragma mark Notification
+- (void)receiveJoinGroupApply {
+    self.rightNavBarBtn.MIS_redDot.hidden = NO;
 }
 
 - (void)_setupSearchResultController

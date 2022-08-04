@@ -53,19 +53,6 @@
 }
 
 + (CGFloat)cellHeightWithObj:(id)obj {
-//    EMGroup *tGroup = (EMGroup *)obj;
-//    if (tGroup == nil) {
-//        return 0;
-//    }
-//
-//    NSMutableArray *tArray = [NSMutableArray array];
-//    [tArray addObject:tGroup.owner];
-//    if (tGroup.adminList.count > 0) {
-//        [tArray addObjectsFromArray:tGroup.adminList];
-//    }
-//    if (tGroup.memberList.count > 0) {
-//        [tArray addObjectsFromArray:tGroup.memberList];
-//    }
 
     NSMutableArray *tArray = (NSMutableArray *)obj;
     if (tArray.count + 1 > 6) {

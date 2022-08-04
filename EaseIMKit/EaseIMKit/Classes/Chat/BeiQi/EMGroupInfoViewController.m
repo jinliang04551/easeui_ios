@@ -418,7 +418,17 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     if (aIsShowHUD) {
         [self showHudInView:self.view hint:NSLocalizedString(@"fetchGroupSubject...", nil)];
     }
-    [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:aGroupId completion:^(EMGroup *aGroup, EMError *aError) {
+//    [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:aGroupId completion:^(EMGroup *aGroup, EMError *aError) {
+//        [weakself hideHud];
+//        if (!aError) {
+//            [weakself _resetGroup:aGroup];
+//        } else {
+//            [EaseAlertController showErrorAlert:NSLocalizedString(@"fetchGroupSubjectFail", nil)];
+//        }
+//        [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
+//    }];
+    
+    [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:self.groupId fetchMembers:YES completion:^(EMGroup * _Nullable aGroup, EMError * _Nullable aError) {
         [weakself hideHud];
         if (!aError) {
             [weakself _resetGroup:aGroup];
@@ -427,6 +437,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         }
         [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
     }];
+    
 }
 
 - (void)tableViewDidTriggerHeaderRefresh
@@ -728,10 +739,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 }
 
 - (void)updateUI {
-    [self.memberArray addObjectsFromArray:self.userArray];
-    [self.memberArray addObjectsFromArray:self.serverArray];
-
-    [self.tableView reloadData];
     
     [[EaseHttpManager sharedManager] inviteGroupMemberWithGroupId:self.group.groupId customerUserIds:self.userArray waiterUserIds:self.serverArray completion:^(NSInteger statusCode, NSString * _Nonnull response) {
        
@@ -740,16 +747,21 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
             if (statusCode == 200) {
-                NSDictionary *data = responsedict[@"data"];
-                NSMutableArray *members = data[@"newmembers"];
-                if (members.count > 0) {
+                //group owner
+                NSString *status = responsedict[@"status"];
+                //member
+                NSString *groupId = responsedict[@"groupId"];
+
+                if ([status isEqualToString:@"SUCCEED"]) {
                     if (self.group.permissionType != EMGroupPermissionTypeOwner) {
-                        [self showHint:@"群主同意后，您邀请的成员将会自动加入本群聊"];
+                        [self showHint:@"邀请成功，等待群管理员审核"];
                     }else {
                         [self showHint:@"邀请成员成功"];
                     }
+                }else {
+                    [EaseAlertController showErrorAlert:errorDescription];
                 }
-                
+
             }else {
                 [EaseAlertController showErrorAlert:errorDescription];
             }

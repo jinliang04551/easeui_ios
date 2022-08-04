@@ -61,6 +61,9 @@
         make.left.equalTo(self.nameLabel.mas_right);
         make.size.equalTo(@(14.0));
     }];
+    
+    self.deleteButton.backgroundColor = UIColor.yellowColor;
+    
 }
 
 
@@ -154,7 +157,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 
 
-@interface BQGroupSearchAddView ()<UIScrollViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
+@interface BQGroupSearchAddView ()<UIScrollViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate>
 
 @property (nonatomic, strong) UILabel* titleLabel;
 @property (nonatomic, strong) UICollectionView *collectionView;
