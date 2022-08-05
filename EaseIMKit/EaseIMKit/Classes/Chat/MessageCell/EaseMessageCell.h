@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) EaseMessageModel *model;
 
-@property (nonatomic, strong) EMGroup *messageGroup;
+@property (nonatomic, assign) NSInteger groupMemberCount;
 
 + (NSString *)cellIdentifierWithDirection:(EMMessageDirection)aDirection
                                      type:(EMMessageType)aType;

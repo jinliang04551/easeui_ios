@@ -10,7 +10,7 @@
 
 #import "EMSearchBar.h"
 #import "EMRealtimeSearch.h"
-#import "BQNoDataPlaceHolderView.h"
+#import "EaseNoDataPlaceHolderView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UITableView *searchResultTableView;
 
-@property (nonatomic, strong) BQNoDataPlaceHolderView *noDataPromptView;
+@property (nonatomic, strong) EaseNoDataPlaceHolderView *noDataPromptView;
 
 - (void)keyBoardWillShow:(NSNotification *)note;
 

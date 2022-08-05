@@ -13,7 +13,7 @@
 #import "BQChatRecordFileCell.h"
 #import "EMSearchBar.h"
 #import "EMRealtimeSearch.h"
-#import "BQNoDataPlaceHolderView.h"
+#import "EaseNoDataPlaceHolderView.h"
 #import "EaseHeaders.h"
 #import "MISScrollPage.h"
 
@@ -32,7 +32,7 @@
 @property (nonatomic, strong) NSMutableArray *searchResultArray;
 @property (nonatomic, strong) NSMutableArray *dataArray;
 
-@property (nonatomic, strong) BQNoDataPlaceHolderView *noDataPromptView;
+@property (nonatomic, strong) EaseNoDataPlaceHolderView *noDataPromptView;
 
 @end
 
@@ -351,9 +351,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     return _searchBar;
 }
 
-- (BQNoDataPlaceHolderView *)noDataPromptView {
+- (EaseNoDataPlaceHolderView *)noDataPromptView {
     if (_noDataPromptView == nil) {
-        _noDataPromptView = BQNoDataPlaceHolderView.new;
+        _noDataPromptView = EaseNoDataPlaceHolderView.new;
         [_noDataPromptView.noDataImageView setImage:[UIImage easeUIImageNamed:@"ji_search_nodata"]];
         _noDataPromptView.prompt.text = @"搜索无结果";
         _noDataPromptView.hidden = YES;

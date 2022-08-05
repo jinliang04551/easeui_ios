@@ -49,6 +49,7 @@ static const void *HttpRequestHUDKey = &HttpRequestHUDKey;
     hud.offset = offset;
     hud.removeFromSuperViewOnHide = YES;
     [hud hideAnimated:YES afterDelay:2];
+    
 }
 
 - (void)showHint:(NSString *)hint yOffset:(float)yOffset

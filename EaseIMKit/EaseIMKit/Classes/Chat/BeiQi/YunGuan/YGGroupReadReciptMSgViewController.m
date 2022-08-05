@@ -39,6 +39,7 @@ MISScrollPageControllerDelegate>
 @property (nonatomic, strong) NSString *groupId;
 @property (nonatomic, strong) EMGroup *group;
 
+@property (nonatomic, strong) NSMutableArray *memberIdArray;
 @property (nonatomic, strong) NSMutableArray *readMsgArray;
 @property (nonatomic, strong) NSMutableArray *unReadMsgArray;
 
@@ -68,9 +69,7 @@ MISScrollPageControllerDelegate>
 
     [self addPopBackLeftItemWithTarget:self action:@selector(backItemAction)];
     
-    [self setTitleAndContentVC];
-    [self placeAndLayoutSubviews];
-    [self.pageController reloadData];
+    [self fetchGroupInfo];
 }
 
 - (void)backItemAction {
@@ -98,8 +97,9 @@ MISScrollPageControllerDelegate>
     
 }
 
-
-- (void)fetchGroupMembers {
+- (void)fetchGroupInfo {
+    [self showHudInView:self.view hint:@"加载中"];
+    
     [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:self.groupId fetchMembers:YES completion:^(EMGroup * _Nullable aGroup, EMError * _Nullable aError) {
         if (aError == nil) {
             self.group = aGroup;
@@ -110,20 +110,63 @@ MISScrollPageControllerDelegate>
             }
             if (self.group.memberList.count > 0) {
                 [tArray addObjectsFromArray:self.group.memberList];
-            }            
+            }
+            self.memberIdArray = tArray;
+            [self fetchMessageReadAck];
         }else {
-            [EaseAlertController showErrorAlert:aError.debugDescription];
+            [self hideHud];
+            
+            [EaseAlertController showErrorAlert:aError.errorDescription
+            ];
+        }
+        
+    }];
+}
+
+- (void)fetchMessageReadAck {
+    
+    [[EMClient sharedClient].chatManager asyncFetchGroupMessageAcksFromServer:self.message.messageId groupId:self.groupId startGroupAckId:@"" pageSize:20 completion:^(EMCursorResult<EMGroupMessageAck *> * _Nullable aResult, EMError * _Nullable error, int totalCount) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideHud];
+        });
+        
+        if (error == nil) {
+            NSMutableArray *tArray = [NSMutableArray array];
+            for (int i = 0; i < aResult.list.count; ++i) {
+                EMGroupMessageAck *msgAck = aResult.list[i];
+                if ([msgAck.messageId isEqualToString:self.message.messageId]) {
+                    [tArray addObject:msgAck.readAckId];
+                }
+            }
+            self.readMsgArray = tArray;
+            [self.memberIdArray removeObjectsInArray:self.readMsgArray];
+            self.unReadMsgArray = self.memberIdArray;
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self updateUI];
+            });
+        }else {
+            [EaseAlertController showErrorAlert:error.errorDescription
+            ];
         }
     }];
     
 }
 
-
+- (void)updateUI {
+    [self setTitleAndContentVC];
+    [self placeAndLayoutSubviews];
+    [self.pageController reloadData];
+}
 
 #pragma mark private method
 - (void)setTitleAndContentVC {
+    NSString *readTitle = [NSString stringWithFormat:@"%@人已读",@(self.readMsgArray.count)];
+    NSString *unReadTitle = [NSString stringWithFormat:@"%@人未读",@(self.unReadMsgArray.count)];
+
     self.navTitleArray = [
-        @[@"2人已读",@"2人未读"] mutableCopy];
+        @[readTitle,unReadTitle] mutableCopy];
     self.contentVCArray = [@[self.msgReadVC,self.msgUnReadVC] mutableCopy];
 }
 
@@ -168,9 +211,10 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         style.gradualChangeTitleColor = YES;
         style.normalTitleColor = EaseIMKit_COLOR_HEX(0x999999);
         style.selectedTitleColor = EaseIMKit_COLOR_HEX(0x000000);
-        style.scrollLineColor = EaseIMKit_COLOR_HEXA(0x000000, 0.5);
+        style.scrollLineColor = EaseIMKit_COLOR_HEX(0x4798CB);
+        style.showLine = YES;
 }
-
+        
         style.scaleTitle = YES;
         style.autoAdjustTitlesWidth = YES;
         style.titleBigScale = 1.05;
@@ -217,7 +261,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (YGGroupMsgReadController *)msgReadVC {
     if (_msgReadVC == nil) {
         _msgReadVC = [[YGGroupMsgReadController alloc] init];
-        
+        _msgReadVC.dataArray = self.readMsgArray;
     }
     return _msgReadVC;
 }
@@ -225,8 +269,30 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (YGGroupMsgReadController *)msgUnReadVC {
     if (_msgUnReadVC == nil) {
         _msgUnReadVC = [[YGGroupMsgReadController alloc] init];
+        _msgUnReadVC.dataArray = self.unReadMsgArray;
     }
     return _msgUnReadVC;
+}
+
+- (NSMutableArray *)memberIdArray {
+    if (_memberIdArray == nil) {
+        _memberIdArray = [NSMutableArray array];
+    }
+    return _memberIdArray;
+}
+
+- (NSMutableArray *)readMsgArray {
+    if (_readMsgArray == nil) {
+        _readMsgArray = [NSMutableArray array];
+    }
+    return _readMsgArray;
+}
+
+- (NSMutableArray *)unReadMsgArray {
+    if (_unReadMsgArray == nil) {
+        _unReadMsgArray = [NSMutableArray array];
+    }
+    return _unReadMsgArray;
 }
 
 

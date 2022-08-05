@@ -47,6 +47,10 @@
 @property (nonatomic, strong) EMChatBar *chatBar;
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
 @property (nonatomic, strong) NSMutableArray<EMChatMessage *> *messageList;
+
+//群成员个数（包括群主）
+@property (nonatomic, assign) NSInteger groupMemberCount;
+
 @end
 
 @implementation EaseChatViewController
@@ -135,6 +139,18 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapTableViewAction:)];
     [self.tableView addGestureRecognizer:tap];
         
+    [self fetchGroupAllMembers];
+}
+
+- (void)fetchGroupAllMembers {
+    
+    [EMClient.sharedClient.groupManager getGroupSpecificationFromServerWithId:self.currentConversation.conversationId completion:^(EMGroup *aGroup, EMError *aError) {
+        if (!aError) {
+            self.groupMemberCount = aGroup.memberList.count + 1;
+        } else {
+            //
+        }
+    }];
 }
 
 
@@ -383,6 +399,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
         cell = [[EaseMessageCell alloc] initWithDirection:model.direction chatType:model.message.chatType messageType:model.type viewModel:_viewModel];
         cell.delegate = self;
     }
+    cell.groupMemberCount = self.groupMemberCount;
     cell.model = model;
     if (cell.model.message.body.type == EMMessageTypeVoice) {
         cell.model.weakMessageCell = cell;
@@ -1000,18 +1017,17 @@ if (EaseIMKitManager.shared.isJiHuApp){
     NSString *from = [[EMClient sharedClient] currentUsername];
     NSString *to = self.currentConversation.conversationId;
     EMChatMessage *message = [[EMChatMessage alloc] initWithConversationID:to from:from to:to body:aBody ext:aExt];
-    //是否需要发送阅读回执
-    if([aExt objectForKey:MSG_EXT_READ_RECEIPT]) {
-        message.isNeedGroupAck = YES;
-    }
+//    //是否需要发送阅读回执
+//    if([aExt objectForKey:MSG_EXT_READ_RECEIPT]) {
+//        message.isNeedGroupAck = YES;
+//    }
     
-//if (EaseIMKitManager.shared.isJiHuApp)
-//
-//#else
-//    message.isNeedGroupAck = YES;
-//#endif
     
     message.chatType = (EMChatType)self.currentConversation.type;
+    
+    if (self.currentConversation.type == EMConversationTypeGroupChat) {
+        message.isNeedGroupAck = YES;
+    }
     
     __weak typeof(self) weakself = self;
     if (self.delegate && [self.delegate respondsToSelector:@selector(willSendMessage:)]) {

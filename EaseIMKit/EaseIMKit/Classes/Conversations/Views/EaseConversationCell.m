@@ -120,9 +120,15 @@
 //    _redDot.image = [UIImage imageNamed:@"undisturbDot"];
 //    _undisturbRing.image = [UIImage imageNamed:@"undisturbRing"];
     
-    _redDot.image = [UIImage easeUIImageNamed:@"jh_undisturbDot"];
-    _undisturbRing.image = [UIImage easeUIImageNamed:@"jh_undisturbRing"];
-    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        _redDot.image = [UIImage easeUIImageNamed:@"jh_undisturbDot"];
+        _undisturbRing.image = [UIImage easeUIImageNamed:@"jh_undisturbRing"];
+    }else {
+        _redDot.image = [UIImage easeUIImageNamed:@"yg_undisturbDot"];
+        _undisturbRing.image = [UIImage easeUIImageNamed:@"yg_undisturbRing"];
+    }
+
+        
     self.selectionStyle = UITableViewCellSelectionStyleGray;
 }
 
@@ -245,7 +251,7 @@
         }];
     }
 
-    self.groupIdLabel.text = _model.easeId;
+    self.groupIdLabel.text = [NSString stringWithFormat:@"群组ID:%@",_model.easeId];
     self.detailLabel.attributedText = _model.showInfo;
     self.timeLabel.text = [EaseDateHelper formattedTimeFromTimeInterval:_model.lastestUpdateTime];
     if (model.showBadgeValue == YES) {
@@ -263,7 +269,13 @@
 {
     [super setSelected:selected animated:animated];
     self.badgeLabel.backgroundColor = _viewModel.badgeLabelBgColor;
-//    self.contentView.backgroundColor = [UIColor colorWithHexString:@"#7F7F7F"];
+    
+//    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+//        self.contentView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+//    }else {
+//        self.contentView.backgroundColor = [UIColor colorWithHexString:@"#F2F3F5"];
+//    }
+    
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated

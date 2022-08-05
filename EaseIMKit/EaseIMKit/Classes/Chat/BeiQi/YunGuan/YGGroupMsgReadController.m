@@ -11,7 +11,6 @@
 #import "MISScrollPage.h"
 
 @interface YGGroupMsgReadController ()<MISScrollPageControllerContentSubViewControllerDelegate>
-@property (nonatomic, strong) NSMutableArray *dataArray;
 
 @end
 
@@ -22,14 +21,14 @@
     
     [self.tableView registerClass:[BQAvatarTitleRoleCell class] forCellReuseIdentifier:NSStringFromClass([BQAvatarTitleRoleCell class])];
 
-    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.rowHeight = [BQAvatarTitleRoleCell height];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
-    self.dataArray = [@[[@(1) stringValue],[@(2) stringValue]] mutableCopy];
-
+    
     [self.tableView reloadData];
 
 }
+
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

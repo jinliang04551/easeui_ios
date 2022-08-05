@@ -12,7 +12,7 @@
 #import "EMSearchBar.h"
 #import "EMRealtimeSearch.h"
 #import "YGAvatarTitleAccessCell.h"
-#import "BQNoDataPlaceHolderView.h"
+#import "EaseNoDataPlaceHolderView.h"
 #import "YGGroupSearchTypeTableView.h"
 #import "YGSearchGroupModel.h"
 #import "EMChatViewController.h"
@@ -25,7 +25,7 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) YGGroupSearchView *groupSearchView;
-@property (nonatomic, strong) BQNoDataPlaceHolderView *noDataPromptView;
+@property (nonatomic, strong) EaseNoDataPlaceHolderView *noDataPromptView;
 @property (nonatomic, strong) YGGroupSearchTypeTableView *searchTypeTableView;
 @property (nonatomic, assign) YGSearchGroupType searchGroupType;
 
@@ -287,9 +287,9 @@
     return _groupSearchView;
 }
 
-- (BQNoDataPlaceHolderView *)noDataPromptView {
+- (EaseNoDataPlaceHolderView *)noDataPromptView {
     if (_noDataPromptView == nil) {
-        _noDataPromptView = BQNoDataPlaceHolderView.new;
+        _noDataPromptView = EaseNoDataPlaceHolderView.new;
         [_noDataPromptView.noDataImageView setImage:[UIImage easeUIImageNamed:@"ji_search_nodata"]];
         _noDataPromptView.prompt.text = @"搜索无结果";
         _noDataPromptView.hidden = YES;

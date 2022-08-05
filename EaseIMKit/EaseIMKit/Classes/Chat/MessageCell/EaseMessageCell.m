@@ -135,10 +135,13 @@
         
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.font = [UIFont systemFontOfSize:13];
-//        _nameLabel.textColor = [UIColor grayColor];
         
         //jh_setting
-        _nameLabel.textColor = [UIColor colorWithHexString:@"#999999"];
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            _nameLabel.textColor = [UIColor colorWithHexString:@"#999999"];
+        } else {
+            _nameLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
+        }
 
         if (chatType != EMChatTypeChat) {
             [self.contentView addSubview:_nameLabel];
@@ -203,7 +206,7 @@
         _statusView.clipsToBounds = YES;
         _statusView.layer.cornerRadius = 4;
         [_statusView Ease_makeConstraints:^(EaseConstraintMaker *make) {
-            make.centerY.equalTo(self.bubbleView);
+            make.top.equalTo(self.bubbleView);
             make.left.equalTo(self.bubbleView.ease_right).offset(5);
             make.width.height.equalTo(@8);
         }];
@@ -214,13 +217,7 @@
 
 - (void)setCellIsReadReceipt{
     _readReceiptBtn = [[YGReadReceiptButton alloc]initWithFrame:CGRectMake(0, 0, 100, 10)];
-    
-//    _readReceiptBtn.layer.cornerRadius = 5;
-//    _readReceiptBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
-//    _readReceiptBtn.backgroundColor = [UIColor lightGrayColor];
-//    [_readReceiptBtn.titleLabel setTextColor:[UIColor whiteColor]];
-//    _readReceiptBtn.titleLabel.font = [UIFont systemFontOfSize: 10.0];
-    
+        
     [_readReceiptBtn addTarget:self action:@selector(readReceiptDetilAction) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:_readReceiptBtn];
     if(self.direction == EMMessageDirectionSend) {
@@ -289,6 +286,8 @@
 {
     _model = model;
     self.bubbleView.model = model;
+    self.nameLabel.text = @"12312312";
+    
     if (model.direction == EMMessageDirectionSend) {
         [self.statusView setSenderStatus:model.message.status isReadAcked:model.message.chatType == EMChatTypeChat ? model.message.isReadAcked : NO];
     } else {
@@ -320,25 +319,22 @@
     if (!isCustomAvatar) {
         _avatarView.image = [UIImage easeUIImageNamed:@"jh_user_icon"];
     }
-    if (model.message.isNeedGroupAck) {
-        self.readReceiptBtn.hidden = NO;
-//        [self.readReceiptBtn setTitle:[NSString stringWithFormat:EaseLocalizableString(@"readers", nil),_model.message.groupAckCount] forState:UIControlStateNormal];
-        
-        //yg_groupChat_allRead yg_groupChat_hasRead
-        //+1 owner -1 oneSelf
-        NSInteger groupMembers = self.messageGroup.adminList.count +self.messageGroup.memberList.count + 1 - 1;
-        
-//        if (_model.message.groupAckCount == groupMembers) {
-//            [self.readReceiptBtn updateStateWithCount:_model.message.groupAckCount isReadAll:YES];
-//        }else {
-//
-//            [self.readReceiptBtn updateStateWithCount:_model.message.groupAckCount isReadAll:NO];
-//        }
-        
-        [self.readReceiptBtn updateStateWithCount:99 isReadAll:NO];
-        
-    } else {
+    
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         self.readReceiptBtn.hidden = YES;
+    }else {
+     
+        if (model.message.isNeedGroupAck && model.message.status == EMMessageStatusSucceed && model.message.direction == EMMessageDirectionSend) {
+            if (_model.message.groupAckCount == self.groupMemberCount) {
+                [self.readReceiptBtn updateStateWithCount:_model.message.groupAckCount isReadAll:YES];
+            }else {
+
+                [self.readReceiptBtn updateStateWithCount:_model.message.groupAckCount isReadAll:NO];
+            }
+        } else {
+            self.readReceiptBtn.hidden = YES;
+        }
     }
 }
 

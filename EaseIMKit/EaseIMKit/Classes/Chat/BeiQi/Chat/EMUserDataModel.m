@@ -16,6 +16,7 @@
     if (self = [super init]) {
         _easeId = easeId;
         _defaultAvatar = [UIImage easeUIImageNamed:@"jh_user_icon"];
+        _showName = easeId;
     }
     return self;
 }

@@ -47,6 +47,8 @@
 {
     if (isReadAll) {
         [self.readIconImageView setImage:[UIImage easeUIImageNamed:@"yg_groupChat_allRead"]];
+        self.readCountLabel.text = @"";
+
     }else {
         [self.readIconImageView setImage:[UIImage easeUIImageNamed:@"yg_groupChat_hasRead"]];
         self.readCountLabel.text = [@(readCount) stringValue];

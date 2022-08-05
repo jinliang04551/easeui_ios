@@ -32,7 +32,8 @@
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.nameLabel);
         make.right.equalTo(self.contentView).offset(-16.0f);
-        make.size.mas_equalTo(EaseIMKit_AvatarHeight);
+        make.size.mas_equalTo(@(44.0));
+        
     }];
     
     

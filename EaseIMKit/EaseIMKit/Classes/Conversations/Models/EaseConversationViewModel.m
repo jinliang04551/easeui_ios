@@ -107,7 +107,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
     _badgeLabelFont = [UIFont systemFontOfSize:12];
     _badgeLabelHeight = 14;
 //    _badgeLabelBgColor = UIColor.redColor;
-    _badgeLabelBgColor = [UIColor colorWithHexString:@"#AF2A25"];
+    _badgeLabelBgColor = [UIColor colorWithHexString:@"#FF4D4F"];
     _badgeLabelTitleColor = UIColor.whiteColor;
     _badgeLabelPosition = EMCellRight;
     _badgeLabelCenterVector = CGVectorMake(0, 0);
@@ -124,8 +124,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
     _cellSeparatorColor = [UIColor colorWithHexString:@"#F3F3F3"];
 
 }
-
-    _bgView = [self defaultBgView];
+    _bgView = [self noDataPromptView];
     
 //    _defaultAvatarImage = [UIImage easeUIImageNamed:@"jh_user_icon"];
     _defaultAvatarImage = [UIImage easeUIImageNamed:@"jh_user_icon"];
@@ -133,49 +132,16 @@ if (EaseIMKitManager.shared.isJiHuApp){
     
 }
 
-- (UIView *)defaultBgView {
-    UIView *defaultBgView = [[UIView alloc] initWithFrame:CGRectZero];
-    UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage easeUIImageNamed:@"tableViewBgImg"]];
-    UILabel *txtLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    txtLabel.font = [UIFont systemFontOfSize:14];
-    txtLabel.textColor = [UIColor colorWithHexString:@"#999999"];
-    [view addSubview:imageView];
-    [view addSubview:txtLabel];
-    [defaultBgView addSubview:view];
-
-    txtLabel.text = EaseLocalizableString(@"noMessag", nil);
-
-    [imageView Ease_updateConstraints:^(EaseConstraintMaker *make) {
-        make.centerX.equalTo(view);
-        make.top.equalTo(view);
-        make.width.Ease_equalTo(138);
-        make.height.Ease_equalTo(106);
-    }];
-
-    [txtLabel Ease_updateConstraints:^(EaseConstraintMaker *make) {
-        make.centerX.equalTo(view.ease_centerX);
-        make.top.equalTo(imageView.ease_bottom).offset(19);
-        make.height.Ease_equalTo(20);
-    }];
-
-    [view Ease_updateConstraints:^(EaseConstraintMaker *make) {
-        make.center.equalTo(defaultBgView);
-        make.top.equalTo(imageView);
-        make.left.equalTo(imageView);
-        make.right.equalTo(imageView);
-        make.bottom.equalTo(txtLabel.ease_bottom);
-    }];
-
-    return defaultBgView;
-}
-
 
 - (EaseNoDataPlaceHolderView *)noDataPromptView {
     if (_noDataPromptView == nil) {
         _noDataPromptView = EaseNoDataPlaceHolderView.new;
         [_noDataPromptView.noDataImageView setImage:[UIImage easeUIImageNamed:@"ji_search_nodata"]];
-        _noDataPromptView.prompt.text = @"您当前未加入任何专属服务群";
+        if (![EaseIMKitOptions sharedOptions].isJiHuApp) {
+            _noDataPromptView.prompt.text = @"您当前未加入任何专属服务群";
+        }else {
+            _noDataPromptView.prompt.text = @"暂无消息";
+        }
         _noDataPromptView.hidden = YES;
     }
     return _noDataPromptView;

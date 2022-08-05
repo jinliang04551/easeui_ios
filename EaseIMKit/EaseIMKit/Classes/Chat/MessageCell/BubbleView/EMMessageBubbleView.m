@@ -26,13 +26,16 @@
 
 - (void)setupBubbleBackgroundImage
 {
-    UIEdgeInsets edge = UIEdgeInsetsMake(8, 8, 8, 8);
     if (self.direction == EMMessageDirectionSend) {
-        UIImage *image = [_viewModel.sendBubbleBgPicture resizableImageWithCapInsets:edge resizingMode:UIImageResizingModeStretch];
-        [self setImage:image];
+        UIImage *originImage = _viewModel.sendBubbleBgPicture;
+        
+        UIImage *denImage = [originImage stretchableImageWithLeftCapWidth:8 topCapHeight:originImage.size.height * 0.8];
+        [self  setImage:denImage];
     } else {
-        UIImage *image = [_viewModel.receiveBubbleBgPicture resizableImageWithCapInsets:edge resizingMode:UIImageResizingModeStretch];
-        [self setImage:image];
+        UIImage *originImage = _viewModel.receiveBubbleBgPicture;
+        UIImage *denImage = [originImage stretchableImageWithLeftCapWidth:8 topCapHeight:originImage.size.height * 0.8];
+        [self  setImage:denImage];
+        
     }
 }
 
