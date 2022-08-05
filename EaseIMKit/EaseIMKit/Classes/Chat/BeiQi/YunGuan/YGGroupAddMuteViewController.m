@@ -92,20 +92,21 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"YGGroupMuteItemCell";
-    YGGroupMuteItemCell *cell = (YGGroupMuteItemCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    YGGroupMuteItemCell *cell = (YGGroupMuteItemCell *)[tableView dequeueReusableCellWithIdentifier:NSStringFromClass([YGGroupMuteItemCell class])];
     
     NSString *username = self.isSearching ? [self.searchArray objectAtIndex:indexPath.row] : [self.dataArray objectAtIndex:indexPath.row];
     
-    [cell updateWithObj:username];
+    BOOL isChecked = [self userIsChecked:username];
+    [cell updateWithObj:username isChecked:isChecked];
     
     EaseIMKit_WS
     cell.checkBlcok = ^(NSString * _Nonnull userId, BOOL isChecked) {
         if ([weakSelf.selectedArray containsObject:userId]) {
-            [self.selectedArray removeObject:userId];
+            [weakSelf.selectedArray removeObject:userId];
         } else {
-            [self.selectedArray addObject:userId];
+            [weakSelf.selectedArray addObject:userId];
         }
+        [weakSelf.tableView reloadData];
     };
     
     return cell;
@@ -127,42 +128,81 @@
     
 }
 
-#pragma mark - EMSearchBarDelegate
-- (void)searchBarWillBeginEditing:(UISearchBar *)searchBar
-{
-    if (!self.isSearching) {
-        self.isSearching = YES;
-    }
-    [self.tableView reloadData];
+- (BOOL)userIsChecked:(NSString *)userId {
+    return [self.selectedArray containsObject:userId];
 }
 
-- (void)searchBarCancelButtonAction:(UISearchBar *)searchBar
+
+//#pragma mark - EMSearchBarDelegate
+//- (void)searchBarWillBeginEditing:(UISearchBar *)searchBar
+//{
+//    self.isSearching = YES;
+//    [self.tableView reloadData];
+//}
+//
+//- (void)searchBarCancelButtonAction:(UISearchBar *)searchBar
+//{
+//    [[EMRealtimeSearch shared] realtimeSearchStop];
+//    self.isSearching = NO;
+//    [self.searchArray removeAllObjects];
+//    [self.tableView reloadData];
+//}
+//
+//- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+//{
+//
+//}
+//
+//- (void)searchTextDidChangeWithString:(NSString *)aString
+//{
+//    if (!self.isSearching) {
+//        return;
+//    }
+//
+//    __weak typeof(self) weakself = self;
+//    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:nil resultBlock:^(NSArray *results) {
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [weakself.searchArray removeAllObjects];
+//            [weakself.searchArray addObjectsFromArray:results];
+//            [weakself.tableView reloadData];
+//        });
+//    }];
+//}
+
+#pragma mark - EMSearchBarDelegate
+- (void)searchBarShouldBeginEditing:(EMSearchBar *)searchBar
+{
+    self.isSearching = YES;
+}
+
+- (void)searchBarCancelButtonAction:(EMSearchBar *)searchBar
 {
     [[EMRealtimeSearch shared] realtimeSearchStop];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.isSearching = NO;
+    
     [self.searchArray removeAllObjects];
     [self.tableView reloadData];
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+- (void)searchBarSearchButtonClicked:(EMSearchBar *)searchBar
 {
-
+    
 }
 
-- (void)searchTextDidChangeWithString:(NSString *)aString
-{
-    if (!self.isSearching) {
-        return;
-    }
+- (void)searchTextDidChangeWithString:(NSString *)aString {
     
-    __weak typeof(self) weakself = self;
+    EaseIMKit_WS
     [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:nil resultBlock:^(NSArray *results) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [weakself.searchArray removeAllObjects];
-            [weakself.searchArray addObjectsFromArray:results];
-            [weakself.tableView reloadData];
+            [weakSelf.searchArray removeAllObjects];
+            [weakSelf.searchArray addObjectsFromArray:results];
+            [weakSelf.tableView reloadData];
         });
     }];
+    
+    
 }
 
 #pragma mark - Action

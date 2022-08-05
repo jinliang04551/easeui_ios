@@ -374,7 +374,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 {
     NSArray *titleArray = @[@"消息提醒",@"搜索群聊",@"创建群组",@"群组申请"];
     EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
-    NSString *msgAlertName = options.isReceiveNewMsgNotice ? @"yg_msg_alert_on": @"yg_msg_alert_off";
+    NSString *msgAlertName = options.isAlertMsg ? @"yg_msg_alert_on": @"yg_msg_alert_off";
     
     NSArray *imageNameArray = @[msgAlertName,@"yg_group_search",@"yg_group_create",@"yg_group_apply"];
     
@@ -395,8 +395,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 - (void)messageAlertAction {
     EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
-    options.isReceiveNewMsgNotice = !options.isReceiveNewMsgNotice;
-    NSString *msg = [NSString stringWithFormat:@"%@消息提醒",options.isReceiveNewMsgNotice ? @"打开":@"关闭"];
+    options.isAlertMsg = !options.isAlertMsg;
+    NSString *msg = [NSString stringWithFormat:@"%@消息提醒",options.isAlertMsg ? @"打开":@"关闭"];
     [self showHint:msg];
 }
 

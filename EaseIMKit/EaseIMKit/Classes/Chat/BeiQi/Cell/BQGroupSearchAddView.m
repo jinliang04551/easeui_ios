@@ -11,7 +11,7 @@
 #import "EaseHeaders.h"
 
 
-#define kMaxNameLabelWidth 70.0
+#define kMaxNameLabelWidth 50.0
 #define kCollectionItemHeight 24.0
 #define KCollectionItemMaxCount 4
 
@@ -44,26 +44,24 @@
     [self.contentView addSubview:self.deleteButton];
 
     [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.nameLabel).offset(-12.0);
-        make.right.equalTo(self.deleteButton).offset(12.0);
-        make.height.equalTo(@(24.0));
+        make.left.right.equalTo(self.contentView);
+        make.height.equalTo(@(kCollectionItemHeight));
         make.centerY.equalTo(self.contentView);
     }];
     
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
-        make.left.equalTo(self.contentView).offset(12.0);
+        make.left.equalTo(self.bgView).offset(12.0);
         make.width.lessThanOrEqualTo(@(kMaxNameLabelWidth));
     }];
     
     [self.deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.nameLabel.mas_right);
+        make.right.equalTo(self.bgView).offset(-12.0);
         make.size.equalTo(@(14.0));
     }];
-    
-    self.deleteButton.backgroundColor = UIColor.yellowColor;
-    
+        
 }
 
 
@@ -95,16 +93,16 @@
 }
 
 + (CGSize)sizeForItemUserId:(NSString *)userId {
-//    CGFloat contentWidth = [userId sizeWithFont:[BQGroupAddItemCell labelFont] constrainedToSize:CGSizeMake(kMaxNameLabelWidth, 24.0)].width;
+//    CGFloat contentWidth = [userId sizeWithFont:[BQGroupAddItemCell labelFont] constrainedToSize:CGSizeMake(kMaxNameLabelWidth, kCollectionItemHeight)].width;
 
-    return CGSizeMake(kMaxNameLabelWidth, 24.0);
+    return CGSizeMake(kMaxNameLabelWidth + 14 + 12.0 *2, kCollectionItemHeight);
 }
 
 #pragma mark getter and setter
 - (UIView *)bgView {
     if (_bgView == nil) {
         _bgView = [[UIView alloc] init];
-        _bgView.layer.cornerRadius = 24.0 * 0.5;
+        _bgView.layer.cornerRadius = kCollectionItemHeight * 0.5;
         _bgView.clipsToBounds = YES;
         _bgView.layer.masksToBounds = YES;
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
@@ -198,7 +196,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleLabel.mas_bottom).offset(10.0);
         make.left.right.equalTo(self);
-        make.bottom.equalTo(self);
+        make.bottom.equalTo(self).offset(-10.0);
     }];
 }
 
@@ -254,23 +252,27 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     CGFloat height = 0;
     
     if (self.dataArray.count > 0) {
+        //title label height
         height += 16.0 + 20.0 + 10.0;
-       
-        CGFloat aWidth = 0;
+        //collection bottom offset
+        height += 10.0;
+        
+        CGFloat aWidth = [BQGroupSearchAddView collectionLeftRightPadding] * 2;
         CGFloat rowHeight = 1;
-        CGFloat aMaxWidth = [BQGroupSearchAddView maxItemWidth];
         
         for (int i = 0; i< self.dataArray.count; ++i) {
             NSString *userId = self.dataArray[i];
             CGFloat iWidth = [BQGroupAddItemCell sizeForItemUserId:userId].width;
             aWidth += iWidth;
-            if (aWidth >= aMaxWidth) {
+            aWidth += [BQGroupSearchAddView itemSpacing];
+            
+            if (aWidth >= EaseIMKit_ScreenWidth) {
                 rowHeight += 1;
                 aWidth = iWidth;
             }
         }
 
-        height += rowHeight * 24.0 + (rowHeight -1) *10.0;
+        height += rowHeight * kCollectionItemHeight + (rowHeight -1) *10.0;
         
     }else {
         height = 0;

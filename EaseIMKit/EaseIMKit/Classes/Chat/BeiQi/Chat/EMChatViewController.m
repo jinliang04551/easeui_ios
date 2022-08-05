@@ -393,7 +393,13 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (void)didSendMessage:(EMChatMessage *)message error:(EMError *)error
 {
     if (error) {
-        [EaseAlertController showErrorAlert:error.errorDescription];
+        NSLog(@"%s error.errorDescription:%@",__func__,error.errorDescription);
+        
+        if ([error.errorDescription isEqualToString:@"User muted"]) {
+            [EaseAlertController showErrorAlert:@"您已被禁言"];
+        }else {
+            [EaseAlertController showErrorAlert:error.errorDescription];
+        }
     }
 }
 

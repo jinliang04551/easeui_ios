@@ -306,7 +306,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             return titleValueAccessCell;
         }else {
             titleSwitchCell.nameLabel.text = @"消息免打扰";
-            [titleSwitchCell.aSwitch setOn:self.group.isPushNotificationEnabled];
+            [titleSwitchCell.aSwitch setOn:!self.group.isPushNotificationEnabled];
             EaseIMKit_WS
             titleSwitchCell.switchActionBlock = ^(UISwitch * _Nonnull aSwitch) {
                 [weakSelf noDisturbEnableWithSwitch:aSwitch];
@@ -495,10 +495,11 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (void)noDisturbEnableWithSwitch:(UISwitch *)aSwitch {
     
     EaseIMKit_WS
-    [[EaseIMKitManager shared] updateUndisturbMapsKey:self.conversation.conversationId value:aSwitch.isOn];
+   
     [EMClient.sharedClient.groupManager updatePushServiceForGroup:self.group.groupId isPushEnabled:!aSwitch.isOn completion:^(EMGroup *aGroup, EMError *aError) {
         if (!aError) {
             weakSelf.group = aGroup;
+            [[EaseIMKitManager shared] updateUndisturbMapsKey:self.conversation.conversationId value:aSwitch.isOn];
         } else {
             if (aError) {
                 [weakSelf showHint:[NSString stringWithFormat:NSLocalizedString(@"setDistrbute", nil),aError.errorDescription]];
@@ -752,7 +753,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
                 //member
                 NSString *groupId = responsedict[@"groupId"];
 
-                if ([status isEqualToString:@"SUCCEED"]) {
+                if (status.length > 0) {
                     if (self.group.permissionType != EMGroupPermissionTypeOwner) {
                         [self showHint:@"邀请成功，等待群管理员审核"];
                     }else {

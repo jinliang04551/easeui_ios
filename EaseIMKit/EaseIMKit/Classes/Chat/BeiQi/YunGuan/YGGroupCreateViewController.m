@@ -261,12 +261,7 @@
         [self showHint:@"群名称不能为空"];
         return;
     }
-    
-    if (self.userArray.count == 0) {
-        [self showHint:@"客户列表不能为空"];
-        return;
-    }
-    
+        
     [[EaseHttpManager sharedManager] createGroupWithGroupName:self.groupName groupInterduce:self.groupInterduce customerUserIds:self.userArray waiterUserIds:self.serverArray completion:^(NSInteger statusCode, NSString * _Nonnull response) {
           
         if (response && response.length > 0 && statusCode) {

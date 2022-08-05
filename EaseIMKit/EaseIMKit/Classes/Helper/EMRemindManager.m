@@ -77,7 +77,7 @@ SystemSoundID soundID = 1007;
     }
     EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
     if (!options.isReceiveNewMsgNotice)
-        return;;
+        return;
     // 小于最小间隔时间
     NSTimeInterval timeInterval = [[NSDate date]
                                    timeIntervalSinceDate:self.lastPlaySoundDate];
@@ -108,7 +108,9 @@ SystemSoundID soundID = 1007;
         [self _localNotification:aMessage
                         needInfo:EMClient.sharedClient.pushOptions.displayStyle != EMPushDisplayStyleSimpleBanner];
     } else {
-        AudioServicesPlaySystemSound(soundID);
+        if (options.isAlertMsg) {
+            AudioServicesPlaySystemSound(soundID);
+        }
     }
 }
 
@@ -164,6 +166,7 @@ SystemSoundID soundID = 1007;
     
     NSTimeInterval timeInterval = [[NSDate date] timeIntervalSinceDate:self.lastPlaySoundDate];
     BOOL playSound = NO;
+    
     if (!self.lastPlaySoundDate || timeInterval >= kDefaultPlaySoundInterval) {
         self.lastPlaySoundDate = [NSDate date];
         playSound = YES;
@@ -186,6 +189,10 @@ SystemSoundID soundID = 1007;
         notification.alertBody = alertBody;
         notification.alertAction = NSLocalizedString(@"open", nil);
         notification.timeZone = [NSTimeZone defaultTimeZone];
+        
+        EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
+        playSound = options.isAlertMsg ? YES : NO;
+        
         if (playSound) {
             notification.soundName = UILocalNotificationDefaultSoundName;
         }

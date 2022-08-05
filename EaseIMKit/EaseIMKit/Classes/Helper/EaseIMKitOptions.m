@@ -53,6 +53,7 @@ static EaseIMKitOptions *sharedOptions = nil;
         self.isCustomServer = NO;
         self.isFirstLaunch = NO;
         self.isJiHuApp = YES;
+        self.isAlertMsg = YES;
         self.locationAppkeyArray = [[NSMutableArray alloc]init];
         self.loginUserTokenDic = [NSMutableDictionary dictionary];
         
@@ -112,6 +113,8 @@ static EaseIMKitOptions *sharedOptions = nil;
         self.isCustomServer = [aDecoder decodeBoolForKey:kOptions_IsCustomServer];
         self.isFirstLaunch = [aDecoder decodeBoolForKey:kOptions_IsFirstLaunch];
         self.isJiHuApp = [aDecoder decodeBoolForKey:kOptions_IsJiHuApp];
+        self.isAlertMsg = [aDecoder decodeBoolForKey:kOptions_IsAlertMsg];
+
         self.language = [aDecoder decodeObjectForKey:kOptions_TranslateLanguage];
         self.loginUserTokenDic = [aDecoder decodeObjectForKey:kOptions_loginUserTokenDic];
         
@@ -162,6 +165,7 @@ static EaseIMKitOptions *sharedOptions = nil;
     [aCoder encodeBool:self.isCustomServer forKey:kOptions_IsCustomServer];
     [aCoder encodeBool:self.isFirstLaunch forKey:kOptions_IsFirstLaunch];
     [aCoder encodeBool:self.isJiHuApp forKey:kOptions_IsJiHuApp];
+    [aCoder encodeBool:self.isAlertMsg forKey:kOptions_IsAlertMsg];
 
     [aCoder encodeObject:self.language forKey:kOptions_TranslateLanguage];
     
@@ -202,6 +206,7 @@ static EaseIMKitOptions *sharedOptions = nil;
     retModel.locationAppkeyArray = self.locationAppkeyArray;
     retModel.isFirstLaunch = self.isFirstLaunch;
     retModel.isJiHuApp = self.isJiHuApp;
+    retModel.isAlertMsg = self.isAlertMsg;
     retModel.language = self.language;
     retModel.loginUserTokenDic = self.loginUserTokenDic;
     return retModel;

@@ -144,11 +144,13 @@
 #pragma mark - Action
 - (void)noDisturbEnableWithSwitch:(UISwitch *)aSwitch {
     EaseIMKit_WS
-    [[EaseIMKitManager shared] updateUndisturbMapsKey:self.conversation.conversationId value:aSwitch.isOn];
+   
     [[EMClient sharedClient].pushManager updatePushServiceForUsers:@[self.conversation.conversationId] disablePush:aSwitch.isOn completion:^(EMError * _Nonnull aError) {
         if (aError) {
             [weakSelf showHint:[NSString stringWithFormat:NSLocalizedString(@"setDistrbute", nil),aError.errorDescription]];
             [aSwitch setOn:NO];
+        }else {
+            [[EaseIMKitManager shared] updateUndisturbMapsKey:self.conversation.conversationId value:aSwitch.isOn];
         }
     }];
 

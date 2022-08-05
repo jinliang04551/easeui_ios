@@ -257,6 +257,11 @@
         return;
     }
     
+    if ([userId isEqualToString:[EMClient sharedClient].currentUsername]) {
+        [self showHint:@"不能邀请自己"];
+        return;
+    }
+    
     if (isServicer) {
         if (![self.serverArray containsObject:userId]) {
             [self.serverArray addObject:userId];
@@ -335,9 +340,25 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         
         EaseIMKit_WS
         _groupSearchAddView.deleteMemberBlock = ^(NSString * _Nonnull userId) {
+            
+            //remove from userArray
             if ([weakSelf.userArray containsObject:userId]) {
+                NSInteger index = [weakSelf.userArray indexOfObject:userId];
+                if (index == weakSelf.userArray.count - 1) {
+                    [weakSelf.searchResultTableView reloadData];
+                }
                 [weakSelf.userArray removeObject:userId];
             }
+            
+            //remove from serverArray
+            if ([weakSelf.serverArray containsObject:userId]) {
+                NSInteger index = [weakSelf.serverArray indexOfObject:userId];
+                if (index == weakSelf.serverArray.count - 1) {
+                    [weakSelf.searchResultTableView reloadData];
+                }
+                [weakSelf.serverArray removeObject:userId];
+            }
+
         };
         
     }

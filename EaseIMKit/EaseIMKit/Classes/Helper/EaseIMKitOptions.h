@@ -51,6 +51,7 @@ static NSString *kOptions_IsFirstLaunch = @"IsFirstLaunch";
 static NSString *kOptions_TranslateLanguage = @"TranslateLanguage";
 static NSString *kOptions_IsJiHuApp = @"IsJiHuApp";
 static NSString *kOptions_loginUserTokenDic = @"loginUserTokenDic";
+static NSString *kOptions_IsAlertMsg = @"IsAlertMsg";
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -87,6 +88,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL isCustomServer;
 @property (nonatomic) BOOL isFirstLaunch;
 @property (nonatomic, assign) BOOL isJiHuApp;
+//是否消息提醒
+@property (nonatomic, assign) BOOL isAlertMsg;
+
 @property (nonatomic, strong) NSMutableArray *locationAppkeyArray;
 @property (nonatomic, strong) NSString* language;
 
