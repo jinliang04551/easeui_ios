@@ -111,6 +111,14 @@
     self.joinedGroupIdArray = notify.object;    
 }
 
+- (void)clearMemeryCache {
+    self.exGroupIds = nil;
+    self.joinedGroupIdArray = nil;
+    self.hasJoinGroupApply = NO;
+}
+
+
+#pragma mark getter and setter
 - (NSMutableArray *)exGroupIds {
     if (_exGroupIds == nil) {
         _exGroupIds = [NSMutableArray array];

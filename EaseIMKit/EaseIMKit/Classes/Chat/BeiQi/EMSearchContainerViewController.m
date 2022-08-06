@@ -50,7 +50,8 @@
 }
 
 - (void)viewDidDisappearForIndex:(NSUInteger)index{
-    
+    [self.searchBar.textField resignFirstResponder];
+
 }
 
 

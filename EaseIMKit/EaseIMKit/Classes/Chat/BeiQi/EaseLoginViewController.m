@@ -44,10 +44,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-        
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
     self.isLogin = false;
     [self _setupSubviews];
 }
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -63,6 +71,45 @@
 {
     return NO;
 }
+
+
+
+#pragma mark - KeyBoard
+
+- (void)keyBoardWillShow:(NSNotification *)note
+{
+    // 获取用户信息
+    NSDictionary *userInfo = [NSDictionary dictionaryWithDictionary:note.userInfo];
+    // 获取键盘高度
+    CGRect keyBoardBounds  = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGFloat keyBoardHeight = keyBoardBounds.size.height;
+    
+    CGFloat offset = 0;
+//    if (self.contentView.frame.size.height - keyBoardHeight <= CGRectGetMaxY(self.loginButton.frame)) {
+//        offset = CGRectGetMaxY(self.loginButton.frame) - (self.contentView.frame.size.height - keyBoardHeight);
+//    } else {
+//        return;
+//    }
+//
+//    void (^animation)(void) = ^void(void) {
+//        [self.logoImageView mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.contentView.mas_top).offset(134.0 - offset - 20);
+//        }];
+//    };
+//    [self keyBoardWillShow:note animations:animation completion:nil];
+}
+
+- (void)keyBoardWillHide:(NSNotification *)note
+{
+//    void (^animation)(void) = ^void(void) {
+//        [self.logoImageView mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.contentView.mas_top).offset(134.0);
+//        }];
+//    };
+//    [self keyBoardWillHide:note animations:animation completion:nil];
+}
+
+
 
 #pragma mark - Subviews
 

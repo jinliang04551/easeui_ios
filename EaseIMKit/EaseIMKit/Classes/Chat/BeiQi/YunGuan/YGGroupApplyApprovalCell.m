@@ -105,13 +105,13 @@
     }
     
     self.applyLabel.text = self.model.userName;
-    self.inviteLabel.text = self.model.inviter;
+    self.inviteLabel.text = [NSString stringWithFormat:@"邀请人: %@",self.model.inviter];
     
     NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] init];
     
-    NSAttributedString *tString = [EaseKitUtil attributeContent:@"申请加入" color:[UIColor colorWithHexString:@"#7F7F7F"] font:self.groupNameLabel.font];
+    NSAttributedString *tString = [EaseKitUtil attributeContent:@"申请加入 " color:[UIColor colorWithHexString:@"#7F7F7F"] font:self.groupNameLabel.font];
     
-    NSAttributedString *gString = [EaseKitUtil attributeContent:self.model.groupId color:[UIColor colorWithHexString:@"#171717"] font:self.groupNameLabel.font];
+    NSAttributedString *gString = [EaseKitUtil attributeContent:self.model.groupName color:[UIColor colorWithHexString:@"#171717"] font:self.groupNameLabel.font];
     
     [mutableAttString appendAttributedString:tString];
     [mutableAttString appendAttributedString:gString];

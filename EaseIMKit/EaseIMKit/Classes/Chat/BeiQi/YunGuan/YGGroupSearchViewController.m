@@ -240,9 +240,12 @@
 
 #pragma mark private method
 - (void)searchGroupWithKeyword:(NSString *)keyword {
+    if (keyword.length == 0) {
+        return;
+    }
+    
     self.searchkeyword = keyword;
     [self searchGroupChat];
-    
 }
 
 

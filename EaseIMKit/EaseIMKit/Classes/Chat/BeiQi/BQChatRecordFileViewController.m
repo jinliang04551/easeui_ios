@@ -384,7 +384,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 }
 
 - (void)viewDidDisappearForIndex:(NSUInteger)index{
-    
+    [self.searchBar.textField resignFirstResponder];
+
 }
 
 

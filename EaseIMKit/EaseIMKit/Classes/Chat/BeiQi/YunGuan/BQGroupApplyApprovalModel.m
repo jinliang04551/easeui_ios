@@ -9,6 +9,7 @@
 @interface BQGroupApplyApprovalModel ()
 @property (nonatomic, strong) NSString *userName;
 @property (nonatomic, strong) NSString *groupId;
+@property (nonatomic, strong) NSString *groupName;
 @property (nonatomic, strong) NSString *role;
 @property (nonatomic, strong) NSString *inviter;
 @property (nonatomic, strong) NSString *approvalId;
@@ -23,6 +24,7 @@
     if (self) {
         self.userName = dic[@"userName"];
         self.groupId = dic[@"groupId"];
+        self.groupName = dic[@"groupName"];
         self.state = dic[@"state"];
         self.role = dic[@"role"];
         self.inviter = dic[@"inviter"];

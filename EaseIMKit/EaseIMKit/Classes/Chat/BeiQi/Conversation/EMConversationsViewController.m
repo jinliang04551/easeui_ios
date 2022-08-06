@@ -111,80 +111,13 @@
 }
 
 - (void)_setupSubviews {
-    UILabel *titleLabel = [[UILabel alloc] init];
 
-//if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-//    titleLabel.text = @"我的专属服务";
-//    titleLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
-//    titleLabel.font = [UIFont systemFontOfSize:18];
-//    [self.view addSubview:titleLabel];
-//    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerX.equalTo(self.view);
-//        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN + 35);
-//        make.height.equalTo(@25);
-//    }];
-//
-//    self.backImageBtn = [[UIButton alloc]init];
-//    [self.backImageBtn setImage:[UIImage easeUIImageNamed:@"jh_backleft"] forState:UIControlStateNormal];
-//    [self.backImageBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:self.backImageBtn];
-//    [self.backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.width.height.equalTo(@35);
-//        make.centerY.equalTo(titleLabel);
-//        make.left.equalTo(self.view).offset(16);
-//    }];
-//}else {
-//
-//    titleLabel.text = @"会话列表";
-//    titleLabel.textColor = [UIColor colorWithHexString:@"#171717"];
-//    titleLabel.font = [UIFont systemFontOfSize:18];
-//    [self.view addSubview:titleLabel];
-//    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerX.equalTo(self.view);
-//        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN + 35);
-//        make.height.equalTo(@25);
-//    }];
-//
-//    self.backImageBtn = [[UIButton alloc]init];
-//    [self.backImageBtn setImage:[UIImage easeUIImageNamed:@"yg_backleft"] forState:UIControlStateNormal];
-//    [self.backImageBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:self.backImageBtn];
-//    [self.backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.width.height.equalTo(@35);
-//        make.centerY.equalTo(titleLabel);
-//        make.left.equalTo(self.view).offset(16);
-//    }];
-//
-//
-//
-//    [self.view addSubview:self.rightNavBarBtn];
-//    [self.rightNavBarBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.width.height.equalTo(@35);
-//        make.centerY.equalTo(titleLabel);
-//        make.right.equalTo(self.view).offset(-16);
-//    }];
-//
-//}
-    
-    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        self.titleView = [self customNavWithTitle:@"我的专属服务" rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
-
-        [self.view addSubview:self.titleView];
-        [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN);
-            make.left.right.equalTo(self.view);
-            make.height.equalTo(@(44.0));
-        }];
-    }else {
-        self.titleView = [self customNavWithTitle:@"会话列表" rightBarIconName:@"icon-add" rightBarTitle:@"" rightBarAction:@selector(moreAction)];
-
-        [self.view addSubview:self.titleView];
-        [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN);
-            make.left.right.equalTo(self.view);
-            make.height.equalTo(@(44.0));
-        }];
-    }
+    [self.view addSubview:self.titleView];
+    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN);
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@(44.0));
+    }];
     
     self.viewModel = [[EaseConversationViewModel alloc] init];
     self.viewModel.canRefresh = YES;
@@ -593,5 +526,67 @@
     return _rightNavBarBtn;
 }
 
+
+- (UIView *)titleView {
+    if (_titleView == nil) {
+        _titleView = [[UIView alloc] init];
+        
+        UILabel *titleLabel = [[UILabel alloc] init];
+
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            titleLabel.text = @"我的专属服务";
+            titleLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
+            titleLabel.font = [UIFont systemFontOfSize:18];
+            [_titleView addSubview:titleLabel];
+            [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerX.equalTo(_titleView);
+                make.centerY.equalTo(_titleView);
+                make.height.equalTo(@25);
+            }];
+
+            self.backImageBtn = [[UIButton alloc]init];
+            [self.backImageBtn setImage:[UIImage easeUIImageNamed:@"jh_backleft"] forState:UIControlStateNormal];
+            [self.backImageBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
+            [_titleView addSubview:self.backImageBtn];
+            [self.backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.width.height.equalTo(@35);
+                make.centerY.equalTo(titleLabel);
+                make.left.equalTo(_titleView).offset(16);
+            }];
+        }else {
+
+            titleLabel.text = @"会话列表";
+            titleLabel.textColor = [UIColor colorWithHexString:@"#171717"];
+            titleLabel.font = [UIFont systemFontOfSize:18];
+            [_titleView addSubview:titleLabel];
+            [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerX.equalTo(_titleView);
+                make.centerY.equalTo(_titleView);
+                make.height.equalTo(@25);
+            }];
+
+            self.backImageBtn = [[UIButton alloc]init];
+            [self.backImageBtn setImage:[UIImage easeUIImageNamed:@"yg_backleft"] forState:UIControlStateNormal];
+            [self.backImageBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
+            [_titleView addSubview:self.backImageBtn];
+            [self.backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.width.height.equalTo(@35);
+                make.centerY.equalTo(titleLabel);
+                make.left.equalTo(_titleView).offset(16);
+            }];
+
+
+            [_titleView addSubview:self.rightNavBarBtn];
+            [self.rightNavBarBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.width.height.equalTo(@35);
+                make.centerY.equalTo(titleLabel);
+                make.right.equalTo(_titleView).offset(-16);
+            }];
+
+        }
+        
+    }
+    return _titleView;
+}
 
 @end

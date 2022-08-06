@@ -225,7 +225,12 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 - (void)updateUIWithMemberArray:(NSMutableArray *)memberArray {
     self.dataArray = memberArray;
-    self.nameLabel.text = [NSString stringWithFormat:@"群成员(%@人)",@(memberArray.count)];
+    if (self.dataArray.count > 0) {
+        self.nameLabel.text = [NSString stringWithFormat:@"群成员(%@人)",@(memberArray.count)];
+    }else {
+        self.nameLabel.text = @"群成员";
+    }
+    
     [self.collectionView reloadData];
 }
 

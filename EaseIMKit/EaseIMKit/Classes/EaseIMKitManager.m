@@ -69,10 +69,15 @@ static NSString *g_UIKitVersion = @"1.0.0";
     
     if (option.isAutoLogin){
         [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@(YES)];
+        [self updateSettingAfterLoginSuccess];
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@(NO)];
     }
     
+}
+    
+
+- (void)updateSettingAfterLoginSuccess {
     [[EMClient sharedClient].pushManager getPushNotificationOptionsFromServerWithCompletion:^(EMPushOptions * _Nonnull aOptions, EMError * _Nonnull aError) {
         if (!aError) {
             [[EaseIMKitManager shared] cleanMemoryUndisturbMaps];
@@ -108,9 +113,8 @@ static NSString *g_UIKitVersion = @"1.0.0";
     config.enableRTCTokenValidate = YES;
 
     [[EaseCallManager sharedManager] initWithConfig:config delegate:self];
-    
 }
-    
+
 + (EaseIMKitManager *)shared {
     return easeIMKit;
 }
@@ -143,6 +147,10 @@ static NSString *g_UIKitVersion = @"1.0.0";
     [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChanged:) name:ACCOUNT_LOGIN_CHANGED object:nil];
+
+    
     return self;
 }
 
@@ -153,6 +161,15 @@ static NSString *g_UIKitVersion = @"1.0.0";
     [[EMClient sharedClient].contactManager removeDelegate:self];
     [[EMClient sharedClient].groupManager removeDelegate:self];
 }
+
+#pragma mark NO
+- (void)loginStateChanged:(NSNotification *)notify {
+    BOOL loginSuccess = [notify.object boolValue];
+    if (loginSuccess) {
+        [self updateSettingAfterLoginSuccess];
+    }
+}
+
 
 #pragma mark - Public
 
@@ -709,6 +726,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
                 [[EMClient sharedClient] logout:YES completion:^(EMError * _Nullable aError) {
                     if (aError == nil) {
                         [EaseKitUtil removeLoginUserToken];
+                        [[EaseIMKitMessageHelper shareMessageHelper] clearMemeryCache];
                         
                         EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
                         options.isAutoLogin = NO;
