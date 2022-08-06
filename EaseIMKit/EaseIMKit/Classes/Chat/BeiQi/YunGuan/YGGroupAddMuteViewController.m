@@ -20,6 +20,7 @@
 @property (nonatomic, assign) BOOL isSearching;
 @property (nonatomic, strong) NSMutableArray *searchArray;
 @property (nonatomic, strong) NSMutableArray *selectedArray;
+@property (nonatomic, strong) UIView *titleView;
 
 @end
 
@@ -37,13 +38,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self addPopBackLeftItem];
-
-    self.title = @"添加禁言人员";
+//    [self addPopBackLeftItem];
+//
+//    self.title = @"添加禁言人员";
+//
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
-    
-    [self setRightNavBarItemTitleColor];
+//    [self setRightNavBarItemTitleColor];
     
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 
@@ -54,17 +55,22 @@
 
 #pragma mark - Subviews
 
-- (void)_setupSubviews
-{
-    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
-        [self setEdgesForExtendedLayout: UIRectEdgeNone];
-    }
+- (void)_setupSubviews{
+    
+    self.titleView = [self customNavWithTitle:@"添加禁言人员" rightBarIconName:@"" rightBarTitle:@"确定" rightBarAction:@selector(doneAction)];
+
+    [self.view addSubview:self.titleView];
+    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN);
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@(44.0));
+    }];
         
     [self.view addSubview:self.searchBar];
     [self.view addSubview:self.tableView];
 
     [self.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(8.0);
+        make.top.equalTo(self.titleView.mas_bottom).offset(8.0);
         make.left.equalTo(self.view).offset(16.0);
         make.right.equalTo(self.view).offset(-16.0);
         make.height.equalTo(@(32.0));
@@ -79,6 +85,18 @@
     }];
 
 }
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
+}
+
 
 #pragma mark - Table view data source
 

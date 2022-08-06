@@ -10,12 +10,13 @@
 #import "YGGroupApplyApprovalCell.h"
 #import "EaseHeaders.h"
 #import "BQGroupApplyApprovalModel.h"
+#import "EaseHeaders.h"
 
 @interface YGGroupApplyApprovalController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, assign) NSInteger pageNumber;
-
+@property (nonatomic, strong) UIView *titleView;
 
 @end
 
@@ -24,9 +25,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+//    [self addPopBackLeftItem];
+//    self.title = @"群组申请";
     
-    [self addPopBackLeftItem];
-    self.title = @"群组申请";
+    
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     
     [self.tableView registerClass:[YGGroupApplyApprovalCell class] forCellReuseIdentifier:NSStringFromClass([YGGroupApplyApprovalCell class])];
@@ -72,12 +74,36 @@
 
 
 - (void)placeAndLayoutSubviews {
+
+    self.titleView = [self customNavWithTitle:@"群组申请" rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
+
+    [self.view addSubview:self.titleView];
+    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN);
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@(44.0));
+    }];
+
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
+        make.top.equalTo(self.titleView.mas_bottom);
+        make.left.right.equalTo(self.view);
+        make.bottom.equalTo(self.view);
     }];
 
 }
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
+}
+
 
 #pragma mark - Table view data source
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

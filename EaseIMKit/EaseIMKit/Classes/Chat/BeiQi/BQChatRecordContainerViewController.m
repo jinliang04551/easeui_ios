@@ -39,6 +39,8 @@ MISScrollPageControllerDelegate,EMChatRecordViewControllerDelegate,BQChatRecordF
 
 @property (nonatomic, strong) EMConversation *conversation;
 
+@property (nonatomic, strong) UIView *titleView;
+
 @end
 
 @implementation BQChatRecordContainerViewController
@@ -62,24 +64,29 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 }else {
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 }
-
-    [self addPopBackLeftItemWithTarget:self action:@selector(backItemAction)];
     
     [self setTitleAndContentVC];
     [self placeAndLayoutSubviews];
     [self.pageController reloadData];
 }
 
-- (void)backItemAction {
-    [self.navigationController popViewControllerAnimated:YES];
-}
 
 - (void)placeAndLayoutSubviews {
+    
+    self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
+
+    [self.view addSubview:self.titleView];
+    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN);
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@(44.0));
+    }];
+
     [self.view addSubview:self.segView];
     [self.view addSubview:self.contentView];
     
     [self.segView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view);
+        make.top.equalTo(self.titleView.mas_bottom);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
         make.height.equalTo(@(50.0));
@@ -95,7 +102,16 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
+}
 #pragma mark private method
 - (BOOL)isGroupChat {
     BOOL _groupChat = self.conversation.type == EMConversationTypeGroupChat ? YES : NO;

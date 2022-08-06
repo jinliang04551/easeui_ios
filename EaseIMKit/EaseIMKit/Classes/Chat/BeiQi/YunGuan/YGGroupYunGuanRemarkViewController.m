@@ -104,6 +104,7 @@
 @property (nonatomic, strong) YGTextView *yunGuanTextView;
 @property (nonatomic, strong) NSString *systemString;
 @property (nonatomic, strong) NSString *groupId;
+@property (nonatomic, strong) UIView *titleView;
 
 @end
 
@@ -138,7 +139,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"运营备注";
+//    self.title = @"运营备注";
     [self _setupSubviews];
     [self fetchNoteInfo];
     
@@ -191,20 +192,20 @@
 {
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 
-    [self addPopBackLeftItem];
-    
-    if (self.isEditable) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"save", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
-    }
-    
-    [self setRightNavBarItemTitleColor];
+    self.titleView = [self customNavWithTitle:@"运营备注" rightBarIconName:@"" rightBarTitle:@"保存" rightBarAction:@selector(doneAction)];
 
-    
+    [self.view addSubview:self.titleView];
+    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN);
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@(44.0));
+    }];
+
     [self.view addSubview:self.systemTextView];
     [self.view addSubview:self.yunGuanTextView];
     
     [self.systemTextView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view);
+        make.top.equalTo(self.titleView.mas_bottom);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
         make.height.equalTo(@(190.0));
@@ -217,6 +218,18 @@
         make.bottom.equalTo(self.view);
     }];
     
+}
+
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
 }
 
 #pragma mark - UITextViewDelegate

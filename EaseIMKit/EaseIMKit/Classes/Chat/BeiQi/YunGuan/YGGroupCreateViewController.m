@@ -31,6 +31,8 @@
 @property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, strong) NSMutableArray *userArray;
 @property (nonatomic, strong) NSMutableArray *serverArray;
+@property (nonatomic, strong) UIView *titleView;
+
 
 
 @end
@@ -45,13 +47,9 @@
     
     [self registeCell];
     [self placeAndLayoutSubviews];
-//    [self buildTestData];
+    
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = NO;
-}
 
 - (void)registeCell {
     
@@ -63,53 +61,45 @@
     
 }
 
-
 #pragma mark - Subviews
-//- (void)placeAndLayoutSubviews
-//{
-////    [self addPopBackLeftItem];
-////    self.title = @"创建群组";
-//
-//    UIView *navView = [EaseKitUtil customNavViewWithTitle:@"创建群组" backAction:@selector(backAction)];
-//
-//    [self.view addSubview:navView];
-//
-//    self.tableView.rowHeight = 60;
-//    self.tableView.tableFooterView = [self footerView];
-//
-//    [navView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN + 35);
-//        make.left.equalTo(self.view);
-//        make.right.equalTo(self.view);
-//        make.height.equalTo(@(44.0));
-//    }];
-//
-//    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(navView.mas_bottom);
-//        make.left.equalTo(self.view);
-//        make.right.equalTo(self.view);
-//        make.bottom.equalTo(self.view);
-//    }];
-//
-//}
-
 - (void)placeAndLayoutSubviews
 {
-    [self addPopBackLeftItem];
-    self.title = @"创建群组";
+//    [self addPopBackLeftItem];
+//    self.title = @"创建群组";
+    
+    self.titleView = [self customNavWithTitle:@"创建群组" rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
+
+    [self.view addSubview:self.titleView];
+    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN);
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@(44.0));
+    }];
     
     
     self.tableView.rowHeight = 60;
     self.tableView.tableFooterView = [self footerView];
 
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view);
+        make.top.equalTo(self.titleView.mas_bottom);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
     }];
         
 }
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
+}
+
 
 - (void)backAction {
     [self.navigationController popViewControllerAnimated:YES];
@@ -274,7 +264,8 @@
 
                 if (groupId.length > 0) {
                     [self showHint:@"创建群组成功"];
-                    [self.navigationController popViewControllerAnimated:YES];
+                    [self.navigationController
+                     popViewControllerAnimated:YES];
                 }
                 
             }else {

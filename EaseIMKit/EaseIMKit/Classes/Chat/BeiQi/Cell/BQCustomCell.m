@@ -113,31 +113,23 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
     if (highlighted) {
-        self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0x333333);
+        
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0x252525);
+        }else {
+            self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0xF5F5F5);
+        }
+        
     }else {
-if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        self.contentView.backgroundColor = EaseIMKit_ViewCellBgBlackColor;
-}else {
-        self.contentView.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
-}
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+                self.contentView.backgroundColor = EaseIMKit_ViewCellBgBlackColor;
+        }else {
+                self.contentView.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
+        }
 
     }
 }
 
-- (void)setSelected:(BOOL)selected {
-    if (selected) {
-        self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0x333333);
-    }else {
-if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        self.contentView.backgroundColor = EaseIMKit_ViewCellBgBlackColor;
-}else {
-        self.contentView.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
-
-}
-
-    }
-
-}
 
 
 @end

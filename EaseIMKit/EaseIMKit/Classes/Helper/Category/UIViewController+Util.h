@@ -10,6 +10,9 @@
 
 @interface UIViewController (Util)
 
+//@property (nonatomic, strong) UIView *titleView;
+
+
 - (void)addPopBackLeftItem;
 
 - (void)addPopBackLeftItemWithTarget:(id _Nullable )aTarget
@@ -20,10 +23,15 @@
 
 - (void)removeKeyboardNotifications;
 
-//+ (BOOL)isUseChinese;
 
 - (void)showAlertControllerWithMessage:(NSString *)aMsg title:(NSString*)title handler:(void (^ __nullable)(UIAlertAction *action))handler;
 
 - (void)setRightNavBarItemTitleColor;
+
+
+- (UIView *)customNavWithTitle:(NSString *)title
+              rightBarIconName:(NSString *)rightBarIconName
+                 rightBarTitle:(NSString *)rightBarTitle
+                rightBarAction:(SEL)rightBarAction;
 
 @end

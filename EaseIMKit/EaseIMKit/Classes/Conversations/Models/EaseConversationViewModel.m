@@ -67,11 +67,11 @@ if (EaseIMKitManager.shared.isJiHuApp){
     _detailLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
 
     _timeLabelFont = [UIFont systemFontOfSize:12.0];
-    _timeLabelColor = [UIColor colorWithHexString:@"#7F7F7F"];;
+    _timeLabelColor = [UIColor colorWithHexString:@"#7F7F7F"];
     _timeLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
 
 
-    _badgeLabelFont = [UIFont systemFontOfSize:12];
+    _badgeLabelFont = [UIFont systemFontOfSize:10.0];
     _badgeLabelHeight = 14;
 //    _badgeLabelBgColor = UIColor.redColor;
     _badgeLabelBgColor = [UIColor colorWithHexString:@"#AF2A25"];
@@ -91,12 +91,12 @@ if (EaseIMKitManager.shared.isJiHuApp){
 //    _cellSeparatorColor = [UIColor colorWithHexString:@"#F3F3F3"];
     
 }else {
-    _nameLabelFont = [UIFont systemFontOfSize:14.0];
-    _nameLabelColor = [UIColor colorWithHexString:@"#B9B9B9"];
+    _nameLabelFont = EaseIMKit_BFont(16.0);
+    _nameLabelColor = [UIColor colorWithHexString:@"#171717"];
     _nameLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
 
-    _detailLabelFont = [UIFont systemFontOfSize:12.0];
-    _detailLabelColor = [UIColor colorWithHexString:@"#7F7F7F"];;
+    _detailLabelFont = [UIFont systemFontOfSize:14.0];
+    _detailLabelColor = [UIColor colorWithHexString:@"#7F7F7F"];
     _detailLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
 
     _timeLabelFont = [UIFont systemFontOfSize:12.0];
@@ -104,7 +104,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
     _timeLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
 
 
-    _badgeLabelFont = [UIFont systemFontOfSize:12];
+    _badgeLabelFont = [UIFont systemFontOfSize:10.0];
     _badgeLabelHeight = 14;
 //    _badgeLabelBgColor = UIColor.redColor;
     _badgeLabelBgColor = [UIColor colorWithHexString:@"#FF4D4F"];
@@ -115,7 +115,6 @@ if (EaseIMKitManager.shared.isJiHuApp){
 
     _topBgColor = [UIColor colorWithHexString:@"#f2f2f2"];
     _cellBgColor = [UIColor colorWithHexString:@"#FFFFFF"];
-//    _cellBgColor = [UIColor colorWithHexString:@"#171717"];
 
     _bgView = [[UIView alloc] init];
     _bgView.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];

@@ -14,8 +14,8 @@
 @property (nonatomic, strong) NSString *originalString;
 @property (nonatomic, strong) NSString *placeholder;
 @property (nonatomic) BOOL isEditable;
-
 @property (nonatomic, strong) UITextField *textField;
+@property (nonatomic, strong) UIView *titleView;
 
 @end
 
@@ -37,20 +37,23 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
     [self _setupSubviews];
 }
 
 #pragma mark - Subviews
 
 - (void)_setupSubviews
-{
-    [self addPopBackLeftItem];
-    if (self.isEditable) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"done", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
-    }
-    
-    [self setRightNavBarItemTitleColor];
+{    
+    self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:NSLocalizedString(@"done", nil) rightBarAction:nil];
+
+    [self.view addSubview:self.titleView];
+    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN);
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@(44.0));
+    }];
+
 
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     
@@ -58,7 +61,7 @@
     bgView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:bgView];
     [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(20);
+        make.top.equalTo(self.titleView.mas_bottom).offset(20);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
         make.height.equalTo(@60);
@@ -81,6 +84,17 @@
         make.top.equalTo(bgView).offset(5);
         make.left.equalTo(bgView).offset(10);
     }];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
 }
 
 #pragma mark - UITextFieldDelegate

@@ -161,7 +161,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 - (void)_setupNavigationBarTitle
 {
-    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width * 06, 40)];
+    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width * 06, 44.0)];
     
     self.titleLabel = [[UILabel alloc] init];
     self.titleLabel.font = [UIFont systemFontOfSize:18];

@@ -77,12 +77,11 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         _titleLabel.font = EaseIMKit_NFont(12.0);
         _titleLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
-if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
-}else {
-        _titleLabel.text = @"编辑";
-}
-        
+        }else {
+            _titleLabel.text = @"编辑";
+        }
     }
     return _titleLabel;
 }
@@ -226,7 +225,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 - (void)updateUIWithMemberArray:(NSMutableArray *)memberArray {
     self.dataArray = memberArray;
-    self.memberCountLabel.text = [NSString stringWithFormat:@"%@人",@(memberArray.count)];
+    self.nameLabel.text = [NSString stringWithFormat:@"群成员(%@人)",@(memberArray.count)];
     [self.collectionView reloadData];
 }
 
@@ -330,8 +329,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (UILabel *)nameLabel {
     if (_nameLabel == nil) {
         _nameLabel = [[UILabel alloc] init];
-        _nameLabel.font = [UIFont fontWithName:@"PingFangSC-Semibold" size:14.0f];
-        _nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+        _nameLabel.font = EaseIMKit_NFont(14.0f);
+        _nameLabel.textColor = [UIColor colorWithHexString:@"#171717"];
         _nameLabel.textAlignment = NSTextAlignmentLeft;
         _nameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         _nameLabel.text = @"群成员";
@@ -365,28 +364,28 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     if (_titleView == nil) {
         _titleView = [[UIView alloc] init];
         [_titleView addSubview:self.nameLabel];
-        [_titleView addSubview:self.memberCountLabel];
-        [_titleView addSubview:self.accessoryImageView];
+//        [_titleView addSubview:self.memberCountLabel];
+//        [_titleView addSubview:self.accessoryImageView];
 
         [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_titleView).offset(16.0);
             make.left.equalTo(_titleView).offset(EaseIMKit_Padding * 1.6);
-            make.width.equalTo(@(150.0));
+            make.right.equalTo(_titleView);
         }];
         
-        [self.memberCountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.nameLabel.mas_right).offset(5.0);
-            make.centerY.equalTo(self.nameLabel);
-            make.right.equalTo(self.accessoryImageView.mas_left);
-        }];
-        
-        
-        [self.accessoryImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.nameLabel);
-            make.width.equalTo(@(28.0));
-            make.height.equalTo(@(28.0));
-            make.right.equalTo(_titleView).offset(-16.0);
-        }];
+//        [self.memberCountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.equalTo(self.nameLabel.mas_right).offset(5.0);
+//            make.centerY.equalTo(self.nameLabel);
+//            make.right.equalTo(self.accessoryImageView.mas_left);
+//        }];
+//
+//
+//        [self.accessoryImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.centerY.equalTo(self.nameLabel);
+//            make.width.equalTo(@(28.0));
+//            make.height.equalTo(@(28.0));
+//            make.right.equalTo(_titleView).offset(-16.0);
+//        }];
 
 
     }

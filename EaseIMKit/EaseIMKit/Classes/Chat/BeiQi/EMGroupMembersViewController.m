@@ -19,6 +19,7 @@
 @property (nonatomic, strong) NSString *cursor;
 @property (nonatomic, strong) NSMutableArray *mutesList;
 @property (nonatomic) BOOL isUpdated;
+@property (nonatomic, strong) UIView *titleView;
 
 @end
 
@@ -58,17 +59,43 @@
 
 #pragma mark - Subviews
 
-- (void)_setupSubviews
-{
-    [self addPopBackLeftItemWithTarget:self action:@selector(backAction)];
-//    self.title = NSLocalizedString(@"groupMembers", nil);
-    self.title = @"群成员列表";
-    self.showRefreshHeader = YES;
-    self.tableView.rowHeight = 60;
+- (void)_setupSubviews {
+//    [self addPopBackLeftItemWithTarget:self action:@selector(backAction)];
+//    self.title = @"群成员列表";
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(inviteMemberAction)];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(inviteMemberAction)];
+//    self.showRefreshHeader = YES;
+//    self.tableView.rowHeight = 60;
+//
+//    self.titleView = [self customNavWithTitle:@"群成员列表" rightBarIconName:@"" rightBarTitle:@"添加" rightBarAction:@selector(inviteMemberAction)];
+//
+//    [self.view addSubview:self.titleView];
+//    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN);
+//        make.left.right.equalTo(self.view);
+//        make.height.equalTo(@(44.0));
+//    }];
+//
+//    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.titleView.mas_bottom);
+//        make.left.right.equalTo(self.view);
+////        make.height.equalTo(@(44.0));
+//        make.bottom.equalTo(self.view);
+//    }];
     
 }
+
+
+//- (void)viewWillAppear:(BOOL)animated{
+//    [super viewWillAppear:animated];
+//    self.navigationController.navigationBarHidden = YES;
+//}
+//
+//- (void)viewWillDisappear:(BOOL)animated
+//{
+//    [super viewWillDisappear:animated];
+//    self.navigationController.navigationBarHidden = NO;
+//}
 
 - (void)inviteMemberAction {
     BQGroupEditMemberViewController *controller = [[BQGroupEditMemberViewController alloc] init];
@@ -97,10 +124,6 @@
 }
 
 #pragma mark - Table view delegate
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-//    [self personalData:[self.dataArray objectAtIndex:indexPath.row]];
-}
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {

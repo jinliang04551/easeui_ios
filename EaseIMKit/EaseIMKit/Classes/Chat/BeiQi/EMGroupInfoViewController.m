@@ -41,6 +41,8 @@
 @property (nonatomic, strong) NSMutableArray *userArray;
 @property (nonatomic, strong) NSMutableArray *serverArray;
 
+@property (nonatomic, strong) UIView *titleView;
+
 @end
 
 @implementation EMGroupInfoViewController
@@ -88,9 +90,15 @@
 }
 
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
 }
 
 
@@ -118,14 +126,23 @@
 
 - (void)_setupSubviews
 {
-    [self addPopBackLeftItem];
-    self.title = @"群设置";
+//    [self addPopBackLeftItem];
+//    self.title = @"群设置";
+    
+     self.titleView = [self customNavWithTitle:@"群设置" rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
+
+    [self.view addSubview:self.titleView];
+    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN);
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@(44.0));
+    }];
     
     self.tableView.rowHeight = 60;
     self.tableView.tableFooterView = [[UIView alloc] init];
 
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view);
+        make.top.equalTo(self.titleView.mas_bottom);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);

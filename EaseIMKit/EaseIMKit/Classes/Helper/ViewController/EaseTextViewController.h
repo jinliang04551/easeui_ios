@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) BOOL (^doneCompletion)(NSString *aString);
 
+
 - (instancetype)initWithString:(NSString *)aString
                    placeholder:(NSString *)aPlaceholder
                     isEditable:(BOOL)aIsEditable;
