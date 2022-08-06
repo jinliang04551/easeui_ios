@@ -278,11 +278,28 @@
     
 }
 
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
-{
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
     [super setHighlighted:highlighted animated:animated];
+
     self.badgeLabel.backgroundColor = _viewModel.badgeLabelBgColor;
-//    self.contentView.backgroundColor = [UIColor colorWithHexString:@"#7F7F7F"];
+
+    if (highlighted) {
+        
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0x252525);
+        }else {
+            self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0xF5F5F5);
+        }
+        
+    }else {
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+                self.contentView.backgroundColor = EaseIMKit_ViewCellBgBlackColor;
+        }else {
+                self.contentView.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
+        }
+
+    }
 }
 
 - (void)resetViewModel:(EaseConversationViewModel *)aViewModel {

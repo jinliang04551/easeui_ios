@@ -124,6 +124,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         _tableView.tableFooterView = self.defaultFooterView;
         _tableView.estimatedSectionHeaderHeight = 0;
         _tableView.estimatedSectionFooterHeight = 0;
+        _tableView.rowHeight = 64.0;
+
     }
     
     return _tableView;

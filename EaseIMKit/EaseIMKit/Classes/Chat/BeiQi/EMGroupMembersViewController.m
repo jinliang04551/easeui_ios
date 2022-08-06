@@ -11,15 +11,20 @@
 #import "BQAvatarTitleRoleCell.h"
 #import "BQGroupEditMemberViewController.h"
 #import "EaseHeaders.h"
+#import "EaseRealtimeSearch.h"
 
-
-@interface EMGroupMembersViewController ()
+@interface EMGroupMembersViewController ()<EMSearchBarDelegate>
 
 @property (nonatomic, strong) EMGroup *group;
 @property (nonatomic, strong) NSString *cursor;
 @property (nonatomic, strong) NSMutableArray *mutesList;
 @property (nonatomic) BOOL isUpdated;
 @property (nonatomic, strong) UIView *titleView;
+@property (nonatomic, strong) EMSearchBar  *searchBar;
+@property (nonatomic) BOOL isSearching;
+@property (nonatomic, strong) NSMutableArray *searchDataArray;
+@property (nonatomic, strong) EaseNoDataPlaceHolderView *noDataPromptView;
+
 
 @end
 
@@ -30,7 +35,7 @@
     self = [super init];
     if (self) {
         self.group = aGroup;
-        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:USERINFO_UPDATE object:nil];
     }
     
     return self;
@@ -39,12 +44,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.searchDataArray = [[NSMutableArray alloc] init];
+
     self.cursor = nil;
     self.isUpdated = NO;
 
     [self.tableView registerClass:[BQAvatarTitleRoleCell class] forCellReuseIdentifier:NSStringFromClass([BQAvatarTitleRoleCell class])];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:USERINFO_UPDATE object:nil];
     
     [self _setupSubviews];
     [self _fetchGroupMembersWithIsHeader:YES isShowHUD:YES];
@@ -60,42 +65,57 @@
 #pragma mark - Subviews
 
 - (void)_setupSubviews {
-//    [self addPopBackLeftItemWithTarget:self action:@selector(backAction)];
-//    self.title = @"群成员列表";
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(inviteMemberAction)];
     
-//    self.showRefreshHeader = YES;
-//    self.tableView.rowHeight = 60;
-//
-//    self.titleView = [self customNavWithTitle:@"群成员列表" rightBarIconName:@"" rightBarTitle:@"添加" rightBarAction:@selector(inviteMemberAction)];
-//
-//    [self.view addSubview:self.titleView];
-//    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN);
-//        make.left.right.equalTo(self.view);
-//        make.height.equalTo(@(44.0));
-//    }];
-//
-//    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.titleView.mas_bottom);
-//        make.left.right.equalTo(self.view);
-////        make.height.equalTo(@(44.0));
-//        make.bottom.equalTo(self.view);
-//    }];
+    self.showRefreshHeader = YES;
+
+    self.titleView = [self customNavWithTitle:@"群成员列表" rightBarIconName:@"" rightBarTitle:@"添加" rightBarAction:@selector(inviteMemberAction)];
+
+    [self.view addSubview:self.titleView];
+    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN);
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@(44.0));
+    }];
+
     
+    [self.view addSubview:self.searchBar];
+    [self.searchBar mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.titleView.mas_bottom);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+        make.height.equalTo(@(48.0));
+    }];
+    
+    
+    [self.tableView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.searchBar.mas_bottom);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+        make.bottom.equalTo(self.view);
+    }];
+    
+    [self.view addSubview:self.noDataPromptView];
+    [self.noDataPromptView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.searchBar.mas_bottom).offset(60.0);
+        make.centerX.left.right.equalTo(self.view);
+    }];
 }
 
 
-//- (void)viewWillAppear:(BOOL)animated{
-//    [super viewWillAppear:animated];
-//    self.navigationController.navigationBarHidden = YES;
-//}
-//
-//- (void)viewWillDisappear:(BOOL)animated
-//{
-//    [super viewWillDisappear:animated];
-//    self.navigationController.navigationBarHidden = NO;
-//}
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+    
+    [self _fetchGroupMembersWithIsHeader:YES isShowHUD:NO];
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
+}
+
 
 - (void)inviteMemberAction {
     BQGroupEditMemberViewController *controller = [[BQGroupEditMemberViewController alloc] init];
@@ -110,13 +130,20 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.dataArray count];
+    
+    return self.isSearching ? self.searchDataArray.count : self.dataArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     BQAvatarTitleRoleCell *cell = (BQAvatarTitleRoleCell *)[tableView dequeueReusableCellWithIdentifier:NSStringFromClass([BQAvatarTitleRoleCell class])];
     
-    NSString *userId = self.dataArray[indexPath.row];
+    NSString *userId = @"";
+    if (self.isSearching) {
+        userId = self.searchDataArray[indexPath.row];
+    }else {
+        userId = self.dataArray[indexPath.row];
+    }
+    
     BOOL isOwner = [self.group.owner isEqualToString:userId];
     [cell updateWithObj:userId isOwner:isOwner];
     
@@ -298,6 +325,46 @@
     [self _fetchGroupMembersWithIsHeader:NO isShowHUD:NO];
 }
 
+
+#pragma mark - EMSearchBarDelegate
+- (void)searchBarShouldBeginEditing:(EMSearchBar *)searchBar
+{
+    self.isSearching = YES;
+}
+
+- (void)searchBarCancelButtonAction:(EMSearchBar *)searchBar
+{
+    [[EMRealtimeSearch shared] realtimeSearchStop];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.isSearching = NO;
+    [self.searchDataArray removeAllObjects];
+    self.noDataPromptView.hidden = YES;
+    [self.tableView reloadData];
+}
+
+- (void)searchBarSearchButtonClicked:(EMSearchBar *)searchBar
+{
+    
+}
+
+
+- (void)searchTextDidChangeWithString:(NSString *)aString {
+    
+    EaseIMKit_WS
+    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:nil resultBlock:^(NSArray *results) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.searchDataArray removeAllObjects];
+            [weakSelf.searchDataArray addObjectsFromArray:results];
+            [self.tableView reloadData];
+            
+            self.noDataPromptView.hidden = weakSelf.searchDataArray.count > 0 ? YES : NO;
+        });
+    }];
+    
+}
+
+
 #pragma mark - Action
 
 - (void)_deleteMember:(NSString *)aUsername
@@ -406,6 +473,25 @@
         if(self.view.window)
             [self.tableView reloadData];
     });
+}
+
+
+- (EMSearchBar *)searchBar {
+    if (_searchBar == nil) {
+        _searchBar = [[EMSearchBar alloc] init];
+        _searchBar.delegate = self;
+    }
+    return _searchBar;
+}
+
+- (EaseNoDataPlaceHolderView *)noDataPromptView {
+    if (_noDataPromptView == nil) {
+        _noDataPromptView = EaseNoDataPlaceHolderView.new;
+        [_noDataPromptView.noDataImageView setImage:[UIImage easeUIImageNamed:@"ji_search_nodata"]];
+        _noDataPromptView.prompt.text = @"搜索无结果";
+        _noDataPromptView.hidden = YES;
+    }
+    return _noDataPromptView;
 }
 
 @end

@@ -618,6 +618,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
                     if (aError) {
                         [EaseAlertController showErrorAlert:NSLocalizedString(@"updateGroupAnnFail", nil)];
                     } else {
+                        [self showHint:@"群信息修改成功"];
                         [weakController.navigationController popViewControllerAnimated:YES];
                     }
                 }];

@@ -105,7 +105,7 @@
             [self.checkButton setImage:[UIImage easeUIImageNamed:@"yg_slected"] forState:UIControlStateNormal];
         } else {
             if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-                        [self.checkButton setImage:[UIImage easeUIImageNamed:@"unSlected"] forState:UIControlStateNormal];
+                        [self.checkButton setImage:[UIImage easeUIImageNamed:@"yg_unSlected"] forState:UIControlStateNormal];
             }else {
                         [self.checkButton setImage:[UIImage easeUIImageNamed:@"yg_unSlected"] forState:UIControlStateNormal];
             }

@@ -76,6 +76,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = EaseIMKit_NFont(12.0);
         _titleLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
+        
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
@@ -335,7 +336,14 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     if (_nameLabel == nil) {
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.font = EaseIMKit_NFont(14.0f);
-        _nameLabel.textColor = [UIColor colorWithHexString:@"#171717"];
+        
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            _nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+
+        }else {
+            _nameLabel.textColor = [UIColor colorWithHexString:@"#171717"];
+        }
+        
         _nameLabel.textAlignment = NSTextAlignmentLeft;
         _nameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         _nameLabel.text = @"群成员";

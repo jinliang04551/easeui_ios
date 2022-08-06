@@ -136,6 +136,13 @@
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
             if (statusCode == 200) {
+                if ([model.state isEqualToString:@"success"]) {
+                    [self showHint:@"已同意"];
+                }
+                
+                if ([model.state isEqualToString:@"fail"]) {
+                    [self showHint:@"已拒绝"];
+                }
                 
                 [self fetchGroupApplyList];
                 

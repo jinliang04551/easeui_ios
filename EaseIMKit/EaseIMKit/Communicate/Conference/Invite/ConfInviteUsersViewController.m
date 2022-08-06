@@ -27,7 +27,6 @@
 @property (nonatomic, strong) UIButton *confirmButton;
 @property (nonatomic, strong) UIButton *cancelButton;
 
-@property (nonatomic, strong) EMSearchBar  *searchBar;
 @property (nonatomic, strong) UITableView *searchTableView;
 
 @property (nonatomic) BOOL isCreate;
@@ -36,6 +35,7 @@
 @property (nonatomic, strong) NSString *gorcId;
 
 @property (nonatomic, strong) NSString *cursor;
+@property (nonatomic, strong) EMSearchBar  *searchBar;
 @property (nonatomic) BOOL isSearching;
 @property (nonatomic, strong) NSMutableArray *searchDataArray;
 @property (nonatomic, strong) NSMutableArray *inviteUsers;
@@ -295,6 +295,7 @@
 {
     
 }
+
 
 - (void)searchTextDidChangeWithString:(NSString *)aString {
     

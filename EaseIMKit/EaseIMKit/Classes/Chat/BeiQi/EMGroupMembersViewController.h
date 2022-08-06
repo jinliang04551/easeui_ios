@@ -6,11 +6,11 @@
 //  Copyright © 2019 XieYajie. All rights reserved.
 //
 
-#import "EMRefreshTableViewController.h"
+#import "EMSearchViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 @class EMGroup;
-@interface EMGroupMembersViewController : EMRefreshTableViewController
+@interface EMGroupMembersViewController : EMRefreshViewController
 
 - (instancetype)initWithGroup:(EMGroup *)aGroup;
 
