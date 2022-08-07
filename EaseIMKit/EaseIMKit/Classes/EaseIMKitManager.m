@@ -78,6 +78,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
     
 
 - (void)updateSettingAfterLoginSuccess {
+    
     [[EMClient sharedClient].pushManager getPushNotificationOptionsFromServerWithCompletion:^(EMPushOptions * _Nonnull aOptions, EMError * _Nonnull aError) {
         if (!aError) {
             [[EaseIMKitManager shared] cleanMemoryUndisturbMaps];

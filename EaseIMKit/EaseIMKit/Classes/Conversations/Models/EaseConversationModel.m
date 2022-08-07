@@ -136,7 +136,12 @@
             break;
     }
     
-    _showInfo = [[NSMutableAttributedString alloc] initWithString:msgStr];
+    if (_conversation.type == EMConversationTypeGroupChat && ![EaseIMKitOptions sharedOptions].isJiHuApp) {
+        _showInfo = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@: %@",msg.from,msgStr]];
+    }else {
+        _showInfo = [[NSMutableAttributedString alloc] initWithString:msgStr];
+    }
+    
     /*
     if ([_conversation draft] && ![[_conversation draft] isEqualToString:@""]) {
         msgStr = [NSString stringWithFormat:@"%@ %@", @"[草稿]", [_conversation draft]];

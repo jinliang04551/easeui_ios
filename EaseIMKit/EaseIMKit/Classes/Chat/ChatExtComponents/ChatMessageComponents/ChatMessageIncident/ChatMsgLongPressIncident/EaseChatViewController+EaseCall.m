@@ -20,7 +20,6 @@
     }else {
         msgText = @"语音通话已经结束";
     }
-    
     NSLog(@"%s msgText:%@",__func__,msgText);
        
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:msgText];

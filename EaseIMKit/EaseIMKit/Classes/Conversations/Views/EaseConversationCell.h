@@ -27,4 +27,6 @@
 
 - (void)resetViewModel:(EaseConversationViewModel *)aViewModel;
 
++ (CGFloat)heightWithModel:(EaseConversationModel *)model;
+
 @end

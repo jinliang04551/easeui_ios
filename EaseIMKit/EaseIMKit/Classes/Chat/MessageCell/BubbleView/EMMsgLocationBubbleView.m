@@ -26,6 +26,22 @@
             make.size.equalTo(@(28.0));
         }];
         
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            self.textLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+            self.textLabel.font = EaseIMKit_NFont(14.0);
+            
+            self.detailLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
+            self.detailLabel.font = EaseIMKit_NFont(12.0);
+        }else {
+            self.textLabel.textColor = [UIColor colorWithHexString:@"#171717"];
+            self.textLabel.font = EaseIMKit_NFont(14.0);
+            
+            self.detailLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
+            self.detailLabel.font = EaseIMKit_NFont(12.0);
+        }
+
+       
+        
     }
     
     return self;

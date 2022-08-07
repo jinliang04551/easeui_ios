@@ -117,6 +117,11 @@ EMClientDelegate
 
 
 #pragma mark - Table view data source
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    return [EaseConversationCell heightWithModel:self.dataAry[indexPath.row]];
+}
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

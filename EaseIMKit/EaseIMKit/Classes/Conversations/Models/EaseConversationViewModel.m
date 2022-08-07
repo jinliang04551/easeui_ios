@@ -45,18 +45,6 @@
     _avatarSize = CGSizeMake(48, 48);
     _avatarEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     
-//    _nameLabelFont = [UIFont systemFontOfSize:16];
-//    _nameLabelColor = [UIColor colorWithHexString:@"#333333"];
-//    _nameLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
-//
-//    _detailLabelFont = [UIFont systemFontOfSize:14];
-//    _detailLabelColor = [UIColor colorWithHexString:@"#A3A3A3"];;
-//    _detailLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
-//
-//    _timeLabelFont = [UIFont systemFontOfSize:12];
-//    _timeLabelColor = [UIColor colorWithHexString:@"#A3A3A3"];;
-//    _timeLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
-  
 if (EaseIMKitManager.shared.isJiHuApp){
     _nameLabelFont = [UIFont systemFontOfSize:14.0];
     _nameLabelColor = [UIColor colorWithHexString:@"#B9B9B9"];

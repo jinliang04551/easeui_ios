@@ -144,8 +144,10 @@ static EaseIMHelper *helper = nil;
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
     for (EMChatMessage *msg in aMessages) {
-        if (msg.body.type == EMMessageBodyTypeText && [((EMTextMessageBody *)msg.body).text isEqualToString:EMCOMMUNICATE_CALLINVITE]) //通话邀请
-            continue;
+        if (msg.body.type == EMMessageBodyTypeText && [((EMTextMessageBody *)msg.body).text isEqualToString:EMCOMMUNICATE_CALLINVITE]){
+            //通话邀请
+                continue;
+        }
         [EMRemindManager remindMessage:msg];
     }
 }
@@ -160,8 +162,6 @@ static EaseIMHelper *helper = nil;
             if ([cmdBody.action isEqualToString:RequestJoinGroupEvent]) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationRequestJoinGroupEvent object:nil];
             }
-            
-            NSLog(@"%s imHelper msg.ext:%@",__func__,msg.ext);
             
         }
     }
