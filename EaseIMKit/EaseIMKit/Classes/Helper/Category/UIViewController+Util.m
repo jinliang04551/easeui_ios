@@ -79,6 +79,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
               rightBarIconName:(NSString *)rightBarIconName
                  rightBarTitle:(NSString *)rightBarTitle
                 rightBarAction:(SEL)rightBarAction {
+    //44.0
     
     UIView *contentView = [[UIView alloc] init];
     UILabel *titleLabel = [[UILabel alloc] init];
@@ -151,6 +152,91 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     }
     return contentView;
 }
+
+
+//运管群聊nav
+- (UIView *)customNavWithTitle:(NSString *)title
+                   isNoDisturb:(BOOL)isNoDisturb
+                   groupIdInfo:(NSString *)groupIdInfo
+              rightBarIconName:(NSString *)rightBarIconName
+                rightBarAction:(SEL)rightBarAction {
+    //Height:52.0
+    
+    UIView *contentView = [[UIView alloc] init];
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.text = title;
+    titleLabel.font = [UIFont systemFontOfSize:14.0];
+    titleLabel.textColor = [UIColor colorWithHexString:@"#171717"];
+
+    UIImageView *iconImageView = [[UIImageView alloc] init];
+    iconImageView.hidden = !isNoDisturb;
+    
+    UILabel *groupIdLabel = [[UILabel alloc] init];
+    groupIdLabel.text = groupIdInfo;
+    groupIdLabel.font = [UIFont systemFontOfSize:12];
+    groupIdLabel.textColor = [UIColor colorWithHexString:@"#A5A5A5"];
+    
+    UIButton *backImageBtn = [[UIButton alloc]init];
+    [backImageBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
+
+    UIButton *rightImageBtn = [[UIButton alloc]init];
+    [rightImageBtn setImage:[UIImage easeUIImageNamed:rightBarIconName] forState:UIControlStateNormal];
+    [rightImageBtn addTarget:self action:rightBarAction forControlEvents:UIControlEventTouchUpInside];
+
+    [contentView addSubview:titleLabel];
+    [contentView addSubview:iconImageView];
+    [contentView addSubview:groupIdLabel];
+    [contentView addSubview:backImageBtn];
+    [contentView addSubview:rightImageBtn];
+
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(contentView);
+        make.top.equalTo(contentView).offset(8.0);
+        make.height.equalTo(@(16.0));
+    }];
+
+    [iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(titleLabel);
+        make.width.height.equalTo(@(20.0));
+        make.left.equalTo(titleLabel.mas_right).offset(8.0);
+    }];
+    
+    [groupIdLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(titleLabel.mas_bottom).offset(4.0);
+        make.centerX.equalTo(contentView);
+        make.height.equalTo(@(16.0));
+    }];
+    
+    [backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@35);
+        make.centerY.equalTo(contentView);
+        make.left.equalTo(contentView).offset(16);
+    }];
+    
+    
+    [rightImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.equalTo(backImageBtn);
+        make.centerY.equalTo(contentView);
+        make.right.equalTo(contentView).offset(-16);
+    }];
+    
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        [iconImageView setImage:[UIImage easeUIImageNamed:@"jh_undisturbRing"]];
+
+        titleLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
+        [backImageBtn setImage:[UIImage easeUIImageNamed:@"jh_backleft"] forState:UIControlStateNormal];
+    }else {
+        [iconImageView setImage:[UIImage easeUIImageNamed:@"yg_undisturbRing"]];
+
+        titleLabel.textColor = [UIColor colorWithHexString:@"#171717"];
+        
+        [backImageBtn setImage:[UIImage easeUIImageNamed:@"yg_backleft"] forState:UIControlStateNormal];
+    }
+        
+    return contentView;
+}
+
 
 
 #pragma mark private method

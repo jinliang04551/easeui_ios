@@ -31,6 +31,7 @@
 @property (nonatomic, strong) NSString *moreMsgId;  //第一条消息的消息id
 @property (nonatomic, strong) UIView* fullScreenView;
 
+@property (nonatomic, strong) UIView *titleView;
 
 @end
 
@@ -62,12 +63,14 @@
     [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [self _setupChatSubviews];
+    [self updateUIWithSearchedMessage];
+    
     if (_conversation.unreadMessagesCount > 0) {
         [[EMClient sharedClient].chatManager ackConversationRead:_conversation.conversationId completion:nil];
     }
-    
-    [self updateUIWithSearchedMessage];
+
 }
+
 
 - (void)updateUIWithSearchedMessage {
     if (self.chatRecordKeyMessage) {
@@ -84,17 +87,24 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+
 - (void)viewWillAppear:(BOOL)animated
 {
 
-if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    self.navigationController.navigationBar.backgroundColor = EaseIMKit_ViewBgBlackColor;
-}else {
-    self.navigationController.navigationBar.backgroundColor = EaseIMKit_ViewBgWhiteColor;
-}
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+    }else {
+        self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+    }
+
     
-//    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-//    self.navigationController.navigationBarHidden = NO;
+//if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+//    self.navigationController.navigationBar.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//}else {
+//    self.navigationController.navigationBar.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+//}
+    
+    self.navigationController.navigationBarHidden = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -102,27 +112,77 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     if ([EaseIMKitOptions sharedOptions].isPriorityGetMsgFromServer) {
         [[EaseIMKitManager shared] markAllMessagesAsReadWithConversation:_conversation];
     }
+    self.navigationController.navigationBarHidden = NO;
+
 }
 
-- (void)_setupChatSubviews
-{
-if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage easeUIImageNamed:@"jh_backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
-    //    self.view.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
-        
-        self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
-}else {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage easeUIImageNamed:@"yg_backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
-        self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
-}
-
-    [self _setupNavigationBarTitle];
-    [self _setupNavigationBarRightItem];
+- (void)_setupChatSubviews {
+    
+    [self settingNavgationView];
     
     [self addChildViewController:_chatController];
     [self.view addSubview:_chatController.view];
-    _chatController.view.frame = self.view.bounds;
+    [_chatController.view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.titleView.mas_bottom);
+        make.left.right.bottom.equalTo(self.view);
+    }];
+    
+//    _chatController.view.frame = self.view.bounds;
     [self loadData:YES];
+
+}
+
+
+- (void)settingNavgationView {
+    NSString *chatTitle = @"";
+    
+    chatTitle = _conversationModel.showName;
+    if (self.conversation.type == EMConversationTypeChat) {
+        EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:self.conversation.conversationId];
+        if(userInfo && userInfo.nickName.length > 0)
+            chatTitle = userInfo.nickName;
+    }
+    
+    NSString *groupIdInfo = [NSString stringWithFormat:@"群组ID: %@",self.conversation.conversationId];
+
+    if (![EaseIMKitOptions sharedOptions].isJiHuApp && self.conversation.type == EMConversationTypeGroupChat) {
+        self.titleView = [self customNavWithTitle:chatTitle isNoDisturb:YES groupIdInfo:groupIdInfo rightBarIconName:@"yg_groupInfo" rightBarAction:@selector(groupInfoAction)];
+    }else {
+        NSString *rightBarImageName = @"";
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            rightBarImageName = @"jh_groupInfo";
+        }else {
+            rightBarImageName = @"yg_groupInfo";
+        }
+        if (self.conversation.type == EMConversationTypeGroupChat) {
+            self.titleView = [self customNavWithTitle:chatTitle rightBarIconName:rightBarImageName rightBarTitle:@"" rightBarAction:@selector(groupInfoAction)];
+        }
+        
+        if (self.conversation.type == EMConversationTypeChat) {
+            self.titleView = [self customNavWithTitle:chatTitle rightBarIconName:rightBarImageName rightBarTitle:@"" rightBarAction:@selector(chatInfoAction)];
+        }
+    
+    }
+    
+
+    [self.view addSubview:self.titleView];
+    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN);
+        make.left.right.equalTo(self.view);
+        
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            make.height.equalTo(@(44.0));
+
+        }else {
+            if (self.conversation.type == EMConversationTypeGroupChat) {
+                make.height.equalTo(@(52.0));
+            }else {
+                make.height.equalTo(@(52.0));
+            }
+        }
+
+        
+    }];
 
 }
 

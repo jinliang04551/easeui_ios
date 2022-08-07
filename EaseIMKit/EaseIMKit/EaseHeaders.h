@@ -22,6 +22,8 @@
 #import "UILabel+LinkUrl.h"
 #import "UIViewController+Util.h"
 #import "NSObject+Alert.h"
+#import "UIViewController+ComponentSize.h"
+
 
 #import <Masonry/Masonry.h>
 #import "EaseUIDefine.h"

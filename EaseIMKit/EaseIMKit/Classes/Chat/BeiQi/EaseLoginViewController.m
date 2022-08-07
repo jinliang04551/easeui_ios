@@ -14,12 +14,12 @@
 #import "EaseHeaders.h"
 #import "EaseHttpManager.h"
 
+#define kTitleImageViewOffTop 96
 
 @interface EaseLoginViewController ()<UITextFieldDelegate>
 
-@property (nonatomic, strong) UIView *backView;
+@property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIButton *backImageBtn;
-
 
 @property (nonatomic, strong) UIImageView *titleImageView;
 @property (nonatomic, strong) UITextField *nameField;
@@ -85,28 +85,29 @@
     CGFloat keyBoardHeight = keyBoardBounds.size.height;
     
     CGFloat offset = 0;
-//    if (self.contentView.frame.size.height - keyBoardHeight <= CGRectGetMaxY(self.loginButton.frame)) {
-//        offset = CGRectGetMaxY(self.loginButton.frame) - (self.contentView.frame.size.height - keyBoardHeight);
-//    } else {
-//        return;
-//    }
-//
-//    void (^animation)(void) = ^void(void) {
-//        [self.logoImageView mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.contentView.mas_top).offset(134.0 - offset - 20);
-//        }];
-//    };
-//    [self keyBoardWillShow:note animations:animation completion:nil];
+    if (self.contentView.frame.size.height - keyBoardHeight <= CGRectGetMaxY(self.loginButton.frame)) {
+        offset = CGRectGetMaxY(self.loginButton.frame) - (self.contentView.frame.size.height - keyBoardHeight);
+    } else {
+        return;
+    }
+
+    void (^animation)(void) = ^void(void) {
+        [self.titleImageView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.contentView.mas_top).offset(kTitleImageViewOffTop - offset - 20);
+        }];
+    };
+    
+    [self keyBoardWillShow:note animations:animation completion:nil];
 }
 
 - (void)keyBoardWillHide:(NSNotification *)note
 {
-//    void (^animation)(void) = ^void(void) {
-//        [self.logoImageView mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.contentView.mas_top).offset(134.0);
-//        }];
-//    };
-//    [self keyBoardWillHide:note animations:animation completion:nil];
+    void (^animation)(void) = ^void(void) {
+        [self.titleImageView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.contentView.mas_top).offset(kTitleImageViewOffTop);
+        }];
+    };
+    [self keyBoardWillHide:note animations:animation completion:nil];
 }
 
 
@@ -119,10 +120,10 @@
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view insertSubview:imageView atIndex:0];
     
-    self.backView = [[UIView alloc]init];
-    self.backView.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.3];
-    [self.view addSubview:self.backView];
-    [self.backView mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.contentView = [[UIView alloc]init];
+    self.contentView.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.3];
+    [self.view addSubview:self.contentView];
+    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
 
@@ -131,9 +132,9 @@
     [self.backImageBtn setImage:[UIImage easeUIImageNamed:@"jh_backleft"] forState:UIControlStateNormal];
     [self.backImageBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.backView addSubview:self.backImageBtn];
+    [self.contentView addSubview:self.backImageBtn];
     [self.backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.backView.mas_top).offset(EaseIMKit_StatusBarHeight);
+        make.top.equalTo(self.contentView.mas_top).offset(EaseIMKit_StatusBarHeight);
         make.width.height.equalTo(@35);
         make.left.equalTo(self.view).offset(16);
     }];
@@ -141,27 +142,27 @@
     
     self.titleImageView = [[UIImageView alloc]init];
     self.titleImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [self.backView addSubview:self.titleImageView];
+    [self.contentView addSubview:self.titleImageView];
     [self.titleImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.backView.mas_top).offset(96);
-        make.centerX.equalTo(self.backView);
+        make.top.equalTo(self.contentView.mas_top).offset(kTitleImageViewOffTop);
+        make.centerX.equalTo(self.contentView);
         make.width.equalTo(@(48.0));
         make.height.equalTo(@(42.0));
     }];
     
     self.titleTextImageView = [[UIImageView alloc]init];
-    [self.backView addSubview:self.titleTextImageView];
+    [self.contentView addSubview:self.titleTextImageView];
     [self.titleTextImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleImageView.mas_bottom).offset(12);
-        make.centerX.equalTo(self.backView);
+        make.centerX.equalTo(self.contentView);
         make.width.equalTo(@(184.0));
         make.height.equalTo(@(34.0));
     }];
     
-    [self.backView addSubview:self.wellcomeLabel];
+    [self.contentView addSubview:self.wellcomeLabel];
     [self.wellcomeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.backView).offset(30);
-        make.right.equalTo(self.backView).offset(-30);
+        make.left.equalTo(self.contentView).offset(30);
+        make.right.equalTo(self.contentView).offset(-30);
         make.top.equalTo(self.titleTextImageView.mas_bottom).offset(40);
     }];
     
@@ -170,10 +171,10 @@
     self.nameField.rightView = self.userIdRightView;
     self.userIdRightView.hidden = YES;
     
-    [self.backView addSubview:self.nameField];
+    [self.contentView addSubview:self.nameField];
     [self.nameField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.backView).offset(30);
-        make.right.equalTo(self.backView).offset(-30);
+        make.left.equalTo(self.contentView).offset(30);
+        make.right.equalTo(self.contentView).offset(-30);
         make.top.equalTo(self.wellcomeLabel.mas_bottom).offset(24.0);
         make.height.equalTo(@55);
     }];
@@ -182,18 +183,18 @@
     self.pswdRightView = [[EMRightViewToolView alloc]initRightViewWithViewType:EMPswdRightView];
     [self.pswdRightView.rightViewBtn addTarget:self action:@selector(pswdSecureAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.backView addSubview:self.pswdField];
+    [self.contentView addSubview:self.pswdField];
     [self.pswdField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.backView).offset(30);
-        make.right.equalTo(self.backView).offset(-30);
+        make.left.equalTo(self.contentView).offset(30);
+        make.right.equalTo(self.contentView).offset(-30);
         make.top.equalTo(self.nameField.mas_bottom).offset(32.0);
         make.height.equalTo(@55);
     }];
     
-    [self.backView addSubview:self.loginButton];
+    [self.contentView addSubview:self.loginButton];
     [self.loginButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.backView).offset(30);
-        make.right.equalTo(self.backView).offset(-30);
+        make.left.equalTo(self.contentView).offset(30);
+        make.right.equalTo(self.contentView).offset(-30);
         make.top.equalTo(self.pswdField.mas_bottom).offset(56.0);
         make.height.equalTo(@(48.0));
     }];
@@ -208,11 +209,11 @@
         self.titleTextImageView.image = [UIImage easeUIImageNamed:@"yg_titleTextImage"];
         self.titleImageView.image = [UIImage easeUIImageNamed:@"yg_titleImage"];
 
-        [self.backView addSubview:self.bottomMsgLabel];
+        [self.contentView addSubview:self.bottomMsgLabel];
         [self.bottomMsgLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.backView).offset(30);
-            make.right.equalTo(self.backView).offset(-30);
-            make.bottom.equalTo(self.backView.mas_bottom).offset(-74.0);
+            make.left.equalTo(self.contentView).offset(30);
+            make.right.equalTo(self.contentView).offset(-30);
+            make.bottom.equalTo(self.contentView.mas_bottom).offset(-74.0);
         }];
     }
     
@@ -224,7 +225,7 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    [self.backView endEditing:YES];
+    [self.contentView endEditing:YES];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -327,7 +328,7 @@
     if(!self.isLogin) {
         return;
     }
-    [self.backView endEditing:YES];
+    [self.contentView endEditing:YES];
     
     BOOL isTokenLogin = self.loginTypeButton.selected;
     NSString *name = self.nameField.text;
@@ -418,7 +419,7 @@
 
 - (void)loginTypeChangeAction
 {
-    [self.backView endEditing:YES];
+    [self.contentView endEditing:YES];
     
     self.loginTypeButton.selected = !self.loginTypeButton.selected;
     if (self.loginTypeButton.selected) {
@@ -560,3 +561,4 @@
 
 
 @end
+#undef kTitleImageViewOffTop

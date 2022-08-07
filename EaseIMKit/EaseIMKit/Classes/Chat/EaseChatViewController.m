@@ -713,7 +713,6 @@ if (EaseIMKitManager.shared.isJiHuApp){
 
     });
     
-    
 }
 
 - (void)messagesDidReceive:(NSArray *)aMessages

@@ -34,4 +34,10 @@
                  rightBarTitle:(NSString *)rightBarTitle
                 rightBarAction:(SEL)rightBarAction;
 
+- (UIView *)customNavWithTitle:(NSString *)title
+                   isNoDisturb:(BOOL)isNoDisturb
+                   groupIdInfo:(NSString *)groupIdInfo
+              rightBarIconName:(NSString *)rightBarIconName
+                rightBarAction:(SEL)rightBarAction;
+
 @end
