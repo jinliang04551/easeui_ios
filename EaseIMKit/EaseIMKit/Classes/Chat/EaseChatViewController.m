@@ -722,8 +722,12 @@ if (EaseIMKitManager.shared.isJiHuApp){
 //    if (topVC != self) {
 //        return;
 //    }
+    BOOL isVisiable = self.isViewLoaded && self.view.window;
     
-
+    if (isVisiable == NO) {
+        return;
+    }
+    
     __weak typeof(self) weakself = self;
     dispatch_async(self.msgQueue, ^{
         NSString *conId = weakself.currentConversation.conversationId;

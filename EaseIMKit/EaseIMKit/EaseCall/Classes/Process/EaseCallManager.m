@@ -62,6 +62,7 @@ static NSString* kExt = @"ext";
 @property (nonatomic) BOOL bNeedSwitchToVoice;
 @end
 
+
 @implementation EaseCallManager
 static EaseCallManager *easeCallManager = nil;
 

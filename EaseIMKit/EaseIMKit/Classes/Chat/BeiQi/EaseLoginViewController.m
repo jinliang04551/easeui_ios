@@ -13,6 +13,7 @@
 #import "EMRightViewToolView.h"
 #import "EaseHeaders.h"
 #import "EaseHttpManager.h"
+#import "EaseIMKitManager.h"
 
 #define kTitleImageViewOffTop 96
 
@@ -334,87 +335,112 @@
     NSString *name = self.nameField.text;
     NSString *pswd = self.pswdField.text;
 
-    __weak typeof(self) weakself = self;
-    void (^finishBlock) (NSString *aName, EMError *aError) = ^(NSString *aName, EMError *aError) {
-        [weakself hideHud];
-        
-        if (!aError) {
-            //设置是否自动登录
-            [[EMClient sharedClient].options setIsAutoLogin:YES];
-            
-            EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
-            options.isAutoLogin = YES;
-            options.loggedInUsername = aName;
-            options.loggedInPassword = pswd;
-            [options archive];
 
-            //发送自动登录状态通知
-            [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:[NSNumber numberWithBool:YES]];
-            
-            return ;
-        }
-        
-        NSString *errorDes = NSLocalizedString(@"loginFailPrompt", nil);
-        switch (aError.code) {
-            case EMErrorUserNotFound:
-                errorDes = NSLocalizedString(@"userNotFount", nil);
-                break;
-            case EMErrorNetworkUnavailable:
-                errorDes = NSLocalizedString(@"offlinePrompt", nil);
-                break;
-            case EMErrorServerNotReachable:
-                errorDes = NSLocalizedString(@"notReachServer", nil);
-                break;
-            case EMErrorUserAuthenticationFailed:
-                errorDes = NSLocalizedString(@"userIdOrPwdError", nil);
-                break;
-            case EMErrorUserLoginTooManyDevices:
-                errorDes = NSLocalizedString(@"devicesExceedLimit", nil);
-                break;
-            case EMErrorUserLoginOnAnotherDevice:
-                errorDes = NSLocalizedString(@"loginOnOtherDevice", nil);
-                break;
-                case EMErrorUserRemoved:
-                errorDes = NSLocalizedString(@"userRemovedByServer", nil);
-            break;
-            default:
-                break;
-        }
-        [EaseAlertController showErrorAlert:errorDes];
-    };
-    
-    if (isTokenLogin) {
-        [self showHudInView:self.view hint:@"登录中"];
-        [[EMClient sharedClient] loginWithUsername:[name lowercaseString] token:pswd completion:finishBlock];
-        return;
-    }
-    
-    
     [self showHudInView:self.view hint:@"登录中"];
-    [[EaseHttpManager sharedManager] loginToApperServer:[name lowercaseString] pwd:pswd completion:^(NSInteger statusCode, NSString * _Nonnull response) {
-        NSLog(@"%s response:%@ state:%@",__func__,response,@(statusCode));
-        
-        if (response && response.length > 0 && statusCode) {
-            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
-            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
-            if (statusCode == 200) {
-                NSDictionary *entityDic = responsedict[@"entity"];
-                NSString *token = [entityDic objectForKey:@"token"];
-                [EaseKitUtil saveLoginUserToken:token userId:name];
-                
-                [[EMClient sharedClient] loginWithUsername:[name lowercaseString] password:pswd completion:finishBlock];
-                
-                return;
-            }else {
-                [self hideHud];
-                [EaseAlertController showErrorAlert:errorDescription];
-            }
-
+    
+    [EaseIMKitManager.shared loginWithUserName:[name lowercaseString] password:pswd completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+        [self hideHud];
+        if (statusCode == 200) {
+            [self showHint:@"登录成功"];
+        }else {
+            [EaseAlertController showErrorAlert:response];
         }
-        
     }];
+    
 }
+
+//- (void)loginAction
+//{
+//    if(!self.isLogin) {
+//        return;
+//    }
+//    [self.contentView endEditing:YES];
+//
+//    BOOL isTokenLogin = self.loginTypeButton.selected;
+//    NSString *name = self.nameField.text;
+//    NSString *pswd = self.pswdField.text;
+//
+//    __weak typeof(self) weakself = self;
+//    void (^finishBlock) (NSString *aName, EMError *aError) = ^(NSString *aName, EMError *aError) {
+//        [weakself hideHud];
+//
+//        if (!aError) {
+//            //设置是否自动登录
+//            [[EMClient sharedClient].options setIsAutoLogin:YES];
+//
+//            EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
+//            options.isAutoLogin = YES;
+//            options.loggedInUsername = aName;
+//            options.loggedInPassword = pswd;
+//            [options archive];
+//
+//            //发送自动登录状态通知
+//            [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:[NSNumber numberWithBool:YES]];
+//
+//            return ;
+//        }
+//
+//        NSString *errorDes = NSLocalizedString(@"loginFailPrompt", nil);
+//        switch (aError.code) {
+//            case EMErrorUserNotFound:
+//                errorDes = NSLocalizedString(@"userNotFount", nil);
+//                break;
+//            case EMErrorNetworkUnavailable:
+//                errorDes = NSLocalizedString(@"offlinePrompt", nil);
+//                break;
+//            case EMErrorServerNotReachable:
+//                errorDes = NSLocalizedString(@"notReachServer", nil);
+//                break;
+//            case EMErrorUserAuthenticationFailed:
+//                errorDes = NSLocalizedString(@"userIdOrPwdError", nil);
+//                break;
+//            case EMErrorUserLoginTooManyDevices:
+//                errorDes = NSLocalizedString(@"devicesExceedLimit", nil);
+//                break;
+//            case EMErrorUserLoginOnAnotherDevice:
+//                errorDes = NSLocalizedString(@"loginOnOtherDevice", nil);
+//                break;
+//                case EMErrorUserRemoved:
+//                errorDes = NSLocalizedString(@"userRemovedByServer", nil);
+//            break;
+//            default:
+//                break;
+//        }
+//        [EaseAlertController showErrorAlert:errorDes];
+//    };
+//
+//    if (isTokenLogin) {
+//        [self showHudInView:self.view hint:@"登录中"];
+//        [[EMClient sharedClient] loginWithUsername:[name lowercaseString] token:pswd completion:finishBlock];
+//        return;
+//    }
+//
+//
+//    [self showHudInView:self.view hint:@"登录中"];
+//    [[EaseHttpManager sharedManager] loginToApperServer:[name lowercaseString] pwd:pswd completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+//        NSLog(@"%s response:%@ state:%@",__func__,response,@(statusCode));
+//
+//        if (response && response.length > 0 && statusCode) {
+//            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+//            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+//            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+//            if (statusCode == 200) {
+//                NSDictionary *entityDic = responsedict[@"entity"];
+//                NSString *token = [entityDic objectForKey:@"token"];
+//                [EaseKitUtil saveLoginUserToken:token userId:name];
+//
+//                [[EMClient sharedClient] loginWithUsername:[name lowercaseString] password:pswd completion:finishBlock];
+//
+//                return;
+//            }else {
+//                [self hideHud];
+//                [EaseAlertController showErrorAlert:errorDescription];
+//            }
+//
+//        }
+//
+//    }];
+//}
 
 
 - (void)loginTypeChangeAction

@@ -6,10 +6,10 @@
 //  Copyright © 2021 lixiaoming. All rights reserved.
 //
 
-#import "DBManager.h"
+#import "EaseDBManager.h"
 #import <FMDB/FMDB.h>
 
-@interface DBManager ()
+@interface EaseDBManager ()
 @property (nonatomic,strong) NSMutableArray* usersInfoArray;
 @property (nonatomic,strong) dispatch_queue_t workQueue;
 @property (atomic,strong) NSLock* lock;
@@ -17,14 +17,14 @@
 @property (nonatomic,strong) FMDatabase* database;
 @end
 
-static DBManager *databaseManager = nil;
-@implementation DBManager
+static EaseDBManager *databaseManager = nil;
+@implementation EaseDBManager
 
 +(instancetype) sharedInstance
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        databaseManager = [[DBManager alloc] init];
+        databaseManager = [[EaseDBManager alloc] init];
         databaseManager.lock = [[NSLock alloc] init];
         databaseManager.workQueue = dispatch_queue_create("demo.DBManager", DISPATCH_QUEUE_SERIAL);
         databaseManager.timeOutInterval = 7*24*3600;

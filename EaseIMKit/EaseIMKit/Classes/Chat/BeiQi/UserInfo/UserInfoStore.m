@@ -7,7 +7,7 @@
 //
 
 #import "UserInfoStore.h"
-#import "DBManager.h"
+#import "EaseDBManager.h"
 #import "EaseHeaders.h"
 
 @interface UserInfoStore()
@@ -42,7 +42,7 @@ static UserInfoStore *userInfoStoreInstance = nil;
     if(aUserId.length > 0 && aUserInfo)
     {
         [self.dicUsersInfo setObject:aUserInfo forKey:aUserId];
-        [[DBManager sharedInstance] addUserInfos:@[aUserInfo]];
+        [[EaseDBManager sharedInstance] addUserInfos:@[aUserInfo]];
     }
     [self.userInfolock unlock];
 }
@@ -86,7 +86,7 @@ static UserInfoStore *userInfoStoreInstance = nil;
             info = aUserInfo;
         }
         [self.dicUsersInfo setObject:info forKey:aUserId];
-        [[DBManager sharedInstance] addUserInfos:@[info]];
+        [[EaseDBManager sharedInstance] addUserInfos:@[info]];
     }
     [self.userInfolock unlock];
 }
@@ -100,7 +100,7 @@ static UserInfoStore *userInfoStoreInstance = nil;
                 [self.dicUsersInfo setObject:userInfo forKey:userInfo.userId];
             }
         }
-        [[DBManager sharedInstance] addUserInfos:aUserInfos];
+        [[EaseDBManager sharedInstance] addUserInfos:aUserInfos];
     }
     [self.userInfolock unlock];
 }
@@ -135,7 +135,7 @@ static UserInfoStore *userInfoStoreInstance = nil;
 
 - (void)loadInfosFromLocal
 {
-    NSArray<EMUserInfo*>* array = [[DBManager sharedInstance] loadUserInfos];
+    NSArray<EMUserInfo*>* array = [[EaseDBManager sharedInstance] loadUserInfos];
     [self addUserInfos:array];
 }
 

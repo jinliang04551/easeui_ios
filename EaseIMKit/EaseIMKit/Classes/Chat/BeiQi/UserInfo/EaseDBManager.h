@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DBManager : NSObject
+@interface EaseDBManager : NSObject
 +(instancetype _Nonnull ) alloc __attribute__((unavailable("call sharedInstance instead")));
 +(instancetype _Nonnull ) new __attribute__((unavailable("call sharedInstance instead")));
 -(instancetype _Nonnull ) copy __attribute__((unavailable("call sharedInstance instead")));

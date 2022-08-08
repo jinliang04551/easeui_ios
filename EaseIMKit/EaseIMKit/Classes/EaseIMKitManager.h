@@ -103,6 +103,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)markAllMessagesAsReadWithConversation:(EMConversation *)conversation;
 
 - (void)configuationIMKitIsJiHuApp:(BOOL)isJiHuApp;
+
+
+- (void)loginWithUserName:(NSString *)userName
+                 password:(NSString *)password
+               completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+
 - (void)logoutWithCompletion:(void (^)(BOOL success,NSString *errorMsg))completion;
 
 
