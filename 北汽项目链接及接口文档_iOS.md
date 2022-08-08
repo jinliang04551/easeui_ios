@@ -12,7 +12,9 @@ dev_beiqi_sdk
 #极狐App
 1.  初始化
     EaseIMKitOptions *demoOptions = [EaseIMKitOptions sharedOptions];
+    demoOptions.appkey = @"您的appkey";
     [EaseIMKitManager initWithEaseIMKitOptions:demoOptions];
+
 
 2. 配置UI入口，是否是极狐
  [EaseIMKitManager.shared configuationIMKitIsJiHuApp:[EaseIMKitOptions sharedOptions].isJiHuApp];
@@ -59,8 +61,10 @@ EMConversationsViewController * conversationsVC= [[EMConversationsViewController
     
 #运管App
 1.  初始化
-    EaseIMKitOptions *demoOptions = [EaseIMKitOptions sharedOptions];
+       EaseIMKitOptions *demoOptions = [EaseIMKitOptions sharedOptions];
+    demoOptions.appkey = @"您的appkey";
     [EaseIMKitManager initWithEaseIMKitOptions:demoOptions];
+
 
 2. 配置UI入口，是否是极狐
   [EaseIMKitManager.shared configuationIMKitIsJiHuApp:[EaseIMKitOptions sharedOptions].isJiHuApp];
