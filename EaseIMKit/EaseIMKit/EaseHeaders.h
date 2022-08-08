@@ -23,6 +23,7 @@
 #import "UIViewController+Util.h"
 #import "NSObject+Alert.h"
 #import "UIViewController+ComponentSize.h"
+#import "UIViewController+TopViewController.h"
 
 
 #import <Masonry/Masonry.h>

@@ -42,6 +42,7 @@ MISScrollPageControllerDelegate>
 @property (nonatomic, strong) NSMutableArray *memberIdArray;
 @property (nonatomic, strong) NSMutableArray *readMsgArray;
 @property (nonatomic, strong) NSMutableArray *unReadMsgArray;
+@property (nonatomic, strong) UIView *titleView;
 
 
 @end
@@ -66,8 +67,6 @@ MISScrollPageControllerDelegate>
     }else {
         self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     }
-
-    [self addPopBackLeftItemWithTarget:self action:@selector(backItemAction)];
     
     [self fetchGroupInfo];
 }
@@ -77,11 +76,22 @@ MISScrollPageControllerDelegate>
 }
 
 - (void)placeAndLayoutSubviews {
+    
+    self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
+
+    [self.view addSubview:self.titleView];
+    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN);
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@(44.0));
+    }];
+
+    
     [self.view addSubview:self.segView];
     [self.view addSubview:self.contentView];
     
     [self.segView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view);
+        make.top.equalTo(self.titleView.mas_bottom);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
         make.height.equalTo(@(50.0));
@@ -96,6 +106,18 @@ MISScrollPageControllerDelegate>
     }];
     
 }
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
+}
+
 
 - (void)fetchGroupInfo {
     [self showHudInView:self.view hint:@"加载中"];

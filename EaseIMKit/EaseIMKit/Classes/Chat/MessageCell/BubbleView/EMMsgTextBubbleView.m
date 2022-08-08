@@ -89,20 +89,26 @@
         NSString *urlStr = result.URL.absoluteString;
         NSRange range = [text rangeOfString:urlStr options:NSCaseInsensitiveSearch];
         if(range.length > 0) {
+            
+//            NSAttributedString *tString = [EaseKitUtil attributeContent:@"申请加入 " color:[UIColor colorWithHexString:@"#7F7F7F"] font:self.groupNameLabel.font];
+            
+        
             [attaStr setAttributes:@{NSLinkAttributeName : [NSURL URLWithString:urlStr]} range:NSMakeRange(range.location, urlStr.length)];
+            
             
             self.textLabel.textColor = [UIColor colorWithHexString:@"#4798CB"];
 
         }
     }
     
-    /*
-    NSString *urlStr = @"http://www.baidu.com";
-    NSMutableAttributedString *linkStr = [[NSMutableAttributedString alloc] initWithString:urlStr];
-    [linkStr addAttributes:@{NSLinkAttributeName: [NSURL URLWithString:urlStr]} range:NSMakeRange(0, urlStr.length)];
-    [attaStr appendAttributedString:linkStr];
-    /*/
+    //*
+//    NSString *urlStr = @"http://www.baidu.com";
+//    NSMutableAttributedString *linkStr = [[NSMutableAttributedString alloc] initWithString:urlStr];
+//    [linkStr addAttributes:@{NSLinkAttributeName: [NSURL URLWithString:urlStr]} range:NSMakeRange(0, urlStr.length)];
+//
+//    [attaStr appendAttributedString:linkStr];
     
+//    NSAttributedString *tString = [EaseKitUtil attributeContent:@"申请加入 " color:[UIColor colorWithHexString:@"#7F7F7F"] font:self.groupNameLabel.font];
     
     self.textLabel.attributedText = attaStr;
 //    [self.textLabel setAttributedText:attaStr];

@@ -778,11 +778,11 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
                         [self showHint:@"邀请成员成功"];
                     }
                 }else {
-                    [EaseAlertController showErrorAlert:errorDescription];
+                    [EaseAlertController showErrorAlert:@"邀请失败"];
                 }
 
             }else {
-                [EaseAlertController showErrorAlert:errorDescription];
+                [EaseAlertController showErrorAlert:@"邀请失败"];
             }
         }
     }];

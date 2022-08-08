@@ -157,7 +157,6 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [EaseIMKitManager.shared markAllMessagesAsReadWithConversation:self.currentConversation];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -717,6 +716,14 @@ if (EaseIMKitManager.shared.isJiHuApp){
 
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
+   
+//    UIViewController *topVC = [UIViewController topViewController];
+//
+//    if (topVC != self) {
+//        return;
+//    }
+    
+
     __weak typeof(self) weakself = self;
     dispatch_async(self.msgQueue, ^{
         NSString *conId = weakself.currentConversation.conversationId;
@@ -738,6 +745,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
         });
     });
 }
+
 
 - (void)messagesInfoDidRecall:(NSArray<EMRecallMessageInfo *> *)aRecallMessagesInfo
 {
@@ -1065,7 +1073,9 @@ if (EaseIMKitManager.shared.isJiHuApp){
 - (void)setEditingStatusVisible:(BOOL)editingStatusVisible{}
 
 //已读回执
-- (void)sendReadReceipt:(EMChatMessage *)msg{}
+- (void)sendReadReceipt:(EMChatMessage *)msg{
+    
+}
 
 - (void)triggerUserInfoCallBack:(BOOL)isScrollBottom
 {

@@ -65,8 +65,12 @@
     [self _setupChatSubviews];
     [self updateUIWithSearchedMessage];
     
+    
     if (_conversation.unreadMessagesCount > 0) {
         [[EMClient sharedClient].chatManager ackConversationRead:_conversation.conversationId completion:nil];
+        
+        [[EaseIMKitManager shared] markAllMessagesAsReadWithConversation:_conversation];
+
     }
 
 }
@@ -90,30 +94,20 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-
+    [super viewWillAppear:animated];
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
     }else {
         self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     }
-
-    
-//if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-//    self.navigationController.navigationBar.backgroundColor = EaseIMKit_ViewBgBlackColor;
-//}else {
-//    self.navigationController.navigationBar.backgroundColor = EaseIMKit_ViewBgWhiteColor;
-//}
     
     self.navigationController.navigationBarHidden = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    if ([EaseIMKitOptions sharedOptions].isPriorityGetMsgFromServer) {
-        [[EaseIMKitManager shared] markAllMessagesAsReadWithConversation:_conversation];
-    }
+    [super viewWillDisappear:animated];
     self.navigationController.navigationBarHidden = NO;
-
 }
 
 - (void)_setupChatSubviews {
@@ -145,8 +139,11 @@
     
     NSString *groupIdInfo = [NSString stringWithFormat:@"群组ID: %@",self.conversation.conversationId];
 
+    
     if (![EaseIMKitOptions sharedOptions].isJiHuApp && self.conversation.type == EMConversationTypeGroupChat) {
-        self.titleView = [self customNavWithTitle:chatTitle isNoDisturb:YES groupIdInfo:groupIdInfo rightBarIconName:@"yg_groupInfo" rightBarAction:@selector(groupInfoAction)];
+        
+        BOOL isNoDisturb = NO;
+        self.titleView = [self customNavWithTitle:chatTitle isNoDisturb:isNoDisturb groupIdInfo:groupIdInfo rightBarIconName:@"yg_groupInfo" rightBarAction:@selector(groupInfoAction)];
     }else {
         NSString *rightBarImageName = @"";
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
