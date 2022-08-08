@@ -716,12 +716,6 @@ if (EaseIMKitManager.shared.isJiHuApp){
 
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
-   
-//    UIViewController *topVC = [UIViewController topViewController];
-//
-//    if (topVC != self) {
-//        return;
-//    }
     BOOL isVisiable = self.isViewLoaded && self.view.window;
     
     if (isVisiable == NO) {

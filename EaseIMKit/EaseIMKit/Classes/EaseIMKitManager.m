@@ -48,7 +48,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
 #define IMKitVersion @"1.0.0"
 
 @implementation EaseIMKitManager
-+ (BOOL)initWithEaseIMKitOptions:(EaseIMKitOptions *)options {
++ (BOOL)managerWithEaseIMKitOptions:(EaseIMKitOptions *)options {
     if (!gInit) {
         [EMClient.sharedClient initializeSDKWithOptions:[options toOptions]];
         [[self shareInstance] configIMKitWithOption:options];

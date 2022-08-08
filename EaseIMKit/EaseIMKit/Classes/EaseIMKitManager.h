@@ -82,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign,readonly) NSInteger exclusivegroupUnReadCount;
 
 
-+ (BOOL)initWithEaseIMKitOptions:(EaseIMKitOptions *)options;
++ (BOOL)managerWithEaseIMKitOptions:(EaseIMKitOptions *)options;
 
 /// Description 根据会话 ID 查询当前会话是否设置了免打扰。（ 时间复杂度O(1)：将原来 undisturbList 改造为 undisturbMap 降低查询时间复杂度）
 /// @param conversationId 会话 ID /// @result return - `YES`：是； - （默认） `NO` ：否。 不在undisturbMap中查询结果为NO
