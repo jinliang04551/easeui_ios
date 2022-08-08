@@ -105,6 +105,7 @@
 @property (nonatomic, strong) NSString *systemString;
 @property (nonatomic, strong) NSString *groupId;
 @property (nonatomic, strong) UIView *titleView;
+@property (nonatomic, assign) BOOL isEditMode;
 
 @end
 
@@ -139,7 +140,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.title = @"运营备注";
+    self.title = @"运营备注";
     [self _setupSubviews];
     [self fetchNoteInfo];
     
@@ -192,7 +193,13 @@
 {
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 
-    self.titleView = [self customNavWithTitle:@"运营备注" rightBarIconName:@"" rightBarTitle:@"保存" rightBarAction:@selector(doneAction)];
+    if (self.isEditMode) {
+        self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:@"保存" rightBarAction:@selector(doneAction)];
+    }else {
+        self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:@"编辑" rightBarAction:@selector(editAction)];
+    }
+
+   
 
     [self.view addSubview:self.titleView];
     [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -246,6 +253,20 @@
 
 #pragma mark - Action
 
+- (void)editAction {
+    self.isEditMode = YES;
+    self.yunGuanTextView.textView.editable = YES;
+    
+    for (UIView *subView in self.view.subviews) {
+        if (subView) {
+            [subView removeFromSuperview];
+        }
+    }
+    
+    [self _setupSubviews];
+}
+
+
 - (void)doneAction
 {
     [self.view endEditing:YES];
@@ -294,22 +315,11 @@
         _yunGuanTextView.titleLabel.text = @"服务备注";
         _yunGuanTextView.textView.delegate = self;
         _yunGuanTextView.textView.textColor = [UIColor colorWithHexString:@"#171717"];
-        
-//        if (!self.isEditable){
-//            _yunGuanTextView.textView.placeholder = NSLocalizedString(@"editRight", nil);
-//        }else {
-//            _yunGuanTextView.textView.placeholder = self.placeholder;
-//        }
-//
-//        if (self.originalString && ![self.originalString isEqualToString:@""]) {
-//            _yunGuanTextView.textView.text = self.originalString;
-//        }
-//        _yunGuanTextView.textView.editable = self.isEditable;
+        _yunGuanTextView.textView.editable = NO;
 
     }
     return _yunGuanTextView;
 }
-
 
 
 @end

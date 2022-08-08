@@ -169,7 +169,6 @@
     
     self.userIdRightView = [[EMRightViewToolView alloc]initRightViewWithViewType:EMUsernameRightView];
     [self.userIdRightView.rightViewBtn addTarget:self action:@selector(clearUserIdAction) forControlEvents:UIControlEventTouchUpInside];
-    self.nameField.rightView = self.userIdRightView;
     self.userIdRightView.hidden = YES;
     
     [self.contentView addSubview:self.nameField];
@@ -496,10 +495,12 @@
         [iconBgView addSubview:iconImageView];
         [iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(iconBgView).insets(UIEdgeInsetsMake(0, 8.0, 0, 0));
+            make.size.equalTo(@(20.0));
         }];
         _nameField.leftView = iconBgView;
         _nameField.leftViewMode = UITextFieldViewModeAlways;
-        
+        _nameField.rightView = self.userIdRightView;
+
         _nameField.layer.cornerRadius = 4.0;
         _nameField.layer.borderWidth = 1;
         _nameField.layer.borderColor = [UIColor lightGrayColor].CGColor;
@@ -530,7 +531,11 @@
         [iconImageView setImage:[UIImage easeUIImageNamed:@"yg_pwd_input_icon"]];
         [iconBgView addSubview:iconImageView];
         [iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.centerY.equalTo(iconBgView);
+//            make.left.equalTo(iconBgView).offset(8.0);
             make.edges.equalTo(iconBgView).insets(UIEdgeInsetsMake(0, 8.0, 0, 0));
+
+            make.size.equalTo(@(20.0));
         }];
         
         _pswdField.leftView = iconBgView;

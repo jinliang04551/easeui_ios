@@ -200,6 +200,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 }
 
         style.scaleTitle = YES;
+        style.scrollTitle = NO;
+        style.scrollContentView = NO;
         style.autoAdjustTitlesWidth = YES;
         style.titleBigScale = 1.05;
         style.titleFont = EaseIMKit_Font(@"PingFang SC",14.0);

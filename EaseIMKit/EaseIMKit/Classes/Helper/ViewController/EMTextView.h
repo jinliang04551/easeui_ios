@@ -21,4 +21,8 @@
 @property(strong, nonatomic) NSString *placeholder;
 @property(strong, nonatomic) UIColor *placeholderColor;
 
+
+- (void)updateEditState:(BOOL)isEdit;
+
+
 @end

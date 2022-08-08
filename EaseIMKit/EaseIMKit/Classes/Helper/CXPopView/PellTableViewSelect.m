@@ -62,9 +62,18 @@ UITableView * tableView;
     tableView.dataSource = backgroundView;
 //    tableView.transform =  CGAffineTransformMakeScale(0.5, 0.5);
     tableView.delegate = backgroundView;
-    tableView.layer.cornerRadius = 10.0f;
+    
+    tableView.layer.shadowColor = [UIColor colorWithHexString:@"#6C8AB6"].CGColor;
+    tableView.layer.shadowOpacity = 1.0f;
+    tableView.layer.shadowRadius = 10.f;
+    tableView.layer.shadowOffset = CGSizeMake(1,1);
+    
+
+    
+    
     // 定点
     tableView.layer.anchorPoint = CGPointMake(1.0, 0);
+    
     tableView.transform =CGAffineTransformMakeScale(0.0001, 0.0001);
     
     tableView.rowHeight = 44.0;

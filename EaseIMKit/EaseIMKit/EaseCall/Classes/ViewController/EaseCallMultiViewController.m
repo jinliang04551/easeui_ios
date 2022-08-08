@@ -87,7 +87,7 @@
             self.statusLable.textAlignment = NSTextAlignmentRight;
             self.statusLable.text = EaseLocalizableString(@"receiveCallInviteprompt",nil);
             self.answerButton.hidden = NO;
-            self.acceptLabel.hidden = NO;
+            self.acceptLabel.hidden = YES;
             [self.contentView addSubview:self.statusLable];
             [self.statusLable mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.remoteNameLable.mas_bottom).offset(20);
@@ -315,6 +315,7 @@
         self.speakerLabel.hidden = YES;
         self.switchCameraButton.hidden = YES;
         self.switchCameraLabel.hidden = YES;
+        self.acceptLabel.hidden = YES;
     }
 }
 

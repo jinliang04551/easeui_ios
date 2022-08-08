@@ -94,4 +94,9 @@
     }
 }
 
+
+- (void)updateEditState:(BOOL)isEdit {
+    _editing = isEdit;
+}
+
 @end

@@ -20,6 +20,8 @@
 
 @property (nonatomic, strong) UIView *titleView;
 
+@property (nonatomic, assign) BOOL isEditMode;
+
 @end
 
 @implementation EaseTextViewController
@@ -49,7 +51,13 @@
 - (void)_setupSubviews
 {    
     if (self.isEditable) {
-        self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:NSLocalizedString(@"save", nil) rightBarAction:@selector(doneAction)];
+        if (self.isEditMode) {
+            self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:@"保存" rightBarAction:@selector(doneAction)];
+            
+        }else {
+            self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:@"编辑" rightBarAction:@selector(editAction)];
+        }
+       
     }else {
         self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
     }
@@ -70,11 +78,8 @@
         make.height.equalTo(@(self.view.frame.size.height/2));
     }];
     
-    self.textView = [[EMTextView alloc] init];
-    self.textView.delegate = self;
-    self.textView.font = [UIFont systemFontOfSize:14.0];
-    self.textView.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
-    
+ 
+
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
     bgView.backgroundColor = EaseIMKit_ViewBgBlackColor;
@@ -84,17 +89,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     bgView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     self.textView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:EaseIMKit_TitleBlueColor, NSForegroundColorAttributeName,[UIFont boldSystemFontOfSize:14],NSFontAttributeName, nil] forState:UIControlStateNormal];
 }
     
-    
-    self.textView.placeholder = self.placeholder;
-
-    self.textView.returnKeyType = UIReturnKeyDone;
-    if (self.originalString && ![self.originalString isEqualToString:@""]) {
-        self.textView.text = self.originalString;
-    }
-    self.textView.editable = self.isEditable;
     [self.view addSubview:self.textView];
     [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(bgView);
@@ -129,6 +125,20 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 #pragma mark - Action
 
+- (void)editAction {
+    self.isEditMode = YES;
+    self.textView.editable = YES;
+    
+    for (UIView *subView in self.view.subviews) {
+        if (subView) {
+            [subView removeFromSuperview];
+        }
+    }
+    
+    [self _setupSubviews];
+}
+
+
 - (void)doneAction
 {
     [self.view endEditing:YES];
@@ -143,4 +153,20 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     }
 }
 
+- (EMTextView *)textView {
+    if (_textView == nil) {
+        _textView = [[EMTextView alloc] init];
+        _textView.delegate = self;
+        _textView.font = [UIFont systemFontOfSize:14.0];
+        _textView.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
+        _textView.placeholder = self.placeholder;
+
+        _textView.returnKeyType = UIReturnKeyDone;
+        if (self.originalString && ![self.originalString isEqualToString:@""]) {
+            _textView.text = self.originalString;
+        }
+        _textView.editable = NO;
+    }
+    return _textView;
+}
 @end

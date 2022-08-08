@@ -325,6 +325,9 @@
 #if TARGET_IPHONE_SIMULATOR
     [EaseAlertController showErrorAlert:@"模拟器无法打开文件"];
 #elif TARGET_OS_IPHONE
+        
+        [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgWhiteColor;
+
         NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:aPathe];
         NSLog(@"\nfile  --    :%@",[fileHandle readDataToEndOfFile]);
         [fileHandle closeFile];

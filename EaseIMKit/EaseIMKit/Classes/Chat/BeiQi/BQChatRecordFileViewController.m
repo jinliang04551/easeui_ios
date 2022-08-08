@@ -373,7 +373,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 }
 
 - (void)viewWillAppearForIndex:(NSUInteger)index{
-
+    if (index == 2) {
+        [self.searchBar.textField resignFirstResponder];
+    }
 }
 
 - (void)viewDidAppearForIndex:(NSUInteger)index{
@@ -381,10 +383,11 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 - (void)viewWillDisappearForIndex:(NSUInteger)index{
     self.editing = NO;
+    
 }
 
 - (void)viewDidDisappearForIndex:(NSUInteger)index{
-    [self.searchBar.textField resignFirstResponder];
+   
 
 }
 
