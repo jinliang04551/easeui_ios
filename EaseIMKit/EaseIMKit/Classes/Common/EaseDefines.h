@@ -264,6 +264,18 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 #define EaseNotificationSendCallCreateCMDMessage @"EaseNotificationSendCallCreateCMDMessage"
 #define EaseNotificationSendCallEndCMDMessage @"EaseNotificationSendCallEndCMDMessage"
 
+//收到群组的音视频邀请或者结束通知
+#define EaseNotificationReceiveMutiCallStartOrEnd @"EaseNotificationReceiveMutiCallStartOrEnd"
+
+//收到群组的音视频邀请或者结束通知,更新本地数据库后刷新当前会话页面
+#define EaseNotificationReceiveMutiCallLoadConvsationDB @"EaseNotificationReceiveMutiCallLoadConvsationDB"
+
+
+//同步多端免打扰的CMD消息
+#define EaseNotificationReceiveMutiDeviceNoDisturb @"EaseNotificationReceiveMutiDeviceNoDisturb"
+
+
+
 
 //#define DEF_APPKEY @"easemob-demo#easeim"
 //#define DEF_APPKEY @"easemob-demo#chatdemoui"

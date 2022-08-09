@@ -12,4 +12,8 @@
 
 + (instancetype)shareHelper;
 
+- (void)insertMsgWithCMDMessage:(EMChatMessage  *)cmdMessage;
+
+- (void)sendNoDisturbCMDMessageWithExt:(NSDictionary *)ext;
+
 @end

@@ -19,6 +19,7 @@
 #import "EaseConversationModel.h"
 #import "EaseHeaders.h"
 #import "EaseIMKitManager.h"
+#import "EaseIMHelper.h"
 
 @interface EMChatInfoViewController ()
 
@@ -170,6 +171,16 @@
             [aSwitch setOn:NO];
         }else {
             [[EaseIMKitManager shared] updateUndisturbMapsKey:self.conversation.conversationId value:aSwitch.isOn];
+            
+//        action:event
+//        "eventType":"groupNoPush"/"userNoPush"
+//        "noPush":true/false
+//        "id":"xxx"
+            
+            NSDictionary *ext = @{@"eventType":@"userNoPush",@"noPush":@(aSwitch.isOn),@"id":_conversation.conversationId};
+            
+            [[EaseIMHelper shareHelper] sendNoDisturbCMDMessageWithExt:ext];
+            
         }
     }];
 

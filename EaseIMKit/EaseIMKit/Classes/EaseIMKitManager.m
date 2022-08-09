@@ -770,32 +770,36 @@ static NSString *g_UIKitVersion = @"1.0.0";
 
     };
     
-    
-    [[EaseHttpManager sharedManager] loginToApperServer:[userName lowercaseString] pwd:password completion:^(NSInteger statusCode, NSString * _Nonnull response) {
-        NSLog(@"%s response:%@ state:%@",__func__,response,@(statusCode));
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        [[EMClient sharedClient] loginWithUsername:[userName lowercaseString] password:password completion:finishBlock];
         
-        if (response && response.length > 0 && statusCode) {
-            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
-            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
-            if (statusCode == 200) {
-                NSDictionary *entityDic = responsedict[@"entity"];
-                NSString *token = [entityDic objectForKey:@"token"];
-                [EaseKitUtil saveLoginUserToken:token userId:userName];
-                
-                [[EMClient sharedClient] loginWithUsername:[userName lowercaseString] password:password completion:finishBlock];
-                
-                return;
-            }else {
-                
-                aCompletionBlock(statusCode,response);
-                
-//                [EaseAlertController showErrorAlert:errorDescription];
-            }
+    }else {
+        [[EaseHttpManager sharedManager] loginToApperServer:[userName lowercaseString] pwd:password completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+            NSLog(@"%s response:%@ state:%@",__func__,response,@(statusCode));
+            
+            if (response && response.length > 0 && statusCode) {
+                NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+                NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+                if (statusCode == 200) {
+                    NSDictionary *entityDic = responsedict[@"entity"];
+                    NSString *token = [entityDic objectForKey:@"token"];
+                    [EaseKitUtil saveLoginUserToken:token userId:userName];
+                    
+                    [[EMClient sharedClient] loginWithUsername:[userName lowercaseString] password:password completion:finishBlock];
+                    
+                    return;
+                }else {
+                    
+                    aCompletionBlock(statusCode,response);
+                    
+                }
 
-        }
-        
-    }];
+            }
+            
+        }];
+    }
+
 
 }
 

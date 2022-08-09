@@ -27,6 +27,7 @@
 #import "EaseHeaders.h"
 #import "EaseConversationModel.h"
 #import "EaseIMKitManager.h"
+#import "EaseIMHelper.h"
 
 @interface EMGroupInfoViewController ()<EMMultiDevicesDelegate, EMGroupManagerDelegate>
 
@@ -517,6 +518,16 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         if (!aError) {
             weakSelf.group = aGroup;
             [[EaseIMKitManager shared] updateUndisturbMapsKey:self.conversation.conversationId value:aSwitch.isOn];
+            
+            //        action:event
+            //        "eventType":"groupNoPush"/"userNoPush"
+            //        "noPush":true/false
+            //        "id":"xxx"
+                        
+        NSDictionary *ext = @{@"eventType":@"groupNoPush",@"noPush":@(aSwitch.isOn),@"id":_conversation.conversationId};
+        
+        [[EaseIMHelper shareHelper] sendNoDisturbCMDMessageWithExt:ext];
+                        
         } else {
             if (aError) {
                 [weakSelf showHint:[NSString stringWithFormat:NSLocalizedString(@"setDistrbute", nil),aError.errorDescription]];

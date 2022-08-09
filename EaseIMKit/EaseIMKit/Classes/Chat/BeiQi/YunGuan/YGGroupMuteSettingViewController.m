@@ -102,7 +102,8 @@
             [self.unMuteArray removeObjectsInArray:mutes];
             [self.tableView reloadData];
         }else {
-            [EaseAlertController showErrorAlert:aError.debugDescription];
+            [self showHint:@"禁言失败"];
+//            [EaseAlertController showErrorAlert:aError.debugDescription];
         }
     }];
 }

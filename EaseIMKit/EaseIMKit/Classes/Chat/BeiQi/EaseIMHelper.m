@@ -14,6 +14,7 @@
 #import "EaseIMKitOptions.h"
 #import "EaseHeaders.h"
 #import "EaseConversationModel.h"
+#import "EaseIMKitManager.h"
 
 static EaseIMHelper *helper = nil;
 
@@ -62,7 +63,36 @@ static EaseIMHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushChatController:) name:CHAT_PUSHVIEWCONTROLLER object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushGroupsController:) name:GROUP_LIST_PUSHVIEWCONTROLLER object:nil];
 
+    //自己发送的通话开始或者结束CMD消息刷新页面
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithCallCMDMessage:) name:EaseNotificationSendCallCreateCMDMessage object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithCallCMDMessage:) name:EaseNotificationSendCallEndCMDMessage object:nil];
+
 }
+
+
+- (void)sendNoDisturbCMDMessageWithExt:(NSDictionary *)ext {
+    EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:@"event"];
+    body.isDeliverOnlineOnly = YES;
+    
+
+//action:event
+//"eventType":"groupNoPush"/"userNoPush"
+//"noPush":true/false
+//"id":"xxx"
+    
+    NSString *userId = [EMClient sharedClient].currentUsername;
+    EMChatMessage *message = [[EMChatMessage alloc] initWithConversationID:userId from:userId to:userId body:body ext:ext];
+    message.chatType = EMChatTypeGroupChat;
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMChatMessage * _Nullable message, EMError * _Nullable error) {
+        if (error == nil) {
+
+        }else {
+            [self showAlertWithMessage:error.errorDescription];
+        }
+    }];
+
+}
+
 
 #pragma mark - EMClientDelegate
 
@@ -140,14 +170,15 @@ static EaseIMHelper *helper = nil;
 }
 
 #pragma mark - EMChatManagerDelegate
-
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
     for (EMChatMessage *msg in aMessages) {
-        if (msg.body.type == EMMessageBodyTypeText && [((EMTextMessageBody *)msg.body).text isEqualToString:EMCOMMUNICATE_CALLINVITE]){
+        NSString *action = msg.ext[@"action"];
+        if ([action isEqualToString:@"invite"]) {
             //通话邀请
-                continue;
+            continue;
         }
+        
         [EMRemindManager remindMessage:msg];
     }
 }
@@ -163,8 +194,68 @@ static EaseIMHelper *helper = nil;
                 [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationRequestJoinGroupEvent object:nil];
             }
             
+            if (msg.ext.count > 0 && [cmdBody.action isEqualToString:MutiCallAction]) {
+                [self insertMsgWithCMDMessage:msg];
+            }
+            
+            if (msg.ext.count > 0 && [cmdBody.action isEqualToString:@"event"]) {
+                [self _updateNoDisturbWithExt:msg.ext];
+            }
+            
         }
     }
+        
+}
+
+- (void)_updateNoDisturbWithExt:(NSDictionary *)ext {
+        
+//action:event
+//"eventType":"groupNoPush"/"userNoPush"
+//"noPush":true/false
+//"id":"xxx"
+    
+    NSString *eventType = ext[@"eventType"];
+    if ([eventType isEqualToString:@""]) {
+        BOOL noPush = [ext[@"noPush"] boolValue];
+        NSString *convId = ext[@"id"];
+
+        [[EaseIMKitManager shared] updateUndisturbMapsKey:convId value:noPush];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveMutiDeviceNoDisturb object:nil];
+    }
+
+}
+
+
+- (void)insertMsgWithCMDMessage:(EMChatMessage  *)cmdMessage {
+    
+    NSString *callState = cmdMessage.ext[MutiCallCallState];
+    NSString *callUser = cmdMessage.ext[MutiCallCallUser];
+
+    NSString *msgText = @"";
+    if ([callState isEqualToString:MutiCallCreateCall]) {
+        msgText = [NSString stringWithFormat:@"%@ 发起了语音通话",callUser];
+    }else {
+        msgText = @"语音通话已经结束";
+    }
+    NSLog(@"%s msgText:%@",__func__,msgText);
+       
+    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:msgText];
+        
+    EMChatMessage *message = [[EMChatMessage alloc] initWithConversationID:cmdMessage.conversationId from:cmdMessage.from to:cmdMessage.to body:body ext:cmdMessage.ext];
+    
+    message.chatType = cmdMessage.chatType;
+    message.isRead = YES;
+    message.timestamp = cmdMessage.timestamp;
+    message.localTime = cmdMessage.localTime;
+    message.messageId = cmdMessage.messageId;
+    
+    
+    EMConversation *groupChat =  [[EMClient sharedClient].chatManager getConversation:cmdMessage.conversationId type:EMConversationTypeGroupChat createIfNotExist:YES];
+    
+    [groupChat insertMessage:message error:nil];
+        
+    [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveMutiCallStartOrEnd object:message.messageId];
 }
 
 
@@ -410,6 +501,12 @@ static EaseIMHelper *helper = nil;
 }
 
 #pragma mark - NSNotification
+- (void)updateUIWithCallCMDMessage:(NSNotification *)notify {
+    EMChatMessage *msg = (EMChatMessage *)notify.object;
+    [[EaseIMHelper shareHelper] insertMsgWithCMDMessage:msg];
+    
+}
+
 
 - (void)handlePushChatController:(NSNotification *)aNotif
 {

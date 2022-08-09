@@ -138,40 +138,6 @@
     [task resume];
 }
 
-//- (void)logoutWithCompletion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
-//{
-//
-////URL: /v2/gov/arcfox/transport/15811252011/logout
-////Method: GET
-//
-//    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/logout",kServerHost,kLogoutURL,[EMClient sharedClient].currentUsername]];
-//
-//    NSLog(@"%s url:%@",__func__,url);
-//
-//
-//    NSMutableURLRequest *request = [NSMutableURLRequest
-//                                                requestWithURL:url];
-//    request.HTTPMethod = @"GET";
-//
-//    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
-//    NSString *token = [EaseKitUtil getLoginUserToken];
-//    [headerDict setObject:token forKey:@"Authorization"];
-//    [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
-//
-//    request.allHTTPHeaderFields = headerDict;
-//
-//
-//    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-//
-//    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
-//    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-//        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
-//        if (aCompletionBlock) {
-//            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
-//        }
-//    }];
-//    [task resume];
-//}
 
 - (void)logoutWithCompletion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
 {
@@ -183,7 +149,6 @@
     
     NSLog(@"%s url:%@",__func__,url);
 
-    
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];
     request.HTTPMethod = @"GET";

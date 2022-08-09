@@ -63,7 +63,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:USERINFO_UPDATE object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveJoinGroupApply) name:EaseNotificationRequestJoinGroupEvent object:nil];
-    
+        
     [EMClient.sharedClient.groupManager addDelegate:self delegateQueue:dispatch_get_main_queue()];
     
     [self _setupSubviews];

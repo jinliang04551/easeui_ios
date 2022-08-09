@@ -330,7 +330,6 @@
     }
     [self.contentView endEditing:YES];
     
-    BOOL isTokenLogin = self.loginTypeButton.selected;
     NSString *name = self.nameField.text;
     NSString *pswd = self.pswdField.text;
 

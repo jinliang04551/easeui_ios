@@ -575,35 +575,6 @@
 }
 
 
-//- (UISearchBar *)searchBar {
-//    if (_searchBar == nil) {
-//        _searchBar = [[UISearchBar alloc] init];
-//        _searchBar.delegate = self;
-//        _searchBar.barTintColor = [UIColor whiteColor];
-//        _searchBar.searchBarStyle = UISearchBarStyleMinimal;
-//        _searchBar.layer.cornerRadius = 32.0 * 0.5;
-//
-//        UITextField *searchField = [_searchBar valueForKey:@"searchField"];
-//        searchField.backgroundColor = [UIColor colorWithHexString:@"#252525"];
-//        [searchField setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
-//        searchField.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
-//
-//        if (EaseIMKitManager.shared.isJiHuApp){
-//            searchField.backgroundColor = [UIColor colorWithHexString:@"#252525"];
-//            [searchField setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
-//            searchField.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
-//
-//        }else {
-//            searchField.backgroundColor = [UIColor whiteColor];
-//            [searchField setTextColor:UIColor.blackColor];
-//        }
-//
-//        searchField.layer.cornerRadius = 32.0 * 0.5;
-//        _searchBar.placeholder = @"搜索";
-//    }
-//    return _searchBar;
-//}
-
 - (UITableView *)searchTableView {
     if (_searchTableView == nil) {
         _searchTableView = [[UITableView alloc] init];

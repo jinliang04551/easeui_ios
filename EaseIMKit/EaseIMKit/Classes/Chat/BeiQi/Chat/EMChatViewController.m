@@ -60,6 +60,10 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:USERINFO_UPDATE object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNavigationTitle) name:CHATROOM_INFO_UPDATED object:nil];
+    
+    //接收通话邀请或者结束时，在当前会话页面
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMutiCallLoadConvsationDB:) name:EaseNotificationReceiveMutiCallLoadConvsationDB object:nil];
+
     [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [self _setupChatSubviews];
@@ -276,6 +280,20 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     }
 
 }
+
+#pragma mark NSNotification
+- (void)receiveMutiCallLoadConvsationDB:(NSNotification *)notify {
+    NSString *msgId = notify.object;
+    NSLog(@"%s ============msgId:%@ self.moreMsgId:%@",__func__,msgId,self.moreMsgId);
+
+    self.moreMsgId = msgId;
+    
+    NSLog(@"%s ========assignAfter====msgId:%@ self.moreMsgId:%@",__func__,msgId,self.moreMsgId);
+
+    [self loadData:YES];
+
+}
+
 
 #pragma mark - EaseChatViewControllerDelegate
 
@@ -517,6 +535,12 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     __weak typeof(self) weakself = self;
     void (^block)(NSArray *aMessages, EMError *aError) = ^(NSArray *aMessages, EMError *aError) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            for (EMChatMessage *msg in aMessages) {
+                if ([msg.messageId isEqualToString:self.moreMsgId]) {
+                    NSLog(@"==========self.moreMsgId:%@",self.moreMsgId);
+                }
+            }
+            
             [weakself.chatController refreshTableViewWithData:aMessages isInsertBottom:NO isScrollBottom:isScrollBottom];
         });
     };
@@ -576,14 +600,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (void)insertLocationCallRecord:(NSNotification*)noti
 {
     NSArray<EMChatMessage *> * messages = (NSArray *)[noti.object objectForKey:@"msg"];
-//    EMTextMessageBody *body = (EMTextMessageBody*)message.body;
-//    if ([body.text isEqualToString:EMCOMMUNICATE_CALLED_MISSEDCALL]) {
-//        if ([message.from isEqualToString:[EMClient sharedClient].currentUsername]) {
-//            [self showHint:EaseLocalizableString(@"remoteRefuse", nil)];
-//        } else {
-//            [self showHint:NSLocalizedString(@"remoteCancl", nil)];
-//        }
-//    }
+
     if(messages && messages.count > 0) {
         NSArray *formated = [self formatMessages:messages];
         [self.chatController.dataArray addObjectsFromArray:formated];

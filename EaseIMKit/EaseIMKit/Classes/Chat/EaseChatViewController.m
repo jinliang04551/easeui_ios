@@ -34,6 +34,7 @@
 #import "EaseDefines.h"
 #import "EaseWebViewController.h"
 #import "EaseChatViewController+EaseCall.h"
+#import "EaseIMHelper.h"
 
 
 @interface EaseChatViewController ()<UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, EMChatManagerDelegate, EMChatBarDelegate, EaseMessageCellDelegate, EaseChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate, EMMoreFunctionViewDelegate>
@@ -107,8 +108,7 @@
         _viewModel.extFuncModel.viewBgColor = [UIColor colorWithHexString:@"#F5F5F5"];
     }
 
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithCallCMDMessage:) name:EaseNotificationSendCallCreateCMDMessage object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithCallCMDMessage:) name:EaseNotificationSendCallEndCMDMessage object:nil];
+       
     }
     return self;
 }
@@ -205,13 +205,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark NSNotification
-- (void)updateUIWithCallCMDMessage:(NSNotification *)notify {
-    
-    EMChatMessage *msg = (EMChatMessage *)notify.object;
-    [self insertMsgWithCMDMessage:msg];
-        
-}
 
 
 #pragma mark - Subviews
@@ -687,40 +680,9 @@ if (EaseIMKitManager.shared.isJiHuApp){
 }
 
 #pragma mark - EMChatManagerDelegate
-- (void)cmdMessagesDidReceive:(NSArray<EMChatMessage *> *)aCmdMessages {
-
-    EaseIMKit_WS
-    dispatch_async(self.msgQueue, ^{
-        NSString *conId = weakSelf.currentConversation.conversationId;
-
-        for (int i = 0; i < [aCmdMessages count]; i++) {
-            EMChatMessage *msg = aCmdMessages[i];
-            if (![msg.conversationId isEqualToString:conId]) {
-                continue;
-            }
-            if (msg.body.type == EMMessageBodyTypeCmd) {
-                EMCmdMessageBody *cmdBody = (EMCmdMessageBody *)msg.body;
-                NSLog(@"%s easeChat msg.ext:%@",__func__,msg.ext);
-
-                if (msg.ext.count > 0 && [cmdBody.action isEqualToString:MutiCallAction]) {
-                    
-                    [self insertMsgWithCMDMessage:msg];
-                    
-                }
-            }
-        }
-
-    });
-    
-}
-
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
     BOOL isVisiable = self.isViewLoaded && self.view.window;
-    
-    if (isVisiable == NO) {
-        return;
-    }
     
     __weak typeof(self) weakself = self;
     dispatch_async(self.msgQueue, ^{
@@ -731,8 +693,19 @@ if (EaseIMKitManager.shared.isJiHuApp){
             if (![msg.conversationId isEqualToString:conId]) {
                 continue;
             }
-            [weakself sendReadReceipt:msg];
-            [weakself.currentConversation markMessageAsReadWithId:msg.messageId error:nil];
+            
+            if (msg.body.type ==  EMMessageTypeText) {
+                EMTextMessageBody *tBody = (EMTextMessageBody *)msg.body;
+                NSLog(@"messageId:%@ messgeText:%@ msg.timestamp:%@",msg.messageId,tBody.text,[@(msg.timestamp) stringValue]);
+                
+            }
+           
+            //当前页面可见时，消息置为已读状态
+            if (isVisiable) {
+                [weakself sendReadReceipt:msg];
+                [weakself.currentConversation markMessageAsReadWithId:msg.messageId error:nil];
+            }
+
             [msgArray addObject:msg];
             [weakself.messageList addObject:msg];
         }

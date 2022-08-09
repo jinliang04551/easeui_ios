@@ -31,6 +31,7 @@ EMClientDelegate
 }
 @property (nonatomic, strong) UIView *blankPerchView;
 
+@property (nonatomic, strong) NSString *mutiCallMsgId;
 
 @end
 
@@ -59,6 +60,12 @@ EMClientDelegate
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshTabView)
                                                  name:CONVERSATIONLIST_UPDATE object:nil];
+    //接收通话邀请或者结束时
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMutiCallStartOrEnd:) name:EaseNotificationReceiveMutiCallStartOrEnd object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMutiDeviceNoDisturb:) name:EaseNotificationReceiveMutiDeviceNoDisturb object:nil];
+    
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -78,6 +85,21 @@ EMClientDelegate
     [[EMClient sharedClient] removeMultiDevicesDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+- (void)receiveMutiCallStartOrEnd:(NSNotification *)notify {
+    NSString *msgId = notify.object;
+    self.mutiCallMsgId = msgId;
+    [self refreshTabView];
+}
+
+- (void)receiveMutiDeviceNoDisturb:(NSNotification *)notify {
+    
+    [self refreshTabView];
+}
+
+
+
+
 
 #pragma mark - EMClientDelegate
 
@@ -321,9 +343,10 @@ EMClientDelegate
 
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
-    if (aMessages && [aMessages count]) {
+    if (aMessages && [aMessages count] > 0) {
         EMChatMessage *msg = aMessages[0];
         if(msg.body.type == EMMessageBodyTypeText) {
+                        
             EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:msg.conversationId type:EMConversationTypeGroupChat createIfNotExist:NO];
             //群聊@“我”提醒
             NSString *content = [NSString stringWithFormat:@"@%@",EMClient.sharedClient.currentUsername];
@@ -384,7 +407,7 @@ EMClientDelegate
         NSMutableArray *topConvs = [NSMutableArray array];
         
         for (EMConversation *conv in conversations) {
-            
+                        
             if (self.enterType == EMConversationEnterTypeExclusiveGroup) {
                 BOOL isExgroup = conv.ext[@"JiHuExGroupChat"];
                 NSLog(@"conv:%@ isExgroup:%@",conv.conversationId,@(isExgroup));
@@ -404,7 +427,6 @@ EMClientDelegate
                     continue;
                 }
             }
-            
             
 #warning  temp note for generate local null conv
 //            if (!conv.latestMessage) {
@@ -458,6 +480,8 @@ EMClientDelegate
             }
         });
         
+        [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveMutiCallLoadConvsationDB object:self.mutiCallMsgId];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
              weakSelf.dataAry = (NSMutableArray *)totals;
              [weakSelf.tableView reloadData];
@@ -465,7 +489,6 @@ EMClientDelegate
         });
     });
 }
-
 
 - (void)refreshTabView
 {

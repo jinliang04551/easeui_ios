@@ -435,6 +435,8 @@
     [super miniAction];
     self.floatingView.enableVideo = NO;
     self.floatingView.delegate = self;
+    self.floatingView.nameLabel.textAlignment = NSTextAlignmentCenter;
+
     if(self.isJoined) {
         self.floatingView.nameLabel.text = EaseLocalizableString(@"Call in progress",nil);
     }else{
