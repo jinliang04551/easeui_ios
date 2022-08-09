@@ -812,31 +812,31 @@ static NSString *g_UIKitVersion = @"1.0.0";
             NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
-            if (statusCode == 200) {
-
-                [[EMClient sharedClient] logout:YES completion:^(EMError * _Nullable aError) {
-                    if (aError == nil) {
-                        [EaseKitUtil removeLoginUserToken];
-                        [[EaseIMKitMessageHelper shareMessageHelper] clearMemeryCache];
-                        
-                        EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
-                        options.isAutoLogin = NO;
-                        options.loggedInUsername = @"";
-                        [options archive];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
-                        
+            
+            [[EMClient sharedClient] logout:YES completion:^(EMError * _Nullable aError) {
+                if (aError == nil) {
+                    [EaseKitUtil removeLoginUserToken];
+                    [[EaseIMKitMessageHelper shareMessageHelper] clearMemeryCache];
+                    
+                    EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
+                    options.isAutoLogin = NO;
+                    options.loggedInUsername = @"";
+                    [options archive];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
+                    
+                    completion(YES,nil);
+                }else {
+//                    [self showHint:aError.errorDescription];
+//                    completion(NO,aError.errorDescription);
+                    
+                    [[EMClient sharedClient] logout:NO completion:^(EMError * _Nullable aError) {
                         completion(YES,nil);
-                    }else {
-                        [self showHint:aError.errorDescription];
-                        completion(NO,aError.errorDescription);
-                    }
-                                        
-                }];
-                
-            }else {
-                [EaseAlertController showErrorAlert:errorDescription];
-            }
+                    }];
+                }
+                                    
+            }];
 
+            
         }
     }];
     

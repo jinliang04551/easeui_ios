@@ -76,7 +76,12 @@
 }
 
 - (void)fetchOwnUserInfo {
-    [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[[EMClient sharedClient].currentUsername]];
+    NSString *username = [EMClient sharedClient].currentUsername;
+    if (username.length == 0) {
+        return;
+    }
+    
+    [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[username]];
 }
 
 - (void)viewWillAppear:(BOOL)animated{

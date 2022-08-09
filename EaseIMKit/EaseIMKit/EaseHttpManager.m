@@ -689,6 +689,11 @@
 //URL: /v2/group/chatgroups/users/{username}/action
 - (void)fetchExclusiveServerGroupListWithCompletion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock {
 
+    NSString *userName = [EMClient sharedClient].currentUsername;
+    if (userName.length == 0) {
+        //未登录
+        return;
+    }
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/action",kServerHost,kExclusiveServerGroupListURL
 ,[EMClient sharedClient].currentUsername]];
     
@@ -700,7 +705,7 @@
     [headerDict setObject:@"application/json" forKey:@"Content-Type"];
     NSString *imToken = [EMClient sharedClient].accessUserToken;
     [headerDict setObject:imToken forKey:@"Authorization"];
-    [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
+    [headerDict setObject:userName forKey:@"username"];
     request.allHTTPHeaderFields = headerDict;
 
     NSLog(@"%s url:%@ headerDict:%@",__func__,url,headerDict);

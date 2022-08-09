@@ -85,7 +85,7 @@
             
 //            NSString *urlString = [checkArr[0] URL].absoluteString;
 //            [self.chatController openWebPageWithURLString:urlString];
-//            
+            
         }
     }
 }

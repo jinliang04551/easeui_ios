@@ -82,7 +82,7 @@ static EaseIMHelper *helper = nil;
     
     NSString *userId = [EMClient sharedClient].currentUsername;
     EMChatMessage *message = [[EMChatMessage alloc] initWithConversationID:userId from:userId to:userId body:body ext:ext];
-    message.chatType = EMChatTypeGroupChat;
+    message.chatType = EMChatTypeChat;
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMChatMessage * _Nullable message, EMError * _Nullable error) {
         if (error == nil) {
 

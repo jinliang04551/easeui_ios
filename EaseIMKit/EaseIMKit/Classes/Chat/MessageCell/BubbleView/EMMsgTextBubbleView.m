@@ -90,13 +90,21 @@
         NSRange range = [text rangeOfString:urlStr options:NSCaseInsensitiveSearch];
         if(range.length > 0) {
             
+//            NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] init];
+//            
 //            NSAttributedString *tString = [EaseKitUtil attributeContent:@"申请加入 " color:[UIColor colorWithHexString:@"#7F7F7F"] font:self.groupNameLabel.font];
             
         
-            [attaStr setAttributes:@{NSLinkAttributeName : [NSURL URLWithString:urlStr]} range:NSMakeRange(range.location, urlStr.length)];
+//            [mutableAttString appendAttributedString:tString];
+//            self.groupNameLabel.attributedText = mutableAttString;
+                        
+            UIColor *linkColor = [UIColor colorWithHexString:@"#4798CB"];
+            UIFont *linkFont = self.textLabel.font;
+            [attaStr setAttributes:@{NSLinkAttributeName : [NSURL URLWithString:urlStr],NSForegroundColorAttributeName:linkColor,
+                                     NSFontAttributeName:linkFont} range:NSMakeRange(range.location, urlStr.length)];
             
             
-            self.textLabel.textColor = [UIColor colorWithHexString:@"#4798CB"];
+//            self.textLabel.textColor = [UIColor colorWithHexString:@"#4798CB"];
 
         }
     }
