@@ -21,4 +21,8 @@
     return self;
 }
 
+- (NSString *)showName {
+    return _easeId;
+}
+
 @end

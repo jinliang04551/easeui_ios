@@ -225,6 +225,7 @@
     self.groupIdLabel.text = [NSString stringWithFormat:@"群组ID:%@",_model.easeId];
     self.detailLabel.attributedText = _model.showInfo;
     self.timeLabel.text = [EaseDateHelper formattedTimeFromTimeInterval:_model.lastestUpdateTime];
+        
     if (model.showBadgeValue == YES) {
         self.badgeLabel.badge = model.unreadMessagesCount;
         self.redDot.hidden = YES;

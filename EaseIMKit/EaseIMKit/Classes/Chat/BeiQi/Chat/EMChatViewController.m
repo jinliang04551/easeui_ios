@@ -284,6 +284,10 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 #pragma mark NSNotification
 - (void)receiveMutiCallLoadConvsationDB:(NSNotification *)notify {
     NSString *msgId = notify.object;
+    if (msgId.length == 0) {
+        return;
+    }
+    
     NSLog(@"%s ============msgId:%@ self.moreMsgId:%@",__func__,msgId,self.moreMsgId);
 
     self.moreMsgId = msgId;
