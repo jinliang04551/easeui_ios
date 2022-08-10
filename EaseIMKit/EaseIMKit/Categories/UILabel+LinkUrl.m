@@ -52,7 +52,7 @@
         NSRange range=[value rangeValue];
         [attributedText addAttribute:NSLinkAttributeName value:[NSURL URLWithString:[arr objectAtIndex:index]] range:range];
         
-        [attributedText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
+        [attributedText addAttribute:NSForegroundColorAttributeName value:linkColor range:range];
     }
     return attributedText;
 }

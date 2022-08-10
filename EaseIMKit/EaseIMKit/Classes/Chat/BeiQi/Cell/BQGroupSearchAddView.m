@@ -11,9 +11,10 @@
 #import "EaseHeaders.h"
 
 
-#define kMaxNameLabelWidth 50.0
+#define kMaxNameLabelWidth 76.0
 #define kCollectionItemHeight 24.0
-#define KCollectionItemMaxCount 4
+#define KCollectionItemMaxCount 3
+#define kNameLabelLRPadding 6.0
 
 @interface BQGroupAddItemCell : UICollectionViewCell
 @property (nonatomic, strong) UIView *bgView;
@@ -51,14 +52,14 @@
     
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
-        make.left.equalTo(self.bgView).offset(12.0);
+        make.left.equalTo(self.bgView).offset(kNameLabelLRPadding);
         make.width.lessThanOrEqualTo(@(kMaxNameLabelWidth));
     }];
     
     [self.deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.nameLabel.mas_right);
-        make.right.equalTo(self.bgView).offset(-12.0);
+        make.right.equalTo(self.bgView).offset(-kNameLabelLRPadding);
         make.size.equalTo(@(14.0));
     }];
         
@@ -94,8 +95,12 @@
 
 + (CGSize)sizeForItemUserId:(NSString *)userId {
 //    CGFloat contentWidth = [userId sizeWithFont:[BQGroupAddItemCell labelFont] constrainedToSize:CGSizeMake(kMaxNameLabelWidth, kCollectionItemHeight)].width;
+    
+    CGFloat itemWidth = (EaseIMKit_ScreenWidth - (KCollectionItemMaxCount - 1)* [BQGroupSearchAddView itemSpacing] - [BQGroupSearchAddView collectionLeftRightPadding] *2)/KCollectionItemMaxCount;
+    
+    return CGSizeMake(itemWidth, kCollectionItemHeight);
 
-    return CGSizeMake(kMaxNameLabelWidth + 14 + 12.0 *2, kCollectionItemHeight);
+    
 }
 
 #pragma mark getter and setter
@@ -359,3 +364,4 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 #undef kMaxNameLabelWidth
 #undef kCollectionItemHeight
 #undef KCollectionItemMaxCount
+#undef kNameLabelLRPadding

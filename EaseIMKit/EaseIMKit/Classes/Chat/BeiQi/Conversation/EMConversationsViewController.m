@@ -87,6 +87,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
+    [self.easeConvsVC refreshTabView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

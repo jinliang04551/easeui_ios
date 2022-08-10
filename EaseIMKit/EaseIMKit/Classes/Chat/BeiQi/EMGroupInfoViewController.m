@@ -663,15 +663,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         }
         
         [weakController showHudInView:weakController.view hint:NSLocalizedString(@"updateGroupName...", nil)];
-//        [[EMClient sharedClient].groupManager updateGroupSubject:aString forGroup:weakself.groupId completion:^(EMGroup *aGroup, EMError *aError) {
-//            [weakController hideHud];
-//            if (!aError) {
-//                [weakself _resetGroup:aGroup];
-//                [weakController.navigationController popViewControllerAnimated:YES];
-//            } else {
-//                [EaseAlertController showErrorAlert:NSLocalizedString(@"updateGroupSubjectFail", nil)];
-//            }
-//        }];
         
         EaseIMKit_WS
         [[EaseHttpManager sharedManager] modifyGroupInfoWithGroupId:weakSelf.group.groupId groupname:aString bussinessRemark:@"" completion:^(NSInteger statusCode, NSString * _Nonnull response) {
@@ -733,6 +724,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             if (!aError) {
                 [weakself _resetGroup:aGroup];
                 [weakController.navigationController popViewControllerAnimated:YES];
+                [self showHint:@"群信息修改成功"];
+
             } else {
                 [EaseAlertController showErrorAlert:NSLocalizedString(@"updateGroupDescriptionFail", nil)];
             }

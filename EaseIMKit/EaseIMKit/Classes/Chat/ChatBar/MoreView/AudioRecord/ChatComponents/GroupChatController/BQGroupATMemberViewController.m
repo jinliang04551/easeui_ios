@@ -18,6 +18,7 @@
 
 @property (nonatomic, strong) EMGroup *group;
 @property (nonatomic, strong) NSString *cursor;
+@property (nonatomic, strong) UIView *titleView;
 
 @end
 
@@ -66,8 +67,22 @@ if (EaseIMKitManager.shared.isJiHuApp){
     self.title = @"选择提醒人";
     
     self.showRefreshHeader = YES;
-    self.tableView.rowHeight = 60;
+    self.tableView.rowHeight = 64.0;
+    
 }
+
+
+//- (void)viewWillAppear:(BOOL)animated{
+//    [super viewWillAppear:animated];
+//    self.navigationController.navigationBarHidden = YES;
+//}
+//
+//- (void)viewWillDisappear:(BOOL)animated
+//{
+//    [super viewWillDisappear:animated];
+//    self.navigationController.navigationBarHidden = NO;
+//}
+
 
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

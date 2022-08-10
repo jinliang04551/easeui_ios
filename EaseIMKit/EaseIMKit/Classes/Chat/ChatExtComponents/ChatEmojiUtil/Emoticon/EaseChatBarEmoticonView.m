@@ -79,8 +79,18 @@
     
     self.deleteBtn = [[UIButton alloc]init];
     self.deleteBtn.backgroundColor = [UIColor clearColor];
-    [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"deleteEmoticon"] forState:UIControlStateNormal];
-    [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"deleteEmoticonDisable"] forState:UIControlStateDisabled];
+    
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"jh_deleteEmoticon"] forState:UIControlStateNormal];
+        [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"jh_deleteEmoticonDisable"] forState:UIControlStateDisabled];
+
+    }else {
+        [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"yg_deleteEmoticon"] forState:UIControlStateNormal];
+        [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"yg_deleteEmoticonDisable"] forState:UIControlStateDisabled];
+
+    }
+    
     [self.deleteBtn addTarget:self action:@selector(deleteAction) forControlEvents:UIControlEventTouchUpInside];
     
     self.bottomScrollView = [[UIScrollView alloc] init];
@@ -242,13 +252,13 @@
             make.bottom.equalTo(self.bottomView.ease_top).offset(-12);
             make.right.equalTo(self.bottomView.ease_right).offset(-12);
             make.width.Ease_equalTo(@40);
-            make.height.Ease_equalTo(@30);
+            make.height.Ease_equalTo(@28);
         }];
         [self addSubview:self.deleteBtn];
         [self.deleteBtn Ease_makeConstraints:^(EaseConstraintMaker *make) {
             make.bottom.equalTo(self.bottomView.ease_top).offset(-12);
             make.right.equalTo(self.sendBtn.ease_left).offset(-22);
-            make.width.Ease_equalTo(@28);
+            make.width.Ease_equalTo(@36);
             make.height.Ease_equalTo(@28);
         }];
     } else {

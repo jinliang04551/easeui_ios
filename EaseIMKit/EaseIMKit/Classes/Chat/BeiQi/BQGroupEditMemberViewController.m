@@ -32,13 +32,27 @@
 @end
 
 @implementation BQGroupEditMemberViewController
-- (instancetype)initWithMemberArray:(NSMutableArray *)memberArray {
+//- (instancetype)initWithMemberArray:(NSMutableArray *)memberArray {
+//    self = [super init];
+//    if (self) {
+//        self.memberArray = memberArray;
+//        self.isModify = YES;
+//    }
+//    return self;
+//}
+
+- (instancetype)initWithUserArray:(NSMutableArray *)userArray serverArray:(NSMutableArray *)serverArray {
     self = [super init];
     if (self) {
-        self.memberArray = memberArray;
+        self.userArray = userArray;
+        self.serverArray = serverArray;
+        [self.memberArray addObjectsFromArray:self.userArray];
+        [self.memberArray addObjectsFromArray:self.serverArray];
+        
         self.isModify = YES;
     }
     return self;
+
 }
 
 
@@ -175,10 +189,17 @@
         if (response && response.length > 0 && statusCode) {
             NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+            
+            NSLog(@"%s responsedict:%@",__func__,responsedict);
+
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
             if (statusCode == 200) {
                 NSArray *tArray = responsedict[@"entities"];
 
+                if (tArray.count == 0) {
+                    [self showHint:@"搜索人员不存在"];
+                }
+                
                 NSMutableArray *dArray = [NSMutableArray array];
                 for (int i = 0 ; i < tArray.count; ++i) {
                     BQEaseUserModel *model = [[BQEaseUserModel alloc] initWithDic:tArray[i]];

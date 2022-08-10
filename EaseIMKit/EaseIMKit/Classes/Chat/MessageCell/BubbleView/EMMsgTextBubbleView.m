@@ -83,25 +83,27 @@
                                     } range:NSMakeRange(0, 3)];
     [attaStr appendAttributedString:throughlineStr];*/
    
-    //超链接
+    
+    
+//    //超链接
 //    NSDataDetector *detector= [[NSDataDetector alloc] initWithTypes:NSTextCheckingTypeLink error:nil];
 //    NSArray *checkArr = [detector matchesInString:text options:0 range:NSMakeRange(0, text.length)];
 //    for (NSTextCheckingResult *result in checkArr) {
 //        NSString *urlStr = result.URL.absoluteString;
 //        NSRange range = [text rangeOfString:urlStr options:NSCaseInsensitiveSearch];
-//        if(range.length > 0) {
+//            if(range.length > 0) {
 //
-////            UIColor *linkColor = [UIColor colorWithHexString:@"#4798CB"];
-////            UIFont *linkFont = self.textLabel.font;
-////            [attaStr setAttributes:@{NSLinkAttributeName : [NSURL URLWithString:urlStr],NSForegroundColorAttributeName:linkColor,
-////                                     NSFontAttributeName:linkFont} range:NSMakeRange(range.location, urlStr.length)];
-//            
-//            [self.textLabel setTextWithLinkAttribute:text];
-//        
-//    }else {
-//        self.textLabel.attributedText = attaStr;
-//    }
-//        
+//    //            UIColor *linkColor = [UIColor colorWithHexString:@"#4798CB"];
+//    //            UIFont *linkFont = self.textLabel.font;
+//    //            [attaStr setAttributes:@{NSLinkAttributeName : [NSURL URLWithString:urlStr],NSForegroundColorAttributeName:linkColor,
+//    //                                     NSFontAttributeName:linkFont} range:NSMakeRange(range.location, urlStr.length)];
+//
+//
+//
+//        }else {
+//            self.textLabel.attributedText = attaStr;
+//        }
+//
 //    }
     
     //*
@@ -113,9 +115,11 @@
     
 //    NSAttributedString *tString = [EaseKitUtil attributeContent:@"申请加入 " color:[UIColor colorWithHexString:@"#7F7F7F"] font:self.groupNameLabel.font];
     
+
+//    self.textLabel.attributedText = attaStr;
     
-    
-    self.textLabel.attributedText = attaStr;
+    [self.textLabel setTextWithLinkAttribute:text];
+
 }
 
 @end

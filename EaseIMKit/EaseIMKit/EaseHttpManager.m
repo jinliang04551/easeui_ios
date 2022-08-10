@@ -470,6 +470,9 @@
         
     [dict setObject:username forKey:@"username"];
 
+    NSLog(@"%s url:%@ headerDict:%@ dict：%@ ",__func__,url,headerDict,dict);
+
+    
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;

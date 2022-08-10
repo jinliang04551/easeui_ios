@@ -20,7 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) EMSearchBar *searchBar;
 
-- (instancetype)initWithMemberArray:(NSMutableArray *)memberArray;
+- (instancetype)initWithUserArray:(NSMutableArray *)userArray
+                      serverArray:(NSMutableArray *)serverArray;
 
 - (void)keyBoardWillShow:(NSNotification *)note;
 

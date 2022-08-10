@@ -51,13 +51,20 @@
 - (void)_setupSubviews
 {    
     if (self.isEditable) {
-        if (self.isEditMode) {
-            self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:@"保存" rightBarAction:@selector(doneAction)];
-            
+        if (_originalString.length > 0) {
+            //编辑时
+            if (self.isEditMode) {
+                self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:@"保存" rightBarAction:@selector(doneAction)];
+                
+            }else {
+                self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:@"编辑" rightBarAction:@selector(editAction)];
+            }
         }else {
-            self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:@"编辑" rightBarAction:@selector(editAction)];
+            //新建时
+            self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:@"保存" rightBarAction:@selector(doneAction)];
+            self.textView.editable = YES;
         }
-       
+    
     }else {
         self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
     }

@@ -106,16 +106,6 @@
 }
 
 
-- (void)buildTestData {
-//    NSMutableArray *tArray = NSMutableArray.array;
-//    for (int i = 0; i < 20; ++i) {
-//        NSString *member = [NSString stringWithFormat:@"gMember_%@",@(i)];
-//        [tArray addObject:member];
-//    }
-//    self.memberArray = [tArray mutableCopy];
-//    [self.tableView reloadData];
-}
-
 
 #pragma mark - Table view data source
 
@@ -246,12 +236,28 @@
 - (void)confirmButtonAction
 {
     NSLog(@"%s",__func__);
-    
-    if (self.groupName.length == 0) {
-        [self showHint:@"群名称不能为空"];
+        //包括群主
+    if (self.memberArray.count < 1) {
+        [self showHint:@"群组人数不得少于2人"];
         return;
     }
+    
         
+    if (self.userArray.count <= 0) {
+        [self showHint:@"选择成员必须包含客户"];
+        return;
+    }
+    
+    if (self.groupName.length == 0) {
+        [self showHint:@"请填写群名称"];
+        return;
+    }
+
+    if (self.groupInterduce.length == 0) {
+        [self showHint:@"请填写群介绍"];
+        return;
+    }
+
     [[EaseHttpManager sharedManager] createGroupWithGroupName:self.groupName groupInterduce:self.groupInterduce customerUserIds:self.userArray waiterUserIds:self.serverArray completion:^(NSInteger statusCode, NSString * _Nonnull response) {
           
         if (response && response.length > 0 && statusCode) {
@@ -263,7 +269,7 @@
                 NSString *groupId = dataDic[@"groupId"];
 
                 if (groupId.length > 0) {
-                    [self showHint:@"创建群组成功"];
+                    [self showHint:@"创建成功"];
                     [self.navigationController
                      popViewControllerAnimated:YES];
                 }
@@ -294,7 +300,7 @@
 
 - (void)addGroupMemberPage {
     
-    BQGroupEditMemberViewController *controller = [[BQGroupEditMemberViewController alloc] initWithMemberArray:self.memberArray];
+    BQGroupEditMemberViewController *controller = [[BQGroupEditMemberViewController alloc] initWithUserArray:self.userArray serverArray:self.serverArray];
     EaseIMKit_WS
     controller.addedMemberBlock = ^(NSMutableArray * _Nonnull userArray, NSMutableArray * _Nonnull serverArray) {
         [weakSelf updateUIWithUserArray:userArray serverArray:serverArray];
@@ -320,8 +326,7 @@
     [memberArray addObjectsFromArray:self.serverArray];
     self.memberArray = memberArray;
     
-
-    [self updateConfirmState];
+//    [self updateConfirmState];
     [self.tableView reloadData];
 }
 
