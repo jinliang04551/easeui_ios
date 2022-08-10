@@ -57,7 +57,9 @@ EMConversationsViewController * conversationsVC= [[EMConversationsViewController
             NSLog(@"err:%@",errorMsg);
         }        
     }];
-    
+ 9. 单聊会话入口
+    -(void)enterSingleChatPageWithUserId:(NSString *)userId;
+
     
 #运管App
 1.  初始化
