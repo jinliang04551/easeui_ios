@@ -850,6 +850,11 @@ static NSString *g_UIKitVersion = @"1.0.0";
     return _joinedGroupIdArray;
 }
 
+- (void)enterSingleChatPageWithUserId:(NSString *)userId {
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:userId];
+}
+
 
 @end
 

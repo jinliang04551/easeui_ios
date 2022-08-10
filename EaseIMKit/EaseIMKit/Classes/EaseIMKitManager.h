@@ -111,6 +111,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)logoutWithCompletion:(void (^)(BOOL success,NSString *errorMsg))completion;
 
+- (void)enterSingleChatPageWithUserId:(NSString *)userId;
+
 
 @end
 
