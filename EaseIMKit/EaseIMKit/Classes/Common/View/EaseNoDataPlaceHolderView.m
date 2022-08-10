@@ -34,7 +34,7 @@
     [self.noDataImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(5.0);
         make.centerX.equalTo(self);
-        
+        make.size.equalTo(@(60.0));
     }];
     
     [self.prompt mas_makeConstraints:^(MASConstraintMaker *make) {

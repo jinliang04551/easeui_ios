@@ -57,8 +57,8 @@
     [self addSubview:self.textField];
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
-        make.left.equalTo(self).offset(15);
-        make.right.equalTo(self).offset(-15);
+        make.left.equalTo(self).offset(16);
+        make.right.equalTo(self).offset(-16);
         make.height.equalTo(@(kTextFieldHeight));
     }];
     
@@ -150,7 +150,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     [self.textField resignFirstResponder];
     self.textField.text = nil;
     [self.textField mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self).offset(-15);
+        make.right.equalTo(self).offset(-16);
     }];
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarCancelButtonAction:)]) {

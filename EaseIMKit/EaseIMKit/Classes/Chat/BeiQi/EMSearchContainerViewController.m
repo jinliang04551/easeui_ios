@@ -39,17 +39,17 @@
 }
 
 - (void)viewWillAppearForIndex:(NSUInteger)index{
-    if (index == 2) {
-        [self.searchBar.textField resignFirstResponder];
-    }
+
 }
 
 - (void)viewDidAppearForIndex:(NSUInteger)index{
 }
 
 - (void)viewWillDisappearForIndex:(NSUInteger)index{
-    self.editing = NO;
-   
+    if (index == 0) {
+        self.editing = NO;
+        [self.searchBar.textField resignFirstResponder];
+    }
 }
 
 - (void)viewDidDisappearForIndex:(NSUInteger)index{

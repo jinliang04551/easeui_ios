@@ -326,7 +326,8 @@
 }
 
 - (void)updateConfirmState {
-    if (self.memberArray.count <= 2) {
+    if (self.memberArray.count <= 1) {
+        //成员+群主的数量 >= 2
         NSString *alertTitle = @"群成员不得少于2人";
         [self.confirmButton setTitle:alertTitle forState:UIControlStateNormal];
         self.confirmButton.backgroundColor = [UIColor colorWithHexString:@"#C2C2C2"];

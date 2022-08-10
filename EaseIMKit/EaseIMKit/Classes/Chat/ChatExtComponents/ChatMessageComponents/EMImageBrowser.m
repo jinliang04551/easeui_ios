@@ -53,6 +53,8 @@ static EMImageBrowser *browser = nil;
         [_photoBrowser setCurrentPhotoIndex:0];
         
         _photoNavigationController = [[UINavigationController alloc] initWithRootViewController:self.photoBrowser];
+        _photoNavigationController.navigationBar.tintColor = UIColor.yellowColor;
+
         _photoNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     }
     
@@ -129,7 +131,11 @@ static EMImageBrowser *browser = nil;
 - (void)dismissViewController
 {
     [self.superController dismissViewControllerAnimated:YES completion:^{
-        self.superController = nil;
+        if (self.dismissBlock) {
+            self.dismissBlock();
+        }else {
+            self.superController = nil;
+        }
     }];
 }
 

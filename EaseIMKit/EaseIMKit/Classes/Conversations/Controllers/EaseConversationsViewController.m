@@ -294,20 +294,20 @@ EMClientDelegate
         [weakself refreshTabView];
     }];
     
-    UITableViewRowAction *topAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
-                                                                            title:!model.isTop ? EaseLocalizableString(@"top", nil) : EaseLocalizableString(@"cancelTop", nil)
-                                                                          handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath)
-    {
-        EMConversation *conversation = [EMClient.sharedClient.chatManager getConversation:model.easeId
-                                                                                     type:model.type
-                                                                         createIfNotExist:YES];
-        [conversation setTop:!model.isTop];
-        [weakself refreshTabView];
-    }];
+//    UITableViewRowAction *topAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
+//                                                                            title:!model.isTop ? EaseLocalizableString(@"top", nil) : EaseLocalizableString(@"cancelTop", nil)
+//                                                                          handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath)
+//    {
+//        EMConversation *conversation = [EMClient.sharedClient.chatManager getConversation:model.easeId
+//                                                                                     type:model.type
+//                                                                         createIfNotExist:YES];
+//        [conversation setTop:!model.isTop];
+//        [weakself refreshTabView];
+//    }];
+//
+//    topAction.backgroundColor = [UIColor colorWithHexString:@"CB7D32"];
     
-    topAction.backgroundColor = [UIColor colorWithHexString:@"CB7D32"];
-    
-    NSArray *swipeActions = @[deleteAction, topAction];
+    NSArray *swipeActions = @[deleteAction];
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(easeTableView:editActionsForRowAtIndexPath:actions:)]) {
         swipeActions = [self.delegate easeTableView:tableView editActionsForRowAtIndexPath:indexPath actions:swipeActions];

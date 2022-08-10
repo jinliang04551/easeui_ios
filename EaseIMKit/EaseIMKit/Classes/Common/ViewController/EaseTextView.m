@@ -36,7 +36,7 @@
 
     [self addSubview:self.placeHolderLabel];
     [self.placeHolderLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.top.equalTo(self).offset(10.0);
+        make.centerY.equalTo(self.ease_top).offset(16.0);
         make.left.equalTo(self).offset(14.0);
         make.right.equalTo(self).offset(-14.0);
     }];

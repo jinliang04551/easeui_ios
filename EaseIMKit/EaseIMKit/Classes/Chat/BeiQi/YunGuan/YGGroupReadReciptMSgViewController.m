@@ -158,7 +158,7 @@ MISScrollPageControllerDelegate>
             for (int i = 0; i < aResult.list.count; ++i) {
                 EMGroupMessageAck *msgAck = aResult.list[i];
                 if ([msgAck.messageId isEqualToString:self.message.messageId]) {
-                    [tArray addObject:msgAck.readAckId];
+                    [tArray addObject:msgAck.from];
                 }
             }
             self.readMsgArray = tArray;

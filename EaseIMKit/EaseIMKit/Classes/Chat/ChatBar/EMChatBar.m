@@ -127,7 +127,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
    
     self.textView.font = [UIFont systemFontOfSize:14.0];
     self.textView.textAlignment = NSTextAlignmentLeft;
-    self.textView.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 0);
+    self.textView.textContainerInset = UIEdgeInsetsMake(8.0, 10, 10, 0);
     if (@available(iOS 11.1, *)) {
         self.textView.verticalScrollIndicatorInsets = UIEdgeInsetsMake(12, 20, 2, 0);
     } else {
@@ -247,7 +247,16 @@ if (EaseIMKitManager.shared.isJiHuApp){
 - (CGFloat)_gettextViewContontHeight
 {
     if (self.version >= 7.0) {
-        return ceilf([self.textView sizeThatFits:self.textView.frame.size].height);
+        CGSize sizeToFit = [self.textView sizeThatFits:CGSizeMake(self.textView.frame.size.width, MAXFLOAT)];
+        if (sizeToFit.height <= 37.0) {
+            return 32.0;
+        }
+        
+        return sizeToFit.height;
+
+//        return ceilf([self.textView sizeThatFits:self.textView.frame.size].height);
+//
+
     } else {
         return self.textView.contentSize.height;
     }

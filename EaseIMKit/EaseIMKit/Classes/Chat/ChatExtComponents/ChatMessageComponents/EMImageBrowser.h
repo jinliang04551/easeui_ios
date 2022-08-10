@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EMImageBrowser : NSObject
 
+@property (nonatomic,strong)void (^dismissBlock)();
+
 + (instancetype)sharedBrowser;
 
 - (void)showImages:(NSArray<UIImage *> *)aImageArray

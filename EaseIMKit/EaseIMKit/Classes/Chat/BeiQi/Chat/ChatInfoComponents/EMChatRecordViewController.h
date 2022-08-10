@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "EMSearchViewController.h"
 #import "EMSearchContainerViewController.h"
+#import "MISScrollPage.h"
 
 NS_ASSUME_NONNULL_BEGIN
 @class EMChatMessage;
@@ -20,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface EMChatRecordViewController : EMSearchContainerViewController
+@interface EMChatRecordViewController : EMSearchViewController
 @property (nonatomic, assign) id<EMChatRecordViewControllerDelegate> delegate;
 
 - (instancetype)initWithCoversationModel:(EMConversation *)conversation;

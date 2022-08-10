@@ -6,6 +6,7 @@
 //
 
 #import "UILabel+LinkUrl.h"
+#import "EaseHeaders.h"
 
 @implementation UILabel (LinkUrl)
 
@@ -37,7 +38,13 @@
         [rangeArr addObject:[self rangesOfString:str inString:subStr]];
     }
 
-    UIFont *font = [UIFont systemFontOfSize:20];
+    UIColor *linkColor = [UIColor colorWithHexString:@"#4798CB"];
+    UIFont *linkFont = self.font;
+    
+   //            [attaStr setAttributes:@{NSLinkAttributeName : [NSURL URLWithString:urlStr],NSForegroundColorAttributeName:linkColor,
+   //                                     NSFontAttributeName:linkFont}
+    
+    UIFont *font = self.font;
     NSMutableAttributedString *attributedText;
     attributedText=[[NSMutableAttributedString alloc]initWithString:subStr attributes:@{NSFontAttributeName :font}];
     for(NSValue *value in rangeArr) {

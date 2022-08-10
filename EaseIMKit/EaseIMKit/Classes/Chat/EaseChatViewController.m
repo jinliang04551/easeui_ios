@@ -52,6 +52,8 @@
 //群成员个数（包括群主）
 @property (nonatomic, assign) NSInteger groupMemberCount;
 
+@property (nonatomic, strong) NSLock *updateLock;
+
 @end
 
 @implementation EaseChatViewController
@@ -843,10 +845,14 @@ if (EaseIMKitManager.shared.isJiHuApp){
     NSInteger toRow = -1;
     if ([self.dataArray count] > 0) {
         toRow = self.dataArray.count - 1;
+        
         NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:toRow inSection:0];
+        
         [self.tableView scrollToRowAtIndexPath:toIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
+    
 }
+
  
 #pragma mark - Send Message
 
@@ -1069,7 +1075,17 @@ if (EaseIMKitManager.shared.isJiHuApp){
         if (isScrollBottom) {
             [self scrollToBottomRow];
         }
+        
     });
+    
+    
+//    [self.tableView reloadData];
+//    [self.tableView setNeedsLayout];
+//    [self.tableView layoutIfNeeded];
+//    if (isScrollBottom) {
+//        [self scrollToBottomRow];
+//    }
+
 }
 
 - (void)openWebPageWithURLString:(NSString *)urlString {

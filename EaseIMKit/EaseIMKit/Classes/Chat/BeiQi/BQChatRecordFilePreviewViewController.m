@@ -102,7 +102,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if (fileBody.downloadStatus == EMDownloadStatusSucceed &&[fileManager fileExistsAtPath:fileBody.localPath]) {
         [self.operateButton setTitle:@"打开文件" forState:UIControlStateNormal];
-        self.progressView.hidden = YES;
+//        self.progressView.hidden = YES;
         
     }else {
         [self.operateButton setTitle:@"开始下载" forState:UIControlStateNormal];
@@ -270,9 +270,12 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     if (!_progressView){
         _progressView = UIProgressView.new;
         _progressView.tintColor = [UIColor colorWithHexString:@"#4798CB"];
-//        _progressView.trackTintColor = [UIColor colorWithHexString:@"#F5F5F5"];
         _progressView.trackTintColor = UIColor.lightGrayColor;
-        _progressView.layer.cornerRadius = 10.0 * 0.5;
+
+        for (UIImageView * imageview in _progressView.subviews) {
+                imageview.layer.cornerRadius = 5;
+                imageview.clipsToBounds = YES;
+            }
     }
     return _progressView;
 }

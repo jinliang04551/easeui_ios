@@ -13,7 +13,7 @@
 #import "EMChatViewController.h"
 #import "EaseHeaders.h"
 
-@interface EMChatRecordViewController ()<EMSearchBarDelegate, EMAvatarNameCellDelegate>
+@interface EMChatRecordViewController ()<EMSearchBarDelegate, EMAvatarNameCellDelegate,MISScrollPageControllerContentSubViewControllerDelegate>
 
 @property (nonatomic, strong) EMConversation *conversation;
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
@@ -53,11 +53,11 @@
     
     [self.searchBar mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view);
-        make.left.equalTo(self.view).offset(8);
-        make.right.equalTo(self.view).offset(-8);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
         make.height.equalTo(@36);
     }];
-    [self.searchBar.textField becomeFirstResponder];
+//    [self.searchBar.textField becomeFirstResponder];
     
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     self.searchResultTableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
@@ -195,5 +195,40 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     
     return formated;
 }
+
+
+#pragma mark - MISScrollPageControllerContentSubViewControllerDelegate
+- (BOOL)hasAlreadyLoaded{
+    return NO;
+}
+
+- (void)viewDidLoadedForIndex:(NSUInteger)index{
+    
+}
+
+- (void)viewWillAppearForIndex:(NSUInteger)index{
+    if (index == 2) {
+        [self.searchBar.textField resignFirstResponder];
+    }
+    self.editing = NO;
+
+}
+
+- (void)viewDidAppearForIndex:(NSUInteger)index{
+    
+}
+
+- (void)viewWillDisappearForIndex:(NSUInteger)index{
+    if (index == 0) {
+        [self.searchBar.textField resignFirstResponder];
+    }
+    self.editing = NO;
+}
+
+- (void)viewDidDisappearForIndex:(NSUInteger)index{
+
+}
+
+
 
 @end

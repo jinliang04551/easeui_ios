@@ -111,7 +111,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
     _cellSeparatorColor = [UIColor colorWithHexString:@"#F3F3F3"];
 
 }
-    _bgView = [self noDataPromptView];
+    _bgView = [self defaultBgView];
     
 //    _defaultAvatarImage = [UIImage easeUIImageNamed:@"jh_user_icon"];
     _defaultAvatarImage = [UIImage easeUIImageNamed:@"jh_user_icon"];
@@ -119,6 +119,41 @@ if (EaseIMKitManager.shared.isJiHuApp){
     
 }
 
+- (UIView *)defaultBgView {
+    UIView *defaultBgView = [[UIView alloc] initWithFrame:CGRectZero];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage easeUIImageNamed:@"ji_search_nodata"]];
+    UILabel *txtLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    txtLabel.font = [UIFont systemFontOfSize:14];
+    txtLabel.textColor = [UIColor colorWithHexString:@"#999999"];
+    [view addSubview:imageView];
+    [view addSubview:txtLabel];
+    [defaultBgView addSubview:view];
+
+    txtLabel.text = EaseLocalizableString(@"noMessag", nil);
+    [imageView Ease_updateConstraints:^(EaseConstraintMaker *make) {
+        make.centerX.equalTo(view);
+        make.top.equalTo(view);
+        make.width.Ease_equalTo(60.0);
+        make.height.Ease_equalTo(60.0);
+    }];
+    
+    [txtLabel Ease_updateConstraints:^(EaseConstraintMaker *make) {
+        make.centerX.equalTo(view.ease_centerX);
+        make.top.equalTo(imageView.ease_bottom).offset(19);
+        make.height.Ease_equalTo(20);
+    }];
+    
+    [view Ease_updateConstraints:^(EaseConstraintMaker *make) {
+        make.center.equalTo(defaultBgView);
+        make.top.equalTo(imageView);
+        make.left.equalTo(imageView);
+        make.right.equalTo(imageView);
+        make.bottom.equalTo(txtLabel.ease_bottom);
+    }];
+    
+    return defaultBgView;
+}
 
 - (EaseNoDataPlaceHolderView *)noDataPromptView {
     if (_noDataPromptView == nil) {
@@ -129,6 +164,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
         }else {
             _noDataPromptView.prompt.text = @"暂无消息";
         }
+        
         _noDataPromptView.hidden = YES;
     }
     return _noDataPromptView;

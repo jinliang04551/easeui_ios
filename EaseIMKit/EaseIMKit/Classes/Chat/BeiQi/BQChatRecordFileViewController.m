@@ -197,48 +197,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     [self.navigationController pushViewController:chatController animated:YES];
 }
 
-#pragma mark - EMSearchBarDelegate
-
-//- (void)searchBarSearchButtonClicked:(NSString *)aString
-//{
-//    _keyWord = aString;
-//    [self.view endEditing:YES];
-//    if ([_keyWord length] < 1)
-//        return;
-//    if (!self.isSearching) return;
-//
-//    __weak typeof(self) weakself = self;
-//    [self.conversation loadMessagesWithKeyword:aString timestamp:0 count:100 fromUser:nil searchDirection:EMMessageSearchDirectionDown completion:^(NSArray *aMessages, EMError *aError) {
-//        if (!aError && [aMessages count] > 0) {
-//            dispatch_async(self.msgQueue, ^{
-//                NSMutableArray *msgArray = [[NSMutableArray alloc] init];
-//                for (int i = 0; i < [aMessages count]; i++) {
-//                    EMChatMessage *msg = aMessages[i];
-//                    if(msg.body.type == EMMessageBodyTypeFile) {
-//                        EMFileMessageBody* fileBody = (EMFileMessageBody*)msg.body;
-//                        NSRange range = [fileBody.displayName rangeOfString:aString options:NSCaseInsensitiveSearch];
-//                        if(range.length)
-//                            [msgArray addObject:msg];
-//                    }
-//
-//                }
-//                NSArray *formated = [weakself _formatMessages:[msgArray copy]];
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    weakself.noDataPromptView.hidden = YES;
-//                    [weakself.searchResults removeAllObjects];
-//                    [weakself.searchResults addObjectsFromArray:formated];
-//                    [weakself.searchResultTableView reloadData];
-//                });
-//            });
-//        } else {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                weakself.noDataPromptView.hidden = NO;
-//                [weakself.searchResults removeAllObjects];
-//                [weakself.searchResultTableView reloadData];
-//            });
-//        }
-//    }];
-//}
 
 #pragma mark - EMSearchBarDelegate
 
@@ -373,17 +331,20 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 }
 
 - (void)viewWillAppearForIndex:(NSUInteger)index{
-    if (index == 2) {
-        [self.searchBar.textField resignFirstResponder];
-    }
+//    if (index == 2) {
+//        self.editing = NO;
+//        [self.searchBar.textField resignFirstResponder];
+//    }
 }
 
 - (void)viewDidAppearForIndex:(NSUInteger)index{
 }
 
 - (void)viewWillDisappearForIndex:(NSUInteger)index{
+    if (index == 1) {
+        [self.searchBar.textField resignFirstResponder];
+    }
     self.editing = NO;
-    
 }
 
 - (void)viewDidDisappearForIndex:(NSUInteger)index{

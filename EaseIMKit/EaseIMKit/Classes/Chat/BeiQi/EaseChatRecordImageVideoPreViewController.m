@@ -59,22 +59,23 @@
 
 - (void)displayImageOrVideo {
     if (self.message.body.type == EMMessageBodyTypeImage) {
-        [self displayImage];
+        [self showImage];
     }
     
     if (self.message.body.type == EMMessageBodyTypeVideo) {
-        [self displayVideo];
+        [self showVideo];
     }
 }
 
-- (void)displayImage {
+- (void)showImage {
     EMImageMessageBody *body = (EMImageMessageBody*)self.message.body;
 
     
     if (body.downloadStatus == EMDownloadStatusSucceed) {
         UIImage *image = [UIImage imageWithContentsOfFile:body.localPath];
         if (image) {
-            [[EMImageBrowser sharedBrowser] showImages:@[image] fromController:self];
+            [self showImageWithImages:@[image]];
+
             return;
         }
     }else {
@@ -91,7 +92,7 @@
                 NSString *localPath = [(EMImageMessageBody *)message.body localPath];
                 UIImage *image = [UIImage imageWithContentsOfFile:localPath];
                 if (image) {
-                    [[EMImageBrowser sharedBrowser] showImages:@[image] fromController:self];
+                    [self showImageWithImages:@[image]];
                 } else {
                     [EaseAlertController showErrorAlert:EaseLocalizableString(@"fetchImageFail", nil)];
                 }
@@ -102,8 +103,16 @@
 
 }
 
+- (void)showImageWithImages:(NSArray *)images {
+    EMImageBrowser *browserVC = [EMImageBrowser sharedBrowser];
+    browserVC.dismissBlock = ^{
+        [self.navigationController popViewControllerAnimated:NO];
+    };
+    [browserVC showImages:images fromController:self];
 
-- (void)displayVideo {
+}
+
+- (void)showVideo {
     
     void (^playBlock)(NSString *aPath) = ^(NSString *aPathe) {
         NSURL *videoURL = [NSURL fileURLWithPath:aPathe];
