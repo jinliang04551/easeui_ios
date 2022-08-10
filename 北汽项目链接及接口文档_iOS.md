@@ -58,7 +58,7 @@ EMConversationsViewController * conversationsVC= [[EMConversationsViewController
         }        
     }];
  9. 单聊会话入口
-    -(void)enterSingleChatPageWithUserId:(NSString *)userId;
+    [EaseIMKitManager.shared enterSingleChatPageWithUserId:@"userid"];
 
     
 #运管App
