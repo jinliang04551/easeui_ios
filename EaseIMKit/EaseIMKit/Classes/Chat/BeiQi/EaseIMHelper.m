@@ -323,8 +323,6 @@ static EaseIMHelper *helper = nil;
 
 #pragma mark - EMGroupManagerDelegate
 - (void)groupSpecificationDidUpdate:(EMGroup *)aGroup {
-
-    
     [EMClient.sharedClient.groupManager getGroupSpecificationFromServerWithId:aGroup.groupId completion:^(EMGroup *aGroup, EMError *aError) {
         if (!aError) {
             
@@ -341,16 +339,16 @@ static EaseIMHelper *helper = nil;
 - (void)didJoinGroup:(EMGroup *)aGroup inviter:(NSString *)aInviter message:(NSString *)aMessage
 {
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"agreeJoinGroup", nil),[NSString stringWithFormat:@"「%@」",aGroup.groupName]];
-    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message];
-    [alertView show];
+//    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message];
+//    [alertView show];
 }
 
 - (void)didJoinedGroup:(EMGroup *)aGroup
                inviter:(NSString *)aInviter
                message:(NSString *)aMessage
 {
-    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:[NSString stringWithFormat:NSLocalizedString(@"group.somebodyInvite", nil), aInviter, [NSString stringWithFormat:@"「%@」",aGroup.groupName]]];
-    [alertView show];
+//    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:[NSString stringWithFormat:NSLocalizedString(@"group.somebodyInvite", nil), aInviter, [NSString stringWithFormat:@"「%@」",aGroup.groupName]]];
+//    [alertView show];
 }
 
 - (void)groupInvitationDidDecline:(EMGroup *)aGroup
@@ -358,16 +356,17 @@ static EaseIMHelper *helper = nil;
                            reason:(NSString *)aReason
 {
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"refuseJoinPrompt", nil), aInvitee, aGroup.groupName];
-    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message];
-    [alertView show];
+//    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message];
+//    [alertView show];
 }
 
 - (void)groupInvitationDidAccept:(EMGroup *)aGroup
                          invitee:(NSString *)aInvitee
 {
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"agreeJoinPrompt", nil), aGroup.groupName, aInvitee];
-    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message];
-    [alertView show];
+//    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message];
+//    [alertView show];
+    
 }
 
 - (void)joinGroupRequestDidDecline:(NSString *)aGroupId reason:(NSString *)aReason
@@ -375,15 +374,16 @@ static EaseIMHelper *helper = nil;
     if (!aReason || aReason.length == 0) {
         aReason = [NSString stringWithFormat:NSLocalizedString(@"group.beRefusedToJoin", @"be refused to join the group\'%@\'"), aGroupId];
     }
-    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:aReason];
-    [alertView show];
+//    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:aReason];
+//    [alertView show];
+    
 }
 
 - (void)joinGroupRequestDidApprove:(EMGroup *)aGroup
 {
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"agreedJoinGroup", nil),[NSString stringWithFormat:@"「%@」",aGroup.groupName]];
-    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message];
-    [alertView show];
+//    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message];
+//    [alertView show];
 }
 
 - (void)groupMuteListDidUpdate:(EMGroup *)aGroup
@@ -393,10 +393,12 @@ static EaseIMHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_INFO_REFRESH object:aGroup];
 
     NSString *message = NSLocalizedString(@"group.toMute", @"Mute");
-    if ([aMutedMembers containsObject:EMClient.sharedClient.currentUsername])
-        message = [NSString stringWithFormat:NSLocalizedString(@"mutedPrompt", nil),[NSString stringWithFormat:@"「%@」",aGroup.groupName]];
-    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.update", @"Group update") message:message];
-    [alertView show];
+    if ([aMutedMembers containsObject:EMClient.sharedClient.currentUsername]){
+            message = [NSString stringWithFormat:NSLocalizedString(@"mutedPrompt", nil),[NSString stringWithFormat:@"「%@」",aGroup.groupName]];
+        EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.update", @"Group update") message:message];
+        [alertView show];
+    }
+       
 }
 
 - (void)groupMuteListDidUpdate:(EMGroup *)aGroup
@@ -406,16 +408,20 @@ static EaseIMHelper *helper = nil;
 
     NSString *message = NSLocalizedString(@"group.toMute", @"Mute");
     if ([aMutedMembers containsObject:EMClient.sharedClient.currentUsername])
+    {
         message = [NSString stringWithFormat:NSLocalizedString(@"unmutedPrompt", nil),[NSString stringWithFormat:@"「%@」",aGroup.groupName]];
-    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.update", @"Group update") message:message];
-    [alertView show];
+        EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.update", @"Group update") message:message];
+        [alertView show];
+    }
+       
 }
 
 - (void)groupAllMemberMuteChanged:(EMGroup *)aGroup isAllMemberMuted:(BOOL)aMuted
 {
     NSString * message = [NSString stringWithFormat:NSLocalizedString(@"allMutedPrompt", nil),[NSString stringWithFormat:@"「%@」",aGroup.groupName],aMuted ? NSLocalizedString(@"enable", nil) : NSLocalizedString(@"close", nil)];
-    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.update", @"Group update") message:message];
-    [alertView show];
+//    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.update", @"Group update") message:message];
+//    [alertView show];
+    
 }
 
 - (void)groupWhiteListDidUpdate:(EMGroup *)aGroup addedWhiteListMembers:(NSArray *)aMembers
@@ -424,8 +430,8 @@ static EaseIMHelper *helper = nil;
 
     if ([aMembers containsObject:EMClient.sharedClient.currentUsername]) {
         NSString * message = [NSString stringWithFormat:NSLocalizedString(@"addtowhitelistPrompt", nil),[NSString stringWithFormat:@"「%@」",aGroup.groupName]];
-        EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.update", @"Group update") message:message];
-        [alertView show];
+//        EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.update", @"Group update") message:message];
+//        [alertView show];
     }
 }
 
@@ -435,8 +441,8 @@ static EaseIMHelper *helper = nil;
 
     if ([aMembers containsObject:EMClient.sharedClient.currentUsername]) {
         NSString * message = [NSString stringWithFormat:NSLocalizedString(@"removefromwhitelistPrompt", nil),[NSString stringWithFormat:@"「%@」",aGroup.groupName]];
-        EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.update", @"Group update") message:message];
-        [alertView show];
+//        EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.update", @"Group update") message:message];
+//        [alertView show];
     }
 }
 
@@ -446,8 +452,8 @@ static EaseIMHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_INFO_REFRESH object:aGroup];
 
     NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"tobeadminPrompt", nil), aAdmin, [NSString stringWithFormat:@"「%@」",aGroup.groupName]];
-    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.adminUpdate", @"Group Admin Update") message:msg];
-    [alertView show];
+//    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.adminUpdate", @"Group Admin Update") message:msg];
+//    [alertView show];
 }
 
 - (void)groupAdminListDidUpdate:(EMGroup *)aGroup
@@ -456,8 +462,8 @@ static EaseIMHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_INFO_REFRESH object:aGroup];
 
     NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"memberPrompt", nil), aAdmin, [NSString stringWithFormat:@"「%@」",aGroup.groupName]];
-    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.adminUpdate", @"Group Admin Update") message:msg];
-    [alertView show];
+//    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.adminUpdate", @"Group Admin Update") message:msg];
+//    [alertView show];
 
 }
 
@@ -467,9 +473,9 @@ static EaseIMHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_INFO_REFRESH object:aGroup];
 
-    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"groupOwnerChangePrompt", nil), aOldOwner, [NSString stringWithFormat:@"「%@」",aGroup.groupName], aNewOwner];
-    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.ownerUpdate", @"Group Owner Update") message:msg];
-    [alertView show];
+//    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"groupOwnerChangePrompt", nil), aOldOwner, [NSString stringWithFormat:@"「%@」",aGroup.groupName], aNewOwner];
+//    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.ownerUpdate", @"Group Owner Update") message:msg];
+//    [alertView show];
 }
 
 - (void)userDidJoinGroup:(EMGroup *)aGroup
@@ -477,9 +483,9 @@ static EaseIMHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_INFO_REFRESH object:aGroup];
 
-    NSString *msg = [NSString stringWithFormat:@"%@ %@ %@", aUsername, NSLocalizedString(@"group.join", @"Join the group"), [NSString stringWithFormat:@"「%@」",aGroup.groupName]];
-    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.membersUpdate", @"Group Members Update") message:msg];
-    [alertView show];
+//    NSString *msg = [NSString stringWithFormat:@"%@ %@ %@", aUsername, NSLocalizedString(@"group.join", @"Join the group"), [NSString stringWithFormat:@"「%@」",aGroup.groupName]];
+//    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.membersUpdate", @"Group Members Update") message:msg];
+//    [alertView show];
 }
 
 - (void)userDidLeaveGroup:(EMGroup *)aGroup
@@ -488,8 +494,8 @@ static EaseIMHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_INFO_REFRESH object:aGroup];
 
     NSString *msg = [NSString stringWithFormat:@"%@ %@ %@", aUsername, NSLocalizedString(@"group.leave", @"Leave group"), [NSString stringWithFormat:@"「%@」",aGroup.groupName]];
-    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.membersUpdate", @"Group Members Update") message:msg];
-    [alertView show];
+//    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.membersUpdate", @"Group Members Update") message:msg];
+//    [alertView show];
 }
 
 - (void)didLeaveGroup:(EMGroup *)aGroup reason:(EMGroupLeaveReason)aReason
@@ -534,8 +540,8 @@ static EaseIMHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupSharedFile" object:aGroup];
     
     NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"group.uploadSharedFile", @"Group:%@ Upload file ID: %@"), [NSString stringWithFormat:@"「%@」",aGroup.groupName], aSharedFile.fileId];
-    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.sharedFileUpdate", @"Group SharedFile Update") message:msg];
-    [alertView show];
+//    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.sharedFileUpdate", @"Group SharedFile Update") message:msg];
+//    [alertView show];
 }
 
 - (void)groupFileListDidUpdate:(EMGroup *)aGroup
@@ -544,8 +550,8 @@ static EaseIMHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupSharedFile" object:aGroup];
     
     NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"group.removeSharedFile", @"Group:%@ Remove file ID: %@"), [NSString stringWithFormat:@"「%@」",aGroup.groupName], aFileId];
-    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.sharedFileUpdate", @"Group SharedFile Update") message:msg];
-    [alertView show];
+//    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.sharedFileUpdate", @"Group SharedFile Update") message:msg];
+//    [alertView show];
 }
 
 #pragma mark - EMContactManagerDelegate

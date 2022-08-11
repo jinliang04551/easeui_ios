@@ -798,9 +798,9 @@
 
     NSURL *url = nil;
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/",kServerHost,kEaseCallGenerateTokenJiHuURL,[EMClient sharedClient].currentUsername]];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kServerHost,kEaseCallGenerateTokenJiHuURL]];
     }else {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/",kServerHost,kEaseCallGenerateTokenYunGuanURL,[EMClient sharedClient].currentUsername]];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kServerHost,kEaseCallGenerateTokenYunGuanURL]];
     }
     
     
@@ -814,7 +814,14 @@
     NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
     [headerDict setObject:@"application/json" forKey:@"Content-Type"];
     NSString *imToken = [EMClient sharedClient].accessUserToken;
-    [headerDict setObject:imToken forKey:@"Authorization"];
+    NSString *ygToken = [EaseKitUtil getLoginUserToken];
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        [headerDict setObject:imToken forKey:@"Authorization"];
+    }else {
+        [headerDict setObject:ygToken forKey:@"Authorization"];
+    }
+    
     [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
     request.allHTTPHeaderFields = headerDict;
 
@@ -825,6 +832,8 @@
 //    "username":环信username
     [dict setObject:channelName forKey:@"channelName"];
     [dict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
+
+    NSLog(@"%s url:%@ headerDict:%@ dict:%@",__func__,url,headerDict,dict);
 
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
         
@@ -861,13 +870,19 @@
     request.HTTPMethod = @"GET";
     
     NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
-    NSString *token = [EaseKitUtil getLoginUserToken];
-    [headerDict setObject:token forKey:@"Authorization"];
+    NSString *imToken = [EMClient sharedClient].accessUserToken;
+    NSString *ygToken = [EaseKitUtil getLoginUserToken];
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        [headerDict setObject:imToken forKey:@"Authorization"];
+    }else {
+        [headerDict setObject:ygToken forKey:@"Authorization"];
+    }
+    
     [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
 
     request.allHTTPHeaderFields = headerDict;
 
-    
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
         if (aCompletionBlock) {
