@@ -96,7 +96,7 @@
 }
 
 - (void)updateUIWithAddMutes:(NSArray *)mutes {
-    [[EMClient sharedClient].groupManager muteMembers:mutes muteMilliseconds:0 fromGroup:self.group.groupId completion:^(EMGroup * _Nullable aGroup, EMError * _Nullable aError) {
+    [[EMClient sharedClient].groupManager muteMembers:mutes muteMilliseconds:-1 fromGroup:self.group.groupId completion:^(EMGroup * _Nullable aGroup, EMError * _Nullable aError) {
         if (aError == nil) {
             [self.dataArray addObjectsFromArray:mutes];
             [self.unMuteArray removeObjectsInArray:mutes];

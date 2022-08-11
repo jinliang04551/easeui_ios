@@ -93,6 +93,8 @@ if (EaseIMKitManager.shared.isJiHuApp){
     }
 }
 
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
     EaseGroupAtCell *cell = (EaseGroupAtCell *)[tableView dequeueReusableCellWithIdentifier:NSStringFromClass([EaseGroupAtCell class])];

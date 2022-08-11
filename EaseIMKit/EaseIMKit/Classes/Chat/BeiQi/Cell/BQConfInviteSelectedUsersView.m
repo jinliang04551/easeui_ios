@@ -123,9 +123,9 @@
 
 
 - (void)placeAndLayoutSubViews {
-    self.backgroundColor = UIColor.redColor;
-    
-    self.collectionView.backgroundColor = UIColor.yellowColor;
+//    self.backgroundColor = UIColor.redColor;
+//
+//    self.collectionView.backgroundColor = UIColor.yellowColor;
     [self addSubview:self.collectionView];
     
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
