@@ -146,7 +146,11 @@
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
     }];
-//    [self _updateConversationViewTableHeader];
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp && self.enterType == EMConversationEnterTypeMyChat) {
+        [self _updateConversationViewTableHeader];
+    }
+    
 }
 
 - (void)backAction {
@@ -155,11 +159,12 @@
 
 - (void)_updateConversationViewTableHeader {
     self.easeConvsVC.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.easeConvsVC.tableView.tableHeaderView.backgroundColor = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1];
+    self.easeConvsVC.tableView.tableHeaderView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+    
     UIControl *control = [[UIControl alloc] initWithFrame:CGRectZero];
     control.clipsToBounds = YES;
     control.layer.cornerRadius = 18;
-    control.backgroundColor = UIColor.whiteColor;
+    control.backgroundColor = [UIColor colorWithHexString:@"#252525"];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(searchButtonAction)];
     [control addGestureRecognizer:tap];
     
@@ -179,11 +184,11 @@
         make.right.equalTo(self.easeConvsVC.tableView.tableHeaderView).offset(-16);
     }];
     
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"search"]];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage easeUIImageNamed:@"jh_search_leftIcon"]];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-    label.font = [UIFont systemFontOfSize:16];
-    label.text = NSLocalizedString(@"search", nil);
-    label.textColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1];
+    label.font = [UIFont systemFontOfSize:14.0];
+    label.text = @"搜索";
+    label.textColor = [UIColor colorWithHexString:@"#7E7E7F"];
     [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     UIView *subView = [[UIView alloc] init];
     [subView addSubview:imageView];
@@ -543,7 +548,15 @@
         UILabel *titleLabel = [[UILabel alloc] init];
 
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            titleLabel.text = @"我的专属服务";
+            if (self.enterType == EMConversationEnterTypeExclusiveGroup) {
+                titleLabel.text = @"我的专属服务";
+            }
+            
+            if (self.enterType == EMConversationEnterTypeMyChat) {
+                titleLabel.text = @"我的会话";
+            }
+            
+            
             titleLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
             titleLabel.font = [UIFont systemFontOfSize:18];
             [_titleView addSubview:titleLabel];

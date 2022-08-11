@@ -19,9 +19,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+
+    self.tableView.rowHeight = 64.0;
     
     [self _initSubviews];
 }
@@ -53,6 +54,15 @@
         _searchBar.backgroundColor = [UIColor whiteColor];
         _searchBar.returnKeyType = UIReturnKeyDone;
         _searchBar.delegate = self;
+        
+        _searchBar.backgroundColor = EaseIMKit_ViewBgBlackColor;
+
+//        UITextField *searchField = [_searchBar valueForKey:@"_searchField"];
+//
+//       // Change search bar text color
+//        searchField.textColor = [UIColor colorWithHexString:@"#252525"];
+//
+       
     }
     
     return _searchBar;
@@ -62,11 +72,16 @@
 
 - (void)_initSubviews
 {
-    self.view.backgroundColor = [UIColor whiteColor];
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+    }else {
+        self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+    }
+    
     
     [self.view addSubview:self.searchBar];
     [self.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top).offset(25);
+        make.top.equalTo(self.view.mas_top).offset(30.0);
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
         make.height.equalTo(@50);
