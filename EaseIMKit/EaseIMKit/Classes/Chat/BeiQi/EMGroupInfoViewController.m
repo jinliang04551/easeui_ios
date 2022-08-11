@@ -62,6 +62,9 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupInfoUpdated:) name:GROUP_INFO_UPDATED object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupInfoUpdated:) name:GROUP_INFO_REFRESH object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupInfoUpdated:) name:EaseNotificationReceiveGroupInfoUpdate object:nil];
+
 
     }
     

@@ -64,6 +64,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveJoinGroupApply) name:EaseNotificationRequestJoinGroupEvent object:nil];
         
+    
     [EMClient.sharedClient.groupManager addDelegate:self delegateQueue:dispatch_get_main_queue()];
     
     [self _setupSubviews];
@@ -363,8 +364,10 @@
 
 - (void)createGroupAction {
     YGGroupCreateViewController *vc = [[YGGroupCreateViewController alloc] init];
+    
     [self.navigationController pushViewController:vc animated:YES];
 }
+
 
 - (void)searchGroupAction {
     YGGroupSearchViewController *vc = [[YGGroupSearchViewController alloc] init];

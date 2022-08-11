@@ -275,9 +275,17 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 #define EaseNotificationReceiveMutiDeviceNoDisturb @"EaseNotificationReceiveMutiDeviceNoDisturb"
 
 
+//同步群信息有更新
+#define EaseNotificationReceiveGroupInfoUpdate @"EaseNotificationReceiveGroupInfoUpdate"
+
+//收到CMD创建群组成功消息
+#define EaseNotificationReceiveCMDCreateGroupChat @"EaseNotificationReceiveCMDCreateGroupChat"
+
+//群组有成员加入
+#define EaseNotificationReceiveCMDGroupMemberJoined @"EaseNotificationReceiveCMDGroupMemberJoined"
 
 
-//#define DEF_APPKEY @"easemob-demo#easeim"
+//#define DEF_APPKEY @"easemob-de/Users/liu001/Desktop/SDK_3.9.4_localPath_BeiQi_SDK_includeCallkit/easeui_ios/EaseIMKit/EaseIMKit/Classes/Common/EaseDefines.hmo#easeim"
 //#define DEF_APPKEY @"easemob-demo#chatdemoui"
 #define DEF_APPKEY @"1100220704109048#arcfox-server"
 

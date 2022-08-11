@@ -22,6 +22,10 @@
 //URL: /v4/gov/arcfox/transport/{username}/getOrders
 #define kSearchCustomOrderURL @"/v4/gov/arcfox/transport"
 #define kJiHuSearchGroupMemberURL @"/v1/gov/arcfox/user"
+//声网音视频生成token接口
+#define kEaseCallGenerateTokenJiHuURL @"/v1/rtc/token"
+//声网音视频获取一个channelName下有哪些uid接口
+#define kEaseCallGetChannalUidsJiHuURL @"v1/rtc/channle"
 
 
 /*
@@ -46,6 +50,10 @@
 #define kSearchGroupChatURL @"/v4/users"
 //#define kFetchGroupYunGuanNoteURL @"/v2/group/chatgroups"
 #define kFetchGroupYunGuanNoteURL @"/v4/users"
+//声网音视频生成token接口
+#define kEaseCallGenerateTokenYunGuanURL @"/v2/rtc/token"
+//声网音视频获取一个channelName下有哪些uid接口
+#define kEaseCallGetChannalUidsYunGuanURL @"/v2/rtc/channle"
 
 
 @interface EaseHttpManager() <NSURLSessionDelegate>
@@ -776,6 +784,100 @@
     }];
     [task resume];
 }
+
+
+///v2/rtc/token
+///v1/rtc/token 极狐APP使用
+// url中的username是当前用户的username
+//Method:POSTPOST
+//"channelName":
+//"username":环信username
+- (void)fetchRTCTokenWithChannelName:(NSString *)channelName
+                          completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
+{
+
+    NSURL *url = nil;
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/",kServerHost,kEaseCallGenerateTokenJiHuURL,[EMClient sharedClient].currentUsername]];
+    }else {
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/",kServerHost,kEaseCallGenerateTokenYunGuanURL,[EMClient sharedClient].currentUsername]];
+    }
+    
+    
+    
+    NSLog(@"%s url:%@",__func__,url);
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest
+                                                requestWithURL:url];
+    request.HTTPMethod = @"POST";
+    
+    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
+    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
+    NSString *imToken = [EMClient sharedClient].accessUserToken;
+    [headerDict setObject:imToken forKey:@"Authorization"];
+    [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
+    request.allHTTPHeaderFields = headerDict;
+
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+    
+
+//    "channelName":
+//    "username":环信username
+    [dict setObject:channelName forKey:@"channelName"];
+    [dict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
+
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+        
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+        if (aCompletionBlock) {
+            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
+        }
+    }];
+    [task resume];
+}
+
+//声网音视频获取一个channelName下有哪些uid接口
+//URL: /v2/rtc/channle/{channleName}/show 运管端使用
+///v1/rtc/channle/{channleName}/show 极狐APP使用
+// url中的username是当前用户的username
+//Method:GETPOST
+//"channelName"
+
+- (void)fetchRTCUidsWithChannelName:(NSString *)channelName
+                 completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock {
+        
+    NSURL *url = nil;
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/show",kServerHost,kEaseCallGetChannalUidsJiHuURL,channelName]];
+    }else {
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/show",kServerHost,kEaseCallGetChannalUidsYunGuanURL,channelName]];
+    }
+    
+    NSLog(@"%s url:%@",__func__,url);
+
+    NSMutableURLRequest *request = [NSMutableURLRequest
+                                                requestWithURL:url];
+    request.HTTPMethod = @"GET";
+    
+    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
+    NSString *token = [EaseKitUtil getLoginUserToken];
+    [headerDict setObject:token forKey:@"Authorization"];
+    [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
+
+    request.allHTTPHeaderFields = headerDict;
+
+    
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+        if (aCompletionBlock) {
+            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
+        }
+    }];
+    [task resume];
+}
+
+
 
 
 #pragma mark NSURLSessionDelegate

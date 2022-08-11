@@ -123,22 +123,29 @@
 
 
 - (void)placeAndLayoutSubViews {
+    self.backgroundColor = UIColor.redColor;
+    
+    self.collectionView.backgroundColor = UIColor.yellowColor;
     [self addSubview:self.collectionView];
     
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self);
+        make.edges.equalTo(self).insets(UIEdgeInsetsMake(0, 5, 0, 5));
     }];
 }
 
 - (void)updateUIWithMemberArray:(NSMutableArray *)memberArray {
     self.dataArray = memberArray;
+    NSLog(@"%s self.dataArray:%@",__func__,self.dataArray);
     [self.collectionView reloadData];
 }
 
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [self.dataArray count];
+    NSInteger count = [self.dataArray count];
+    NSLog(@"%s count:%@",__func__,@(count));
+    return count;
+//    return [self.dataArray count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -153,6 +160,9 @@
     BQConfInviteMemberCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[BQConfInviteMemberCell reuseIdentifier] forIndexPath:indexPath];
     
     id obj = [self.dataArray objectAtIndex:indexPath.row];
+    
+    NSLog(@"%s indexPath.row:%@ obj:%@",__func__,@(indexPath.row),obj);
+
     [cell updateWithObj:obj];
     
     return cell;

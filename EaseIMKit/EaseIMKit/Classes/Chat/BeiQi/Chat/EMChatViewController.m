@@ -64,6 +64,9 @@
     //接收通话邀请或者结束时，在当前会话页面
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMutiCallLoadConvsationDB:) name:EaseNotificationReceiveMutiCallLoadConvsationDB object:nil];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveGroupInfoUpdate:) name:EaseNotificationReceiveGroupInfoUpdate object:nil];
+
+
     [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [self _setupChatSubviews];
@@ -298,6 +301,16 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 }
 
+- (void)receiveGroupInfoUpdate:(NSNotification *)notify {
+    //群聊更新名称
+    EMGroup *group = (EMGroup *)notify.object;
+    if ([group.groupId isEqualToString:self.conversation.conversationId]) {
+    
+        EMGroup *tGroup = [EMGroup groupWithId:group.groupId];
+        self.titleLabel.text = tGroup.groupName;
+    }
+    
+}
 
 #pragma mark - EaseChatViewControllerDelegate
 

@@ -76,6 +76,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark 极狐接口
 - (void)fetchExclusiveServerGroupListWithCompletion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
 
+- (void)fetchRTCTokenWithChannelName:(NSString *)channelName
+                          completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+
+- (void)fetchRTCUidsWithChannelName:(NSString *)channelName
+                         completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

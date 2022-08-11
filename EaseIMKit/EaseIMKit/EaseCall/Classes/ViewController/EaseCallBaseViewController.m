@@ -296,9 +296,9 @@
     if(!_timeLabel) {
         self.timeLabel = [[UILabel alloc] init];
         self.timeLabel.backgroundColor = [UIColor clearColor];
-        self.timeLabel.font = [UIFont systemFontOfSize:25];
-        self.timeLabel.textColor = [UIColor whiteColor];
-        self.timeLabel.textAlignment = NSTextAlignmentRight;
+        self.timeLabel.font = [UIFont systemFontOfSize:14.0];
+        self.timeLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+        self.timeLabel.textAlignment = NSTextAlignmentCenter;
         self.timeLabel.text = @"00:00";
         [self.contentView addSubview:self.timeLabel];
         
@@ -318,7 +318,7 @@
     int m = (_timeLength) / 60;
     int s = _timeLength - m * 60;
     
-    self.timeLabel.text = [NSString stringWithFormat:@"%02d:%02d", m, s];
+    self.timeLabel.text = [NSString stringWithFormat:@"通话时长 %02d:%02d", m, s];
 }
 
 /*

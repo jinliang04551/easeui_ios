@@ -57,6 +57,11 @@ EMClientDelegate
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
+
+    [self addNotifacationObserver];
+}
+
+- (void)addNotifacationObserver {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshTabView)
                                                  name:CONVERSATIONLIST_UPDATE object:nil];
@@ -66,6 +71,10 @@ EMClientDelegate
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMutiDeviceNoDisturb:) name:EaseNotificationReceiveMutiDeviceNoDisturb object:nil];
     
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveGroupInfoUpdate:) name:EaseNotificationReceiveGroupInfoUpdate object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveCMDCreateGroupChat) name:EaseNotificationReceiveCMDCreateGroupChat object:nil];
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -97,9 +106,13 @@ EMClientDelegate
     [self refreshTabView];
 }
 
+- (void)receiveGroupInfoUpdate:(NSNotification *)notify {
+    [self refreshTabView];
+}
 
-
-
+- (void)receiveCMDCreateGroupChat {
+    [self refreshTabView];
+}
 
 #pragma mark - EMClientDelegate
 

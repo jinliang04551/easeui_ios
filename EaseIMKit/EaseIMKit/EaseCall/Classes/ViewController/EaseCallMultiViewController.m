@@ -258,6 +258,7 @@
         [self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.contentView);
             make.centerY.equalTo(self.inviteButton);
+//            make.bottom.equalTo(self.microphoneButton.mas_top).offset(-20.0);
             make.width.equalTo(@100);
         }];
         if(self.bigView) {

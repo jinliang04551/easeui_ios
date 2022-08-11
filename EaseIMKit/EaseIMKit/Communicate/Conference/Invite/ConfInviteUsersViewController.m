@@ -129,6 +129,7 @@
         make.top.equalTo(self.customNavBarView.mas_bottom);
         make.centerX.equalTo(self.view);
         make.height.equalTo(@(0));
+        make.width.equalTo(@(0));
     }];
     
     
@@ -178,13 +179,15 @@
     
     EaseIMKit_WS
     cell.checkBlcok = ^(NSString * _Nonnull userId, BOOL isChecked) {
-        if ([weakSelf.inviteUsers containsObject:username]) {
-            [weakSelf.inviteUsers removeObject:username];
-        } else {
-            [weakSelf.inviteUsers addObject:username];
-        }
-        [self updateUI];
-
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([weakSelf.inviteUsers containsObject:username]) {
+                [weakSelf.inviteUsers removeObject:username];
+            } else {
+                [weakSelf.inviteUsers addObject:username];
+            }
+            
+            [self updateUI];
+        });
     };
     return cell;
 }
@@ -202,11 +205,12 @@
 //        inviteWidth = EaseIMKit_ScreenWidth;
 //    }
     
+    NSLog(@"%s =======width:%@ height:%@",__func__,@(inviteWidth),@(inviteHeight));
     
     [self.confInviteSelectedUsersView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@(inviteHeight));
         make.width.equalTo(@(inviteWidth));
-        make.left.lessThanOrEqualTo(self.view);
+//        make.left.lessThanOrEqualTo(self.view);
     }];
     
     NSString *confirmTitle = [NSString stringWithFormat:@"确定(%@)",@([self.inviteUsers count])];

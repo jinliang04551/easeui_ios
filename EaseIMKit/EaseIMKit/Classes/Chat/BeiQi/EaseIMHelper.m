@@ -194,14 +194,33 @@ static EaseIMHelper *helper = nil;
                 [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationRequestJoinGroupEvent object:nil];
             }
             
+            //音视频通话开始结束
             if (msg.ext.count > 0 && [cmdBody.action isEqualToString:MutiCallAction]) {
                 [self insertMsgWithCMDMessage:msg];
             }
             
+            //免打扰多端同步
             if (msg.ext.count > 0 && [cmdBody.action isEqualToString:@"event"]) {
                 [self _updateNoDisturbWithExt:msg.ext];
             }
+         
+            //群组创建
+            if (msg.ext.count > 0 && [cmdBody.action isEqualToString:@"groupCreateEvent"]) {
+//            群组创建：action:"groupCreateEvent" "ext":{"eventType":"groupCreate", "groupName":"xxx"}
+
+                [self createGroupChatConvsationWithCMDMsg:msg];
+            }
             
+            
+            //成员加入
+            if (msg.ext.count > 0 && [cmdBody.action isEqualToString:@"groupJoinEvent"]) {
+//            成员加入：action:"groupJoinEvent" "ext":{"eventType":"groupJoin", "userName":"xxx"}
+                [self memberJoinedGroupWithCMDMsg:msg];
+            }
+            
+
+            
+       
         }
     }
         
@@ -259,7 +278,65 @@ static EaseIMHelper *helper = nil;
 }
 
 
+- (void)createGroupChatConvsationWithCMDMsg:(EMChatMessage *)msg {
+//群组创建：action:"groupCreateEvent" "ext":{"eventType":"groupCreate", "groupName":"xxx"}
+
+    NSDictionary *ext = msg.ext;
+    
+    NSString *eventType = ext[@"eventType"];
+    if ([eventType isEqualToString:@"groupCreate"]) {
+        NSString *groupId = msg.to;
+        
+        [EMClient.sharedClient.groupManager getGroupSpecificationFromServerWithId:groupId completion:^(EMGroup *aGroup, EMError *aError) {
+            if (!aError) {
+                
+                [[EMClient sharedClient].chatManager getConversation:groupId type:EMConversationTypeGroupChat createIfNotExist:YES];
+                [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveCMDCreateGroupChat object:nil];
+            } else {
+                // do nothing
+            }
+        }];
+    }
+}
+
+
+- (void)memberJoinedGroupWithCMDMsg:(EMChatMessage *)msg {
+    //            成员加入：action:"groupJoinEvent" "ext":{"eventType":"groupJoin", "userName":"xxx"}
+
+    NSDictionary *ext = msg.ext;
+    
+    NSString *eventType = ext[@"eventType"];
+    if ([eventType isEqualToString:@"groupJoin"]) {
+        NSString *userName = ext[@"userName"];
+        NSString *groupName = [EMGroup groupWithId:msg.to].groupName;
+
+        
+        NSString *message = [NSString stringWithFormat:@"%@加入%@",userName,groupName];
+        
+        EaseAlertView *alertView = [[EaseAlertView alloc] initWithTitle:@"提示" message:message];
+        [alertView show];
+
+    }
+    
+}
+
+
 #pragma mark - EMGroupManagerDelegate
+- (void)groupSpecificationDidUpdate:(EMGroup *)aGroup {
+
+    
+    [EMClient.sharedClient.groupManager getGroupSpecificationFromServerWithId:aGroup.groupId completion:^(EMGroup *aGroup, EMError *aError) {
+        if (!aError) {
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveGroupInfoUpdate object:aGroup];
+        } else {
+            // do nothing
+        }
+    }];
+    
+}
+
+
 
 - (void)didJoinGroup:(EMGroup *)aGroup inviter:(NSString *)aInviter message:(NSString *)aMessage
 {
