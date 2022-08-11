@@ -478,7 +478,8 @@
     }];
     deleteAction.backgroundColor = [UIColor redColor];
     [array addObject:deleteAction];
-    [array addObject:actions[1]];
+//    [array addObject:actions[1]];
+    
     return [array copy];
 }
 

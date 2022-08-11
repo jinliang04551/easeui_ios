@@ -202,20 +202,20 @@ EMClientDelegate
         [weakself refreshTabView];
     }];
     
-    UIContextualAction *topAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal
-                                                                            title:!model.isTop ? EaseLocalizableString(@"top", nil) : EaseLocalizableString(@"cancelTop", nil)
-                                                                          handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL))
-                                     {
-        EMConversation *conversation = [EMClient.sharedClient.chatManager getConversation:model.easeId
-                                                                                     type:model.type
-                                                                         createIfNotExist:YES];
-        [conversation setTop:!model.isTop];
-        [weakself refreshTabView];
-    }];
+//    UIContextualAction *topAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal
+//                                                                            title:!model.isTop ? EaseLocalizableString(@"top", nil) : EaseLocalizableString(@"cancelTop", nil)
+//                                                                          handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL))
+//                                     {
+//        EMConversation *conversation = [EMClient.sharedClient.chatManager getConversation:model.easeId
+//                                                                                     type:model.type
+//                                                                         createIfNotExist:YES];
+//        [conversation setTop:!model.isTop];
+//        [weakself refreshTabView];
+//    }];
+//
+//    topAction.backgroundColor = [UIColor colorWithHexString:@"CB7D32"];
     
-    topAction.backgroundColor = [UIColor colorWithHexString:@"CB7D32"];
-    
-    NSArray *swipeActions = @[deleteAction, topAction];
+    NSArray *swipeActions = @[deleteAction];
     if (self.delegate && [self.delegate respondsToSelector:@selector(easeTableView:trailingSwipeActionsForRowAtIndexPath:actions:)]) {
         swipeActions = [self.delegate easeTableView:tableView trailingSwipeActionsForRowAtIndexPath:indexPath actions:swipeActions];
     }

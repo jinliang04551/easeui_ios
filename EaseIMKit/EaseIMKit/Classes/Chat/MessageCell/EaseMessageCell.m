@@ -223,7 +223,7 @@
     if(self.direction == EMMessageDirectionSend) {
         [_readReceiptBtn Ease_makeConstraints:^(EaseConstraintMaker *make) {
             make.bottom.equalTo(self.bubbleView.ease_bottom);
-            make.right.equalTo(self.bubbleView.ease_left).offset(-3.0);
+            make.right.equalTo(self.bubbleView.ease_left).offset(-8.0);
             make.width.equalTo(@(14.0));
             make.height.equalTo(@(14.0));
         }];
