@@ -213,6 +213,7 @@
 
     }];
     
+    
     NSString *confirmTitle = [NSString stringWithFormat:@"确定(%@)",@([self.inviteUsers count])];
     [self.confirmButton setTitle:confirmTitle forState:UIControlStateNormal];
     

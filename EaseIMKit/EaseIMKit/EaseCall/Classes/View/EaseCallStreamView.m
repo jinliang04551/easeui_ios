@@ -14,6 +14,12 @@
 
 @property (nonatomic, strong) UIImageView *statusView;
 @property (nonatomic) NSTimer *timeTimer;
+@property (nonatomic, strong) UIView *nameBgView;
+
+@property (nonatomic, strong) NSMutableArray *talkingImageArray;
+@property (nonatomic, strong) UIImageView *talkingImageView;
+
+
 @end
 
 @implementation EaseCallStreamView
@@ -48,6 +54,12 @@
             make.right.equalTo(self).offset(-5);
             make.width.height.equalTo(@20);
         }];
+        
+        [self addSubview:self.talkingImageView];
+        [self.talkingImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.statusView);
+        }];
+        
         
         self.nameLabel = [[UILabel alloc] init];
         self.nameLabel.textColor = [UIColor whiteColor];
@@ -108,6 +120,7 @@
                 self.timeTimer = [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(timeTalkingAction:) userInfo:nil repeats:NO];
             
         }else{
+            
             if(self.timeTimer) {
                 [self.timeTimer invalidate];
                 self.timeTimer = nil;
@@ -121,6 +134,7 @@
 {
     _statusView.image = nil;
     self.isTalking = NO;
+    
 }
 
 #pragma mark - UITapGestureRecognizer
@@ -133,6 +147,52 @@
             [_delegate streamViewDidTap:self];
         }
     }
+}
+
+- (UIView *)nameBgView {
+    if (_nameBgView == nil) {
+        _nameBgView = [[UIView alloc] init];
+        
+    }
+    return _nameBgView;
+}
+
+
+- (NSMutableArray *)talkingImageArray {
+    if (_talkingImageArray == nil) {
+        _talkingImageArray = [NSMutableArray new];
+        for (NSInteger i = 0; i < 14; ++i) {
+            NSString *imageName = [NSString stringWithFormat:@"call_talking_%@",@(i)];
+            UIImage *image = [UIImage imageNamedFromBundle:imageName];
+            [_talkingImageArray addObject:image];
+        }
+    }
+    
+    return _talkingImageArray;
+}
+
+- (UIImageView *)talkingImageView {
+    if (!_talkingImageView) {
+        _talkingImageView = [[UIImageView alloc] init];
+        //图片播放一次所需时长
+        _talkingImageView.animationDuration = 1.0;
+        //图片播放次数,0表示无限
+        _talkingImageView.animationRepeatCount = 0;
+
+        //设置动画图片数组
+        _talkingImageView.animationImages = self.talkingImageArray;
+        _talkingImageView.hidden = YES;
+    }
+    
+    return _talkingImageView;
+}
+
+
+- (NSTimer *)timeTimer {
+    if (_timeTimer == nil) {
+        _timeTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timeTalkingAction:) userInfo:nil repeats:YES];
+    }
+    return _timeTimer;
 }
 
 @end

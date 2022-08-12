@@ -130,7 +130,8 @@
         */
         [_loadingView stopTimer];
         [_loadingView removeFromSuperview];
-        self.label.text = aIsReadAcked ? EaseLocalizableString(@"read", nil) : nil;
+//        self.label.text = aIsReadAcked ? EaseLocalizableString(@"read", nil) : nil;
+        self.label.text = @"";
         [self addSubview:self.label];
         [self.label Ease_makeConstraints:^(EaseConstraintMaker *make) {
             make.edges.equalTo(self);

@@ -543,9 +543,10 @@ static NSString *g_UIKitVersion = @"1.0.0";
         case EaseCallEndReasonNoResponse:
             msg = NSLocalizedString(@"noResponse", nil);
             break;
-        case EaseCallEndReasonHangup:
-            msg = [NSString stringWithFormat:NSLocalizedString(@"callendPrompt", nil),aTm];
-            break;
+            //通话结束用会话里的灰条提示
+//        case EaseCallEndReasonHangup:
+//            msg = [NSString stringWithFormat:NSLocalizedString(@"callendPrompt", nil),aTm];
+//            break;
         default:
             break;
     }
