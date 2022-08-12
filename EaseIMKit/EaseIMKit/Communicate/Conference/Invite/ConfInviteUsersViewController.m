@@ -210,15 +210,20 @@
     [self.confInviteSelectedUsersView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@(inviteHeight));
         make.width.equalTo(@(inviteWidth));
-//        make.left.lessThanOrEqualTo(self.view);
+
     }];
     
     NSString *confirmTitle = [NSString stringWithFormat:@"确定(%@)",@([self.inviteUsers count])];
     [self.confirmButton setTitle:confirmTitle forState:UIControlStateNormal];
     
-    [self.confInviteSelectedUsersView updateUIWithMemberArray:self.inviteUsers];
+    dispatch_async(dispatch_get_main_queue(), ^{
     
-    [self.tableView reloadData];
+        [self.confInviteSelectedUsersView updateUIWithMemberArray:self.inviteUsers];
+        
+        [self.tableView reloadData];
+
+    });
+        
 }
 
 

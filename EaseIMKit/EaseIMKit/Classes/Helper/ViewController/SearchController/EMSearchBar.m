@@ -169,7 +169,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (UIButton *)operateButton {
     if (_operateButton == nil) {
         _operateButton = [[UIButton alloc] init];
-        _operateButton.titleLabel.font = [UIFont systemFontOfSize:16];
+        _operateButton.titleLabel.font = [UIFont systemFontOfSize:14.0];
         [_operateButton setTitle:NSLocalizedString(@"cancel", nil) forState:UIControlStateNormal];
         [_operateButton setTitleColor:EaseIMKit_TitleBlueColor forState:UIControlStateNormal];
         [_operateButton addTarget:self action:@selector(operateButtonAction) forControlEvents:UIControlEventTouchUpInside];

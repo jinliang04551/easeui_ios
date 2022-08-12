@@ -93,7 +93,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
    
     
     self.cancelButton = [[UIButton alloc] init];
-    self.cancelButton.titleLabel.font = [UIFont systemFontOfSize:16];
+    self.cancelButton.titleLabel.font = [UIFont systemFontOfSize:14.0];
     [self.cancelButton setTitle:NSLocalizedString(@"cancel", nil) forState:UIControlStateNormal];
     [self.cancelButton setTitleColor:[UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0] forState:UIControlStateNormal];
     [self.cancelButton addTarget:self action:@selector(searchCancelButtonClicked) forControlEvents:UIControlEventTouchUpInside];

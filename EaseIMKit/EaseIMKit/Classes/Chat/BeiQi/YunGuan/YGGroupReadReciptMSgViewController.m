@@ -226,6 +226,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         style.selectedTitleColor = EaseIMKit_COLOR_HEX(0xB9B9B9);
         style.scrollLineColor = EaseIMKit_COLOR_HEXA(0x000000, 0.5);
         style.segmentViewBackgroundColor = EaseIMKit_ViewBgBlackColor;
+        style.showLine = NO;
+
 }else {
 
         style.showCover = NO;
@@ -243,6 +245,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         style.titleFont = EaseIMKit_Font(@"PingFang SC",14.0);
         style.showSegmentViewShadow = NO;
         _pageController = [MISScrollPageController scrollPageControllerWithStyle:style dataSource:self delegate:self];
+
     }
     return _pageController;
 }

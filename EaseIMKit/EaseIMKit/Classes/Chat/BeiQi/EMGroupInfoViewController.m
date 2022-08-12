@@ -357,7 +357,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     if (section == 0)
         return 0.001;
     
-    return 24.0;
+    return 12.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section

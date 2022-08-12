@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong) UIImageView* remoteHeadView;
 @property (nonatomic) EaseCallStreamView* localView;
 @property (nonatomic) NSMutableDictionary* streamViewsDic;
+
 @end
 
 NS_ASSUME_NONNULL_END

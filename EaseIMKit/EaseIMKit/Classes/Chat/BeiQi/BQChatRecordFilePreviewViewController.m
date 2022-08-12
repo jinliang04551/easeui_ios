@@ -102,7 +102,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if (fileBody.downloadStatus == EMDownloadStatusSucceed &&[fileManager fileExistsAtPath:fileBody.localPath]) {
         [self.operateButton setTitle:@"打开文件" forState:UIControlStateNormal];
-//        self.progressView.hidden = YES;
+        self.progressView.hidden = YES;
         
     }else {
         [self.operateButton setTitle:@"开始下载" forState:UIControlStateNormal];
@@ -116,10 +116,11 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             if (error) {
                 [EaseAlertController showErrorAlert:EaseLocalizableString(@"downFileFail", nil)];
             } else {
-                [self operateButtonAction];
+                self.progressView.hidden = YES;
+                [self.operateButton setTitle:@"打开文件" forState:UIControlStateNormal];
+
             }
 
-            
         }];
     }
 }
@@ -179,6 +180,13 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     [EaseAlertController showErrorAlert:@"模拟器无法打开文件"];
 #elif TARGET_OS_IPHONE
     NSString *fileLocalPath = [(EMFileMessageBody*)self.message.body localPath];
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgWhiteColor;
+
+    }else {
+        [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgBlackColor;
+    }
     
     NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:fileLocalPath];
     NSLog(@"\nfile  --    :%@",[fileHandle readDataToEndOfFile]);
@@ -260,6 +268,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         _operateButton.titleLabel.font = EaseIMKit_NFont(14.0);
         _operateButton.backgroundColor = [UIColor colorWithHexString:@"#4798CB"];
         [_operateButton addTarget:self action:@selector(operateButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        _operateButton.layer.cornerRadius = 4.0;
     }
     return _operateButton;
     

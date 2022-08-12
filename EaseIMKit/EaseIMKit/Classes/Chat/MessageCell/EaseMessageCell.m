@@ -286,7 +286,6 @@
 {
     _model = model;
     self.bubbleView.model = model;
-    self.nameLabel.text = @"12312312";
     
     if (model.direction == EMMessageDirectionSend) {
         [self.statusView setSenderStatus:model.message.status isReadAcked:model.message.chatType == EMChatTypeChat ? model.message.isReadAcked : NO];
@@ -295,6 +294,7 @@
             self.statusView.hidden = model.message.isListened;
         }
     }
+    
     if (model.type != EMChatTypeChat) {
         if (model.userDataDelegate && [model.userDataDelegate respondsToSelector:@selector(showName)]) {
             self.nameLabel.text = model.userDataDelegate.showName;
@@ -324,16 +324,21 @@
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         self.readReceiptBtn.hidden = YES;
     }else {
-        if (model.message.isNeedGroupAck && model.message.status == EMMessageStatusSucceed && model.message.direction == EMMessageDirectionSend) {
-            if (_model.message.groupAckCount == self.groupMemberCount) {
-                self.readReceiptBtn.hidden = NO;
+        if (model.message.direction == EMMessageDirectionSend) {
+            if (model.message.isNeedGroupAck && model.message.status == EMMessageStatusSucceed) {
+                if (_model.message.groupAckCount == self.groupMemberCount) {
+                    self.readReceiptBtn.hidden = NO;
 
-                [self.readReceiptBtn updateStateWithCount:_model.message.groupAckCount isReadAll:YES];
-            }else {
+                    [self.readReceiptBtn updateStateWithCount:_model.message.groupAckCount isReadAll:YES];
+                }else {
 
-                [self.readReceiptBtn updateStateWithCount:_model.message.groupAckCount isReadAll:NO];
+                    [self.readReceiptBtn updateStateWithCount:_model.message.groupAckCount isReadAll:NO];
+                }
+            } else {
+                self.readReceiptBtn.hidden = YES;
             }
-        } else {
+
+        }else {
             self.readReceiptBtn.hidden = YES;
         }
     }

@@ -12,12 +12,19 @@
 #import <AVKit/AVKit.h>
 
 
-@interface EaseChatRecordImageVideoPreViewController ()
+@interface EaseChatRecordImageVideoPreViewController (){
+    id _observer;
+}
+
 @property (nonatomic, strong) EMChatMessage *message;
 
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) UIImageView *loadingImageView;
 @property (nonatomic, assign) CGFloat loadingAngle;
+
+@property (nonatomic, strong) AVPlayer *avPlayer;
+@property (nonatomic, strong) AVPlayerLayer *avLayer;
+
 
 @end
 
@@ -112,6 +119,54 @@
 
 }
 
+//点播
+- (void)startPlayVodStream:(NSURL *)vodStreamUrl
+{
+    //设置播放的项目
+    AVPlayerItem *item = [[AVPlayerItem alloc] initWithURL:vodStreamUrl];
+    //初始化player对象
+    self.avPlayer = [[AVPlayer alloc] initWithPlayerItem:item];
+    //设置播放页面
+    self.avLayer = [AVPlayerLayer playerLayerWithPlayer:_avPlayer];
+    //设置播放页面的大小
+    self.avLayer.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    self.avLayer.backgroundColor = [UIColor clearColor].CGColor;
+    //设置播放窗口和当前视图之间的比例显示内容
+    self.avLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+    //添加播放视图到self.view
+    [self.view.layer insertSublayer:self.avLayer atIndex:0];
+    //设置播放的默认音量值
+    self.avPlayer.volume = 1.0f;
+    [self.avPlayer play];
+    [self addProgressObserver: [vodStreamUrl absoluteString]];
+}
+
+// 视频循环播放
+- (void)vodPlayDidEnd:(NSDictionary*)dic{
+    [self.avLayer removeFromSuperlayer];
+    self.avPlayer = nil;
+    NSURL *pushUrl = [NSURL URLWithString:[dic objectForKey:@"pushurl"]];
+    [self.avPlayer seekToTime:CMTimeMakeWithSeconds(0, 600) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+    AVPlayerItem *item = [dic objectForKey:@"playItem"];
+    [item seekToTime:kCMTimeZero];
+    [self startPlayVodStream:pushUrl];
+}
+
+-(void)addProgressObserver:(NSString*)url {
+    __weak typeof(self) weakSelf = self;
+    AVPlayerItem *playerItem=self.avPlayer.currentItem;
+    _observer = [self.avPlayer addPeriodicTimeObserverForInterval:CMTimeMake(1.0, 1.0) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+        float current=CMTimeGetSeconds(time);
+        float total=CMTimeGetSeconds([playerItem duration]);
+        if ((current > 0 && total > 0) && ((int)current == (int)total)) {
+            [weakSelf vodPlayDidEnd:@{@"pushurl":url, @"playItem":weakSelf.avPlayer.currentItem}];
+        }
+    }];
+}
+
+
+
+
 - (void)showVideo {
     
     void (^playBlock)(NSString *aPath) = ^(NSString *aPathe) {
@@ -124,6 +179,26 @@
         [self presentViewController:playerViewController animated:YES completion:^{
             [playerViewController.player play];
         }];
+      
+        
+//    AVPlayer *player=[AVPlayer playerWithURL:videoURL];
+//
+//    player.rate=1.0;
+//
+//
+//    AVPlayerLayer *playerLayer=[AVPlayerLayer playerLayerWithPlayer:player];
+//
+//
+//    playerLayer.frame=CGRectMake(0, 0, EaseIMKit_ScreenWidth, 300);
+//
+//
+//    [self.view.layer addSublayer:playerLayer];
+//
+//
+//    [player play];
+     
+//        [self startPlayVodStream:videoURL];
+        
     };
 
     void (^downloadBlock)(void) = ^ {

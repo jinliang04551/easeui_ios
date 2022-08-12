@@ -71,6 +71,7 @@
         self.nameLabel.text = userInfo.nickName.length > 0 ? userInfo.nickName: userInfo.userId;
 
     }else{
+        self.nameLabel.text = aUid;
         [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[aUid]];
     }
     

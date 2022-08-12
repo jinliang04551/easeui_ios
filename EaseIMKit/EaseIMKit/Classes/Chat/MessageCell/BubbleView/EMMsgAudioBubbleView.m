@@ -54,12 +54,20 @@
     self.textLabel = [[UILabel alloc] init];
     self.textLabel.font = [UIFont systemFontOfSize:14];
     self.textLabel.numberOfLines = 0;
-    self.textLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        self.textLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+    }else {
+        self.textLabel.textColor = [UIColor colorWithHexString:@"#171717"];
+    }
+    
     [self addSubview:self.textLabel];
     [self.textLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.top.equalTo(self).offset(8);
         make.bottom.equalTo(self).offset(-8);
     }];
+    
+    
     if (self.direction == EMMessageDirectionSend) {
         
         [self.imgView Ease_makeConstraints:^(EaseConstraintMaker *make) {
@@ -72,8 +80,14 @@
         
         self.textLabel.textAlignment = NSTextAlignmentRight;
         
-        self.imgView.image = [UIImage easeUIImageNamed:@"msg_send_audio"];
-        self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"msg_send_audio02"], [UIImage easeUIImageNamed:@"msg_send_audio01"], [UIImage easeUIImageNamed:@"msg_send_audio"]];
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            self.imgView.image = [UIImage easeUIImageNamed:@"msg_send_audio"];
+            self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"msg_send_audio02"], [UIImage easeUIImageNamed:@"msg_send_audio01"], [UIImage easeUIImageNamed:@"msg_send_audio"]];
+        }else {
+            self.imgView.image = [UIImage easeUIImageNamed:@"msg_send_audio"];
+            self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"msg_send_audio02"], [UIImage easeUIImageNamed:@"msg_send_audio01"], [UIImage easeUIImageNamed:@"msg_send_audio"]];
+        }
+        
     } else {
         
         [self.imgView Ease_makeConstraints:^(EaseConstraintMaker *make) {
@@ -85,9 +99,15 @@
         }];
         
         self.textLabel.textAlignment = NSTextAlignmentLeft;
-        
-        self.imgView.image = [UIImage easeUIImageNamed:@"msg_recv_audio"];
-        self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"msg_recv_audio02"], [UIImage easeUIImageNamed:@"msg_recv_audio01"], [UIImage easeUIImageNamed:@"msg_recv_audio"]];
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            self.imgView.image = [UIImage easeUIImageNamed:@"msg_recv_audio"];
+            self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"msg_recv_audio02"], [UIImage easeUIImageNamed:@"msg_recv_audio01"], [UIImage easeUIImageNamed:@"msg_recv_audio"]];
+        }else {
+            self.imgView.image = [UIImage easeUIImageNamed:@"msg_recv_audio"];
+            self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"msg_recv_audio02"], [UIImage easeUIImageNamed:@"msg_recv_audio01"], [UIImage easeUIImageNamed:@"msg_recv_audio"]];
+        }
+
+       
     }
 }
 

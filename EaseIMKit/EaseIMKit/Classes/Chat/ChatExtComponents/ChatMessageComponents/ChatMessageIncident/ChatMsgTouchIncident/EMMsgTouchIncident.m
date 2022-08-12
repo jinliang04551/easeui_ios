@@ -326,7 +326,13 @@
     [EaseAlertController showErrorAlert:@"模拟器无法打开文件"];
 #elif TARGET_OS_IPHONE
         
-        [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgWhiteColor;
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgWhiteColor;
+
+        }else {
+            [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgBlackColor;
+        }
+            
 
         NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:aPathe];
         NSLog(@"\nfile  --    :%@",[fileHandle readDataToEndOfFile]);
