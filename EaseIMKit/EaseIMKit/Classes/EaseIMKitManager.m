@@ -43,6 +43,10 @@ static NSString *g_UIKitVersion = @"1.0.0";
 
 @property (nonatomic, strong) NSMutableArray *joinedGroupIdArray;
 
+//极狐专属服务群id列表
+@property (nonatomic, strong) NSMutableArray *exGroupIds;
+
+
 @end
 
 #define IMKitVersion @"1.0.0"
@@ -103,6 +107,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
         }
     }];
     
+    
     [EMNotificationHelper shared];
     [SingleCallController sharedManager];
     [ConferenceController sharedManager];
@@ -114,7 +119,88 @@ static NSString *g_UIKitVersion = @"1.0.0";
     config.enableRTCTokenValidate = YES;
 
     [[EaseCallManager sharedManager] initWithConfig:config delegate:self];
+    
+    [self fetchOwnUserInfo];
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        [self fetchJiHuExGroupList];
+    }else {
+        [self fetchAllConvsationsAndloadUnreadCount];
+    }
+    
 }
+
+
+- (void)fetchJiHuExGroupList {
+    //极狐需要调接口
+    [[EaseHttpManager sharedManager] fetchExclusiveServerGroupListWithCompletion:^(NSInteger statusCode, NSString * _Nonnull response) {
+
+        if (response && response.length > 0 && statusCode) {
+            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+            if (statusCode == 200) {
+                NSArray *groups = responsedict[@"entity"];
+                NSMutableArray *tGroupIds = [NSMutableArray array];
+                for (int i = 0; i< groups.count; ++i) {
+                    NSDictionary *groupDic = groups[i];
+                    NSString *groupId = groupDic[@"groupId"];
+                    if (groupId) {
+                        [tGroupIds addObject:groupId];
+                    }
+                }
+                self.exGroupIds = tGroupIds;
+                [self createExGroupsConversations];
+                [self fetchAllConvsationsAndloadUnreadCount];
+
+
+            }else {
+                NSLog(@"%s errorDescription:%@",__func__,errorDescription);
+            }
+
+        }
+
+    }];
+
+}
+
+
+- (void)createExGroupsConversations {
+    NSArray *exGroupIds = self.exGroupIds;
+    for (int i = 0; i < exGroupIds.count; ++i) {
+        NSString *groupId = exGroupIds[i];
+       EMConversation *groupConv =  [[EMClient sharedClient].chatManager getConversation:groupId type:EMConversationTypeGroupChat createIfNotExist:YES];
+        groupConv.ext = @{@"JiHuExGroupChat":@(YES)};
+    }
+
+}
+
+    
+- (void)fetchAllConvsationsAndloadUnreadCount {
+    if (![EaseIMKitOptions sharedOptions].isFirstLaunch) {
+        [EaseIMKitOptions sharedOptions].isFirstLaunch = YES;
+        [[EaseIMKitOptions sharedOptions] archive];
+        
+        [[EMClient sharedClient].chatManager getConversationsFromServer:^(NSArray *aCoversations, EMError *aError) {
+            [self _resetConversationsUnreadCount];
+        }];
+    }else {
+        [self _resetConversationsUnreadCount];
+    }
+}
+
+
+
+- (void)fetchOwnUserInfo {
+    NSString *username = [EMClient sharedClient].currentUsername;
+    if (username.length == 0) {
+        return;
+    }
+    [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[username]];
+}
+
+
+
 
 + (EaseIMKitManager *)shared {
     return easeIMKit;
@@ -455,7 +541,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
         unreadCount += conversation.unreadMessagesCount;
         
         //专属群未读
-        if ([[EaseIMKitMessageHelper shareMessageHelper].exGroupIds containsObject:conversation.conversationId]) {
+        if ([self.exGroupIds containsObject:conversation.conversationId]) {
             exclusivegroupUnReadCount += conversation.unreadMessagesCount;
         }
     }
@@ -937,25 +1023,15 @@ static NSString *g_UIKitVersion = @"1.0.0";
         if (response && response.length > 0 && statusCode) {
             NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
             
             [[EMClient sharedClient] logout:YES completion:^(EMError * _Nullable aError) {
                 if (aError == nil) {
-                    [EaseKitUtil removeLoginUserToken];
-                    [[EaseIMKitMessageHelper shareMessageHelper] clearMemeryCache];
-                    
-                    EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
-                    options.isAutoLogin = NO;
-                    options.loggedInUsername = @"";
-                    [options archive];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
-                    
+                    [self clearCacheAfterLogoutSuccessed];
                     completion(YES,nil);
                 }else {
-//                    [self showHint:aError.errorDescription];
-//                    completion(NO,aError.errorDescription);
                     
                     [[EMClient sharedClient] logout:NO completion:^(EMError * _Nullable aError) {
+                        [self clearCacheAfterLogoutSuccessed];
                         completion(YES,nil);
                     }];
                 }
@@ -969,11 +1045,33 @@ static NSString *g_UIKitVersion = @"1.0.0";
 }
 
 
+- (void)clearCacheAfterLogoutSuccessed {
+    [EaseKitUtil removeLoginUserToken];
+    [[EaseIMKitMessageHelper shareMessageHelper] clearMemeryCache];
+    
+    EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
+    options.isAutoLogin = NO;
+    options.loggedInUsername = @"";
+    options.isFirstLaunch = NO;
+    [options archive];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
+    
+}
+
+
 - (NSMutableArray *)joinedGroupIdArray {
     if (_joinedGroupIdArray == nil) {
         _joinedGroupIdArray = [NSMutableArray array];
     }
     return _joinedGroupIdArray;
+}
+
+- (NSMutableArray *)exGroupIds {
+    if (_exGroupIds == nil) {
+        _exGroupIds = [NSMutableArray array];
+    }
+    return _exGroupIds;
 }
 
 - (void)enterSingleChatPageWithUserId:(NSString *)userId {

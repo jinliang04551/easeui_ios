@@ -844,6 +844,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
 {
     if (self.view.window) {
         NSInteger toRow = -1;
+        [self.tableView reloadData];
         if ([self.dataArray count] > 0) {
             toRow = self.dataArray.count - 1;
             

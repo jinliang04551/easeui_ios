@@ -143,6 +143,7 @@ UITableView * tableView;
             MISRedDotConfig *config = [[MISRedDotConfig alloc] init];
             config.offsetY = tableView.rowHeight* 0.4;
             config.offsetX = 5.0;
+            config.size = CGSizeMake(8.0, 8.0);
             config;
         })];
         if ([EaseIMKitMessageHelper shareMessageHelper].hasJoinGroupApply) {

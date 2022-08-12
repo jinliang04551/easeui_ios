@@ -81,9 +81,10 @@
     if (username.length == 0) {
         return;
     }
-    
     [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[username]];
 }
+
+
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -533,6 +534,7 @@
             MISRedDotConfig *config = [[MISRedDotConfig alloc] init];
             config.offsetY = 2;
             config.offsetX = -2;
+            config.size = CGSizeMake(8.0, 8.0);
             config;
         })];
         _rightNavBarBtn.MIS_redDot.hidden = YES;

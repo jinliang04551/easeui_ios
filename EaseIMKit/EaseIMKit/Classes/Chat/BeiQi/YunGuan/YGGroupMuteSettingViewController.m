@@ -11,6 +11,7 @@
 #import "YGGroupAddMuteCell.h"
 #import "YGGroupAddMuteViewController.h"
 #import "EaseHeaders.h"
+#import "EaseAlertController.h"
 
 
 @interface YGGroupMuteSettingViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -47,7 +48,10 @@
     [self placeAndLayoutSubviews];
     
     [self updateUI];
+    
+    [self _fetchGroupMutesWithIsHeader:YES isShowHUD:YES];
 }
+
 
 - (void)backItemAction {
     [self.navigationController popViewControllerAnimated:YES];
@@ -84,6 +88,42 @@
 }
 
 
+- (void)_fetchGroupMutesWithIsHeader:(BOOL)aIsHeader
+                           isShowHUD:(BOOL)aIsShowHUD
+{
+    if (aIsShowHUD) {
+        [self showHudInView:self.view hint:NSLocalizedString(@"fetchingMuteList...", nil)];
+    }
+    
+    __weak typeof(self) weakself = self;
+    [[EMClient sharedClient].groupManager getGroupMuteListFromServerWithId:self.group.groupId pageNumber:0 pageSize:50 completion:^(NSArray *aList, EMError *aError) {
+        if (aIsShowHUD) {
+            [weakself hideHud];
+        }
+        
+        if (aError) {
+            [self showHint:aError.errorDescription];
+        } else {
+            if (aIsHeader) {
+                [weakself.dataArray removeAllObjects];
+            }
+            [weakself.dataArray addObjectsFromArray:aList];
+            
+//            if ([aList count] == 0) {
+//                weakself.showRefreshFooter = NO;
+//            } else {
+//                weakself.showRefreshFooter = YES;
+//            }
+            
+            [weakself.tableView reloadData];
+        }
+        
+//        [weakself tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
+    }];
+    
+}
+
+
 
 - (void)goAddMutePage {
     YGGroupAddMuteViewController *vc = [[YGGroupAddMuteViewController alloc] init];
@@ -103,7 +143,6 @@
             [self.tableView reloadData];
         }else {
             [self showHint:@"禁言失败"];
-//            [EaseAlertController showErrorAlert:aError.debugDescription];
         }
     }];
 }
@@ -131,6 +170,7 @@
     
     [self.tableView reloadData];
 }
+
 
 #pragma mark - Table view data source
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

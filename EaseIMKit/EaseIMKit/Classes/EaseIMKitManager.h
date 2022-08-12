@@ -80,6 +80,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 //专属群未读数
 @property (nonatomic, assign,readonly) NSInteger exclusivegroupUnReadCount;
+//当前未读总数
+@property (nonatomic, assign,readonly) NSInteger currentUnreadCount;
 
 
 + (BOOL)managerWithEaseIMKitOptions:(EaseIMKitOptions *)options;
