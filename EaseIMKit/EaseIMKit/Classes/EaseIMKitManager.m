@@ -115,7 +115,9 @@ static NSString *g_UIKitVersion = @"1.0.0";
     [[UserInfoStore sharedInstance] loadInfosFromLocal];
           
     EaseCallConfig* config = [[EaseCallConfig alloc] init];
-    config.agoraAppId = @"15cb0d28b87b425ea613fc46f7c9f974";
+//    config.agoraAppId = @"15cb0d28b87b425ea613fc46f7c9f974";
+    config.agoraAppId = @"943bfefbbfb54b3cac36507a1b006a9f";
+
     config.enableRTCTokenValidate = YES;
 
     [[EaseCallManager sharedManager] initWithConfig:config delegate:self];
@@ -843,8 +845,16 @@ static NSString *g_UIKitVersion = @"1.0.0";
     }
     
     NSString* resCode = [dic objectForKey:@"status"];
+    NSString* error = [dic objectForKey:@"error"];
+
     NSDictionary *entity = dic[@"entity"];
 
+    
+    if (error.length > 0) {
+        return;
+    }
+    
+    
     if([resCode isEqualToString:@"OK"]) {
         NSMutableArray* rtcChannels = [entity objectForKey:@"rtcChannels"];
         

@@ -129,7 +129,7 @@
     if (self.direction == EMMessageDirectionReceive) {
         [_avatarView Ease_makeConstraints:^(EaseConstraintMaker *make) {
             make.top.equalTo(self.contentView).offset(15);
-            make.left.equalTo(self.contentView).offset(2*componentSpacing);
+            make.left.equalTo(self.contentView).offset(16.0);
             make.width.height.equalTo(@(avatarLonger));
         }];
         
@@ -154,7 +154,7 @@
     } else {
         [_avatarView Ease_makeConstraints:^(EaseConstraintMaker *make) {
             make.top.equalTo(self.contentView).offset(15);
-            make.right.equalTo(self.contentView).offset(-2*componentSpacing);
+            make.right.equalTo(self.contentView).offset(-16.0);
             make.width.height.equalTo(@(avatarLonger));
         }];
     }

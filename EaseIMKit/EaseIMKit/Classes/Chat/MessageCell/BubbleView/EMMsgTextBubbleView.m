@@ -44,18 +44,18 @@
 
     [self addSubview:self.textLabel];
     [self.textLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.top.equalTo(self.ease_top).offset(10);
-        make.bottom.equalTo(self.ease_bottom).offset(-10);
+        make.top.equalTo(self.ease_top).offset(9.0);
+        make.bottom.equalTo(self.ease_bottom).offset(-9.0);
     }];
     if (self.direction == EMMessageDirectionSend) {
         [self.textLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
             make.left.equalTo(self.ease_left).offset(10);
-            make.right.equalTo(self.ease_right).offset(-10);
+            make.right.equalTo(self.ease_right).offset(-15);
         }];
         
     } else {
         [self.textLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
-            make.left.equalTo(self.ease_left).offset(10);
+            make.left.equalTo(self.ease_left).offset(15);
             make.right.equalTo(self.ease_right).offset(-10);
         }];
         

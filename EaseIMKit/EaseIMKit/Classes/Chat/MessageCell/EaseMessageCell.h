@@ -12,7 +12,7 @@
 #import "EMMessageBubbleView.h"
 #import "EaseChatViewModel.h"
 
-#define avatarLonger 40
+#define avatarLonger 38.0
 #define componentSpacing 10
 
 NS_ASSUME_NONNULL_BEGIN
