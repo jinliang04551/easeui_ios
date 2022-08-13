@@ -41,13 +41,21 @@
 #pragma mark - Subviews
 
 - (void)_setupSubviews {
+    [self addSubview:self.control];
     [self addSubview:self.textField];
-    [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
+
+    [self.control mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
         make.left.equalTo(self).offset(16);
         make.right.equalTo(self).offset(-16);
         make.height.equalTo(@(kTextFieldHeight));
     }];
+    
+    
+    [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.control);
+    }];
+    
 }
 
 #pragma mark - UITextFieldDelegate
@@ -107,10 +115,13 @@
 }
 
 - (void)cancelAction {
+    self.textField.hidden = YES;
+    self.control.hidden = NO;
+    
     [self.operateButton removeFromSuperview];
     
     [self.textField resignFirstResponder];
-    self.textField.text = nil;
+    self.textField.text = @"";
     [self.textField mas_updateConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self).offset(-16);
     }];
@@ -138,6 +149,7 @@
     }
     return _operateButton;
 }
+
 
 - (void)searchButtonAction {
     self.control.hidden = YES;
@@ -183,6 +195,7 @@
             
         }
         
+        _textField.hidden = YES;
     }
     return _textField;
 }
@@ -209,8 +222,16 @@
     if (_control == nil) {
         _control = [[UIControl alloc] initWithFrame:CGRectZero];
         _control.clipsToBounds = YES;
-        _control.layer.cornerRadius = 18;
-        _control.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+        _control.layer.cornerRadius = kTextFieldHeight * 0.5;
+        
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            _control.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+
+        }else {
+            _control.backgroundColor = [UIColor whiteColor];
+            [_textField setTextColor:UIColor.blackColor];
+        }
+        
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(searchButtonAction)];
         [_control addGestureRecognizer:tap];
 
@@ -226,7 +247,7 @@
         [_control addSubview:subView];
 
         [imageView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.width.height.mas_equalTo(15);
+            make.size.mas_equalTo(20.0);
             make.left.equalTo(subView);
             make.top.equalTo(subView);
             make.bottom.equalTo(subView);

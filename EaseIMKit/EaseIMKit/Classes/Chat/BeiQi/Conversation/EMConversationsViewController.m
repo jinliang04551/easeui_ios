@@ -197,7 +197,7 @@
     [control addSubview:subView];
     
     [imageView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.height.mas_equalTo(15);
+        make.width.height.mas_equalTo(20.0);
         make.left.equalTo(subView);
         make.top.equalTo(subView);
         make.bottom.equalTo(subView);
