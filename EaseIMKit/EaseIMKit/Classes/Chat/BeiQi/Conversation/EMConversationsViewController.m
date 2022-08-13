@@ -74,6 +74,7 @@
         [self refreshTableViewWithData];
     }
     [self fetchOwnUserInfo];
+    
 }
 
 - (void)fetchOwnUserInfo {

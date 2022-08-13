@@ -55,7 +55,7 @@
         _contentFontColor = [UIColor colorWithHexString:@"#171717"];
 }
         
-        _contentFontSize = 18.f;
+        _contentFontSize = 14.0;
         _inputBarStyle = EaseInputBarStyleAll;
         _avatarStyle = RoundedCorner;
         _avatarCornerRadius = 0;

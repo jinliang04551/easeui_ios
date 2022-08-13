@@ -19,6 +19,7 @@
 
 
 #define kViewTopPadding  200.0f
+#define kSegmentViewHeight 64.0
 
 @interface YGGroupReadReciptMSgViewController ()<MISScrollPageControllerDataSource,
 MISScrollPageControllerDelegate>
@@ -94,7 +95,7 @@ MISScrollPageControllerDelegate>
         make.top.equalTo(self.titleView.mas_bottom);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
-        make.height.equalTo(@(50.0));
+        make.height.equalTo(@(kSegmentViewHeight));
     }];
     
     
@@ -253,7 +254,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 - (MISScrollPageSegmentView*)segView{
     if(!_segView){
-        _segView = [self.pageController segmentViewWithFrame:CGRectMake(0, 0, EaseIMKit_ScreenWidth, 50)];
+        _segView = [self.pageController segmentViewWithFrame:CGRectMake(0, 0, EaseIMKit_ScreenWidth, kSegmentViewHeight)];
         
     }
     return _segView;
@@ -262,7 +263,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 - (MISScrollPageContentView*)contentView {
     if(!_contentView){
-        _contentView = [self.pageController contentViewWithFrame:CGRectMake(0, 50, EaseIMKit_ScreenWidth, EaseIMKit_ScreenHeight-EaseIMKit_NavBarAndStatusBarHeight - 50.0)];
+        _contentView = [self.pageController contentViewWithFrame:CGRectMake(0, 50, EaseIMKit_ScreenWidth, EaseIMKit_ScreenHeight-EaseIMKit_NavBarAndStatusBarHeight - kSegmentViewHeight)];
     }
     return _contentView;
 }
@@ -325,4 +326,5 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 @end
 
 #undef kViewTopPadding
+#undef kSegmentViewHeight
 

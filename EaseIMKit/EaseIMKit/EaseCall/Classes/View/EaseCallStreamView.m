@@ -61,10 +61,6 @@
         }];
         
         
-        self.nameLabel = [[UILabel alloc] init];
-        self.nameLabel.textColor = [UIColor whiteColor];
-        self.nameLabel.font = [UIFont systemFontOfSize:12.0];
-        self.nameLabel.textAlignment = NSTextAlignmentLeft;
         [self addSubview:self.nameLabel];
         [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self).offset(-5);
@@ -76,7 +72,6 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapAction:)];
         [self addGestureRecognizer:tap];
         
-        [self bringSubviewToFront:_nameLabel];
         
         _isLockedBgView = NO;
     }
@@ -104,7 +99,6 @@
     if (enableVideo) {
         _bgView.hidden = YES;
         [_displayView setHidden:NO];
-        [self bringSubviewToFront:_nameLabel];
     } else {
         _bgView.hidden = NO;
         [_displayView setHidden:YES];
@@ -149,6 +143,17 @@
     }
 }
 
+
+#pragma mark getter and estter
+- (UILabel *)nameLabel {
+    if (_nameLabel == nil) {
+        _nameLabel = [[UILabel alloc] init];
+        _nameLabel.textColor = [UIColor whiteColor];
+        _nameLabel.font = [UIFont systemFontOfSize:12.0];
+        _nameLabel.textAlignment = NSTextAlignmentLeft;
+    }
+    return _nameLabel;
+}
 - (UIView *)nameBgView {
     if (_nameBgView == nil) {
         _nameBgView = [[UIView alloc] init];
@@ -194,5 +199,6 @@
     }
     return _timeTimer;
 }
+
 
 @end

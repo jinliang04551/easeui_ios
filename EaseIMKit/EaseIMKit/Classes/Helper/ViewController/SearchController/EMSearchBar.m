@@ -68,7 +68,7 @@
     [self addSubview:self.operateButton];
     [self.operateButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
-        make.right.equalTo(self).offset(-5);
+        make.right.equalTo(self).offset(-16.0);
         make.width.equalTo(@(30.0));
         make.height.equalTo(self);
     }];

@@ -136,8 +136,8 @@
     [self.view sendSubviewToBack:self.searchBar];
     [self.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.confInviteSelectedUsersView.mas_bottom).offset(8.0);
-        make.left.equalTo(self.view).offset(16.0);
-        make.right.equalTo(self.view).offset(-16.0);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
         make.height.equalTo(@(32.0));
     }];
 
@@ -530,9 +530,25 @@
 - (UIButton *)cancelButton {
     if (_cancelButton == nil) {
         _cancelButton = [[UIButton alloc] init];
-        _cancelButton.titleLabel.font = EaseIMKit_NFont(14.0);
-        [_cancelButton setTitle:@"取消" forState:UIControlStateNormal];
-        [_cancelButton setTitleColor:[UIColor colorWithHexString:@"#B9B9B9"] forState:UIControlStateNormal];
+//        _cancelButton.titleLabel.font = EaseIMKit_NFont(14.0);
+//        [_cancelButton setTitle:@"取消" forState:UIControlStateNormal];
+//        [_cancelButton setTitleColor:[UIColor colorWithHexString:@"#B9B9B9"] forState:UIControlStateNormal];
+
+        UILabel *tLabel = [[UILabel alloc] init];
+        tLabel.font = EaseIMKit_NFont(14.0);
+        tLabel.text = @"取消";
+        
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            tLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+        }else {
+            tLabel.textColor = [UIColor colorWithHexString:@"#252525"];
+        }
+        
+        tLabel.textAlignment = NSTextAlignmentLeft;
+        [_cancelButton addSubview:tLabel];
+        [tLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(_cancelButton);
+        }];
         
         [_cancelButton addTarget:self action:@selector(cancelAction) forControlEvents:UIControlEventTouchUpInside];
     }

@@ -84,8 +84,8 @@
             self.imgView.image = [UIImage easeUIImageNamed:@"msg_send_audio"];
             self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"msg_send_audio02"], [UIImage easeUIImageNamed:@"msg_send_audio01"], [UIImage easeUIImageNamed:@"msg_send_audio"]];
         }else {
-            self.imgView.image = [UIImage easeUIImageNamed:@"msg_send_audio"];
-            self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"msg_send_audio02"], [UIImage easeUIImageNamed:@"msg_send_audio01"], [UIImage easeUIImageNamed:@"msg_send_audio"]];
+            self.imgView.image = [UIImage easeUIImageNamed:@"yg_msg_send_audio"];
+            self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"yg_msg_send_audio02"], [UIImage easeUIImageNamed:@"yg_msg_send_audio01"], [UIImage easeUIImageNamed:@"yg_msg_send_audio"]];
         }
         
     } else {
@@ -103,8 +103,8 @@
             self.imgView.image = [UIImage easeUIImageNamed:@"msg_recv_audio"];
             self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"msg_recv_audio02"], [UIImage easeUIImageNamed:@"msg_recv_audio01"], [UIImage easeUIImageNamed:@"msg_recv_audio"]];
         }else {
-            self.imgView.image = [UIImage easeUIImageNamed:@"msg_recv_audio"];
-            self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"msg_recv_audio02"], [UIImage easeUIImageNamed:@"msg_recv_audio01"], [UIImage easeUIImageNamed:@"msg_recv_audio"]];
+            self.imgView.image = [UIImage easeUIImageNamed:@"yg_msg_recv_audio"];
+            self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"yg_msg_recv_audio02"], [UIImage easeUIImageNamed:@"yg_msg_recv_audio01"], [UIImage easeUIImageNamed:@"yg_msg_recv_audio"]];
         }
 
        
