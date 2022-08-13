@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 //搜索框占位 view
-@interface EaseSearchPlaceView : UIView
+@interface EaseSearchView : UIView
 
 @end
 

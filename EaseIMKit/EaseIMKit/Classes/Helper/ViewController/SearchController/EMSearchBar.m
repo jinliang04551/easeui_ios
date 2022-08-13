@@ -14,6 +14,8 @@
 @interface EMSearchBar()<UITextFieldDelegate>
 
 @property (nonatomic, strong) UIButton *operateButton;
+@property (nonatomic, strong) UIView *leftView;
+
 
 @end
 
@@ -38,22 +40,7 @@
 
 #pragma mark - Subviews
 
-- (void)_setupSubviews
-{
-
-    self.textField = [[UITextField alloc] init];
-    self.textField.delegate = self;
-    
-//    self.textField.font = [UIFont systemFontOfSize:16];
-    self.textField.font = [UIFont systemFontOfSize:14.0];
-    self.textField.placeholder = NSLocalizedString(@"search", nil);
-    self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    self.textField.leftViewMode = UITextFieldViewModeAlways;
-    self.textField.returnKeyType = UIReturnKeySearch;
-    self.textField.layer.cornerRadius = kTextFieldHeight * 0.5;
-    
-    
-    
+- (void)_setupSubviews {
     [self addSubview:self.textField];
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
@@ -61,31 +48,6 @@
         make.right.equalTo(self).offset(-16);
         make.height.equalTo(@(kTextFieldHeight));
     }];
-    
-    
-    UIImageView *leftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 15)];
-    leftView.contentMode = UIViewContentModeScaleAspectFit;
-//    leftView.image = [UIImage imageNamed:@"search_gray"];
-    leftView.image = [UIImage easeUIImageNamed:@"jh_search_leftIcon"];
-    self.textField.leftView = leftView;
-    
-    UIImageView *rightView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 15)];
-    rightView.contentMode = UIViewContentModeScaleAspectFit;
-//    leftView.image = [UIImage imageNamed:@"search_gray"];
-    rightView.image = [UIImage easeUIImageNamed:@"jh_invite_delete"];
-    self.textField.rightView = rightView;
-    
-if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    self.textField.backgroundColor = [UIColor colorWithHexString:@"#252525"];
-    [self.textField setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
-    self.textField.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
-    self.backgroundColor = EaseIMKit_ViewBgBlackColor;
-}else {
-    self.backgroundColor = EaseIMKit_ViewBgWhiteColor;
-    self.textField.backgroundColor = [UIColor whiteColor];
-    [self.textField setTextColor:UIColor.blackColor];
-    
-}
 }
 
 #pragma mark - UITextFieldDelegate
@@ -130,7 +92,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     if (self.textField.text.length > 0) {
         [self.operateButton setTitle:@"搜索" forState:UIControlStateNormal];
     }else {
-        [self.operateButton setTitle:NSLocalizedString(@"cancel", nil) forState:UIControlStateNormal];
+        [self.operateButton setTitle:@"取消" forState:UIControlStateNormal];
     }
     
 }
@@ -176,6 +138,116 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     }
     return _operateButton;
 }
+
+- (void)searchButtonAction {
+    self.control.hidden = YES;
+    self.textField.hidden = NO;
+    [self.textField becomeFirstResponder];
+}
+
+#pragma mark getter and setter
+- (UITextField *)textField {
+    if (_textField == nil) {
+        _textField = [[UITextField alloc] init];
+        _textField.delegate = self;
+        _textField.font = [UIFont systemFontOfSize:14.0];
+        _textField.placeholder = @"搜索";
+        _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _textField.leftViewMode = UITextFieldViewModeAlways;
+        _textField.returnKeyType = UIReturnKeySearch;
+        _textField.layer.cornerRadius = kTextFieldHeight * 0.5;
+        _textField.leftView = self.leftView;
+
+        
+        UIImageView *rightImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        rightImageView.contentMode = UIViewContentModeScaleAspectFit;
+        rightImageView.image = [UIImage easeUIImageNamed:@"jh_invite_delete"];
+        
+        UIView *rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
+        
+        [rightView addSubview:rightImageView];
+        [rightImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(rightView).insets(UIEdgeInsetsMake(0, 0, 0, 14.0));
+        }];
+        _textField.rightView = rightView;
+        
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            _textField.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+            [_textField setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
+            _textField.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
+            self.backgroundColor = EaseIMKit_ViewBgBlackColor;
+        }else {
+            self.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+            _textField.backgroundColor = [UIColor whiteColor];
+            [_textField setTextColor:UIColor.blackColor];
+            
+        }
+        
+    }
+    return _textField;
+}
+
+- (UIView *)leftView {
+    if (_leftView == nil) {
+        _leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
+
+        UIImageView *leftImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        leftImageView.contentMode = UIViewContentModeScaleAspectFit;
+        leftImageView.image = [UIImage easeUIImageNamed:@"jh_search_leftIcon"];
+        
+        
+        [_leftView addSubview:leftImageView];
+        [leftImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(_leftView).insets(UIEdgeInsetsMake(0, 10.0, 0, 6.0));
+        }];
+        
+    }
+    return _leftView;
+}
+
+- (UIControl *)control {
+    if (_control == nil) {
+        _control = [[UIControl alloc] initWithFrame:CGRectZero];
+        _control.clipsToBounds = YES;
+        _control.layer.cornerRadius = 18;
+        _control.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(searchButtonAction)];
+        [_control addGestureRecognizer:tap];
+
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage easeUIImageNamed:@"jh_search_leftIcon"]];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+        label.font = [UIFont systemFontOfSize:14.0];
+        label.text = @"搜索";
+        label.textColor = [UIColor colorWithHexString:@"#7E7E7F"];
+        [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        UIView *subView = [[UIView alloc] init];
+        [subView addSubview:imageView];
+        [subView addSubview:label];
+        [_control addSubview:subView];
+
+        [imageView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.height.mas_equalTo(15);
+            make.left.equalTo(subView);
+            make.top.equalTo(subView);
+            make.bottom.equalTo(subView);
+        }];
+
+        [label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(imageView.mas_right).offset(3);
+            make.right.equalTo(subView);
+            make.top.equalTo(subView);
+            make.bottom.equalTo(subView);
+        }];
+
+        [subView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(_control);
+        }];
+        
+    }
+    return _control;
+}
+
+
 
 @end
 #undef kTextFieldHeight

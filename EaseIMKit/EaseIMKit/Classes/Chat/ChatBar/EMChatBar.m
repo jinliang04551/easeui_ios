@@ -65,46 +65,51 @@
         make.height.equalTo(@0.5);
     }];
     
-    self.audioButton = [[UIButton alloc] init];
-    [_audioButton addTarget:self action:@selector(audioButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+//    self.audioButton = [[UIButton alloc] init];
+//    [self.audioButton addTarget:self action:@selector(audioButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    
     [self addSubview:self.audioButton];
-    [_audioButton Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.top.equalTo(self).offset(14.0);
+    [self addSubview:self.textView];
+    [self addSubview:self.emojiButton];
+    [self addSubview:self.conversationToolBarBtn];
+
+    
+    [self.audioButton Ease_makeConstraints:^(EaseConstraintMaker *make) {
+//        make.top.equalTo(self).offset(14.0);
+        make.bottom.equalTo(self.textView.ease_bottom);
         make.left.equalTo(self).offset(12.0);
         make.width.Ease_equalTo(@(28));
         make.height.Ease_equalTo(@(28));
     }];
     
-    self.conversationToolBarBtn = [[UIButton alloc] init];
-    [_conversationToolBarBtn addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_conversationToolBarBtn];
-    [_conversationToolBarBtn Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.centerY.equalTo(_audioButton);
+//    self.conversationToolBarBtn = [[UIButton alloc] init];
+//    [_conversationToolBarBtn addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.conversationToolBarBtn Ease_makeConstraints:^(EaseConstraintMaker *make) {
+        make.centerY.equalTo(self.audioButton);
         make.right.equalTo(self).offset(-16);
-        make.size.equalTo(_audioButton);
+        make.size.equalTo(self.audioButton);
     }];
     
-    self.emojiButton = [[UIButton alloc] init];
-    [_emojiButton addTarget:self action:@selector(emoticonButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_emojiButton];
-    [_emojiButton Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.centerY.equalTo(_audioButton);
+//    self.emojiButton = [[UIButton alloc] init];
+//    [_emojiButton addTarget:self action:@selector(emoticonButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.emojiButton Ease_makeConstraints:^(EaseConstraintMaker *make) {
+        make.centerY.equalTo(self.audioButton);
         make.right.equalTo(self.conversationToolBarBtn.ease_left).offset(-kModuleMargin);
-        make.size.equalTo(_audioButton);
+        make.size.equalTo(self.audioButton);
     }];
     
-    self.textView = [[EaseTextView alloc] init];
-    self.textView.delegate = self;
-    
+//    self.textView = [[EaseTextView alloc] init];
+//    self.textView.delegate = self;
+
 if (EaseIMKitManager.shared.isJiHuApp){
-    [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"audio-unSelected"] forState:UIControlStateNormal];
-    [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
+    [self.audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"audio-unSelected"] forState:UIControlStateNormal];
+    [self.audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
     
-    [_conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"more-unselected"] forState:UIControlStateNormal];
-    [_conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"more-selected"] forState:UIControlStateSelected];
+    [self.conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"more-unselected"] forState:UIControlStateNormal];
+    [self.conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"more-selected"] forState:UIControlStateSelected];
     
-    [_emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"face"] forState:UIControlStateNormal];
-    [_emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
+    [self.emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"face"] forState:UIControlStateNormal];
+    [self.emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
     
     
     [self.textView setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
@@ -112,31 +117,30 @@ if (EaseIMKitManager.shared.isJiHuApp){
     self.textView.backgroundColor = [UIColor colorWithHexString:@"#3D3D3D"];
 
 }else {
-    [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_audio-unSelected"] forState:UIControlStateNormal];
-    [_audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_character"] forState:UIControlStateSelected];
+    [self.audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_audio-unSelected"] forState:UIControlStateNormal];
+    [self.audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_character"] forState:UIControlStateSelected];
     
-    [_conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"yg_more-unselected"] forState:UIControlStateNormal];
-    [_conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"yg_more-selected"] forState:UIControlStateSelected];
+    [self.conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"yg_more-unselected"] forState:UIControlStateNormal];
+    [self.conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"yg_more-selected"] forState:UIControlStateSelected];
     
-    [_emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_face"] forState:UIControlStateNormal];
-    [_emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_character"] forState:UIControlStateSelected];
+    [self.emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_face"] forState:UIControlStateNormal];
+    [self.emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_character"] forState:UIControlStateSelected];
 
     self.textView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
 }
 
    
-    self.textView.font = [UIFont systemFontOfSize:14.0];
-    self.textView.textAlignment = NSTextAlignmentLeft;
-    self.textView.textContainerInset = UIEdgeInsetsMake(8.0, 10, 10, 0);
-    if (@available(iOS 11.1, *)) {
-        self.textView.verticalScrollIndicatorInsets = UIEdgeInsetsMake(12, 20, 2, 0);
-    } else {
-        // Fallback on earlier versions
-    }
-    self.textView.returnKeyType = UIReturnKeySend;    
-    self.textView.placeHolder = @"说点啥";
-    self.textView.layer.cornerRadius = kTextViewMinHeight * 0.5;
-    [self addSubview:self.textView];
+//    self.textView.font = [UIFont systemFontOfSize:14.0];
+//    self.textView.textAlignment = NSTextAlignmentLeft;
+//    self.textView.textContainerInset = UIEdgeInsetsMake(8.0, 10, 10, 0);
+//    if (@available(iOS 11.1, *)) {
+//        self.textView.verticalScrollIndicatorInsets = UIEdgeInsetsMake(12, 20, 2, 0);
+//    } else {
+//        // Fallback on earlier versions
+//    }
+//    self.textView.returnKeyType = UIReturnKeySend;
+//    self.textView.placeHolder = @"说点啥";
+//    self.textView.layer.cornerRadius = kTextViewMinHeight * 0.5;
     
     [self.textView Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.top.equalTo(self).offset(12.0);
@@ -162,33 +166,14 @@ if (EaseIMKitManager.shared.isJiHuApp){
             make.right.equalTo(self).offset(-16);
         }
     }];
-    /*
-    self.audioDescBtn = [[UIButton alloc]init];
-    [self.audioDescBtn setBackgroundColor:[UIColor colorWithHexString:@"#E9E9E9"]];
-    [self.audioDescBtn setTitle:@"按住 说话" forState:UIControlStateNormal];
-    [self.audioDescBtn.titleLabel setFont:[UIFont systemFontOfSize:14]];
-    [self.audioDescBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [self.audioDescBtn.titleLabel setTextAlignment:NSTextAlignmentCenter];
-    self.audioDescBtn.layer.cornerRadius = 16;
-    [self.textView addSubview:self.audioDescBtn];
-    [self.audioDescBtn Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.width.height.equalTo(self.textView);
-        make.center.equalTo(self.textView);
-    }];
-    self.audioDescBtn.hidden = YES;
-    [self.audioDescBtn addTarget:self action:@selector(recordButtonTouchBegin) forControlEvents:UIControlEventTouchDown];
-    [self.audioDescBtn addTarget:self action:@selector(recordButtonTouchEnd) forControlEvents:UIControlEventTouchUpInside];
-    [self.audioDescBtn addTarget:self action:@selector(recordButtonTouchCancelBegin) forControlEvents:UIControlEventTouchDragOutside];
-    [self.audioDescBtn addTarget:self action:@selector(recordButtonTouchCancelCancel) forControlEvents:UIControlEventTouchDragInside];
-    [self.audioDescBtn addTarget:self action:@selector(recordButtonTouchCancelEnd) forControlEvents:UIControlEventTouchUpOutside];*/
     
-    self.bottomLine = [[UIView alloc] init];
-//    _bottomLine.backgroundColor = [UIColor colorWithHexString:@"#000000"];
-    self.bottomLine.backgroundColor = UIColor.blackColor;
     
-    _bottomLine.alpha = 0.1;
+//    self.bottomLine = [[UIView alloc] init];
+//    self.bottomLine.backgroundColor = UIColor.blackColor;
+//    _bottomLine.alpha = 0.1;
+    
     [self addSubview:self.bottomLine];
-    [_bottomLine Ease_makeConstraints:^(EaseConstraintMaker *make) {
+    [self.bottomLine Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.top.equalTo(self.textView.ease_bottom).offset(12.0);
         make.left.equalTo(self);
         make.right.equalTo(self);
@@ -251,11 +236,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
         if (sizeToFit.height <= 37.0) {
             return 32.0;
         }
-        
         return sizeToFit.height;
-
-//        return ceilf([self.textView sizeThatFits:self.textView.frame.size].height);
-//
 
     } else {
         return self.textView.contentSize.height;
@@ -485,6 +466,62 @@ if (EaseIMKitManager.shared.isJiHuApp){
             }
         }
     }
+}
+
+#pragma mark getter and setter
+- (UIButton *)audioButton {
+    if (_audioButton == nil) {
+        _audioButton = [[UIButton alloc] init];
+        [_audioButton addTarget:self action:@selector(audioButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _audioButton;
+}
+
+
+- (UIButton *)conversationToolBarBtn {
+    if (_conversationToolBarBtn == nil) {
+        _conversationToolBarBtn = [[UIButton alloc] init];
+        [_conversationToolBarBtn addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _conversationToolBarBtn;
+}
+
+- (UIButton *)emojiButton {
+    if (_emojiButton == nil) {
+        _emojiButton = [[UIButton alloc] init];
+        [_emojiButton addTarget:self action:@selector(emoticonButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _emojiButton;
+}
+
+- (EaseTextView *)textView {
+    if (_textView == nil) {
+        _textView = [[EaseTextView alloc] init];
+        _textView.delegate = self;
+        
+        _textView.font = [UIFont systemFontOfSize:14.0];
+        _textView.textAlignment = NSTextAlignmentLeft;
+        _textView.textContainerInset = UIEdgeInsetsMake(8.0, 10, 10, 0);
+        if (@available(iOS 11.1, *)) {
+            _textView.verticalScrollIndicatorInsets = UIEdgeInsetsMake(12, 20, 2, 0);
+        } else {
+            // Fallback on earlier versions
+        }
+        _textView.returnKeyType = UIReturnKeySend;
+        _textView.placeHolder = @"说点啥";
+        _textView.layer.cornerRadius = kTextViewMinHeight * 0.5;
+        
+    }
+    return _textView;
+}
+
+- (UIView *)bottomLine {
+    if (_bottomLine == nil) {
+        _bottomLine = [[UIView alloc] init];
+        _bottomLine.backgroundColor = UIColor.blackColor;
+        _bottomLine.alpha = 0.1;
+    }
+    return _bottomLine;
 }
 
 @end

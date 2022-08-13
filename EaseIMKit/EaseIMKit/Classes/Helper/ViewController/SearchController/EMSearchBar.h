@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UITextField *textField;
 
+@property (nonatomic, strong) UIControl *control;
+
 @end
 
 @protocol EMSearchBarDelegate <NSObject>
