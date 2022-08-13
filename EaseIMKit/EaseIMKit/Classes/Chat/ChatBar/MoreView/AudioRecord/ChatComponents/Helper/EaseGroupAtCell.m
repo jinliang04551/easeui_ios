@@ -37,7 +37,7 @@
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.iconImageView.ease_right).offset(8.0);
         make.width.lessThanOrEqualTo(@(200.0));
-        make.height.equalTo(@(10));
+
     }];
 
 }

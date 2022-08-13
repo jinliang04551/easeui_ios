@@ -53,7 +53,10 @@
     
     
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.control);
+        make.centerY.equalTo(self);
+        make.left.equalTo(self).offset(16);
+        make.right.equalTo(self).offset(-16);
+        make.height.equalTo(@(kTextFieldHeight));
     }];
     
 }
@@ -66,12 +69,12 @@
     [self.operateButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
         make.right.equalTo(self).offset(-5);
-        make.width.equalTo(@50);
+        make.width.equalTo(@(30.0));
         make.height.equalTo(self);
     }];
     
     [self.textField mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self).offset(-65);
+        make.right.equalTo(self).offset(-50);
     }];
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarShouldBeginEditing:)]) {
@@ -213,7 +216,7 @@
         [leftImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(_leftView).insets(UIEdgeInsetsMake(0, 10.0, 0, 6.0));
         }];
-        
+    
     }
     return _leftView;
 }

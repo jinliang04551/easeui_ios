@@ -446,6 +446,7 @@
                     userData.avatarURL = userInfo.avatarUrl;
                 }
             }else{
+                
                 [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[conversationId]];
             }
         }

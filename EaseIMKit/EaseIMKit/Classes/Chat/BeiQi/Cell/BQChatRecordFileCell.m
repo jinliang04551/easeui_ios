@@ -102,29 +102,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     
 }
 
-//- (void)updateWithObj:(id)obj {
-//    EMChatMessage *msg = (EMChatMessage *)obj;
-//    self.detailTextLabel.text =
-//
-//    self.avatarView.image = [UIImage easeUIImageNamed:@"jh_user_icon"];
-//    EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:msg.from];
-//    if(userInfo) {
-//        if(userInfo.nickName.length > 0) {
-//            self.nameLabel.text = userInfo.nickName;
-//        }
-//        if(userInfo.avatarUrl.length > 0) {
-//            NSURL* url = [NSURL URLWithString:userInfo.avatarUrl];
-//            if(url) {
-//                [self.avatarView sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-//                    [self setNeedsLayout];
-//                }];
-//            }
-//        }
-//    }else{
-//        [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[msg.from]];
-//    }
-//}
-
 
 @end
 

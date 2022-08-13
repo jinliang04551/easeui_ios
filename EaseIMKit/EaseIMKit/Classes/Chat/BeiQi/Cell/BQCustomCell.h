@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)prepare;
 - (void)placeSubViews;
 - (void)updateWithObj:(id)obj;
+- (void)updateCellWithUserId:(NSString *)aUid;
+
 
 @end
 

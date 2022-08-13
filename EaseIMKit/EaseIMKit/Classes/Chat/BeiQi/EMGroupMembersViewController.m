@@ -11,7 +11,6 @@
 #import "BQAvatarTitleRoleCell.h"
 #import "BQGroupEditMemberViewController.h"
 #import "EaseHeaders.h"
-#import "EaseRealtimeSearch.h"
 
 @interface EMGroupMembersViewController ()<EMSearchBarDelegate>
 

@@ -53,26 +53,26 @@
 
 - (void)updateWithObj:(id)obj {
     NSString *username = (NSString *)obj;
-    
     self.userId = username;
-    self.nameLabel.text = username;
-    self.imageView.image = [UIImage easeUIImageNamed:@"jh_user_icon"];
-    EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:username];
-    if(userInfo) {
-        if(userInfo.nickName.length > 0) {
-            self.nameLabel.text = userInfo.nickName;
-        }
-        if(userInfo.avatarUrl.length > 0) {
-            NSURL* url = [NSURL URLWithString:userInfo.avatarUrl];
-            if(url) {
-                [self.imageView sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                    [self setNeedsLayout];
-                }];
-            }
-        }
-    }else{
-        [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[username]];
-    }
+    
+    [self updateCellWithUserId:self.userId];
+    
+//    EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:username];
+//    if(userInfo) {
+//        if(userInfo.nickName.length > 0) {
+//            self.nameLabel.text = userInfo.nickName;
+//        }
+//        if(userInfo.avatarUrl.length > 0) {
+//            NSURL* url = [NSURL URLWithString:userInfo.avatarUrl];
+//            if(url) {
+//                [self.imageView sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+//                    [self setNeedsLayout];
+//                }];
+//            }
+//        }
+//    }else{
+//        [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[username]];
+//    }
     
 }
 

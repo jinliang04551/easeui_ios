@@ -82,6 +82,8 @@ static ConferenceController *confManager = nil;
             if(info && (info.avatarUrl.length > 0 || info.nickName > 0)) {
                 EaseCallUser* user = [EaseCallUser userWithNickName:info.nickName image:[NSURL URLWithString:info.avatarUrl]];
                 [[[EaseCallManager sharedManager] getEaseCallConfig] setUser:strId info:user];
+            }else {
+                
             }
         }
         [[EaseCallManager sharedManager] startInviteUsers:aInviteUsers ext:@{@"groupId":aConversationId} completion:^(NSString * callId, EaseCallError * aError) {

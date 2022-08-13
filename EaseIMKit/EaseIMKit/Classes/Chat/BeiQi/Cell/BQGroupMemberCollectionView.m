@@ -147,6 +147,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         self.nameLabel.text = userInfo.nickName.length > 0 ? userInfo.nickName: userInfo.userId;
 
     }else{
+        self.nameLabel.text = aUid;
+        [self.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_user_icon"]];
+        
         [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[aUid]];
     }
     

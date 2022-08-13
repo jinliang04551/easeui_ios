@@ -140,8 +140,10 @@
     chatTitle = _conversationModel.showName;
     if (self.conversation.type == EMConversationTypeChat) {
         EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:self.conversation.conversationId];
-        if(userInfo && userInfo.nickName.length > 0)
+        if(userInfo && userInfo.nickName.length > 0){
             chatTitle = userInfo.nickName;
+        }
+        
     }
     
     NSString *groupIdInfo = [NSString stringWithFormat:@"群组ID: %@",self.conversation.conversationId];
@@ -269,8 +271,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     self.titleLabel.text = _conversationModel.showName;
     if (self.conversation.type == EMConversationTypeChat) {
         EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:self.conversation.conversationId];
-        if(userInfo && userInfo.nickName.length > 0)
+        if(userInfo && userInfo.nickName.length > 0){
             self.titleLabel.text = userInfo.nickName;
+        }
     }
     
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {

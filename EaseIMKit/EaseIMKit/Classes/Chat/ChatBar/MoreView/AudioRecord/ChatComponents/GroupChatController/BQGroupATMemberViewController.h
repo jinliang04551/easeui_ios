@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EaseSearchViewController.h"
+#import "EMRefreshViewController.h"
 #import "EaseHeaders.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BQGroupATMemberViewController : EaseSearchViewController
+@interface BQGroupATMemberViewController : EMRefreshViewController
 @property (nonatomic, copy) void (^selectedAtMemberBlock)(NSString *userId);
 
 - (instancetype)initWithGroup:(EMGroup *)aGroup;

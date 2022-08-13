@@ -9,6 +9,8 @@
 
 #import "BQCustomCell.h"
 #import "EaseHeaders.h"
+#import "UserInfoStore.h"
+
 
 @interface BQCustomCell ()
 @property (nonatomic, strong) UIView* bottomLine;
@@ -49,6 +51,28 @@
 
 - (void)updateWithObj:(id)obj {
     
+}
+
+- (void)updateCellWithUserId:(NSString *)aUid {
+    EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:aUid];
+    if(userInfo) {
+        if(userInfo.avatarUrl.length > 0) {
+            NSURL* url = [NSURL URLWithString:userInfo.avatarUrl];
+            if(url) {
+                [self.iconImageView sd_setImageWithURL:url completed:nil];
+            }
+        }else {
+            [self.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_user_icon"]];
+        }
+             
+        self.nameLabel.text = userInfo.nickname.length > 0 ? userInfo.nickname: userInfo.userId;
+        
+    }else{
+        self.nameLabel.text = aUid;
+        [self.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_user_icon"]];
+
+        [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[aUid]];
+    }
 }
 
 

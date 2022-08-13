@@ -7,18 +7,25 @@
 //
 
 #import "BQGroupATMemberViewController.h"
-#import "EaseRealtimeSearch.h"
+#import "EMRealtimeSearch.h"
 #import "EaseSearchBar.h"
 #import "EaseGroupAtCell.h"
 #import "EaseSearchNoDataView.h"
 #import "EaseIMKitManager.h"
+#import "EaseNoDataPlaceHolderView.h"
+#import "EMSearchBar.h"
 
-
-@interface BQGroupATMemberViewController ()<EaseSearchBarDelegate>
+@interface BQGroupATMemberViewController ()<EMSearchBarDelegate>
 
 @property (nonatomic, strong) EMGroup *group;
 @property (nonatomic, strong) NSString *cursor;
 @property (nonatomic, strong) UIView *titleView;
+@property (nonatomic, strong) NSMutableArray *searchResultArray;
+@property (nonatomic, strong) EaseNoDataPlaceHolderView *noDataPromptView;
+@property (nonatomic, strong) EMSearchBar  *searchBar;
+@property (nonatomic) BOOL isSearching;
+@property (nonatomic, strong) EaseGroupAtCell *allCell;
+
 
 @end
 
@@ -40,18 +47,16 @@
 if (EaseIMKitManager.shared.isJiHuApp){
     self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
     self.tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
-    self.searchResultTableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+    self.tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
 }else {
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     self.tableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
-    self.searchResultTableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+    self.tableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 
 }
 
-    
-    
     [self.tableView registerClass:[EaseGroupAtCell class] forCellReuseIdentifier:NSStringFromClass([EaseGroupAtCell class])];
-    [self.searchResultTableView registerClass:[EaseGroupAtCell class] forCellReuseIdentifier:NSStringFromClass([EaseGroupAtCell class])];
+    [self.tableView registerClass:[EaseGroupAtCell class] forCellReuseIdentifier:NSStringFromClass([EaseGroupAtCell class])];
 
     
     [self _setupSubviews];
@@ -66,30 +71,64 @@ if (EaseIMKitManager.shared.isJiHuApp){
     
     self.title = @"选择提醒人";
     
+    self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
+
+    [self.view addSubview:self.titleView];
+    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(EaseIMKit_StatusBarHeight);
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@(44.0));
+    }];
+
+
+    [self.view addSubview:self.searchBar];
+    [self.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.titleView.mas_bottom);
+        make.left.equalTo(self.view).offset(16.0);
+        make.right.equalTo(self.view).offset(-16.0);
+        make.height.equalTo(@(32.0));
+    }];
+
+
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.searchBar.mas_bottom).offset(8.0);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+        make.bottom.equalTo(self.view);
+    }];
+
+    [self.view addSubview:self.noDataPromptView];
+    [self.noDataPromptView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.searchBar.mas_bottom).offset(60.0);
+        make.centerX.left.right.equalTo(self.view);
+    }];
+
+    
+
     self.showRefreshHeader = YES;
     self.tableView.rowHeight = 64.0;
     
 }
 
 
-//- (void)viewWillAppear:(BOOL)animated{
-//    [super viewWillAppear:animated];
-//    self.navigationController.navigationBarHidden = YES;
-//}
-//
-//- (void)viewWillDisappear:(BOOL)animated
-//{
-//    [super viewWillDisappear:animated];
-//    self.navigationController.navigationBarHidden = NO;
-//}
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
+}
 
 
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (tableView == self.tableView) {
-        return [self.dataArray count];
+    if (self.isSearching) {
+        return [self.searchResultArray count];
     } else {
-        return [self.searchResults count];
+        return [self.dataArray count] + 1;
     }
 }
 
@@ -101,10 +140,14 @@ if (EaseIMKitManager.shared.isJiHuApp){
     
     NSString *userId = @"";
     
-    if (tableView == self.tableView) {
-        userId = [self.dataArray objectAtIndex:indexPath.row];
+    if (self.isSearching) {
+        userId = [self.searchResultArray objectAtIndex:indexPath.row];
     } else {
-        userId = [self.searchResults objectAtIndex:indexPath.row];
+        if (indexPath.row == 0) {
+            return self.allCell;
+        }else {
+            userId = [self.dataArray objectAtIndex:indexPath.row -1];
+        }
     }
     [cell updateWithObj:userId];
 
@@ -119,10 +162,14 @@ if (EaseIMKitManager.shared.isJiHuApp){
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     NSString *name = nil;
-    if (tableView == self.tableView) {
-        name = [self.dataArray objectAtIndex:indexPath.row];
+    if (self.isSearching) {
+        name = [self.searchResultArray objectAtIndex:indexPath.row];
     } else {
-        name = [self.searchResults objectAtIndex:indexPath.row];
+        if (indexPath.row == 0) {
+            name = @"ALL";
+        }else {
+            name = [self.dataArray objectAtIndex:indexPath.row];
+        }
     }
     
     if (self.selectedAtMemberBlock) {
@@ -133,19 +180,43 @@ if (EaseIMKitManager.shared.isJiHuApp){
 }
 
 #pragma mark - EMSearchBarDelegate
-
-- (void)searchTextDidChangeWithString:(NSString *)aString
+- (void)searchBarShouldBeginEditing:(EMSearchBar *)searchBar
 {
-    __weak typeof(self) weakself = self;
-    [[EaseRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:nil resultBlock:^(NSArray *results) {
+    self.isSearching = YES;
+}
+
+- (void)searchBarCancelButtonAction:(EMSearchBar *)searchBar
+{
+    [[EMRealtimeSearch shared] realtimeSearchStop];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.isSearching = NO;
+    
+    self.noDataPromptView.hidden = YES;
+    [self.searchResultArray removeAllObjects];
+    [self.tableView reloadData];
+}
+
+- (void)searchBarSearchButtonClicked:(EMSearchBar *)searchBar
+{
+    
+}
+
+
+- (void)searchTextDidChangeWithString:(NSString *)aString {
+    
+    EaseIMKit_WS
+    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:nil resultBlock:^(NSArray *results) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            weakself.noDataPromptView.hidden = results.count > 0 ? YES : NO;
-            [weakself.searchResults removeAllObjects];
-            [weakself.searchResults addObjectsFromArray:results];
-            [weakself.searchResultTableView reloadData];
+            weakSelf.noDataPromptView.hidden = results.count > 0 ? YES : NO;
+            [weakSelf.searchResultArray removeAllObjects];
+            [weakSelf.searchResultArray addObjectsFromArray:results];
+            [weakSelf.tableView reloadData];
             
         });
     }];
+
+    
 }
 
 #pragma mark - Data
@@ -221,11 +292,42 @@ if (EaseIMKitManager.shared.isJiHuApp){
 }
 
 #pragma mark - Action
-
-- (void)backAction
-{
-    [[EaseRealtimeSearch shared] realtimeSearchStop];
+- (void)backAction {
+    [[EMRealtimeSearch shared] realtimeSearchStop];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+
+- (EaseNoDataPlaceHolderView *)noDataPromptView {
+    if (_noDataPromptView == nil) {
+        _noDataPromptView = EaseNoDataPlaceHolderView.new;
+        [_noDataPromptView.noDataImageView setImage:[UIImage easeUIImageNamed:@"ji_search_nodata"]];
+        _noDataPromptView.prompt.text = @"搜索无结果";
+        _noDataPromptView.hidden = YES;
+    }
+    return _noDataPromptView;
+}
+
+- (EMSearchBar *)searchBar {
+    if (_searchBar == nil) {
+        _searchBar = [[EMSearchBar alloc] init];
+        _searchBar.delegate = self;
+    }
+    return _searchBar;
+}
+
+- (NSMutableArray *)searchResultArray {
+    if (_searchResultArray == nil) {
+        _searchResultArray = [NSMutableArray array];
+    }
+    return _searchResultArray;
+}
+- (EaseGroupAtCell *)allCell {
+    if (_allCell == nil) {
+        _allCell = [[EaseGroupAtCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([EaseGroupAtCell class])];
+        [_allCell updateWithObj:@"所有人"];
+    }
+    return _allCell;
 }
 
 @end

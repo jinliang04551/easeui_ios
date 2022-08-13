@@ -50,23 +50,9 @@
 - (void)updateWithObj:(id)obj isOwner:(BOOL)isOwner {
     NSString *aUid = (NSString *)obj;
     
-    EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:aUid];
-    if(userInfo) {
-        if(userInfo.avatarUrl.length > 0) {
-            NSURL* url = [NSURL URLWithString:userInfo.avatarUrl];
-            if(url) {
-                [self.iconImageView sd_setImageWithURL:url completed:nil];
-            }
-        }else {
-            [self.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_user_icon"]];
-        }
-             
-        self.nameLabel.text = userInfo.nickname.length > 0 ? userInfo.nickname: userInfo.userId;
-        self.roleImageView.hidden = !isOwner;
-        
-    }else{
-        [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[aUid]];
-    }
+    self.roleImageView.hidden = !isOwner;
+
+    [self updateCellWithUserId:aUid];
     
 }
 
