@@ -58,8 +58,8 @@ Pod::Spec.new do |s|
     
     s.static_framework = true
 #    s.resource = 'EaseIMKit/EaseIMKit/Resources/EaseIMKit.bundle'
-   s.resources  = ['EaseIMKit/EaseIMKit/Resources/EaseIMKit.bundle','EaseIMKit/EaseIMKit/EaseCall/EaseCall.bundle']
-
+   s.resources  = ['EaseIMKit/EaseIMKit/Resources/EaseIMKit.bundle','EaseIMKit/EaseIMKit/EaseCall/EaseCall.bundle','EaseIMKit/EaseIMKit/Resources/*.{xib,mp3}']
+   
     #s.resources = ['Images/*.png', 'Sounds/*']
     
     #s.ios.resource_bundle = { 'EaseIMKit' => 'EaseIMKit/EaseIMKit/Assets/*.png' }
@@ -82,6 +82,6 @@ Pod::Spec.new do |s|
     s.dependency 'FMDB'
     s.dependency 'Bugly'
     s.dependency 'EMTranslate'
-    s.dependency 'EBBannerView', '1.1.2'
+#    s.dependency 'EBBannerView', '1.1.2'
 
 end

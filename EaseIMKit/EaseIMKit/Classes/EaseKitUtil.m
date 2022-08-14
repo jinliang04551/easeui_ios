@@ -136,4 +136,10 @@
      
 }
 
++ (NSBundle *)easeIMBundle {
+    NSBundle *tBundle = [NSBundle bundleForClass:self.class];
+    NSString* absolutePath = [tBundle pathForResource:@"EaseIMKit" ofType:@"bundle"];
+    NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];
+    return bundle;
+}
 @end

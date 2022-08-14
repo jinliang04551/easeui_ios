@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (UIViewController*)currentViewController;
 
++ (NSBundle *)easeIMBundle;
+
 @end
 
 NS_ASSUME_NONNULL_END

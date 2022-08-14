@@ -16,8 +16,8 @@
 #import "EaseConversationModel.h"
 #import "EaseIMKitManager.h"
 #import "EMChatViewController.h"
-#import "EBBannerView.h"
 #import "UserInfoStore.h"
+#import "EBBannerView.h"
 
 static EaseIMHelper *helper = nil;
 
