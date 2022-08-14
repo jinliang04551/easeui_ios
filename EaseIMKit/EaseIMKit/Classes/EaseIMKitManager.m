@@ -24,6 +24,11 @@
 #import "EaseHeaders.h"
 #import "EaseIMKitMessageHelper.h"
 #import <HyphenateChat/HyphenateChat.h>
+#import "EBBannerView.h"
+#import "EMRemindManager.h"
+#import "EaseKitUtil.h"
+#import "EMChatViewController.h"
+
 
 bool gInit;
 static EaseIMKitManager *easeIMKit = nil;
@@ -73,7 +78,6 @@ static NSString *g_UIKitVersion = @"1.0.0";
     
     if (option.isAutoLogin){
         [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@(YES)];
-        [self updateSettingAfterLoginSuccess];
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@(NO)];
     }
@@ -239,7 +243,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChanged:) name:ACCOUNT_LOGIN_CHANGED object:nil];
 
-    
+
     return self;
 }
 
@@ -251,7 +255,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
     [[EMClient sharedClient].groupManager removeDelegate:self];
 }
 
-#pragma mark NO
+#pragma mark NSNotification
 - (void)loginStateChanged:(NSNotification *)notify {
     BOOL loginSuccess = [notify.object boolValue];
     if (loginSuccess) {
@@ -283,8 +287,130 @@ static NSString *g_UIKitVersion = @"1.0.0";
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
     [self _resetConversationsUnreadCount];
+    
+    for (int i = 0 ; i < aMessages.count; ++i) {
+        EMChatMessage *msg = aMessages[i];
+        NSString *action = msg.ext[@"action"];
+        if ([action isEqualToString:@"invite"]) {
+            //通话邀请
+            continue;
+        }
+        if (i == aMessages.count - 1) {
+            BOOL isShow = [self isShowbannerMessage:msg];
+            if (!isShow) {
+                return;
+            }
+
+            [[NSNotificationCenter defaultCenter] postNotificationName:Banner_PUSHVIEWCONTROLLER object:msg];
+            
+        }else {
+            [EMRemindManager remindMessage:msg];
+        }
+        
+    }
+    
 }
  
+
+- (BOOL)isShowbannerMessage:(EMChatMessage *)aMessage {
+    BOOL isShow = NO;
+    EMChatMessage *msg = aMessage;
+
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+        UIViewController *currentVC =  [EaseKitUtil currentViewController];
+        
+        NSLog(@"%s currentVC:%@",__func__,currentVC);
+        
+        if (currentVC == [EaseIMHelper shareHelper].currentChatVC) {
+            NSString *convId = [EaseIMHelper shareHelper].currentChatVC.conversation.conversationId;
+            
+            NSLog(@"%s convId:%@",__func__,convId);
+
+            if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+                //是群聊且不是当前消息的专属群页面 应当跳转到专属群
+                if (msg.chatType == EMChatTypeGroupChat && ![msg.conversationId isEqualToString:convId]) {
+                    isShow = YES;
+                }
+                
+            }else {
+                if ((msg.chatType == EMChatTypeGroupChat||msg.chatType == EMChatTypeChat) && ![msg.conversationId isEqualToString:convId]) {
+                    isShow = YES;
+                }
+            }
+
+            
+        }else {
+            //非聊天界面
+            if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+                if (msg.chatType == EMChatTypeGroupChat) {
+                    isShow = YES;
+                }
+            }else {
+                
+                if (msg.chatType == EMChatTypeGroupChat||msg.chatType == EMChatTypeChat) {
+                    isShow = YES;
+                }
+            }
+        }
+        
+    }
+
+    return isShow;
+}
+
+//- (void)showBanneMessage:(EMChatMessage *)aMessage {
+//
+//    BOOL isShow = [self isShowbannerMessage:aMessage];
+//    if (!isShow) {
+//        return;
+//    }
+//
+//    EMChatMessage *msg = aMessage;
+//
+//    UIImage *icon = nil;
+//    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+//        icon = [UIImage easeUIImageNamed:@"jh_group_icon"];
+//    }else {
+//        if (msg.chatType == EMChatTypeGroupChat) {
+//            icon = [UIImage easeUIImageNamed:@"jh_group_icon"];
+//        }
+//        if (msg.chatType == EMChatTypeChat) {
+//            icon = [UIImage easeUIImageNamed:@"jh_user_icon"];
+//        }
+//    }
+//
+//
+//    NSString *title = @"";
+//    if (msg.chatType == EMChatTypeGroupChat) {
+//        EMGroup *group = [EMGroup groupWithId:msg.conversationId];
+//        title = group.groupName;
+//    }
+//
+//    if (msg.chatType == EMChatTypeChat) {
+//        EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:msg.from];
+//        if(userInfo) {
+//            title = userInfo.nickname ?:userInfo.userId;
+//        }else{
+//            title = msg.from;
+//            [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[msg.from]];
+//        }
+//    }
+//
+//    NSString *content = @"12312312";
+//
+//    NSString *timeString = @"12312312";
+//
+//    EBBannerView *banner = [EBBannerView bannerWithBlock:^(EBBannerViewMaker *make) {
+//        make.style = 11;
+//        make.icon = icon;
+//        make.title = title;
+//        make.content = content;
+//        make.date = timeString;
+//        make.object = msg;
+//        make.stayDuration = 1.0;
+//    }];
+//    [banner show];
+//}
 
 #pragma mark - EMContactManagerDelegate
 
@@ -1088,6 +1214,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
     
     [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:userId];
 }
+
 
 
 @end

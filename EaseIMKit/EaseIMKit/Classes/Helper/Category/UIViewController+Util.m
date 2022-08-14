@@ -241,6 +241,11 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 #pragma mark private method
 - (void)backAction {
+    if (self.navigationController == nil) {
+        
+    }else {
+        
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 

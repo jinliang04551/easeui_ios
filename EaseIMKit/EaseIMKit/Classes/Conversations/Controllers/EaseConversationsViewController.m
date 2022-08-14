@@ -366,6 +366,8 @@ EMClientDelegate
             if(conversation.type == EMConversationTypeGroupChat && [((EMTextMessageBody *)msg.body).text containsString:content]) {
                 [conversation setRemindMe:msg.messageId];
             };
+            //群聊@所有人
+            
         }
     }
     [self _loadAllConversationsFromDB];

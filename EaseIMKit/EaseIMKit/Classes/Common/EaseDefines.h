@@ -284,6 +284,9 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 //群组有成员加入
 #define EaseNotificationReceiveCMDGroupMemberJoined @"EaseNotificationReceiveCMDGroupMemberJoined"
 
+//banner 消息处理
+#define Banner_PUSHVIEWCONTROLLER @"BannerPushChatViewController"
+
 
 //#define DEF_APPKEY @"easemob-de/Users/liu001/Desktop/SDK_3.9.4_localPath_BeiQi_SDK_includeCallkit/easeui_ios/EaseIMKit/EaseIMKit/Classes/Common/EaseDefines.hmo#easeim"
 //#define DEF_APPKEY @"easemob-demo#chatdemoui"

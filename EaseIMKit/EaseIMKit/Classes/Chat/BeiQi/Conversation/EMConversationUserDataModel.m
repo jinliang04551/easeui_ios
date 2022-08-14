@@ -39,7 +39,7 @@
         return [UIImage imageNamed:@"jh_user_icon"];
     }
     if (type == EMConversationTypeGroupChat) {
-        return [UIImage imageNamed:@"groupConversation"];
+        return [UIImage imageNamed:@"jh_group_icon"];
     }
     if (type == EMConversationTypeChatRoom) {
         return [UIImage imageNamed:@"chatroomConversation"];

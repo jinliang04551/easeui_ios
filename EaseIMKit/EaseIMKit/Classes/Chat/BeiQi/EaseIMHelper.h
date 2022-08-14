@@ -8,7 +8,10 @@
 #import <Foundation/Foundation.h>
 #import <HyphenateChat/HyphenateChat.h>
 
+@class EMChatViewController;
 @interface EaseIMHelper : NSObject<EMMultiDevicesDelegate, EMContactManagerDelegate, EMGroupManagerDelegate, EMChatManagerDelegate, EMClientDelegate>
+
+@property (nonatomic, strong) EMChatViewController *currentChatVC;
 
 + (instancetype)shareHelper;
 

@@ -15,9 +15,17 @@
 #import "EaseHeaders.h"
 #import "EaseConversationModel.h"
 #import "EaseIMKitManager.h"
+#import "EMChatViewController.h"
+#import "EBBannerView.h"
+#import "UserInfoStore.h"
 
 static EaseIMHelper *helper = nil;
 
+
+@interface EaseIMHelper ()
+@property (nonatomic, strong) EBBannerView *bannerView;
+
+@end
 
 @implementation EaseIMHelper
 
@@ -48,7 +56,9 @@ static EaseIMHelper *helper = nil;
     [[EMClient sharedClient].chatManager removeDelegate:self];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.currentChatVC = nil;
 }
+
 
 #pragma mark - init
 
@@ -66,6 +76,10 @@ static EaseIMHelper *helper = nil;
     //自己发送的通话开始或者结束CMD消息刷新页面
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithCallCMDMessage:) name:EaseNotificationSendCallCreateCMDMessage object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithCallCMDMessage:) name:EaseNotificationSendCallEndCMDMessage object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushBannerMsgController:) name:Banner_PUSHVIEWCONTROLLER object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bannerDidClick:) name:EBBannerViewDidClickNotification object:nil];
 
 }
 
@@ -172,15 +186,15 @@ static EaseIMHelper *helper = nil;
 #pragma mark - EMChatManagerDelegate
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
-    for (EMChatMessage *msg in aMessages) {
-        NSString *action = msg.ext[@"action"];
-        if ([action isEqualToString:@"invite"]) {
-            //通话邀请
-            continue;
-        }
-        
-        [EMRemindManager remindMessage:msg];
-    }
+//    for (EMChatMessage *msg in aMessages) {
+//        NSString *action = msg.ext[@"action"];
+//        if ([action isEqualToString:@"invite"]) {
+//            //通话邀请
+//            continue;
+//        }
+//        
+//        [EMRemindManager remindMessage:msg];
+//    }
 }
 
 
@@ -618,9 +632,12 @@ static EaseIMHelper *helper = nil;
     if ([rootViewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *nav = (UINavigationController *)rootViewController;
         nav.modalPresentationStyle = UIModalPresentationFullScreen;
+        self.currentChatVC = controller;
+        
         [nav pushViewController:controller animated:YES];
     }
 }
+
 
 - (void)handlePushGroupsController:(NSNotification *)aNotif
 {
@@ -634,6 +651,120 @@ static EaseIMHelper *helper = nil;
 //    EMGroupsViewController *controller = [[EMGroupsViewController alloc] init];
 //    [navController pushViewController:controller animated:YES];
 }
+
+#pragma mark BannerView
+- (void)handlePushBannerMsgController:(NSNotification *)aNotif
+{
+    EMChatMessage *msg = (EMChatMessage *)aNotif.object;
+    [self showBanneMessage:msg];
+}
+
+- (void)bannerDidClick:(NSNotification*)notify {
+    EMChatMessage *msg = (EMChatMessage *)notify.object;
+    NSLog(@"%s msg:%@",__func__,msg);
+    EMConversationType type = -1;
+    
+    [self.bannerView hide];
+    
+//    UINavigationController *navController = nil;
+//    if (navController == nil) {
+//        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+////        navController = (UINavigationController *)window.rootViewController;
+//        navController = [[UINavigationController alloc] init];
+//        window.rootViewController = navController;
+//    }
+
+    sleep(0.5);
+    
+    if (msg.chatType == EMChatTypeChat) {
+        type = EMConversationTypeChat;
+    }
+    
+    if (msg.chatType == EMChatTypeGroupChat) {
+        type = EMConversationTypeGroupChat;
+    }
+    
+    
+    EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:msg.conversationId conversationType:type];
+
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    UIViewController *rootViewController = window.rootViewController;
+    NSLog(@"%s window:%@\n root:%@\n",__func__,window,rootViewController);
+    
+//    if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+//        NSLog(@"====isKindOfClass=======");
+//
+//        UINavigationController *nav = (UINavigationController *)rootViewController;
+//        nav.modalPresentationStyle = UIModalPresentationFullScreen;
+//
+//        [nav pushViewController:controller animated:YES];
+//    }
+
+    
+    if (window.rootViewController.navigationController == nil) {
+//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
+//        window.rootViewController = nav;
+        
+        
+    
+    }else {
+        [window.rootViewController.navigationController pushViewController:controller animated:YES];
+
+    }
+    
+}
+
+
+- (void)showBanneMessage:(EMChatMessage *)aMessage {
+    EMChatMessage *msg = aMessage;
+        
+    UIImage *icon = nil;
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        icon = [UIImage easeUIImageNamed:@"jh_group_icon"];
+    }else {
+        if (msg.chatType == EMChatTypeGroupChat) {
+            icon = [UIImage easeUIImageNamed:@"jh_group_icon"];
+        }
+        if (msg.chatType == EMChatTypeChat) {
+            icon = [UIImage easeUIImageNamed:@"jh_user_icon"];
+        }
+    }
+        
+    
+    NSString *title = @"";
+    if (msg.chatType == EMChatTypeGroupChat) {
+        EMGroup *group = [EMGroup groupWithId:msg.conversationId];
+        title = group.groupName;
+    }
+    
+    if (msg.chatType == EMChatTypeChat) {
+        EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:msg.from];
+        if(userInfo) {
+            title = userInfo.nickname ?:userInfo.userId;
+        }else{
+            title = msg.from;
+            [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[msg.from]];
+        }
+    }
+    
+    
+    NSString *content = @"12312312";
+   
+    NSString *timeString = @"Now";
+    
+    self.bannerView = [EBBannerView bannerWithBlock:^(EBBannerViewMaker *make) {
+        make.style = 11;
+        make.icon = icon;
+        make.title = title;
+        make.content = content;
+        make.date = timeString;
+        make.object = msg;
+        make.stayDuration = 1.0;
+    }];
+    [self.bannerView show];
+}
+
+
 
 
 @end

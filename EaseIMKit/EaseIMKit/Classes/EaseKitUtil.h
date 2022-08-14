@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (UIView *)customNavViewWithTitle:(NSString *)title backAction:(SEL)backAction;
 
++ (UIViewController*)currentViewController;
 
 @end
 

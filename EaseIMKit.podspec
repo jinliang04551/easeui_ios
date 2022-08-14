@@ -82,6 +82,6 @@ Pod::Spec.new do |s|
     s.dependency 'FMDB'
     s.dependency 'Bugly'
     s.dependency 'EMTranslate'
-    
+    s.dependency 'EBBannerView', '1.1.2'
 
 end

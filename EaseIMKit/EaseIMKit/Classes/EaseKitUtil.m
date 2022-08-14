@@ -87,5 +87,53 @@
     return contentView;
 }
 
+
++ (UIViewController*)atPersentViewController:(UIViewController*)vc {
     
+    if (vc.presentedViewController) {
+         
+        
+        return [self atPersentViewController:vc.presentedViewController];
+         
+    } else if ([vc isKindOfClass:[UISplitViewController class]]) {
+         
+        
+        UISplitViewController* svc = (UISplitViewController*) vc;
+        if (svc.viewControllers.count > 0)
+            return [self atPersentViewController:svc.viewControllers.lastObject];
+        else
+            return vc;
+         
+    } else if ([vc isKindOfClass:[UINavigationController class]]) {
+         
+        
+        UINavigationController* svc = (UINavigationController*) vc;
+        if (svc.viewControllers.count > 0)
+            return [self atPersentViewController:svc.topViewController];
+        else
+            return vc;
+         
+    } else if ([vc isKindOfClass:[UITabBarController class]]) {
+         
+        
+        UITabBarController* svc = (UITabBarController*) vc;
+        if (svc.viewControllers.count > 0)
+            return [self atPersentViewController:svc.selectedViewController];
+        else
+            return vc;
+         
+    } else {
+        return vc;
+         
+    }
+     
+}
+
++ (UIViewController*)currentViewController {
+    
+    UIViewController* viewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    return [self atPersentViewController:viewController];
+     
+}
+
 @end
