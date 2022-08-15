@@ -358,59 +358,6 @@ static NSString *g_UIKitVersion = @"1.0.0";
     return isShow;
 }
 
-//- (void)showBanneMessage:(EMChatMessage *)aMessage {
-//
-//    BOOL isShow = [self isShowbannerMessage:aMessage];
-//    if (!isShow) {
-//        return;
-//    }
-//
-//    EMChatMessage *msg = aMessage;
-//
-//    UIImage *icon = nil;
-//    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-//        icon = [UIImage easeUIImageNamed:@"jh_group_icon"];
-//    }else {
-//        if (msg.chatType == EMChatTypeGroupChat) {
-//            icon = [UIImage easeUIImageNamed:@"jh_group_icon"];
-//        }
-//        if (msg.chatType == EMChatTypeChat) {
-//            icon = [UIImage easeUIImageNamed:@"jh_user_icon"];
-//        }
-//    }
-//
-//
-//    NSString *title = @"";
-//    if (msg.chatType == EMChatTypeGroupChat) {
-//        EMGroup *group = [EMGroup groupWithId:msg.conversationId];
-//        title = group.groupName;
-//    }
-//
-//    if (msg.chatType == EMChatTypeChat) {
-//        EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:msg.from];
-//        if(userInfo) {
-//            title = userInfo.nickname ?:userInfo.userId;
-//        }else{
-//            title = msg.from;
-//            [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[msg.from]];
-//        }
-//    }
-//
-//    NSString *content = @"12312312";
-//
-//    NSString *timeString = @"12312312";
-//
-//    EBBannerView *banner = [EBBannerView bannerWithBlock:^(EBBannerViewMaker *make) {
-//        make.style = 11;
-//        make.icon = icon;
-//        make.title = title;
-//        make.content = content;
-//        make.date = timeString;
-//        make.object = msg;
-//        make.stayDuration = 1.0;
-//    }];
-//    [banner show];
-//}
 
 #pragma mark - EMContactManagerDelegate
 
@@ -653,9 +600,12 @@ static NSString *g_UIKitVersion = @"1.0.0";
 
     NSArray *conversationList = [EMClient.sharedClient.chatManager getAllConversations];
     for (EMConversation *conversation in conversationList) {
-        if ([conversation.conversationId isEqualToString:_currentConversationId]) {
-            continue;
-        }
+        NSLog(@"%s convId:%@\n unread:%@\n",__func__,conversation.conversationId,[@(conversation.unreadMessagesCount) stringValue]);
+        
+//        if ([conversation.conversationId isEqualToString:_currentConversationId]) {
+//            continue;
+//        }
+        
         if ([[[EMClient sharedClient].pushManager noPushUIds] containsObject:conversation.conversationId]) {
             undisturbCount += conversation.unreadMessagesCount;
             [_undisturbMaps setValue:[NSNumber numberWithBool:YES] forKey:conversation.conversationId];

@@ -163,6 +163,22 @@ static EBBannerWindow *sharedWindow;
     }];
 }
 
+- (void)hideWithCompletion:(void (^)(void))completion {
+    WEAK_SELF(weakSelf);
+    [UIView animateWithDuration:_maker.hideAnimationDuration delay:0 usingSpringWithDamping:kAnimationDamping initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        
+        weakSelf.frame = CGRectMake(weakSelf.fixedX, -weakSelf.standardHeight - (weakSelf.frame.size.height - weakSelf.standardHeight), weakSelf.fixedWidth, weakSelf.frame.size.height);
+    } completion:^(BOOL finished) {
+        if (weakSelf.superview.subviews.count == 1) {
+            sharedWindow.hidden = YES;
+        }
+        [weakSelf removeFromSuperview];
+        if (completion) {
+            completion();
+        }
+    }];
+}
+
 -(void)applicationDidChangeStatusBarOrientationNotification{
     if (!self.superview) {
         return;

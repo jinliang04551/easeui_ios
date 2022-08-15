@@ -33,6 +33,8 @@ typedef enum : NSInteger {
 //u don't have to call hide, this only use for (long_text && forbidAutoHiddenWhenSwipeDown = YES)
 -(void)hide;
 
+- (void)hideWithCompletion:(void (^)(void))completion;
+
 +(instancetype)current;//can be nil
 
 @end

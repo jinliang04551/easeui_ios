@@ -18,6 +18,7 @@
 #import "EMChatViewController.h"
 #import "UserInfoStore.h"
 #import "EBBannerView.h"
+#import "EaseDateHelper.h"
 
 static EaseIMHelper *helper = nil;
 
@@ -664,58 +665,37 @@ static EaseIMHelper *helper = nil;
     NSLog(@"%s msg:%@",__func__,msg);
     EMConversationType type = -1;
     
-    [self.bannerView hide];
-    
-//    UINavigationController *navController = nil;
-//    if (navController == nil) {
-//        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-////        navController = (UINavigationController *)window.rootViewController;
-//        navController = [[UINavigationController alloc] init];
-//        window.rootViewController = navController;
-//    }
-
-    sleep(0.5);
-    
     if (msg.chatType == EMChatTypeChat) {
         type = EMConversationTypeChat;
     }
-    
     if (msg.chatType == EMChatTypeGroupChat) {
         type = EMConversationTypeGroupChat;
     }
-    
-    
     EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:msg.conversationId conversationType:type];
-
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    UIViewController *rootViewController = window.rootViewController;
-    NSLog(@"%s window:%@\n root:%@\n",__func__,window,rootViewController);
     
-//    if ([rootViewController isKindOfClass:[UINavigationController class]]) {
-//        NSLog(@"====isKindOfClass=======");
-//
-//        UINavigationController *nav = (UINavigationController *)rootViewController;
-//        nav.modalPresentationStyle = UIModalPresentationFullScreen;
-//
-//        [nav pushViewController:controller animated:YES];
-//    }
 
-    
-    if (window.rootViewController.navigationController == nil) {
-//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
-//        window.rootViewController = nav;
+    [self.bannerView hideWithCompletion:^{
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        UIViewController *rootViewController = window.rootViewController;
+        NSLog(@"%s window:%@\n rootViewController:%@\n",__func__,window,rootViewController);
         
-        
+        if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+            NSLog(@"====isKindOfClass=======");
     
-    }else {
-        [window.rootViewController.navigationController pushViewController:controller animated:YES];
-
-    }
+            UINavigationController *nav = (UINavigationController *)rootViewController;
+            nav.modalPresentationStyle = UIModalPresentationFullScreen;
+    
+            [nav pushViewController:controller animated:YES];
+        }
+        
+    }];
     
 }
 
 
 - (void)showBanneMessage:(EMChatMessage *)aMessage {
+    return;
+    
     EMChatMessage *msg = aMessage;
         
     UIImage *icon = nil;
@@ -731,26 +711,9 @@ static EaseIMHelper *helper = nil;
     }
         
     
-    NSString *title = @"";
-    if (msg.chatType == EMChatTypeGroupChat) {
-        EMGroup *group = [EMGroup groupWithId:msg.conversationId];
-        title = group.groupName;
-    }
-    
-    if (msg.chatType == EMChatTypeChat) {
-        EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:msg.from];
-        if(userInfo) {
-            title = userInfo.nickname ?:userInfo.userId;
-        }else{
-            title = msg.from;
-            [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[msg.from]];
-        }
-    }
-    
-    
-    NSString *content = @"12312312";
-   
-    NSString *timeString = @"Now";
+    NSString *title = [self getConvsationTitleWithBannerMsgFromId:msg];
+    NSString *content = [self getContentFromBannerMsg:msg];
+    NSString *timeString = [EaseDateHelper formattedTimeFromTimeInterval:msg.timestamp];
     
     self.bannerView = [EBBannerView bannerWithBlock:^(EBBannerViewMaker *make) {
         make.style = 11;
@@ -759,12 +722,94 @@ static EaseIMHelper *helper = nil;
         make.content = content;
         make.date = timeString;
         make.object = msg;
-        make.stayDuration = 1.0;
+        make.stayDuration = 2.0;
     }];
     [self.bannerView show];
 }
 
+- (NSString *)getUserNameFromBannerMsgFromId:(NSString *)aUid {
+    NSString *userName = aUid;
+    EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:aUid];
+    if(userInfo) {
+        userName = userInfo.nickname.length > 0 ? userInfo.nickname: userInfo.userId;
+        
+    }else{
+        userName = aUid;
+        [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[aUid]];
+    }
+    return userName;
 
+}
+
+- (NSString *)getContentFromBannerMsg:(EMChatMessage *)msg {
+    NSString *msgStr = nil;
+    switch (msg.body.type) {
+        case EMMessageBodyTypeText:
+        {
+            EMTextMessageBody *body = (EMTextMessageBody *)msg.body;
+            msgStr = body.text;
+            if ([msgStr isEqualToString:EMCOMMUNICATE_CALLER_MISSEDCALL]) {
+                msgStr = EaseLocalizableString(@"noRespond", nil);
+            }
+            if ([msgStr isEqualToString:EMCOMMUNICATE_CALLED_MISSEDCALL]) {
+                msgStr = EaseLocalizableString(@"remoteCancel", nil);
+            }
+        }
+            break;
+        case EMMessageBodyTypeLocation:
+        {
+            msgStr = EaseLocalizableString(@"[location]", nil);
+        }
+            break;
+        case EMMessageBodyTypeCustom:
+        {
+            msgStr = EaseLocalizableString(@"[customemsg]", nil);
+        }
+            break;
+        case EMMessageBodyTypeImage:
+        {
+            msgStr = EaseLocalizableString(@"[image]", nil);
+        }
+            break;
+        case EMMessageBodyTypeFile:
+        {
+            msgStr = EaseLocalizableString(@"[file]", nil);
+        }
+            break;
+        case EMMessageBodyTypeVoice:
+        {
+            msgStr = EaseLocalizableString(@"[audio]", nil);
+        }
+            break;
+        case EMMessageBodyTypeVideo:
+        {
+            msgStr = EaseLocalizableString(@"[video]", nil);
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    NSString *content = [NSString stringWithFormat:@"%@:%@",[self getUserNameFromBannerMsgFromId:msg.from],msgStr];
+    
+    
+    return content;
+}
+
+- (NSString *)getConvsationTitleWithBannerMsgFromId:(EMChatMessage *)msg {
+    
+    NSString *title = @"";
+    if (msg.chatType == EMChatTypeGroupChat) {
+        EMGroup *group = [EMGroup groupWithId:msg.conversationId];
+        title = group.groupName;
+    }
+    
+    if (msg.chatType == EMChatTypeChat) {
+        title = [self getUserNameFromBannerMsgFromId:msg.from];
+    }
+    return title;
+}
 
 
 @end
