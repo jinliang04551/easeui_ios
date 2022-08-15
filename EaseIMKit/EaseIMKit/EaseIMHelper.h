@@ -11,7 +11,11 @@
 @class EMChatViewController;
 @interface EaseIMHelper : NSObject<EMMultiDevicesDelegate, EMContactManagerDelegate, EMGroupManagerDelegate, EMChatManagerDelegate, EMClientDelegate>
 
-@property (nonatomic, strong) EMChatViewController *currentChatVC;
+//@property (nonatomic, strong) EMChatViewController *currentChatVC;
+
+//push 出来的EMChatViewController数组
+@property (nonatomic, strong) NSMutableArray<EMChatViewController *> *pushedChatVCArray;
+
 
 + (instancetype)shareHelper;
 

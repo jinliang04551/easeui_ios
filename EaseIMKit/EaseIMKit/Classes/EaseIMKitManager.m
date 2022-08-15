@@ -321,8 +321,10 @@ static NSString *g_UIKitVersion = @"1.0.0";
         
         NSLog(@"%s currentVC:%@",__func__,currentVC);
         
-        if (currentVC == [EaseIMHelper shareHelper].currentChatVC) {
-            NSString *convId = [EaseIMHelper shareHelper].currentChatVC.conversation.conversationId;
+        EMChatViewController *topChatVC = [EaseIMHelper shareHelper].pushedChatVCArray.lastObject;
+        
+        if (currentVC == topChatVC) {
+            NSString *convId = topChatVC.conversation.conversationId;
             
             NSLog(@"%s convId:%@",__func__,convId);
 
@@ -1134,6 +1136,10 @@ static NSString *g_UIKitVersion = @"1.0.0";
 - (void)clearCacheAfterLogoutSuccessed {
     [EaseKitUtil removeLoginUserToken];
     [[EaseIMKitMessageHelper shareMessageHelper] clearMemeryCache];
+    
+    [[EaseIMHelper shareHelper].pushedChatVCArray removeAllObjects];
+    [EaseIMHelper shareHelper].pushedChatVCArray = nil;
+
     
     EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
     options.isAutoLogin = NO;

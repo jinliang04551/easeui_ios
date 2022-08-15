@@ -135,6 +135,7 @@ static EBBannerWindow *sharedWindow;
             break;
         }
     }
+    
     if (bannerView == nil) {
         NSArray *views = [[NSBundle bundleForClass:self.class] loadNibNamed:@"EBBannerView" owner:nil options:nil];
         NSUInteger index = MIN(style - 9, views.count - 1);

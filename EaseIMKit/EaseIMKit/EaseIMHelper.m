@@ -57,7 +57,8 @@ static EaseIMHelper *helper = nil;
     [[EMClient sharedClient].chatManager removeDelegate:self];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    self.currentChatVC = nil;
+    [self.pushedChatVCArray removeAllObjects];
+    
 }
 
 
@@ -633,7 +634,7 @@ static EaseIMHelper *helper = nil;
     if ([rootViewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *nav = (UINavigationController *)rootViewController;
         nav.modalPresentationStyle = UIModalPresentationFullScreen;
-        self.currentChatVC = controller;
+        [self.pushedChatVCArray addObject:controller];
         
         [nav pushViewController:controller animated:YES];
     }
@@ -685,6 +686,9 @@ static EaseIMHelper *helper = nil;
             UINavigationController *nav = (UINavigationController *)rootViewController;
             nav.modalPresentationStyle = UIModalPresentationFullScreen;
     
+            //入栈
+            [self.pushedChatVCArray addObject:controller];
+
             [nav pushViewController:controller animated:YES];
         }
         
@@ -808,6 +812,14 @@ static EaseIMHelper *helper = nil;
         title = [self getUserNameFromBannerMsgFromId:msg.from];
     }
     return title;
+}
+
+#pragma mark getter and setter
+- (NSMutableArray<EMChatViewController *> *)pushedChatVCArray {
+    if (_pushedChatVCArray == nil) {
+        _pushedChatVCArray = [NSMutableArray array];
+    }
+    return _pushedChatVCArray;
 }
 
 
