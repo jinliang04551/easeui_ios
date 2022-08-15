@@ -173,7 +173,7 @@
 
     [self.view addSubview:self.titleView];
     [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(EMVIEWBOTTOMMARGIN);
+        make.top.equalTo(self.view).offset(EaseIMKit_StatusBarHeight);
         make.left.right.equalTo(self.view);
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {

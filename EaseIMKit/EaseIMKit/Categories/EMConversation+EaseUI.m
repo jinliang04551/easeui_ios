@@ -56,10 +56,11 @@
     if (self.type != EMConversationTypeGroupChat) {
         return NO;
     }
+    
     BOOL ret = NO;
     NSMutableArray *msgIdArray = [self remindMeArray];
-    /*
-    for (NSString *msgId in msgIds) {
+    //*
+    for (NSString *msgId in msgIdArray) {
         EMChatMessage *msg = [self loadMessageWithId:msgId error:nil];
         if (!msg.isRead && msg.body.type == EMMessageBodyTypeText) {
             EMTextMessageBody *textBody = (EMTextMessageBody*)msg.body;
@@ -68,10 +69,12 @@
                 break;
             }
         }
-    }*/
-    if ([msgIdArray count] > 0) {
-        ret = YES;
     }
+    
+    
+//    if ([msgIdArray count] > 0) {
+//        ret = YES;
+//    }
     
     return ret;
 }
