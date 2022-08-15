@@ -79,7 +79,7 @@
         self.iconView.image = [UIImage easeUIImageNamed:@"msg_file_white"];
         [self.iconView Ease_makeConstraints:^(EaseConstraintMaker *make) {
             make.top.equalTo(self).offset(12.0);
-            make.left.equalTo(self).offset(10.0);
+            make.left.equalTo(self).offset(15.0);
             make.centerY.equalTo(self);
             make.size.equalTo(@(44.0));
         }];
@@ -93,7 +93,7 @@
         self.iconView.image = [UIImage easeUIImageNamed:@"msg_file"];
         [self.iconView Ease_makeConstraints:^(EaseConstraintMaker *make) {
             make.top.equalTo(self).offset(12.0);
-            make.left.equalTo(self).offset(10.0);
+            make.left.equalTo(self).offset(15.0);
             make.centerY.equalTo(self);
             make.size.equalTo(@(44.0));
         }];

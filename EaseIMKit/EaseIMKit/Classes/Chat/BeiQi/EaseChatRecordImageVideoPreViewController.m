@@ -25,6 +25,7 @@
 @property (nonatomic, strong) AVPlayer *avPlayer;
 @property (nonatomic, strong) AVPlayerLayer *avLayer;
 
+@property (nonatomic, strong) UIView *titleView;
 
 @end
 
@@ -40,7 +41,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self addPopBackLeftItem];
     [self placeAndLayoutSubViews];
     [self displayImageOrVideo];
 }
@@ -54,14 +54,33 @@
     }
 
     
-    [self.view addSubview:self.iconImageView];
+    self.titleView = [self customNavWithTitle:@"" rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
 
+    [self.view addSubview:self.titleView];
+    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(EaseIMKit_StatusBarHeight);
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@(44.0));
+    }];
+
+    [self.view addSubview:self.iconImageView];
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(64.0);
+        make.top.equalTo(self.titleView.mas_bottom).offset(64.0);
         make.left.equalTo(self.view).offset(64.0);
         make.size.equalTo(@(52.0));
     }];
 
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)displayImageOrVideo {
@@ -204,7 +223,8 @@
     void (^downloadBlock)(void) = ^ {
         [self showHudInView:self.view hint:EaseLocalizableString(@"downloadVideo...", nil)];
         [[EMClient sharedClient].chatManager downloadMessageAttachment:self.message progress:nil completion:^(EMChatMessage *message, EMError *error) {
-
+            [self hideHud];
+            
             if (error) {
                 [EaseAlertController showErrorAlert:@"下载视频失败"];
             } else {

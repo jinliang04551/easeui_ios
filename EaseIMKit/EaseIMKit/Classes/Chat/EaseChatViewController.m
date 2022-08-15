@@ -781,6 +781,9 @@ if (EaseIMKitManager.shared.isJiHuApp){
                     [self.currentConversation insertMessage:message error:nil];
                     EaseMessageModel *replaceModel = [[EaseMessageModel alloc]initWithEMMessage:message];
                     [self.dataArray replaceObjectAtIndex:idx withObject:replaceModel];
+                    
+//                    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:idx];
+//                    [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
                 }
             }
         }];

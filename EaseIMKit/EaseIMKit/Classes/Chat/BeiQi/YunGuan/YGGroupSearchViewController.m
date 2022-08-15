@@ -231,7 +231,8 @@
 }
 
 - (void)searchViewShouldBeginEditing:(YGGroupSearchView *)searchView{
-    
+    self.searchTypeTableView.hidden = YES;
+
 }
 
 - (void)clearSearchText {

@@ -39,10 +39,12 @@
 //    self.shadowView.backgroundColor = [UIColor colorWithWhite:0.7 alpha:0.5];
     self.shadowView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
     
-    [self addSubview:self.shadowView];
-    [self.shadowView Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.edges.equalTo(self);
-    }];
+    self.backgroundColor = UIColor.yellowColor;
+    
+//    [self addSubview:self.shadowView];
+//    [self.shadowView Ease_makeConstraints:^(EaseConstraintMaker *make) {
+//        make.edges.equalTo(self);
+//    }];
     
     self.playImgView = [[UIImageView alloc] init];
     self.playImgView.image = [UIImage easeUIImageNamed:@"msg_video_white"];
@@ -75,5 +77,6 @@
         [self setThumbnailImageWithLocalPath:imgPath remotePath:body.thumbnailRemotePath thumbImgSize:body.thumbnailSize imgSize:body.thumbnailSize];
     }
 }
+
 
 @end

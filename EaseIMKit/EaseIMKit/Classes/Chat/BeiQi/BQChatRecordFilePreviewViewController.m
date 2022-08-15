@@ -18,6 +18,7 @@
 
 @property (nonatomic, strong) UIButton *operateButton;
 @property (nonatomic, strong) EMChatMessage *message;
+@property (nonatomic, strong) UIView *titleView;
 
 @end
 
@@ -32,20 +33,29 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self addPopBackLeftItem];
     [self placeAndLayoutSubViews];
     [self updateUI];
 }
 
 
 - (void)placeAndLayoutSubViews {
+    
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
 }else {
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 }
 
-    
+    self.titleView = [self customNavWithTitle:@"" rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
+
+    [self.view addSubview:self.titleView];
+    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(EaseIMKit_StatusBarHeight);
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@(44.0));
+    }];
+
+
     [self.view addSubview:self.iconImageView];
     [self.view addSubview:self.nameLabel];
     [self.view addSubview:self.sizeLabel];
@@ -53,7 +63,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     [self.view addSubview:self.operateButton];
 
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(64.0);
+        make.top.equalTo(self.titleView.mas_bottom).offset(64.0);
         make.left.equalTo(self.view).offset(64.0);
         make.size.equalTo(@(52.0));
     }];
@@ -86,7 +96,17 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         make.height.equalTo(@(44.0));
     }];
     
-    
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)updateUI {

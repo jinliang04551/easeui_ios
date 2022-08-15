@@ -81,7 +81,7 @@
         make.right.equalTo(self).offset(-65);
     }];
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarShouldBeginEditing:)]) {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(searchViewShouldBeginEditing:)]) {
         [self.delegate searchViewShouldBeginEditing:self];
     }
     
