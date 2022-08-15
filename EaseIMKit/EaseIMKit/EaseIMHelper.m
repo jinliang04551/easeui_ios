@@ -694,7 +694,6 @@ static EaseIMHelper *helper = nil;
 
 
 - (void)showBanneMessage:(EMChatMessage *)aMessage {
-    return;
     
     EMChatMessage *msg = aMessage;
         

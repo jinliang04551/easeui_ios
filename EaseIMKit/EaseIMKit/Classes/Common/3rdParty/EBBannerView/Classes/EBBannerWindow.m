@@ -40,9 +40,10 @@ static EBEmptyWindow *emptyWindow;
          push to a VC with orientation Left
          UITextFiled's pad will show a wrong orientation with Portrait
          */
-        emptyWindow = [[EBEmptyWindow alloc] initWithFrame:CGRectZero];
-        emptyWindow.windowLevel = UIWindowLevelAlert;
-        [emptyWindow makeKeyAndVisible];
+//        emptyWindow = [[EBEmptyWindow alloc] initWithFrame:CGRectZero];
+//        emptyWindow.windowLevel = UIWindowLevelAlert;
+//        [emptyWindow makeKeyAndVisible];
+        
         [originKeyWindow makeKeyAndVisible];
         
         [EBBannerViewController setSupportedInterfaceOrientations:UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscape];

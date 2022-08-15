@@ -136,11 +136,12 @@
             break;
     }
     
-    if (_conversation.type == EMConversationTypeGroupChat && ![EaseIMKitOptions sharedOptions].isJiHuApp) {
+    if (_conversation.type == EMConversationTypeGroupChat) {
         _showInfo = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@: %@",msg.from,msgStr]];
     }else {
         _showInfo = [[NSMutableAttributedString alloc] initWithString:msgStr];
     }
+    
     
     /*
     if ([_conversation draft] && ![[_conversation draft] isEqualToString:@""]) {

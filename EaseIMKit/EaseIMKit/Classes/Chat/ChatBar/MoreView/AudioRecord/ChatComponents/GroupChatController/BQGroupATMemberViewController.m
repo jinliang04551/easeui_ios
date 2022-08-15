@@ -25,6 +25,7 @@
 @property (nonatomic, strong) EMSearchBar  *searchBar;
 @property (nonatomic) BOOL isSearching;
 @property (nonatomic, strong) EaseGroupAtCell *allCell;
+@property (nonatomic, assign) BOOL isOwner;
 
 
 @end
@@ -36,6 +37,7 @@
     self = [super init];
     if (self) {
         self.group = aGroup;
+        self.isOwner = (self.group.permissionType == EMGroupPermissionTypeOwner) ? YES : NO;
     }
     
     return self;
@@ -128,7 +130,11 @@ if (EaseIMKitManager.shared.isJiHuApp){
     if (self.isSearching) {
         return [self.searchResultArray count];
     } else {
-        return [self.dataArray count] + 1;
+        if (self.isOwner) {
+            return [self.dataArray count] + 1;
+        }else {
+            return [self.dataArray count];
+        }
     }
 }
 
@@ -143,11 +149,18 @@ if (EaseIMKitManager.shared.isJiHuApp){
     if (self.isSearching) {
         userId = [self.searchResultArray objectAtIndex:indexPath.row];
     } else {
-        if (indexPath.row == 0) {
-            return self.allCell;
+        if (self.isOwner) {
+
+            if (indexPath.row == 0) {
+                return self.allCell;
+            }else {
+                userId = [self.dataArray objectAtIndex:indexPath.row -1];
+            }
+            
         }else {
-            userId = [self.dataArray objectAtIndex:indexPath.row -1];
+            userId = [self.dataArray objectAtIndex:indexPath.row];
         }
+    
     }
     [cell updateWithObj:userId];
 
@@ -165,11 +178,17 @@ if (EaseIMKitManager.shared.isJiHuApp){
     if (self.isSearching) {
         name = [self.searchResultArray objectAtIndex:indexPath.row];
     } else {
-        if (indexPath.row == 0) {
-            name = @"ALL";
+        if (self.isOwner) {
+
+            if (indexPath.row == 0) {
+                name = @"ALL";
+            }else {
+                name = [self.dataArray objectAtIndex:indexPath.row-1];
+            }
         }else {
             name = [self.dataArray objectAtIndex:indexPath.row];
         }
+    
     }
     
     if (self.selectedAtMemberBlock) {

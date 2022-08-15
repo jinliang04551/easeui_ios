@@ -9,7 +9,7 @@
 
 #define EMConversationTop @"EMConversation_Top"
 #define EMConversationShowName @"EMConversation_ShowName"
-#define EMConversationRemindMe @"EMConversation_RemindMe"
+
 #define EMConversationDraft @"EMConversation_Draft"
 #define EMConversationLatestUpdateTime @"EMConversationLatestUpdateTime"
 
@@ -77,10 +77,17 @@
 }
 
 - (NSMutableArray *)remindMeArray {
-    NSMutableArray *dict = [(NSMutableArray *)self.ext[EMConversationRemindMe] mutableCopy];
+//    NSMutableArray *dict = [(NSMutableArray *)self.ext[MSG_EXT_AT] mutableCopy];
+//    if (!dict) {
+//        dict = [[NSMutableArray alloc]init];
+//    }
+
+    NSMutableArray *dict = [(NSMutableArray *)self.ext[MSG_EXT_AT] mutableCopy];
     if (!dict) {
         dict = [[NSMutableArray alloc]init];
     }
+    
+    
     
     return dict;
 }
@@ -90,7 +97,7 @@
     NSMutableDictionary *dict = [self mutableExt];
     NSMutableArray *msgIdArray = [self remindMeArray];
     [msgIdArray addObject:messageId];
-    [dict setObject:msgIdArray forKey:EMConversationRemindMe];
+    [dict setObject:msgIdArray forKey:MSG_EXT_AT];
     [self setExt:dict];
 }
 
@@ -99,7 +106,7 @@
     NSMutableArray *msgIdArray = [self remindMeArray];
     [msgIdArray removeAllObjects];
     NSMutableDictionary *dict = [self mutableExt];
-    [dict setObject:msgIdArray forKey:EMConversationRemindMe];
+    [dict setObject:msgIdArray forKey:MSG_EXT_AT];
     [self setExt:dict];
 }
 

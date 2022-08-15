@@ -441,10 +441,50 @@ if (EaseIMKitManager.shared.isJiHuApp){
 - (void)chatBarSendMsgAction:(NSString *)text
 {
     if ((text.length > 0 && ![text isEqualToString:@""])) {
-        [self sendTextAction:text ext:nil];
+        
+        [self checkSendTextATMember:text];
+        
         [self.chatBar clearInputViewText];
     }
 }
+
+
+- (void)checkSendTextATMember:(NSString *)text {
+    NSMutableDictionary *ext = [NSMutableDictionary dictionary];
+    
+    NSString *searchText = text;
+    
+    //包含@人
+    if ([searchText containsString:@"@"]) {
+        if ([searchText containsString:@"@ALL"]) {
+            [ext setObject:@"ALL" forKey:MSG_EXT_AT];
+        }else {
+            NSMutableArray *atArray = [NSMutableArray array];
+
+            while (searchText.length > 0) {
+
+                NSRange atRange = [searchText rangeOfString:@"@"];
+                if (atRange.location == NSNotFound) {
+                    break;
+                }
+                
+                searchText = [searchText substringFromIndex:atRange.location];
+                NSString *atUser = [searchText substringWithRange:NSMakeRange(atRange.location+1, 11)];
+                searchText = [searchText substringFromIndex:atRange.length + 11];
+                [atArray addObject:atUser];
+            }
+            
+            if (atArray.count > 0) {
+                [ext setObject:atArray forKey:MSG_EXT_AT];
+            }
+        }
+    }
+    
+    [self sendTextAction:text ext:ext];
+
+}
+
+
 
 - (void)chatBarDidShowMoreViewAction
 {
