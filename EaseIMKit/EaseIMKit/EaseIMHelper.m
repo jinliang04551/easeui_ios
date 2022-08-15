@@ -716,7 +716,15 @@ static EaseIMHelper *helper = nil;
     
     NSString *title = [self getConvsationTitleWithBannerMsgFromId:msg];
     NSString *content = [self getContentFromBannerMsg:msg];
-    NSString *timeString = [EaseDateHelper formattedTimeFromTimeInterval:msg.timestamp];
+    
+    NSString *prefix = @"";
+//    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+//        prefix = @"ARCFOX极狐";
+//    }else {
+//        prefix = @"服务小组";
+//    }
+
+    NSString *timeString = [NSString stringWithFormat:@"%@ %@",prefix,[EaseDateHelper formattedTimeFromTimeInterval:msg.timestamp]];
     
     self.bannerView = [EBBannerView bannerWithBlock:^(EBBannerViewMaker *make) {
         make.style = 11;
@@ -811,7 +819,7 @@ static EaseIMHelper *helper = nil;
     if (msg.chatType == EMChatTypeChat) {
         title = [self getUserNameFromBannerMsgFromId:msg.from];
     }
-    return title;
+    return [NSString stringWithFormat:@"[%@]",title];
 }
 
 #pragma mark getter and setter

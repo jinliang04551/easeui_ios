@@ -12,6 +12,7 @@
 #import "EBCustomBannerView.h"
 #import "EBBannerView+Categories.h"
 #import "EBBannerWindow.h"
+#import "EaseHeaders.h"
 
 #define kAnimationDamping 0.8
 
@@ -60,6 +61,34 @@ static EBBannerWindow *sharedWindow;
         CGPoint lineCenter = bannerView.lineView.center;
         bannerView.lineView.backgroundColor = [[UIImage colorAtPoint:CGPointMake(lineCenter.x, lineCenter.y - 7)] colorWithAlphaComponent:0.5];
     }
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+      
+        bannerView.dateLabel.textColor = [UIColor  colorWithHexString:@"#7F7F7F"];
+        bannerView.dateLabel.font = EaseIMKit_NFont(12.0);
+
+        bannerView.titleLabel.textColor = [UIColor  colorWithHexString:@"#B9B9B9"];
+        bannerView.titleLabel.font = EaseIMKit_BFont(14.0);
+        
+        bannerView.contentLabel.textColor = [UIColor  colorWithHexString:@"#7F7F7F"];
+        bannerView.contentLabel.font = EaseIMKit_NFont(14.0);
+        
+//        self.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+    }else {
+        
+        bannerView.dateLabel.textColor = [UIColor  colorWithHexString:@"#141414"];
+        bannerView.dateLabel.font = EaseIMKit_NFont(12.0);
+
+        bannerView.titleLabel.textColor = [UIColor  colorWithHexString:@"#141414"];
+        bannerView.titleLabel.font = EaseIMKit_BFont(14.0);
+        
+        bannerView.contentLabel.textColor = [UIColor  colorWithHexString:@"#7F7F7F"];
+        bannerView.contentLabel.font = EaseIMKit_NFont(14.0);
+        bannerView.backgroundColor = UIColor.whiteColor;
+    }
+    
+//    [EBBannerView reLayoutSuviewsWithBannerView:bannerView];
+
     return bannerView;
 }
 
@@ -90,7 +119,7 @@ static EBBannerWindow *sharedWindow;
             AudioServicesPlaySystemSound(soundID);
         }
     }];
-    
+        
     self.imageView.image = _maker.icon;
     self.titleLabel.text = _maker.title;
     self.dateLabel.text = _maker.date;
@@ -119,6 +148,34 @@ static EBBannerWindow *sharedWindow;
     }];
 }
 
++ (void)reLayoutSuviewsWithBannerView:(EBBannerView *)bannerView {
+    [bannerView.imageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(@12.0);
+        make.left.equalTo(@16.0);
+        make.size.equalTo(@(20.0));
+    }];
+    
+    [bannerView.dateLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(bannerView.imageView);
+        make.left.equalTo(bannerView.imageView).offset(8.0);
+        make.right.equalTo(bannerView).offset(-16.0);
+        make.height.equalTo(@(16.0));
+    }];
+    
+    [bannerView.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(bannerView.imageView.mas_bottom).offset(12.0);
+        make.left.equalTo(bannerView.imageView);
+        make.right.equalTo(bannerView).offset(-16.0);
+    }];
+    
+    [bannerView.contentLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(bannerView.titleLabel.mas_bottom).offset(4.0);
+        make.left.equalTo(bannerView.imageView);
+        make.right.equalTo(bannerView).offset(-16.0);
+    }];
+}
+
+
 +(void)showWithContent:(NSString*)content{
     [[EBBannerView bannerWithBlock:^(EBBannerViewMaker *make) {
         make.content = content;
@@ -146,6 +203,8 @@ static EBBannerWindow *sharedWindow;
         bannerView.layer.shadowRadius = 3.5;
         bannerView.layer.shadowOpacity = 0.35;
         bannerView.layer.shadowOffset = CGSizeZero;
+        
+//        [self reLayoutSuviewsWithBannerView:bannerView];
         [sharedBannerViews addObject:bannerView];
     }
     return bannerView;
