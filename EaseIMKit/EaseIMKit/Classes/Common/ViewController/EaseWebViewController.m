@@ -14,6 +14,8 @@
 @property (nonatomic, strong) WKWebView*  webView;
 @property (nonatomic, strong) UIProgressView* progressView;
 @property (nonatomic, copy) NSURLRequest* request;
+@property (nonatomic, strong) UIView *titleView;
+
 @end
 
 @implementation EaseWebViewController
@@ -64,6 +66,17 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = EaseIMKit_COLOR_HEX(0xf0f0f0);
+    
+    self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
+
+    [self.view addSubview:self.titleView];
+    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(EaseIMKit_StatusBarHeight);
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@(44.0));
+    }];
+
+    
     [self.view addSubview:self.webView];
     [self.view addSubview:self.progressView];
     
@@ -77,7 +90,8 @@
                       context:nil];
     
     [self.webView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view).insets(UIEdgeInsetsMake(5.0, 0, 0, 0));
+        make.top.equalTo(self.titleView.mas_bottom).offset(5.0);
+        make.left.right.bottom.equalTo(self.view);
     }];
     
     [self.progressView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -87,6 +101,17 @@
     
     
     [self.webView loadRequest:self.request];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)dealloc {

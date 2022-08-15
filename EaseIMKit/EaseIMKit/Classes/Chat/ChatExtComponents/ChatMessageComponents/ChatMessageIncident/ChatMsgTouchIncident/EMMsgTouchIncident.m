@@ -81,10 +81,10 @@
             }
             [self.chatController presentViewController:alertController animated:YES completion:nil];
         }else {//一个链接直接打开
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[checkArr[0] URL].absoluteString] options:[NSDictionary new] completionHandler:nil];
+//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[checkArr[0] URL].absoluteString] options:[NSDictionary new] completionHandler:nil];
             
-//            NSString *urlString = [checkArr[0] URL].absoluteString;
-//            [self.chatController openWebPageWithURLString:urlString];
+            NSString *urlString = [checkArr[0] URL].absoluteString;
+            [self.chatController openWebPageWithURLString:urlString];
             
         }
     }

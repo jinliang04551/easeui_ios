@@ -1131,6 +1131,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
 }
 
 - (void)openWebPageWithURLString:(NSString *)urlString {
+    
     EaseWebViewController *webVC = [[EaseWebViewController alloc] initWithURLString:urlString];
     [self.navigationController pushViewController:webVC animated:YES];
 

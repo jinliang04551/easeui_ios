@@ -413,6 +413,7 @@ static EaseIMHelper *helper = nil;
             message = [NSString stringWithFormat:NSLocalizedString(@"mutedPrompt", nil),[NSString stringWithFormat:@"「%@」",aGroup.groupName]];
         EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.update", @"Group update") message:message];
         [alertView show];
+        
     }
        
 }

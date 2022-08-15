@@ -47,7 +47,7 @@
     [self addSubview:self.imgView];
     [self.imgView Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.centerY.equalTo(self);
-        make.top.equalTo(self).offset(8);
+//        make.top.equalTo(self).offset(8);
         make.width.height.equalTo(@30);
     }];
     
@@ -63,8 +63,10 @@
     
     [self addSubview:self.textLabel];
     [self.textLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.top.equalTo(self).offset(8);
-        make.bottom.equalTo(self).offset(-8);
+//        make.top.equalTo(self).offset(8);
+//        make.bottom.equalTo(self).offset(-8);
+        make.centerY.equalTo(self);
+
     }];
     
     

@@ -202,13 +202,13 @@
             }
         }];
     } else {
-        _statusView.backgroundColor = [UIColor redColor];
+        _statusView.backgroundColor = [UIColor colorWithHexString:@"#FF4D4F"];
         _statusView.clipsToBounds = YES;
-        _statusView.layer.cornerRadius = 4;
+        _statusView.layer.cornerRadius = 5.0;
         [_statusView Ease_makeConstraints:^(EaseConstraintMaker *make) {
-            make.top.equalTo(self.bubbleView);
-            make.left.equalTo(self.bubbleView.ease_right).offset(5);
-            make.width.height.equalTo(@8);
+            make.centerY.equalTo(self.bubbleView);
+            make.left.equalTo(self.bubbleView.ease_right).offset(8.0);
+            make.width.height.equalTo(@(10.0));
         }];
     }
     
