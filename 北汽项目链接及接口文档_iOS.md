@@ -36,8 +36,7 @@ EMConversationsViewController * conversationsVC= [[EMConversationsViewController
 [self.navigationController pushViewController:conversationsVC animated:YES];
 
 5. 我的专属群
-- (void)enterJihuExGroup;
-
+  [EaseIMKitManager.shared enterJihuExGroup];
 
 6. 未读总数 
 - (void)conversationsUnreadCountUpdate:(NSInteger)unreadCount;

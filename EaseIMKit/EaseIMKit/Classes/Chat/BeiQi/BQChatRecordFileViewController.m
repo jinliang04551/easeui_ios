@@ -66,9 +66,7 @@
             }];
          }];
     } else {
-        [self.conversation loadMessagesStartFromId:self.moreMsgId count:100 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray<EMChatMessage *> * _Nullable aMessages, EMError * _Nullable aError) {
-            [self loadMessages:aMessages withError:aError];
-        }];
+        
     }
 }
 
