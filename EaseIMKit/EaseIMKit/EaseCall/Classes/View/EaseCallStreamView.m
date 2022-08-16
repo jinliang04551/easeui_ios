@@ -61,8 +61,8 @@
         }];
         
         
-        [self addSubview:self.nameLabel];
-        [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        [self addSubview:self.nameBgView];
+        [self.nameBgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self).offset(-5);
             make.left.equalTo(self).offset(16.0);
             make.width.equalTo(self);
@@ -115,6 +115,7 @@
             
         }else{
             
+            
             if(self.timeTimer) {
                 [self.timeTimer invalidate];
                 self.timeTimer = nil;
@@ -129,6 +130,14 @@
     _statusView.image = nil;
     self.isTalking = NO;
     
+//    [UIView animateWithDuration:1.0 animations:^{
+//        self.statusView.hidden = YES;
+//        [self.talkingImageView startAnimating];
+//        self.talkingImageView.hidden = NO;
+//
+//    } completion:^(BOOL finished) {
+//        self.isTalking = NO;
+//    }];
 }
 
 #pragma mark - UITapGestureRecognizer
@@ -155,9 +164,15 @@
     }
     return _nameLabel;
 }
+
 - (UIView *)nameBgView {
     if (_nameBgView == nil) {
         _nameBgView = [[UIView alloc] init];
+        
+        [_nameBgView addSubview:self.nameLabel];
+        [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(_nameBgView);
+        }];
         
     }
     return _nameBgView;
@@ -183,7 +198,7 @@
         //图片播放一次所需时长
         _talkingImageView.animationDuration = 1.0;
         //图片播放次数,0表示无限
-        _talkingImageView.animationRepeatCount = 0;
+        _talkingImageView.animationRepeatCount = 1;
 
         //设置动画图片数组
         _talkingImageView.animationImages = self.talkingImageArray;
@@ -196,7 +211,7 @@
 
 - (NSTimer *)timeTimer {
     if (_timeTimer == nil) {
-        _timeTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timeTalkingAction:) userInfo:nil repeats:YES];
+        _timeTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timeTalkingAction:) userInfo:nil repeats:NO];
     }
     return _timeTimer;
 }

@@ -13,6 +13,9 @@
 #import "UIColor+EaseCall.h"
 #import "EaseDefines.h"
 
+#define kButtonItemPadding 52.0
+#define kButtonItemSize 64.0
+
 @interface EaseCallBaseViewController ()
 
 @end
@@ -43,7 +46,7 @@
 
 - (void)setubSubViews
 {
-    int size = 60;
+    int size = kButtonItemSize;
     
     [self.view addSubview:self.contentView];
     
@@ -59,10 +62,7 @@
        
     }];
     
-    self.miniButton = [[UIButton alloc] init];
-    self.miniButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.miniButton setImage:[UIImage imageNamedFromBundle:@"mini"] forState:UIControlStateNormal];
-    [self.miniButton addTarget:self action:@selector(miniAction) forControlEvents:UIControlEventTouchUpInside];
+   
     [self.contentView addSubview:self.miniButton];
     [self.miniButton setTintColor:[UIColor whiteColor]];
     [self.miniButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -71,10 +71,6 @@
         make.width.height.equalTo(@40);
     }];
     
-    self.hangupButton = [[UIButton alloc] init];
-    self.hangupButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.hangupButton setImage:[UIImage imageNamedFromBundle:@"hangup"] forState:UIControlStateNormal];
-    [self.hangupButton addTarget:self action:@selector(hangupAction) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:self.hangupButton];
     [self.hangupButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.contentView).offset(-60);
@@ -83,10 +79,7 @@
         //make.centerX.equalTo(@60);
     }];
     
-    self.answerButton = [[UIButton alloc] init];
-    self.answerButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.answerButton setImage:[UIImage imageNamedFromBundle:@"answer"] forState:UIControlStateNormal];
-    [self.answerButton addTarget:self action:@selector(answerAction) forControlEvents:UIControlEventTouchUpInside];
+    
     [self.contentView addSubview:self.answerButton];
     [self.answerButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.hangupButton);
@@ -94,9 +87,6 @@
         make.size.mas_equalTo(@(64));
     }];
     
-    self.switchCameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.switchCameraButton setImage:[UIImage imageNamedFromBundle:@"switchCamera"] forState:UIControlStateNormal];
-    [self.switchCameraButton addTarget:self action:@selector(switchCameraAction) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:self.switchCameraButton];
     [self.switchCameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.hangupButton);
@@ -104,10 +94,7 @@
         make.centerX.equalTo(self.contentView).with.multipliedBy(1.5);
     }];
     
-    self.microphoneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.microphoneButton setImage:[UIImage imageNamedFromBundle:@"microphone_disable"] forState:UIControlStateNormal];
-    [self.microphoneButton setImage:[UIImage imageNamedFromBundle:@"microphone_enable"] forState:UIControlStateSelected];
-    [self.microphoneButton addTarget:self action:@selector(muteAction) forControlEvents:UIControlEventTouchUpInside];
+    
     [self.contentView addSubview:self.microphoneButton];
     [self.microphoneButton mas_makeConstraints:^(MASConstraintMaker *make) {
         //make.left.equalTo(self.speakerButton.mas_right).offset(40);
@@ -117,10 +104,7 @@
     }];
     self.microphoneButton.selected = NO;
     
-    self.speakerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.speakerButton setImage:[UIImage imageNamedFromBundle:@"speaker_disable"] forState:UIControlStateNormal];
-    [self.speakerButton setImage:[UIImage imageNamedFromBundle:@"speaker_enable"] forState:UIControlStateSelected];
-    [self.speakerButton addTarget:self action:@selector(speakerAction) forControlEvents:UIControlEventTouchUpInside];
+    
     [self.contentView addSubview:self.speakerButton];
     [self.speakerButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.microphoneButton);
@@ -129,10 +113,7 @@
         make.width.height.equalTo(@(size));
     }];
 
-    self.enableCameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.enableCameraButton setImage:[UIImage imageNamedFromBundle:@"video_disable"] forState:UIControlStateNormal];
-    [self.enableCameraButton setImage:[UIImage imageNamedFromBundle:@"video_enable"] forState:UIControlStateSelected];
-    [self.enableCameraButton addTarget:self action:@selector(enableVideoAction) forControlEvents:UIControlEventTouchUpInside];
+   
     [self.contentView addSubview:self.enableCameraButton];
     [self.enableCameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
         //make.left.equalTo(self.microphoneButton.mas_right).offset(40);
@@ -331,4 +312,79 @@
 }
 */
 
+#pragma mark getter and setter
+-(UIButton *)miniButton {
+    if (_miniButton == nil) {
+        _miniButton = [[UIButton alloc] init];
+        _miniButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [_miniButton setImage:[UIImage imageNamedFromBundle:@"mini"] forState:UIControlStateNormal];
+        [_miniButton addTarget:self action:@selector(miniAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _miniButton;
+}
+
+- (UIButton *)hangupButton {
+    if (_hangupButton == nil) {
+        _hangupButton = [[UIButton alloc] init];
+        _hangupButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [_hangupButton setImage:[UIImage imageNamedFromBundle:@"hangup"] forState:UIControlStateNormal];
+        [_hangupButton addTarget:self action:@selector(hangupAction) forControlEvents:UIControlEventTouchUpInside];
+
+    }
+    return _hangupButton;
+}
+
+
+- (UIButton *)answerButton {
+    if (_answerButton == nil) {
+        _answerButton = [[UIButton alloc] init];
+        _answerButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [_answerButton setImage:[UIImage imageNamedFromBundle:@"answer"] forState:UIControlStateNormal];
+        [_answerButton addTarget:self action:@selector(answerAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _answerButton;
+}
+
+- (UIButton *)switchCameraButton {
+    if (_switchCameraButton == nil) {
+        _switchCameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_switchCameraButton setImage:[UIImage imageNamedFromBundle:@"switchCamera"] forState:UIControlStateNormal];
+        [_switchCameraButton addTarget:self action:@selector(switchCameraAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _switchCameraButton;
+}
+
+- (UIButton *)microphoneButton {
+    if (_microphoneButton == nil) {
+        _microphoneButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_microphoneButton setImage:[UIImage imageNamedFromBundle:@"microphone_disable"] forState:UIControlStateNormal];
+        [_microphoneButton setImage:[UIImage imageNamedFromBundle:@"microphone_enable"] forState:UIControlStateSelected];
+        [_microphoneButton addTarget:self action:@selector(muteAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _microphoneButton;
+}
+
+- (UIButton *)speakerButton {
+    if (_speakerButton == nil) {
+        _speakerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_speakerButton setImage:[UIImage imageNamedFromBundle:@"speaker_disable"] forState:UIControlStateNormal];
+        [_speakerButton setImage:[UIImage imageNamedFromBundle:@"speaker_enable"] forState:UIControlStateSelected];
+        [_speakerButton addTarget:self action:@selector(speakerAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _speakerButton;
+}
+
+- (UIButton *)enableCameraButton {
+    if (_enableCameraButton == nil) {
+        _enableCameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_enableCameraButton setImage:[UIImage imageNamedFromBundle:@"video_disable"] forState:UIControlStateNormal];
+        [_enableCameraButton setImage:[UIImage imageNamedFromBundle:@"video_enable"] forState:UIControlStateSelected];
+        [_enableCameraButton addTarget:self action:@selector(enableVideoAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _enableCameraButton;
+}
+
 @end
+
+#undef kButtonItemPadding
+#undef kButtonItemSize
