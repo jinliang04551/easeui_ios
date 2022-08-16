@@ -57,7 +57,7 @@
         
         _contentFontSize = 14.0;
         _inputBarStyle = EaseInputBarStyleAll;
-        _avatarStyle = RoundedCorner;
+        _avatarStyle = Circular;
         _avatarCornerRadius = 0;
     }
     return self;

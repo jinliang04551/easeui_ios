@@ -130,12 +130,16 @@
         
     self.msgTimelTag = -1;
     [self _setupChatSubviews];
-    /*
+    
     //草稿
     if (![[self.currentConversation draft] isEqualToString:@""]) {
         self.chatBar.textView.text = [self.currentConversation draft];
+
+        [self clearTextViewPlaceHolder];
+
         [self.currentConversation setDraft:@""];
-    }*/
+    }
+    
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
  
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapTableViewAction:)];
@@ -183,6 +187,9 @@
     if(self.currentConversation.type == EMConversationTypeGroupChat && [self.currentConversation remindMe]) {
         [self.currentConversation resetRemindMe];
     };
+    
+    [self updateConvastionDraft];
+
 }
 
 - (void)dealloc
@@ -195,11 +202,9 @@
         [[EMClient sharedClient].chatManager deleteConversation:self.currentConversation.conversationId isDeleteMessages:YES completion:nil];
         [[EMClient sharedClient].roomManager leaveChatroom:self.currentConversation.conversationId completion:nil];
     } else {
-        /*
-        //草稿
-        if (self.chatBar.textView.text.length > 0) {
-            [self.currentConversation setDraft:self.chatBar.textView.text];
-        }*/
+        //*
+       
+        [self updateConvastionDraft];
     }
     //刷新会话列表
     [[NSNotificationCenter defaultCenter] postNotificationName:CONVERSATIONLIST_UPDATE object:nil];
@@ -207,6 +212,12 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)updateConvastionDraft {
+    //草稿
+    if (self.chatBar.textView.text.length > 0) {
+        [self.currentConversation setDraft:self.chatBar.textView.text];
+    }
+}
 
 
 #pragma mark - Subviews

@@ -5,7 +5,7 @@
 //  Created by liang on 2021/10/22.
 //  Copyright © 2021 easemob. All rights reserved.
 //
-#define kAvatarImageHeight 44.0
+#define kAvatarImageHeight 38.0
 
 #import "BQCustomCell.h"
 #import "EaseHeaders.h"
@@ -92,6 +92,7 @@
         _iconImageView = [[UIImageView alloc] init];
         _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
         _iconImageView.layer.masksToBounds = YES;
+        _iconImageView.layer.cornerRadius = kAvatarImageHeight * 0.5;
     }
     return _iconImageView;
 }

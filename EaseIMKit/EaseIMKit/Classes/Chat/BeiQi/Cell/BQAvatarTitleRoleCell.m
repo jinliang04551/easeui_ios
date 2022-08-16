@@ -37,7 +37,6 @@
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.iconImageView.mas_right).offset(8.0);
         make.width.lessThanOrEqualTo(@(200.0));
-        make.height.equalTo(@(10));
     }];
 
     [self.roleImageView mas_makeConstraints:^(MASConstraintMaker *make) {

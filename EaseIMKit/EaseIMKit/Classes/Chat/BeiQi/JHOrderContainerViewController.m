@@ -129,6 +129,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (MISScrollPageController*)pageController {
     if(!_pageController){
         MISScrollPageStyle* style = [[MISScrollPageStyle alloc] init];
+        style.showSegmentViewSeparatorLine = NO;
 
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         style.showCover = NO;

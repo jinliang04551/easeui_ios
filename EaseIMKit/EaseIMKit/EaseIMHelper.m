@@ -116,7 +116,8 @@ static EaseIMHelper *helper = nil;
 - (void)connectionStateDidChange:(EMConnectionState)aConnectionState
 {
     if (aConnectionState == EMConnectionDisconnected) {
-        [EaseAlertController showErrorAlert:NSLocalizedString(@"offlinePrompt", nil)];
+//        [EaseAlertController showErrorAlert:NSLocalizedString(@"offlinePrompt", nil)];
+        
     }
 }
 
@@ -326,11 +327,10 @@ static EaseIMHelper *helper = nil;
         NSString *userName = ext[@"userName"];
         NSString *groupName = [EMGroup groupWithId:msg.to].groupName;
 
-        
-        NSString *message = [NSString stringWithFormat:@"%@加入%@",userName,groupName];
-        
-        EaseAlertView *alertView = [[EaseAlertView alloc] initWithTitle:@"提示" message:message];
-        [alertView show];
+//        NSString *message = [NSString stringWithFormat:@"%@加入%@",userName,groupName];
+//
+//        EaseAlertView *alertView = [[EaseAlertView alloc] initWithTitle:@"提示" message:message];
+//        [alertView show];
 
     }
     

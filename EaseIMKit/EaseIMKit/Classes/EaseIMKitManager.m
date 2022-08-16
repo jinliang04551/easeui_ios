@@ -310,12 +310,19 @@ static NSString *g_UIKitVersion = @"1.0.0";
     }
     
 }
- 
+
+
 
 - (BOOL)isShowbannerMessage:(EMChatMessage *)aMessage {
     BOOL isShow = NO;
     EMChatMessage *msg = aMessage;
 
+    if ([self isNoDisturbWithConvId:aMessage.conversationId]) {
+        isShow = NO;
+        return isShow;
+    }
+    
+    
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
         UIViewController *currentVC =  [EaseKitUtil currentViewController];
         
@@ -358,6 +365,22 @@ static NSString *g_UIKitVersion = @"1.0.0";
     }
 
     return isShow;
+}
+
+- (BOOL)isNoDisturbWithConvId:(NSString *)convId {
+    // 是否是免打扰的消息(聊天室没有免打扰消息)
+    BOOL unremindChat = [self _unremindChat:convId];//单聊免打扰
+    BOOL unremindGroup = [self _unremindGroup:convId];//群组免打扰
+    return unremindChat || unremindGroup;
+}
+
+
+- (BOOL)_unremindGroup:(NSString *)fromChatter {
+    return [[[EMClient sharedClient].pushManager noPushGroups] containsObject:fromChatter];
+}
+
+- (BOOL)_unremindChat:(NSString *)conversationId {
+    return [[[EMClient sharedClient].pushManager noPushUIds] containsObject:conversationId];
 }
 
 

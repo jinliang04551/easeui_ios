@@ -113,7 +113,8 @@
             weakSelf.group = aGroup;
             [weakSelf _resetGroup:aGroup];
         } else {
-            [EaseAlertController showErrorAlert:[NSString stringWithFormat:NSLocalizedString(@"fetchGroupSubjectFail", nil),aError.description]];
+//            [EaseAlertController showErrorAlert:[NSString stringWithFormat:NSLocalizedString(@"fetchGroupSubjectFail", nil),aError.description]];
+            
         }
     }];
 }
@@ -437,24 +438,17 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     __weak typeof(self) weakself = self;
     
     if (aIsShowHUD) {
-        [self showHudInView:self.view hint:NSLocalizedString(@"fetchGroupSubject...", nil)];
+//        [self showHudInView:self.view hint:NSLocalizedString(@"fetchGroupSubject...", nil)];
+        
     }
-//    [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:aGroupId completion:^(EMGroup *aGroup, EMError *aError) {
-//        [weakself hideHud];
-//        if (!aError) {
-//            [weakself _resetGroup:aGroup];
-//        } else {
-//            [EaseAlertController showErrorAlert:NSLocalizedString(@"fetchGroupSubjectFail", nil)];
-//        }
-//        [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
-//    }];
     
     [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:self.groupId fetchMembers:YES completion:^(EMGroup * _Nullable aGroup, EMError * _Nullable aError) {
         [weakself hideHud];
         if (!aError) {
             [weakself _resetGroup:aGroup];
         } else {
-            [EaseAlertController showErrorAlert:NSLocalizedString(@"fetchGroupSubjectFail", nil)];
+//            [EaseAlertController showErrorAlert:NSLocalizedString(@"fetchGroupSubjectFail", nil)];
+            
         }
         [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
     }];

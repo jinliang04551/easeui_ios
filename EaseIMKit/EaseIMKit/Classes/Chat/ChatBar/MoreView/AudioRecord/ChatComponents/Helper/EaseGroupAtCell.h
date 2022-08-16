@@ -6,11 +6,11 @@
 //  Copyright © 2022 djp. All rights reserved.
 //
 
-#import "EaseCustomCell.h"
+#import "BQCustomCell.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EaseGroupAtCell : EaseCustomCell
+@interface EaseGroupAtCell : BQCustomCell
 
 @end
 

@@ -64,6 +64,14 @@
     
    
     [self.contentView addSubview:self.miniButton];
+    [self.contentView addSubview:self.hangupButton];
+    [self.contentView addSubview:self.answerButton];
+    [self.contentView addSubview:self.switchCameraButton];
+    [self.contentView addSubview:self.microphoneButton];
+    [self.contentView addSubview:self.speakerButton];
+    [self.contentView addSubview:self.enableCameraButton];
+
+    
     [self.miniButton setTintColor:[UIColor whiteColor]];
     [self.miniButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView);
@@ -71,7 +79,6 @@
         make.width.height.equalTo(@40);
     }];
     
-    [self.contentView addSubview:self.hangupButton];
     [self.hangupButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.contentView).offset(-60);
         make.left.equalTo(@(40));
@@ -80,14 +87,12 @@
     }];
     
     
-    [self.contentView addSubview:self.answerButton];
     [self.answerButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.hangupButton);
         make.right.equalTo(self.contentView).offset(-40.0);
         make.size.mas_equalTo(@(64));
     }];
     
-    [self.contentView addSubview:self.switchCameraButton];
     [self.switchCameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.hangupButton);
         make.width.height.mas_equalTo(60);
@@ -95,7 +100,6 @@
     }];
     
     
-    [self.contentView addSubview:self.microphoneButton];
     [self.microphoneButton mas_makeConstraints:^(MASConstraintMaker *make) {
         //make.left.equalTo(self.speakerButton.mas_right).offset(40);
         make.centerX.equalTo(self.contentView).with.multipliedBy(0.5);
@@ -105,7 +109,6 @@
     self.microphoneButton.selected = NO;
     
     
-    [self.contentView addSubview:self.speakerButton];
     [self.speakerButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.microphoneButton);
         //make.left.equalTo(self.switchCameraButton.mas_right).offset(40);
@@ -114,7 +117,6 @@
     }];
 
    
-    [self.contentView addSubview:self.enableCameraButton];
     [self.enableCameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
         //make.left.equalTo(self.microphoneButton.mas_right).offset(40);
         make.centerX.equalTo(self.contentView).with.multipliedBy(1.5);
