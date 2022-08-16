@@ -150,13 +150,21 @@
 
 - (void)fetchGroupAllMembers {
     
-    [EMClient.sharedClient.groupManager getGroupSpecificationFromServerWithId:self.currentConversation.conversationId completion:^(EMGroup *aGroup, EMError *aError) {
-        if (!aError) {
-            self.groupMemberCount = aGroup.memberList.count + 1;
-        } else {
-            //
-        }
-    }];
+    NSInteger count = [EaseIMKitManager.shared.joinedGroupMemberDic[self.currentConversation.conversationId] intValue];
+    if (count == 0) {
+        [EMClient.sharedClient.groupManager getGroupSpecificationFromServerWithId:self.currentConversation.conversationId completion:^(EMGroup *aGroup, EMError *aError) {
+            if (!aError) {
+                //已读数为去除自己的所有人
+                self.groupMemberCount = aGroup.memberList.count;
+            } else {
+                //
+            }
+        }];
+
+    }else {
+        self.groupMemberCount = count;
+    }
+    
 }
 
 
@@ -737,6 +745,11 @@ if (EaseIMKitManager.shared.isJiHuApp){
 {
     BOOL isVisiable = self.isViewLoaded && self.view.window;
     
+    //当前页面可见时，消息置为已读状态
+    if (!isVisiable) {
+        return;
+    }
+    
     __weak typeof(self) weakself = self;
     dispatch_async(self.msgQueue, ^{
         NSString *conId = weakself.currentConversation.conversationId;
@@ -753,12 +766,9 @@ if (EaseIMKitManager.shared.isJiHuApp){
                 
             }
            
-            //当前页面可见时，消息置为已读状态
-            if (isVisiable) {
-                [weakself sendReadReceipt:msg];
-                [weakself.currentConversation markMessageAsReadWithId:msg.messageId error:nil];
-            }
+            [weakself.currentConversation markMessageAsReadWithId:msg.messageId error:nil];
 
+        
             [msgArray addObject:msg];
             [weakself.messageList addObject:msg];
         }
@@ -934,12 +944,17 @@ if (EaseIMKitManager.shared.isJiHuApp){
 
     for (int i = 0; i < [aMessages count]; i++) {
         EMChatMessage *msg = aMessages[i];
-        if (msg.chatType == EMChatTypeChat && msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation)) {
+        if (msg.chatType == EMChatTypeChat && !msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation) && msg.direction == EMMessageDirectionReceive) {
+            
             [[EMClient sharedClient].chatManager sendMessageReadAck:msg.messageId toUser:msg.conversationId completion:nil];
         }
         
-        if (msg.chatType == EMChatTypeGroupChat && msg.isNeedGroupAck && !msg.isReadAcked) {
+        
+        if (msg.chatType == EMChatTypeGroupChat && msg.isNeedGroupAck && !msg.isReadAcked && msg.direction == EMMessageDirectionReceive) {
             [[EMClient sharedClient].chatManager sendGroupMessageReadAck:msg.messageId toGroup:msg.conversationId content:@"123" completion:nil];
+            
+            NSLog(@"%s msg.messageId:%@ isreadCk:%d",__func__,msg.messageId,msg.isReadAcked);
+
         }
         
         CGFloat interval = (self.msgTimelTag - msg.timestamp) / 1000;

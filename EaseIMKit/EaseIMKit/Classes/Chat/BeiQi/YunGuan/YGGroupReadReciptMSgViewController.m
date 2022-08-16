@@ -164,8 +164,11 @@ MISScrollPageControllerDelegate>
             }
             self.readMsgArray = tArray;
             [self.memberIdArray removeObjectsInArray:self.readMsgArray];
+            [self.memberIdArray removeObject:[EMClient sharedClient].currentUsername];
+            
             self.unReadMsgArray = self.memberIdArray;
-
+            
+            
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self updateUI];
             });

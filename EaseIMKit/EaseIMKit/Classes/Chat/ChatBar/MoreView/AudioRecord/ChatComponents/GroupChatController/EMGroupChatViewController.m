@@ -99,13 +99,13 @@
 
 - (void)sendReadReceipt:(EMChatMessage *)msg
 {
-    if (msg.isNeedGroupAck && !msg.isReadAcked) {
-        [[EMClient sharedClient].chatManager sendGroupMessageReadAck:msg.messageId toGroup:msg.conversationId content:@"123" completion:^(EMError *error) {
-            if (error) {
-               
-            }
-        }];
-    }
+//    if (msg.isNeedGroupAck && !msg.isReadAcked) {
+//        [[EMClient sharedClient].chatManager sendGroupMessageReadAck:msg.messageId toGroup:msg.conversationId content:@"123" completion:^(EMError *error) {
+//            if (error) {
+//
+//            }
+//        }];
+//    }
 }
 
 #pragma mark - EMChatManagerDelegate

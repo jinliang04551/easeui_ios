@@ -326,8 +326,9 @@
     }else {
         if (model.message.direction == EMMessageDirectionSend) {
             if (model.message.isNeedGroupAck && model.message.status == EMMessageStatusSucceed) {
+                self.readReceiptBtn.hidden = NO;
+
                 if (_model.message.groupAckCount == self.groupMemberCount) {
-                    self.readReceiptBtn.hidden = NO;
 
                     [self.readReceiptBtn updateStateWithCount:_model.message.groupAckCount isReadAll:YES];
                 }else {

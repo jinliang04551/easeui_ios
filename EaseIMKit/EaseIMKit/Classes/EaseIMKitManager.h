@@ -83,6 +83,8 @@ NS_ASSUME_NONNULL_BEGIN
 //当前未读总数
 @property (nonatomic, assign,readonly) NSInteger currentUnreadCount;
 
+//加入的群组的人数字典
+@property (nonatomic, strong,readonly) NSMutableDictionary *joinedGroupMemberDic;
 
 + (BOOL)managerWithEaseIMKitOptions:(EaseIMKitOptions *)options;
 

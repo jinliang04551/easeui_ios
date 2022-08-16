@@ -52,6 +52,8 @@ static NSString *g_UIKitVersion = @"1.0.0";
 //极狐专属服务群id列表
 @property (nonatomic, strong) NSMutableArray *exGroupIds;
 
+//加入的群组的人数字典
+@property (nonatomic, strong) NSMutableDictionary *joinedGroupMemberDic;
 
 @end
 
@@ -105,6 +107,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
                 if (group) {
                     [tArray addObject:group.groupId];
                 }
+                [self fetchGroupSpecWithGroupId:group.groupId];
             }
             self.joinedGroupIdArray = [tArray mutableCopy];
             
@@ -136,6 +139,17 @@ static NSString *g_UIKitVersion = @"1.0.0";
     }
     
 }
+
+- (void)fetchGroupSpecWithGroupId:(NSString *)groupId {
+    [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:groupId completion:^(EMGroup * _Nullable aGroup, EMError * _Nullable aError) {
+        if (aError == nil) {
+            if (aGroup.memberList >0) {
+                [self.joinedGroupMemberDic setObject:@(aGroup.memberList.count) forKey:aGroup.groupId];
+            }
+        }
+    }];
+}
+
 
 
 - (void)fetchJiHuExGroupList {
@@ -1199,6 +1213,13 @@ static NSString *g_UIKitVersion = @"1.0.0";
 - (void)enterJihuExGroup {
     
     [[NSNotificationCenter defaultCenter] postNotificationName:JiHuExGroupPushChatViewController object:self.exGroupIds];
+}
+
+- (NSMutableDictionary *)joinedGroupMemberDic {
+    if (_joinedGroupMemberDic == nil) {
+        _joinedGroupMemberDic = [NSMutableDictionary dictionary];
+    }
+    return _joinedGroupMemberDic;
 }
 
 @end

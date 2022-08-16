@@ -23,6 +23,7 @@
 #import "EaseConversationModel.h"
 #import "EaseIMKitManager.h"
 #import "EaseHeaders.h"
+#import "EMChatViewController+EMLoadMordMessage.h"
 
 @interface EMChatViewController ()<EaseChatViewControllerDelegate, EMChatroomManagerDelegate, EMGroupManagerDelegate, EMMessageCellDelegate>
 @property (nonatomic, strong) EaseConversationModel *conversationModel;
@@ -196,7 +197,6 @@
 {
     
     if (self.conversation.type == EMConversationTypeChat) {
-//        UIImage *image = [[UIImage easeUIImageNamed:@"userData"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         UIImage *image = nil;
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
          image = [[UIImage easeUIImageNamed:@"jh_groupInfo"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -406,6 +406,19 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         [menuArray addObject:defaultLongPressItems[0]];
     }
     [menuArray addObject:defaultLongPressItems[1]];
+    
+    //更多消息
+    __weak typeof(self) weakself = self;
+    if (message.body.type == EMMessageBodyTypeText || message.body.type == EMMessageBodyTypeImage || message.body.type == EMMessageBodyTypeLocation || message.body.type == EMMessageBodyTypeVideo) {
+        EaseExtMenuModel *moreMenu = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"forward"] funcDesc:@"更多" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+            if (isExecuted) {
+                [weakself loadMoreMessage];
+            }
+        }];
+//        [menuArray addObject:moreMenu];
+    }
+
+    
 //    //转发
 //    __weak typeof(self) weakself = self;
 //    if (message.body.type == EMMessageBodyTypeText || message.body.type == EMMessageBodyTypeImage || message.body.type == EMMessageBodyTypeLocation || message.body.type == EMMessageBodyTypeVideo) {
