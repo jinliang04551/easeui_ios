@@ -36,8 +36,8 @@ EMConversationsViewController * conversationsVC= [[EMConversationsViewController
 [self.navigationController pushViewController:conversationsVC animated:YES];
 
 5. 我的专属群
-EMConversationsViewController * conversationsVC= [[EMConversationsViewController alloc] initWithEnterType:EMConversationEnterTypeExclusiveGroup];
-[self.navigationController pushViewController:conversationsVC animated:YES];
+- (void)enterJihuExGroup;
+
 
 6. 未读总数 
 - (void)conversationsUnreadCountUpdate:(NSInteger)unreadCount;

@@ -298,6 +298,10 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 #define Banner_PUSHVIEWCONTROLLER @"BannerPushChatViewController"
 
 
+//极狐专属群pushVC通知
+#define JiHuExGroupPushChatViewController @"JiHuExGroupPushChatViewController"
+
+
 //#define DEF_APPKEY @"easemob-de/Users/liu001/Desktop/SDK_3.9.4_localPath_BeiQi_SDK_includeCallkit/easeui_ios/EaseIMKit/EaseIMKit/Classes/Common/EaseDefines.hmo#easeim"
 //#define DEF_APPKEY @"easemob-demo#chatdemoui"
 #define DEF_APPKEY @"1100220704109048#arcfox-server"

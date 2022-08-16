@@ -115,6 +115,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)enterSingleChatPageWithUserId:(NSString *)userId;
 
+//进入极狐专属群列表，仅有一个直接进入群聊
+- (void)enterJihuExGroup;
 
 @end
 

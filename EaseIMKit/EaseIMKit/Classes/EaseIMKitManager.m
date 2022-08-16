@@ -28,6 +28,7 @@
 #import "EMRemindManager.h"
 #import "EaseKitUtil.h"
 #import "EMChatViewController.h"
+#import "EMConversationsViewController.h"
 
 
 bool gInit;
@@ -1194,7 +1195,11 @@ static NSString *g_UIKitVersion = @"1.0.0";
     [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:userId];
 }
 
-
+//进入专属群列表，仅有一个直接进入群聊
+- (void)enterJihuExGroup {
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:JiHuExGroupPushChatViewController object:self.exGroupIds];
+}
 
 @end
 

@@ -19,6 +19,8 @@
 #import "UserInfoStore.h"
 #import "EBBannerView.h"
 #import "EaseDateHelper.h"
+#import "EMConversationsViewController.h"
+
 
 static EaseIMHelper *helper = nil;
 
@@ -82,6 +84,8 @@ static EaseIMHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushBannerMsgController:) name:Banner_PUSHVIEWCONTROLLER object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bannerDidClick:) name:EBBannerViewDidClickNotification object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(jiHuExGroupPushChatViewController:) name:JiHuExGroupPushChatViewController object:nil];
 
 }
 
@@ -629,6 +633,7 @@ static EaseIMHelper *helper = nil;
         conversationId = model.easeId;
         type = model.type;
     }
+    
     EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:conversationId conversationType:type];
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     UIViewController *rootViewController = window.rootViewController;
@@ -639,6 +644,7 @@ static EaseIMHelper *helper = nil;
         
         [nav pushViewController:controller animated:YES];
     }
+    
 }
 
 
@@ -821,6 +827,46 @@ static EaseIMHelper *helper = nil;
         title = [self getUserNameFromBannerMsgFromId:msg.from];
     }
     return [NSString stringWithFormat:@"[%@]",title];
+}
+
+
+#pragma mark jihu ExGroup
+- (void)jiHuExGroupPushChatViewController:(NSNotification *)notify {
+    
+    NSArray *exGroupIds = (NSArray *)notify.object;
+
+    if (exGroupIds.count == 0) {
+        return;
+    }
+    
+    BOOL isSingleGroupChat = NO;
+
+    if (exGroupIds.count > 0) {
+        if (exGroupIds.count == 1) {
+            isSingleGroupChat = YES;
+        }
+    }
+
+    
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    UIViewController *rootViewController = window.rootViewController;
+    
+    if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nav = (UINavigationController *)rootViewController;
+        nav.modalPresentationStyle = UIModalPresentationFullScreen;
+
+        if (isSingleGroupChat) {
+            EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:exGroupIds.lastObject conversationType:EMConversationTypeGroupChat];
+            
+            [nav pushViewController:controller animated:YES];
+
+        }else {
+            EMConversationsViewController * conversationsVC= [[EMConversationsViewController alloc] initWithEnterType:EMConversationEnterTypeExclusiveGroup];
+
+            [nav pushViewController:conversationsVC animated:YES];
+
+        }
+    }
 }
 
 #pragma mark getter and setter
