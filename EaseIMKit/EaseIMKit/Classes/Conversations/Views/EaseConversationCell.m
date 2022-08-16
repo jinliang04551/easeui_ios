@@ -56,11 +56,6 @@
 }
 
 #pragma mark - private layout subviews
-//- (void)prepareForReuse {
-//    [super prepareForReuse];
-//    [self.groupIdLabel removeFromSuperview];
-//}
-
 
 - (void)_addSubViews {
         
@@ -86,7 +81,6 @@
         self.undisturbRing.image = [UIImage easeUIImageNamed:@"yg_undisturbRing"];
     }
 
-    self.selectionStyle = UITableViewCellSelectionStyleGray;
 }
 
 - (void)_setupSubViewsConstraints
