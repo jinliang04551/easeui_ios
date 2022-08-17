@@ -48,9 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
                            completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
 
 
-- (void)searchCustomOrderWithUserId:(NSString *)userId
-                          orderType:(NSString *)orderType
-                         completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+- (void)searchCustomOrderWithOrderType:(NSString *)orderType
+                            completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
 
 - (void)fetchYunGuanNoteWithGroupId:(NSString *)groupId
                          completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;

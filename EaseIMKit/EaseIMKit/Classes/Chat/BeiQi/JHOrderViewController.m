@@ -9,10 +9,12 @@
 #import "JHOrderInfoCell.h"
 #import "MISScrollPage.h"
 #import "JHOrderViewModel.h"
+#import "EaseIMKitManager.h"
 
 @interface JHOrderViewController ()<MISScrollPageControllerContentSubViewControllerDelegate>
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, assign) EaseJHOrderType orderType;
+@property (nonatomic, strong) NSString  *orderTypeName;
 
 
 @end
@@ -22,6 +24,7 @@
     self = [super init];
     if (self) {
         self.orderType = orderType;
+        [self getOrderTypeName];
     }
     return self;
 }
@@ -44,9 +47,27 @@
 
 }
 
+- (void)getOrderTypeName {
+    NSString *name = @"";
+    switch (self.orderType) {
+        case 1:
+            name = @"MAIN";
+            break;
+        case 2:
+            name = @"PICKCAR";
+            break;
+        case 3:
+            name = @"FINE";
+            break;
+        case 4:
+            name = @"PACKAGE";
+            break;
+    }
+    self.orderTypeName = name;
+}
+
 - (void)fetchOrderList {
-    [[EaseHttpManager sharedManager] searchCustomOrderWithUserId:[EMClient sharedClient].currentUsername orderType:@"MAIN" completion:^(NSInteger statusCode, NSString * _Nonnull response) {
-        
+    [[EaseHttpManager sharedManager] searchCustomOrderWithOrderType:self.orderTypeName completion:^(NSInteger statusCode, NSString * _Nonnull response) {
         if (response && response.length > 0 && statusCode) {
             NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];

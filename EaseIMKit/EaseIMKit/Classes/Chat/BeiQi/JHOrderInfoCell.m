@@ -35,7 +35,7 @@
 - (void)updateWithObj:(id)obj {
     self.orderModel = (JHOrderViewModel *)obj;
     
-    self.nameLabel.text = [NSString stringWithFormat:@"%@",self.orderModel.productName];
+    self.nameLabel.text = [NSString stringWithFormat:@"%@订单",self.orderModel.orderId];
     self.productNameLabel.text = [NSString stringWithFormat:@"商品名称: %@",self.orderModel.productName];
     self.timeLabel.text = [NSString stringWithFormat:@"下单日期：%@",self.orderModel.orderDate];
     
@@ -51,6 +51,7 @@
     [self.orderModel displayOrderMessage:msgInfo];
     
 }
+
 
 
 - (void)sendButtonAction {

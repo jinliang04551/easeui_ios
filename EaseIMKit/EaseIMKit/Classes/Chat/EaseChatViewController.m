@@ -99,7 +99,7 @@
         _msgQueue = dispatch_queue_create("EMChatMessage.com", NULL);
         _viewModel = viewModel;
         _isReloadViewWithModel = NO;
-        [EaseIMKitManager.shared setConversationId:_currentConversation.conversationId];
+
         if (!_viewModel) {
             _viewModel = [[EaseChatViewModel alloc] init];
         }
@@ -202,7 +202,6 @@
 
 - (void)dealloc
 {
-    [EaseIMKitManager.shared setConversationId:@""];
     [self hideLongPressView];
     [[EMAudioPlayerUtil sharedHelper] stopPlayer];
     if (self.currentConversation.type == EMChatTypeChatRoom) {
@@ -291,17 +290,17 @@ if (EaseIMKitManager.shared.isJiHuApp){
     orderImage =  [UIImage easeUIImageNamed:@"yg_order"];
 }
     
-    EaseExtMenuModel *photoAlbumExtModel = [[EaseExtMenuModel alloc]initWithData:photoImage funcDesc:EaseLocalizableString(@"photo", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+    EaseExtMenuModel *photoAlbumExtModel = [[EaseExtMenuModel alloc]initWithData:photoImage funcDesc:@"相册" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
         [weakself chatToolBarComponentIncidentAction:EMChatToolBarPhotoAlbum];
     }];
-    EaseExtMenuModel *cameraExtModel = [[EaseExtMenuModel alloc]initWithData:cameraImage funcDesc:EaseLocalizableString(@"camera", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+    EaseExtMenuModel *cameraExtModel = [[EaseExtMenuModel alloc]initWithData:cameraImage funcDesc:@"相机" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
         [weakself chatToolBarComponentIncidentAction:EMChatToolBarCamera];
     }];
-    EaseExtMenuModel *locationExtModel = [[EaseExtMenuModel alloc]initWithData:locationImage funcDesc:EaseLocalizableString(@"location", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+    EaseExtMenuModel *locationExtModel = [[EaseExtMenuModel alloc]initWithData:locationImage funcDesc:@"位置" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
         [weakself chatToolBarLocationAction];
     }];
     
-    EaseExtMenuModel *fileExtModel = [[EaseExtMenuModel alloc]initWithData:fileImage funcDesc:EaseLocalizableString(@"file", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+    EaseExtMenuModel *fileExtModel = [[EaseExtMenuModel alloc]initWithData:fileImage funcDesc:@"文件" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
         [weakself chatToolBarFileOpenAction];
     }];
     
@@ -835,15 +834,16 @@ if (EaseIMKitManager.shared.isJiHuApp){
                     if (index != NSNotFound) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [weakself.dataArray replaceObjectAtIndex:index withObject:reloadModel];
+                            
+                            NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
+
+                            [weakself.tableView reloadRowsAtIndexPaths:@[toIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                         });
 
                     }
                 }
             }
         }];
-        
-       
-        
     });
 }
 

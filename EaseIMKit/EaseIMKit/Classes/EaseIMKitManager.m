@@ -37,7 +37,6 @@ static NSString *g_UIKitVersion = @"1.0.0";
 
 @interface EaseIMKitManager ()<EMMultiDevicesDelegate, EMContactManagerDelegate, EMGroupManagerDelegate, EMChatManagerDelegate,EaseCallDelegate>
 @property (nonatomic, strong) EaseMulticastDelegate<EaseIMKitManagerDelegate> *delegates;
-@property (nonatomic, strong) NSString *currentConversationId;  //当前会话聊天id
 @property (nonatomic, assign) NSInteger currentUnreadCount; //当前未读总数
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
 @property (nonatomic, strong) NSMutableDictionary *undisturbMaps;//免打扰会话的map
@@ -54,6 +53,8 @@ static NSString *g_UIKitVersion = @"1.0.0";
 
 //加入的群组的人数字典
 @property (nonatomic, strong) NSMutableDictionary *joinedGroupMemberDic;
+
+
 
 @end
 
@@ -247,7 +248,6 @@ static NSString *g_UIKitVersion = @"1.0.0";
     self = [super init];
     if (self) {
         _delegates = (EaseMulticastDelegate<EaseIMKitManagerDelegate> *)[[EaseMulticastDelegate alloc] init];
-        _currentConversationId = @"";
         _msgQueue = dispatch_queue_create("easemessage.com", NULL);
         _undisturbMaps = [NSMutableDictionary dictionary];
     }
@@ -313,6 +313,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
         if (i == aMessages.count - 1) {
             BOOL isShow = [self isShowbannerMessage:msg];
             if (!isShow) {
+                [EMRemindManager remindMessage:msg];
                 return;
             }
 
@@ -343,21 +344,21 @@ static NSString *g_UIKitVersion = @"1.0.0";
         
         NSLog(@"%s currentVC:%@",__func__,currentVC);
         
-        EMChatViewController *topChatVC = [EaseIMHelper shareHelper].pushedChatVCArray.lastObject;
+        NSString *topConvId = [EaseIMHelper shareHelper].pushedConvIdArray.lastObject;
         
-        if (currentVC == topChatVC) {
-            NSString *convId = topChatVC.conversation.conversationId;
+        //存在active会话页面
+        if (topConvId.length > 0) {
             
-            NSLog(@"%s convId:%@",__func__,convId);
+            NSLog(@"%s topConvId:%@",__func__,topConvId);
 
             if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
                 //是群聊且不是当前消息的专属群页面 应当跳转到专属群
-                if (msg.chatType == EMChatTypeGroupChat && ![msg.conversationId isEqualToString:convId]) {
+                if (msg.chatType == EMChatTypeGroupChat && ![msg.conversationId isEqualToString:topConvId] &&[self.exGroupIds containsObject:msg.conversationId]) {
                     isShow = YES;
                 }
                 
             }else {
-                if ((msg.chatType == EMChatTypeGroupChat||msg.chatType == EMChatTypeChat) && ![msg.conversationId isEqualToString:convId]) {
+                if ((msg.chatType == EMChatTypeGroupChat||msg.chatType == EMChatTypeChat) && ![msg.conversationId isEqualToString:topConvId]) {
                     isShow = YES;
                 }
             }
@@ -366,7 +367,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
         }else {
             //非聊天界面
             if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-                if (msg.chatType == EMChatTypeGroupChat) {
+                if (msg.chatType == EMChatTypeGroupChat &&[self.exGroupIds containsObject:msg.conversationId]) {
                     isShow = YES;
                 }
             }else {
@@ -381,6 +382,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
 
     return isShow;
 }
+
 
 - (BOOL)isNoDisturbWithConvId:(NSString *)convId {
     // 是否是免打扰的消息(聊天室没有免打扰消息)
@@ -1175,8 +1177,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
     [EaseKitUtil removeLoginUserToken];
     [[EaseIMKitMessageHelper shareMessageHelper] clearMemeryCache];
     
-    [[EaseIMHelper shareHelper].pushedChatVCArray removeAllObjects];
-    [EaseIMHelper shareHelper].pushedChatVCArray = nil;
+    [EaseIMHelper shareHelper].pushedConvIdArray = nil;
 
     
     EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
@@ -1222,13 +1223,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
     return _joinedGroupMemberDic;
 }
 
-@end
-
-@implementation EaseIMKitManager (currentUnreadCount)
-
-- (void)setConversationId:(NSString *)conversationId
-{
-    _currentConversationId = conversationId;
-}
 
 @end
+
+

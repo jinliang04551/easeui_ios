@@ -26,13 +26,36 @@
 
         self.aid = dic[@"aid"];
         self.orderId = dic[@"orderId"];
-        self.orderType = dic[@"orderType"];
+        self.orderType = [self getOrderTypeWithString:dic[@"orderType"]];
         self.productName = dic[@"productName"];
         self.orderDate = dic[@"orderDate"];
 
     }
     return self;
 }
+
+- (NSString *)getOrderTypeWithString:(NSString *)string {
+    NSString *name = @"";
+   
+    if ([string isEqualToString:@"MAIN"]) {
+        name = @"维保订单";
+    }
+    
+    if ([string isEqualToString:@"PICKCAR"]) {
+        name = @"取送订单";
+    }
+    
+    if ([string isEqualToString:@"FINE"]) {
+        name = @"精品订单";
+    }
+    
+    if ([string isEqualToString:@"PACKAGE"]) {
+        name = @"服务订单";
+    }
+    
+    return name;
+}
+
 
 - (void)displayOrderMessage:(NSString *)msgInfo {
     self.messageInfo = msgInfo;

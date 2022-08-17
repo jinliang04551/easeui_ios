@@ -59,7 +59,7 @@ static EaseIMHelper *helper = nil;
     [[EMClient sharedClient].chatManager removeDelegate:self];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self.pushedChatVCArray removeAllObjects];
+    [self.pushedConvIdArray removeAllObjects];
     
 }
 
@@ -640,8 +640,10 @@ static EaseIMHelper *helper = nil;
     if ([rootViewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *nav = (UINavigationController *)rootViewController;
         nav.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self.pushedChatVCArray addObject:controller];
-        
+
+        if (conversationId.length > 0) {
+            [self.pushedConvIdArray addObject:conversationId];
+        }
         [nav pushViewController:controller animated:YES];
     }
     
@@ -650,15 +652,7 @@ static EaseIMHelper *helper = nil;
 
 - (void)handlePushGroupsController:(NSNotification *)aNotif
 {
-//    NSDictionary *dic = aNotif.object;
-//    UINavigationController *navController = [dic objectForKey:NOTIF_NAVICONTROLLER];
-//    if (navController == nil) {
-//        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-//        navController = (UINavigationController *)window.rootViewController;
-//    }
-//
-//    EMGroupsViewController *controller = [[EMGroupsViewController alloc] init];
-//    [navController pushViewController:controller animated:YES];
+
 }
 
 #pragma mark BannerView
@@ -694,7 +688,9 @@ static EaseIMHelper *helper = nil;
             nav.modalPresentationStyle = UIModalPresentationFullScreen;
     
             //入栈
-            [self.pushedChatVCArray addObject:controller];
+            if (msg.conversationId.length > 0) {
+                [self.pushedConvIdArray addObject:msg.conversationId];
+            }
 
             [nav pushViewController:controller animated:YES];
         }
@@ -870,11 +866,11 @@ static EaseIMHelper *helper = nil;
 }
 
 #pragma mark getter and setter
-- (NSMutableArray<EMChatViewController *> *)pushedChatVCArray {
-    if (_pushedChatVCArray == nil) {
-        _pushedChatVCArray = [NSMutableArray array];
+- (NSMutableArray<NSString *> *)pushedConvIdArray {
+    if (_pushedConvIdArray == nil) {
+        _pushedConvIdArray = [NSMutableArray array];
     }
-    return _pushedChatVCArray;
+    return _pushedConvIdArray;
 }
 
 

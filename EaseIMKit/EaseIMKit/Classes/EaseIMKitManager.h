@@ -86,6 +86,11 @@ NS_ASSUME_NONNULL_BEGIN
 //加入的群组的人数字典
 @property (nonatomic, strong,readonly) NSMutableDictionary *joinedGroupMemberDic;
 
+//极狐Uid 用于查询订单信息
+@property (nonatomic, strong) NSString *jihuCurrentUid;
+@property (nonatomic, strong) NSString *jihuToken;
+
+
 + (BOOL)managerWithEaseIMKitOptions:(EaseIMKitOptions *)options;
 
 /// Description 根据会话 ID 查询当前会话是否设置了免打扰。（ 时间复杂度O(1)：将原来 undisturbList 改造为 undisturbMap 降低查询时间复杂度）
@@ -119,6 +124,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 //进入极狐专属群列表，仅有一个直接进入群聊
 - (void)enterJihuExGroup;
+
 
 @end
 

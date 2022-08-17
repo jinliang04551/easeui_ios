@@ -7,6 +7,7 @@
 #import <HyphenateChat/HyphenateChat.h>
 #import "EaseHeaders.h"
 #import "EaseIMKitOptions.h"
+#import "EaseIMKitManager.h"
 
 #define kServerHost @"http://182.92.236.214:12005"
 
@@ -738,9 +739,8 @@
 //    "orderType":"MAIN",
 //    "token":"ad8s8d9adhka"
 
-- (void)searchCustomOrderWithUserId:(NSString *)userId
-                          orderType:(NSString *)orderType
-                         completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
+- (void)searchCustomOrderWithOrderType:(NSString *)orderType
+                            completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
 {
 
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/getOrders",kServerHost,kSearchCustomOrderURL,[EMClient sharedClient].currentUsername]];
@@ -759,18 +759,25 @@
     request.allHTTPHeaderFields = headerDict;
 
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-        
+    
+    NSString *jiHuAid = EaseIMKitManager.shared.jihuCurrentUid;
+    if (jiHuAid.length == 0) {
+        jiHuAid = @"222600";
+    }
+    
+    NSString *jiHuToken = EaseIMKitManager.shared.jihuToken;
+    if (jiHuToken.length == 0) {
+        jiHuToken = @"ad8s8d9adhka";
+    }
+    
     // "aid":"222600",
     //    "orderType":"MAIN",
     //    "token":"ad8s8d9adhka"
 
-    [dict setObject:@"222600" forKey:@"aid"];
-    [dict setObject:@"MAIN" forKey:@"orderType"];
-    [dict setObject:@"ad8s8d9adhka" forKey:@"token"];
+    [dict setObject:jiHuAid forKey:@"aid"];
+    [dict setObject:orderType forKey:@"orderType"];
+    [dict setObject:jiHuToken forKey:@"token"];
 
-//    [dict setObject:userId forKey:@"aid"];
-//    [dict setObject:orderType forKey:@"orderType"];
-//    [dict setObject:token forKey:@"token"];
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
     
     NSLog(@"%s request dict:%@",__func__,dict);

@@ -13,8 +13,8 @@
 
 //@property (nonatomic, strong) EMChatViewController *currentChatVC;
 
-//push 出来的EMChatViewController数组
-@property (nonatomic, strong) NSMutableArray<EMChatViewController *> *pushedChatVCArray;
+//push 出来的会话ID数组
+@property (nonatomic, strong) NSMutableArray<NSString *> *pushedConvIdArray;
 
 
 + (instancetype)shareHelper;

@@ -24,6 +24,7 @@
 #import "EaseIMKitManager.h"
 #import "EaseHeaders.h"
 #import "EMChatViewController+EMLoadMordMessage.h"
+#import "EaseIMHelper.h"
 
 @interface EMChatViewController ()<EaseChatViewControllerDelegate, EMChatroomManagerDelegate, EMGroupManagerDelegate, EMMessageCellDelegate>
 @property (nonatomic, strong) EaseConversationModel *conversationModel;
@@ -97,8 +98,16 @@
     [[EMClient sharedClient].roomManager removeDelegate:self];
     [[EMClient sharedClient].groupManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [self removeCurrentConvIdFromPushedIdArray];
+    
 }
 
+- (void)removeCurrentConvIdFromPushedIdArray {
+    if ([[EaseIMHelper shareHelper].pushedConvIdArray containsObject:self.conversation.conversationId]) {
+        [[EaseIMHelper shareHelper].pushedConvIdArray removeObject:self.conversation.conversationId];
+    }
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -117,6 +126,12 @@
     [super viewWillDisappear:animated];
     self.navigationController.navigationBarHidden = NO;
 }
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self removeCurrentConvIdFromPushedIdArray];
+}
+
 
 - (void)_setupChatSubviews {
     
@@ -452,7 +467,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     if (conversationType == EMConversationTypeGroupChat) {
         //音视频
-        EaseExtMenuModel *rtcMenu = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"video_conf"] funcDesc:NSLocalizedString(@"Call", nil) handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+        EaseExtMenuModel *rtcMenu = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"video_conf"] funcDesc:@"音视频" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
             if (isExecuted) {
                 [self chatSealRtcAction];
             }
