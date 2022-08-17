@@ -957,6 +957,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
 //    "uid": 0
 //}
 //}
+
 - (void)parseGetUidsDataWithDic:(NSDictionary *)dic channelName:(NSString *)channelName {
     if (dic.count <= 0) {
         return;
@@ -974,27 +975,54 @@ static NSString *g_UIKitVersion = @"1.0.0";
     
     
     if([resCode isEqualToString:@"OK"]) {
-        NSMutableArray* rtcChannels = [entity objectForKey:@"rtcChannels"];
+        NSDictionary* rtcChannels = [entity objectForKey:@"rtcChannels"];
+
         
-        NSMutableArray *tChannelUidArray = [NSMutableArray array];
+        [self parseChannelWithChannalDic:rtcChannels channelName:channelName];
         
-        for (NSString *rtcChannel in rtcChannels) {
-            if (rtcChannel.length > 0) {
-                NSRange startRange = [rtcChannel rangeOfString:@"[{"];
-                 NSRange endRange = [rtcChannel rangeOfString:@"}]"];
-                 NSRange range = NSMakeRange(startRange.location + startRange.length, endRange.location - startRange.location - startRange.length);
-                 NSString *result = [rtcChannel substringWithRange:range];
-                NSDictionary  *channelDic = [self getChannalUidArrayWithResult:result];
-                NSLog(@"%s channelDic:%@",__func__,channelDic);
-                [tChannelUidArray addObject:channelDic];
-            }
-        }
-        
-        [self parseChannelWithChannelUidArray:tChannelUidArray channelName:channelName];
+//        NSMutableArray* rtcChannels = [entity objectForKey:@"rtcChannels"];
+//
+//        NSMutableArray *tChannelUidArray = [NSMutableArray array];
+//
+//        for (NSString *rtcChannel in rtcChannels) {
+//            if (rtcChannel.length > 0) {
+//                NSRange startRange = [rtcChannel rangeOfString:@"[{"];
+//                 NSRange endRange = [rtcChannel rangeOfString:@"}]"];
+//                 NSRange range = NSMakeRange(startRange.location + startRange.length, endRange.location - startRange.location - startRange.length);
+//                 NSString *result = [rtcChannel substringWithRange:range];
+//                NSDictionary  *channelDic = [self getChannalUidArrayWithResult:result];
+//                NSLog(@"%s channelDic:%@",__func__,channelDic);
+//                [tChannelUidArray addObject:channelDic];
+//            }
+//        }
+//
+//        [self parseChannelWithChannelUidArray:tChannelUidArray channelName:channelName];
 
   }
     
 }
+
+- (void)parseChannelWithChannalDic:(NSDictionary *)channalDic  channelName:(NSString *)channelName {
+    NSMutableDictionary<NSNumber*,NSString*>* users = [NSMutableDictionary dictionary];
+    
+    [channalDic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+       
+        NSString* username = key;
+        NSInteger uId = [obj integerValue];
+        
+        [users setObject:username forKey:@(uId)];
+        EMUserInfo* info = [[UserInfoStore sharedInstance] getUserInfoById:username];
+        if(info && (info.avatarUrl.length > 0 || info.nickName.length > 0)) {
+            EaseCallUser* user = [EaseCallUser userWithNickName:info.nickName image:[NSURL URLWithString:info.avatarUrl]];
+            [[[EaseCallManager sharedManager] getEaseCallConfig] setUser:username info:user];
+        }
+    }];
+    
+    [[EaseCallManager sharedManager] setUsers:users channelName:channelName];
+
+}
+
+
 
 - (void)parseChannelWithChannelUidArray:(NSMutableArray *)channelUidArray  channelName:(NSString *)channelName {
     NSMutableDictionary<NSNumber*,NSString*>* users = [NSMutableDictionary dictionary];

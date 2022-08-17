@@ -26,7 +26,7 @@
 //声网音视频生成token接口
 #define kEaseCallGenerateTokenJiHuURL @"/v1/rtc/token"
 //声网音视频获取一个channelName下有哪些uid接口
-#define kEaseCallGetChannalUidsJiHuURL @"v1/rtc/channle"
+#define kEaseCallGetChannalUidsJiHuURL @"/v1/rtc/channle"
 
 
 /*
@@ -889,6 +889,8 @@
     [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
 
     request.allHTTPHeaderFields = headerDict;
+
+    NSLog(@"%s url:%@ headerDict:%@",__func__,url,headerDict);
 
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
