@@ -16,6 +16,9 @@
 //push 出来的会话ID数组
 @property (nonatomic, strong) NSMutableArray<NSString *> *pushedConvIdArray;
 
+//当前会话Id
+@property (nonatomic, strong) NSString *currentConversationId;
+
 
 + (instancetype)shareHelper;
 

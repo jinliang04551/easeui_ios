@@ -50,6 +50,8 @@
                                                         chatViewModel:viewModel];
         [_chatController setEditingStatusVisible:[EaseIMKitOptions sharedOptions].isChatTyping];
         _chatController.delegate = self;
+        
+        [EaseIMHelper shareHelper].currentConversationId = _conversation.conversationId;
     }
     return self;
 }
@@ -107,6 +109,10 @@
     if ([[EaseIMHelper shareHelper].pushedConvIdArray containsObject:self.conversation.conversationId]) {
         [[EaseIMHelper shareHelper].pushedConvIdArray removeObject:self.conversation.conversationId];
     }
+    
+    [EaseIMHelper shareHelper].currentConversationId = @"";
+
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated

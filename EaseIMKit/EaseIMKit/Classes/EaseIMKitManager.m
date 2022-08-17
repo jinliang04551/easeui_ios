@@ -55,7 +55,6 @@ static NSString *g_UIKitVersion = @"1.0.0";
 @property (nonatomic, strong) NSMutableDictionary *joinedGroupMemberDic;
 
 
-
 @end
 
 #define IMKitVersion @"1.0.0"
@@ -644,9 +643,9 @@ static NSString *g_UIKitVersion = @"1.0.0";
     for (EMConversation *conversation in conversationList) {
         NSLog(@"%s convId:%@\n unread:%@\n",__func__,conversation.conversationId,[@(conversation.unreadMessagesCount) stringValue]);
         
-//        if ([conversation.conversationId isEqualToString:_currentConversationId]) {
-//            continue;
-//        }
+        if ([conversation.conversationId isEqualToString:[EaseIMHelper shareHelper].currentConversationId]) {
+            continue;
+        }
         
         if ([[[EMClient sharedClient].pushManager noPushUIds] containsObject:conversation.conversationId]) {
             undisturbCount += conversation.unreadMessagesCount;
