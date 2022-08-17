@@ -59,6 +59,11 @@ EMConversationsViewController * conversationsVC= [[EMConversationsViewController
  9. 单聊会话入口
     [EaseIMKitManager.shared enterSingleChatPageWithUserId:@"userid"];
 
+
+10.极狐Uid 用于查询订单信息
+    EaseIMKitManager.shared.jihuCurrentUid = @"jihuAid";
+    EaseIMKitManager.shared.jihuToken = @"jihuToken";
+
     
 #运管App
 1.  初始化

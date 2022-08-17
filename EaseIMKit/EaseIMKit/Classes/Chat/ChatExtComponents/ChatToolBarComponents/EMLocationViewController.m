@@ -149,8 +149,8 @@
     [geocoder reverseGeocodeLocation:userLocation.location completionHandler:^(NSArray *array, NSError *error) {
         if (!error && array.count > 0) {
             CLPlacemark *placemark = [array objectAtIndex:0];
-            weakself.address = placemark.name;
-            weakself.buildingName = @"建筑物名称";//自主获取
+            weakself.address = placemark.thoroughfare;
+            weakself.buildingName = placemark.name;//自主获取
             [weakself _moveToLocation:userLocation.coordinate];
         }
     }];

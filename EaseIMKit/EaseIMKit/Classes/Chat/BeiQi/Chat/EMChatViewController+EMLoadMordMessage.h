@@ -10,7 +10,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EMChatViewController (EMLoadMordMessage)
-- (void)loadMoreMessage;
+- (void)loadMoreMessageWithMsgId:(NSString *)msgId;
+
 
 @end
 

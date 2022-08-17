@@ -427,10 +427,10 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     if (message.body.type == EMMessageBodyTypeText || message.body.type == EMMessageBodyTypeImage || message.body.type == EMMessageBodyTypeLocation || message.body.type == EMMessageBodyTypeVideo) {
         EaseExtMenuModel *moreMenu = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"forward"] funcDesc:@"更多" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
             if (isExecuted) {
-                [weakself loadMoreMessage];
+                [weakself loadMoreMessageWithMsgId:message.messageId];
             }
         }];
-//        [menuArray addObject:moreMenu];
+        [menuArray addObject:moreMenu];
     }
 
     
