@@ -12,7 +12,8 @@ dev_beiqi_sdk
 ## 注意事项：
 目前打包的IMSDK是本地打包的 需要自己导入一下
 导入的目录为：easeui_ios/EaseIMKit/HyphenateChat.framework
-
+下载地址为：
+https://download-sdk.oss-cn-beijing.aliyuncs.com/downloads/BeiQi_SDK/iOS_SDK/HyphenateChat.framework.zip
 
 #极狐App
 1.  初始化
