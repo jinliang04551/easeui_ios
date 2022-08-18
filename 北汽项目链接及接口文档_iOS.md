@@ -9,10 +9,17 @@ https://github.com/jinliang04551/chat-ios  branch:
 dev_beiqi_sdk
 
 
+## 注意事项：
+目前打包的IMSDK是本地打包的 需要自己导入一下
+导入的目录为：easeui_ios/EaseIMKit/HyphenateChat.framework
+
+
 #极狐App
 1.  初始化
     EaseIMKitOptions *demoOptions = [EaseIMKitOptions sharedOptions];
     demoOptions.appkey = @"您的appkey";
+    demoOptions.apnsCertName = @"推送证书名称";
+
     [EaseIMKitManager initWithEaseIMKitOptions:demoOptions];
 
 
