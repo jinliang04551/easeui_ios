@@ -239,9 +239,6 @@ static EaseIMHelper *helper = nil;
                 [self memberJoinedGroupWithCMDMsg:msg];
             }
             
-
-            
-       
         }
     }
         
@@ -307,11 +304,24 @@ static EaseIMHelper *helper = nil;
     NSString *eventType = ext[@"eventType"];
     if ([eventType isEqualToString:@"groupCreate"]) {
         NSString *groupId = msg.to;
+        //专属群
+        BOOL isExGroup = [ext[@"action"] boolValue];
+//        if (isExGroup) {
+//            [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveCMDCreateExGroup object:groupId];
+//
+//        }else {
+//
+//        }
         
         [EMClient.sharedClient.groupManager getGroupSpecificationFromServerWithId:groupId completion:^(EMGroup *aGroup, EMError *aError) {
             if (!aError) {
                 
-                [[EMClient sharedClient].chatManager getConversation:groupId type:EMConversationTypeGroupChat createIfNotExist:YES];
+                EMConversation *groupConv = [[EMClient sharedClient].chatManager getConversation:groupId type:EMConversationTypeGroupChat createIfNotExist:YES];
+                if (isExGroup) {
+                    groupConv.ext = @{@"JiHuExGroupChat":@(YES)};
+                }
+
+                
                 [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveCMDCreateGroupChat object:nil];
             } else {
                 // do nothing
@@ -331,6 +341,8 @@ static EaseIMHelper *helper = nil;
         NSString *userName = ext[@"userName"];
         NSString *groupName = [EMGroup groupWithId:msg.to].groupName;
 
+        
+        
 //        NSString *message = [NSString stringWithFormat:@"%@加入%@",userName,groupName];
 //
 //        EaseAlertView *alertView = [[EaseAlertView alloc] initWithTitle:@"提示" message:message];
