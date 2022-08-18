@@ -52,7 +52,6 @@
 //群成员个数（包括群主）
 @property (nonatomic, assign) NSInteger groupMemberCount;
 
-@property (nonatomic, strong) NSLock *updateLock;
 
 @end
 
@@ -470,32 +469,12 @@ if (EaseIMKitManager.shared.isJiHuApp){
 - (void)checkSendTextATMember:(NSString *)text {
     NSMutableDictionary *ext = [NSMutableDictionary dictionary];
     
-    NSString *searchText = text;
-    
-    //包含@人
-    if ([searchText containsString:@"@"]) {
-        if ([searchText containsString:@"@ALL"]) {
-            [ext setObject:@"ALL" forKey:MSG_EXT_AT];
-        }else {
-            NSMutableArray *atArray = [NSMutableArray array];
-
-            while (searchText.length > 0) {
-
-                NSRange atRange = [searchText rangeOfString:@"@"];
-                if (atRange.location == NSNotFound) {
-                    break;
-                }
-                
-                searchText = [searchText substringFromIndex:atRange.location];
-                NSString *atUser = [searchText substringWithRange:NSMakeRange(atRange.location+1, 11)];
-                searchText = [searchText substringFromIndex:atRange.length + 11];
-                [atArray addObject:atUser];
-            }
-            
-            if (atArray.count > 0) {
-                [ext setObject:atArray forKey:MSG_EXT_AT];
-            }
-        }
+    if ([EaseIMHelper shareHelper].isAtAll) {
+        [ext setObject:@"ALL" forKey:MSG_EXT_AT];
+    }else if([EaseIMHelper shareHelper].grpupAtArray.count > 0){
+        [ext setObject:[EaseIMHelper shareHelper].grpupAtArray forKey:MSG_EXT_AT];
+    }else {
+        
     }
     
     [self sendTextAction:text ext:ext];
@@ -1143,10 +1122,13 @@ if (EaseIMKitManager.shared.isJiHuApp){
         [self.tableView reloadData];
         [self.tableView setNeedsLayout];
         [self.tableView layoutIfNeeded];
-        if (isScrollBottom) {
-            [self scrollToBottomRow];
+        if (self.chatRecordKeyMessage) {
+            [self scrollToAssignMessage:self.chatRecordKeyMessage];
+        }else {
+            if (isScrollBottom) {
+                [self scrollToBottomRow];
+            }
         }
-        
     });
     
     
@@ -1187,14 +1169,19 @@ if (EaseIMKitManager.shared.isJiHuApp){
     
     NSInteger row = -1;
     for (NSInteger i = 0; i < self.dataArray.count; ++i) {
-        EMChatMessage *msg = self.dataArray[i];
-        if ([msg.messageId isEqualToString:message.messageId]) {
+        
+        EaseMessageModel *model = self.dataArray[i];
+        if ([model isKindOfClass:[NSString class]]) {
+            continue;
+        }
+        
+        if ([model.message.messageId isEqualToString:message.messageId]) {
             row = i;
             break;
         }
     }
     
-    NSLog(@"%s row:%@",__func__,@(row));
+    NSLog(@"%s keyMessageRow:%@",__func__,@(row));
 
     if (row <= -1) {
         return;

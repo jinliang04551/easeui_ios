@@ -22,7 +22,7 @@
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.detailLabel];
     [self.contentView addSubview:self.accessoryImageView];
-    [self.contentView addSubview:self.bottomLine];
+//    [self.contentView addSubview:self.bottomLine];
 
 }
 
@@ -47,11 +47,11 @@
     }];
     
     
-    [self.bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self);
-        make.height.equalTo(@(EaseIMKit_ONE_PX));
-        make.bottom.equalTo(self.contentView);
-    }];
+//    [self.bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.right.equalTo(self);
+//        make.height.equalTo(@(EaseIMKit_ONE_PX));
+//        make.bottom.equalTo(self.contentView);
+//    }];
 
 }
 

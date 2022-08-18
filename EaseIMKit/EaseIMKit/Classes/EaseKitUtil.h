@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSBundle *)easeIMBundle;
 
++ (NSDictionary *)fetchUserDicWithUserId:(NSString *)aUid;
+
 @end
 
 NS_ASSUME_NONNULL_END

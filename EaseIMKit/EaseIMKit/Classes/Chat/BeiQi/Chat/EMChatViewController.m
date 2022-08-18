@@ -71,12 +71,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveGroupInfoUpdate:) name:EaseNotificationReceiveGroupInfoUpdate object:nil];
 
 
+    self.chatController.chatRecordKeyMessage = self.chatRecordKeyMessage;
+    
     [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [self _setupChatSubviews];
-    [self updateUIWithSearchedMessage];
-    
-    
+        
     if (_conversation.unreadMessagesCount > 0) {
         [[EMClient sharedClient].chatManager ackConversationRead:_conversation.conversationId completion:nil];
         
@@ -86,14 +86,6 @@
 
 }
 
-
-- (void)updateUIWithSearchedMessage {
-    if (self.chatRecordKeyMessage) {
-        self.navigationItem.rightBarButtonItem = nil;
-        [self.chatController scrollToAssignMessage:self.chatRecordKeyMessage];
-    }
-    
-}
 
 - (void)dealloc
 {
@@ -112,7 +104,12 @@
     
     [EaseIMHelper shareHelper].currentConversationId = @"";
 
-    
+    [self clearRecordSearchCache];
+}
+
+- (void)clearRecordSearchCache {
+    self.chatRecordKeyMessage = nil;
+    self.chatController.chatRecordKeyMessage = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -164,6 +161,8 @@
         EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:self.conversation.conversationId];
         if(userInfo && userInfo.nickName.length > 0){
             chatTitle = userInfo.nickName;
+        }else {
+            [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[self.conversation.conversationId]];
         }
         
     }
@@ -214,37 +213,7 @@
 
 }
 
-- (void)_setupNavigationBarRightItem
-{
-    
-    if (self.conversation.type == EMConversationTypeChat) {
-        UIImage *image = nil;
-    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-         image = [[UIImage easeUIImageNamed:@"jh_groupInfo"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 
-    }else {
-        image = [[UIImage easeUIImageNamed:@"yg_groupInfo"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    }
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(chatInfoAction)];
-    }
-    
-    if (self.conversation.type == EMConversationTypeGroupChat) {
-        UIImage *image = nil;
-
-        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-                image = [[UIImage easeUIImageNamed:@"jh_groupInfo"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-
-        }else {
-               image = [[UIImage easeUIImageNamed:@"yg_groupInfo"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        }
-
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(groupInfoAction)];
-    }
-    if (self.conversation.type == EMConversationTypeChatRoom) {
-        UIImage *image = [[UIImage easeUIImageNamed:@"groupInfo"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(chatroomInfoAction)];
-    }
-}
 
 - (void)_setupNavigationBarTitle
 {
@@ -324,6 +293,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     [self loadData:YES];
 
 }
+
 
 - (void)receiveGroupInfoUpdate:(NSNotification *)notify {
     //群聊更新名称

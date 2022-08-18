@@ -41,7 +41,7 @@
     
     _canRefresh = NO;
     
-    _avatarType = RoundedCorner;
+    _avatarType = Circular;
     _avatarSize = CGSizeMake(48, 48);
     _avatarEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     

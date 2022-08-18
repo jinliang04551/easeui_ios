@@ -136,8 +136,10 @@
             break;
     }
     
+    NSString *nickname = [EaseKitUtil fetchUserDicWithUserId:msg.from][EaseUserNicknameKey];
+    
     if (_conversation.type == EMConversationTypeGroupChat) {
-        _showInfo = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@: %@",msg.from,msgStr]];
+        _showInfo = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@: %@",nickname,msgStr]];
     }else {
         _showInfo = [[NSMutableAttributedString alloc] initWithString:msgStr];
     }
@@ -153,7 +155,7 @@
     
     if ([_conversation remindMe]) {
         NSString *atStr = EaseLocalizableString(@"[someone@me]", nil);
-        msgStr = [NSString stringWithFormat:@"%@ %@", atStr, msgStr];
+        msgStr = [NSString stringWithFormat:@"%@ %@:%@", atStr,nickname,msgStr];
         _showInfo = [[NSMutableAttributedString alloc] initWithString:msgStr];
         [_showInfo setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:255/255.0 green:43/255.0 blue:43/255.0 alpha:1.0]} range:NSMakeRange(0, atStr.length)];
     }

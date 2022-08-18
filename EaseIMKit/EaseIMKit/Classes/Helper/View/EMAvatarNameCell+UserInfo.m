@@ -29,6 +29,8 @@
             self.detailLabel.text = aUid;
         }
     }else{
+        
+        
         [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[aUid]];
     }
 }

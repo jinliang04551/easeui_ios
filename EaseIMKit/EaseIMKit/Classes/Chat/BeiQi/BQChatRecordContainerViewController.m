@@ -137,7 +137,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (void)didTapSearchMessage:(EMChatMessage *)message {
     EMChatViewController *chatController = [[EMChatViewController alloc]initWithConversationId:self.conversation.conversationId conversationType:self.conversation.type];
     chatController.chatRecordKeyMessage = message;
-//    [chatController scrollToAssignMessage:message];
     chatController.modalPresentationStyle = 0;
     [self.navigationController pushViewController:chatController animated:YES];
 

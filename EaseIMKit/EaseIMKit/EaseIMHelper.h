@@ -11,7 +11,6 @@
 @class EMChatViewController;
 @interface EaseIMHelper : NSObject<EMMultiDevicesDelegate, EMContactManagerDelegate, EMGroupManagerDelegate, EMChatManagerDelegate, EMClientDelegate>
 
-//@property (nonatomic, strong) EMChatViewController *currentChatVC;
 
 //push 出来的会话ID数组
 @property (nonatomic, strong) NSMutableArray<NSString *> *pushedConvIdArray;
@@ -19,11 +18,17 @@
 //当前会话Id
 @property (nonatomic, strong) NSString *currentConversationId;
 
+//群组@成员列表
+@property (nonatomic, strong) NSMutableArray *grpupAtArray;
+@property (nonatomic, assign) BOOL isAtAll;
+
 
 + (instancetype)shareHelper;
 
 - (void)insertMsgWithCMDMessage:(EMChatMessage  *)cmdMessage;
 
 - (void)sendNoDisturbCMDMessageWithExt:(NSDictionary *)ext;
+
+- (void)clearGroupAtInfo;
 
 @end

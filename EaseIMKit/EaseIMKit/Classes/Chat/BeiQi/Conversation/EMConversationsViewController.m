@@ -27,20 +27,25 @@
 #import "EaseHeaders.h"
 #import "EaseIMKitManager.h"
 #import "UserInfoStore.h"
+#import "EMSearchBar.h"
+#import "EaseNoDataPlaceHolderView.h"
 
 
-@interface EMConversationsViewController() <EaseConversationsViewControllerDelegate, EMSearchControllerDelegate, EMGroupManagerDelegate>
+@interface EMConversationsViewController() <EaseConversationsViewControllerDelegate, EMGroupManagerDelegate>
 
 @property (nonatomic, strong) UIButton *backImageBtn;
 @property (nonatomic, strong) UIButton *rightNavBarBtn;
 
 @property (nonatomic, strong) EaseConversationsViewController *easeConvsVC;
 @property (nonatomic, strong) EaseConversationViewModel *viewModel;
-@property (nonatomic, strong) UINavigationController *resultNavigationController;
-@property (nonatomic, strong) EMSearchResultController *resultController;
+//@property (nonatomic, strong) UINavigationController *resultNavigationController;
+//@property (nonatomic, strong) EMSearchResultController *resultController;
 @property (nonatomic, assign) EMConversationEnterType enterType;
 
 @property (nonatomic, strong) UIView *titleView;
+
+@property (nonatomic, strong) EMSearchBar *searchBar;
+
 
 @end
 
@@ -159,16 +164,10 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+
 - (void)_updateConversationViewTableHeader {
     self.easeConvsVC.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.easeConvsVC.tableView.tableHeaderView.backgroundColor = EaseIMKit_ViewBgBlackColor;
-    
-    UIControl *control = [[UIControl alloc] initWithFrame:CGRectZero];
-    control.clipsToBounds = YES;
-    control.layer.cornerRadius = 18;
-    control.backgroundColor = [UIColor colorWithHexString:@"#252525"];
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(searchButtonAction)];
-    [control addGestureRecognizer:tap];
     
     [self.easeConvsVC.tableView.tableHeaderView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.easeConvsVC.tableView);
@@ -177,43 +176,68 @@
         make.height.mas_equalTo(52);
     }];
     
-    [self.easeConvsVC.tableView.tableHeaderView addSubview:control];
-    [control mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_offset(36);
-        make.top.equalTo(self.easeConvsVC.tableView.tableHeaderView).offset(8);
-        make.bottom.equalTo(self.easeConvsVC.tableView.tableHeaderView).offset(-8);
-        make.left.equalTo(self.easeConvsVC.tableView.tableHeaderView.mas_left).offset(17);
-        make.right.equalTo(self.easeConvsVC.tableView.tableHeaderView).offset(-16);
+    
+    [self.easeConvsVC.tableView addSubview:self.searchBar];
+    [self.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.easeConvsVC.tableView.tableHeaderView );
+        make.height.equalTo(@(48.0));
     }];
     
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage easeUIImageNamed:@"jh_search_leftIcon"]];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-    label.font = [UIFont systemFontOfSize:14.0];
-    label.text = @"搜索";
-    label.textColor = [UIColor colorWithHexString:@"#7E7E7F"];
-    [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    UIView *subView = [[UIView alloc] init];
-    [subView addSubview:imageView];
-    [subView addSubview:label];
-    [control addSubview:subView];
+
+   
     
-    [imageView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.height.mas_equalTo(20.0);
-        make.left.equalTo(subView);
-        make.top.equalTo(subView);
-        make.bottom.equalTo(subView);
-    }];
+//    UIControl *control = [[UIControl alloc] initWithFrame:CGRectZero];
+//    control.clipsToBounds = YES;
+//    control.layer.cornerRadius = 18;
+//    control.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(searchButtonAction)];
+//    [control addGestureRecognizer:tap];
+//
+//    [self.easeConvsVC.tableView.tableHeaderView mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.easeConvsVC.tableView);
+//        make.width.equalTo(self.easeConvsVC.tableView);
+//        make.top.equalTo(self.easeConvsVC.tableView);
+//        make.height.mas_equalTo(52);
+//    }];
+//
+//    [self.easeConvsVC.tableView.tableHeaderView addSubview:control];
+//    [control mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.height.mas_offset(36);
+//        make.top.equalTo(self.easeConvsVC.tableView.tableHeaderView).offset(8);
+//        make.bottom.equalTo(self.easeConvsVC.tableView.tableHeaderView).offset(-8);
+//        make.left.equalTo(self.easeConvsVC.tableView.tableHeaderView.mas_left).offset(17);
+//        make.right.equalTo(self.easeConvsVC.tableView.tableHeaderView).offset(-16);
+//    }];
+//
+//    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage easeUIImageNamed:@"jh_search_leftIcon"]];
+//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+//    label.font = [UIFont systemFontOfSize:14.0];
+//    label.text = @"搜索";
+//    label.textColor = [UIColor colorWithHexString:@"#7E7E7F"];
+//    [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+//    UIView *subView = [[UIView alloc] init];
+//    [subView addSubview:imageView];
+//    [subView addSubview:label];
+//    [control addSubview:subView];
+//
+//    [imageView mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.width.height.mas_equalTo(20.0);
+//        make.left.equalTo(subView);
+//        make.top.equalTo(subView);
+//        make.bottom.equalTo(subView);
+//    }];
+//
+//    [label mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(imageView.mas_right).offset(3);
+//        make.right.equalTo(subView);
+//        make.top.equalTo(subView);
+//        make.bottom.equalTo(subView);
+//    }];
+//
+//    [subView mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.center.equalTo(control);
+//    }];
     
-    [label mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(imageView.mas_right).offset(3);
-        make.right.equalTo(subView);
-        make.top.equalTo(subView);
-        make.bottom.equalTo(subView);
-    }];
-    
-    [subView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(control);
-    }];
 }
 
 #pragma mark Notification
@@ -221,81 +245,7 @@
     self.rightNavBarBtn.MIS_redDot.hidden = NO;
 }
 
-- (void)_setupSearchResultController
-{
-    __weak typeof(self) weakself = self;
-    self.resultController.tableView.rowHeight = 70;
-    self.resultController.tableView.rowHeight = UITableViewAutomaticDimension;
-    [self.resultController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
-        NSString *cellIdentifier = @"EaseConversationCell";
-        EaseConversationCell *cell = (EaseConversationCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-        if (cell == nil) {
-            cell = [EaseConversationCell tableView:tableView cellViewModel:weakself.viewModel];
-        }
-        
-        NSInteger row = indexPath.row;
-        EaseConversationModel *model = [weakself.resultController.dataArray objectAtIndex:row];
-        cell.model = model;
-        return cell;
-    }];
-    [self.resultController setCanEditRowAtIndexPath:^BOOL(UITableView *tableView, NSIndexPath *indexPath) {
-        return YES;
-    }];
-    [self.resultController setTrailingSwipeActionsConfigurationForRowAtIndexPath:^UISwipeActionsConfiguration *(UITableView *tableView, NSIndexPath *indexPath) {
-        EaseConversationModel *model = [weakself.resultController.dataArray objectAtIndex:indexPath.row];
-        UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
-                                                                                   title:NSLocalizedString(@"deleteConversation", nil)
-                                                                                 handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL))
-        {
-            [weakself.resultController.tableView setEditing:NO];
-            int unreadCount = [[EMClient sharedClient].chatManager getConversationWithConvId:model.easeId].unreadMessagesCount;
-            
-            [[EMClient sharedClient].chatManager deleteServerConversation:model.easeId conversationType:model.type isDeleteServerMessages:YES completion:^(NSString *aConversationId, EMError *aError) {
-                if (aError) {
-                    [weakself showHint:aError.errorDescription];
-                }
-            }];
-            
-            [[EMClient sharedClient].chatManager deleteConversation:model.easeId isDeleteMessages:YES completion:^(NSString *aConversationId, EMError *aError) {
-                if (!aError) {
-//                    [[EMTranslationManager sharedManager] removeTranslationByConversationId:model.easeId];
-//                    [weakself.resultController.dataArray removeObjectAtIndex:indexPath.row];
-//                    [weakself.resultController.tableView reloadData];
-//                    if (unreadCount > 0 && weakself.deleteConversationCompletion) {
-//                        weakself.deleteConversationCompletion(YES);
-//                    }
-                }
-            }];
-        }];
-        UIContextualAction *topAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal
-                                                                                title:!model.isTop ? NSLocalizedString(@"top", nil) : NSLocalizedString(@"canceltop", nil)
-                                                                              handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL))
-        {
-            [weakself.resultController.tableView setEditing:NO];
-            [model setIsTop:!model.isTop];
-            [weakself.easeConvsVC refreshTable];
-        }];
-        UISwipeActionsConfiguration *actions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction,topAction]];
-        actions.performsFirstActionWithFullSwipe = NO;
-        return actions;
-    }];
-    [self.resultController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
-        NSInteger row = indexPath.row;
-        EaseConversationModel *model = [weakself.resultController.dataArray objectAtIndex:row];
-        weakself.resultController.searchBar.text = @"";
-        [weakself.resultController.searchBar resignFirstResponder];
-        weakself.resultController.searchBar.showsCancelButton = NO;
-        [weakself searchBarCancelButtonAction:nil];
-        [weakself.resultNavigationController dismissViewControllerAnimated:YES completion:nil];
-        //系统通知
-        if ([model.easeId isEqualToString:EMSYSTEMNOTIFICATIONID]) {
-            EMNotificationViewController *controller = [[EMNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
-            [weakself.navigationController pushViewController:controller animated:YES];
-            return;
-        }
-        [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:model.easeId];
-    }];
-}
+
 
 - (void)refreshTableView
 {
@@ -317,23 +267,6 @@
     }];
     
     
-}
-
-#pragma mark - searchButtonAction
-
-- (void)searchButtonAction
-{
-    if (self.resultNavigationController == nil) {
-        self.resultController = [[EMSearchResultController alloc] init];
-        self.resultController.delegate = self;
-        self.resultNavigationController = [[UINavigationController alloc] initWithRootViewController:self.resultController];
-        [self.resultNavigationController.navigationBar setBackgroundImage:[[UIImage imageNamed:@"navBarBg"] stretchableImageWithLeftCapWidth:10 topCapHeight:10] forBarMetrics:UIBarMetricsDefault];
-        [self _setupSearchResultController];
-    }
-    [self.resultController.searchBar becomeFirstResponder];
-    self.resultController.searchBar.showsCancelButton = YES;
-    self.resultNavigationController.modalPresentationStyle = 0;
-    [self presentViewController:self.resultNavigationController animated:YES completion:nil];
 }
 
 #pragma mark - moreAction
@@ -392,45 +325,85 @@
 }
 
 
-#pragma mark - EMSearchControllerDelegate
-
-- (void)searchBarWillBeginEditing:(UISearchBar *)searchBar
-{
-    self.resultController.searchKeyword = nil;
-}
-
-- (void)searchBarCancelButtonAction:(UISearchBar *)searchBar
-{
-    [[EMRealtimeSearch shared] realtimeSearchStop];
-    
-    if ([self.resultController.dataArray count] > 0) {
-        [self.resultController.dataArray removeAllObjects];
-    }
-    [self.resultController.tableView reloadData];
-    [self.easeConvsVC refreshTabView];
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    [self.view endEditing:YES];
-}
-
-- (void)searchTextDidChangeWithString:(NSString *)aString
-{
-    self.resultController.searchKeyword = aString;
-    
-    __weak typeof(self) weakself = self;
-    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.easeConvsVC.dataAry searchText:aString collationStringSelector:@selector(showName) resultBlock:^(NSArray *results) {
-         dispatch_async(dispatch_get_main_queue(), ^{
-             if ([weakself.resultController.dataArray count] > 0) {
-                 [weakself.resultController.dataArray removeAllObjects];
-             }
-            [weakself.resultController.dataArray addObjectsFromArray:results];
-            [weakself.resultController.tableView reloadData];
-        });
-    }];
-}
+//#pragma mark - EMSearchControllerDelegate
+//
+//- (void)searchBarWillBeginEditing:(UISearchBar *)searchBar
+//{
+//    self.resultController.searchKeyword = nil;
+//}
+//
+//- (void)searchBarCancelButtonAction:(UISearchBar *)searchBar
+//{
+//    [[EMRealtimeSearch shared] realtimeSearchStop];
+//
+//    if ([self.resultController.dataArray count] > 0) {
+//        [self.resultController.dataArray removeAllObjects];
+//    }
+//    [self.resultController.tableView reloadData];
+//    [self.easeConvsVC refreshTabView];
+//}
+//
+//- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+//{
+//    [self.view endEditing:YES];
+//}
+//
+//- (void)searchTextDidChangeWithString:(NSString *)aString
+//{
+//    self.resultController.searchKeyword = aString;
+//
+//    __weak typeof(self) weakself = self;
+//    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.easeConvsVC.dataAry searchText:aString collationStringSelector:@selector(showName) resultBlock:^(NSArray *results) {
+//         dispatch_async(dispatch_get_main_queue(), ^{
+//             if ([weakself.resultController.dataArray count] > 0) {
+//                 [weakself.resultController.dataArray removeAllObjects];
+//             }
+//            [weakself.resultController.dataArray addObjectsFromArray:results];
+//            [weakself.resultController.tableView reloadData];
+//        });
+//    }];
+//}
    
+//#pragma mark - EMSearchBarDelegate
+//
+//- (void)searchBarShouldBeginEditing:(EMSearchBar *)searchBar
+//{
+//    self.isSearching = YES;
+//
+//}
+//
+//- (void)searchBarCancelButtonAction:(EMSearchBar *)searchBar
+//{
+//    [[EMRealtimeSearch shared] realtimeSearchStop];
+//    
+//    self.isSearching = NO;
+//    
+//    [self.searchResultArray removeAllObjects];
+//    [self.easeConvsVC.tableView reloadData];
+//    self.noDataPromptView.hidden = YES;
+//}
+//
+//
+//- (void)searchBarSearchButtonClicked:(EMSearchBar *)searchBar
+//{
+//    
+//}
+//
+//- (void)searchTextDidChangeWithString:(NSString *)aString {
+//    __weak typeof(self) weakself = self;
+//    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.easeConvsVC.dataAry searchText:aString collationStringSelector:@selector(showName) resultBlock:^(NSArray *results) {
+//         dispatch_async(dispatch_get_main_queue(), ^{
+//             if ([weakself.searchResultArray count] > 0) {
+//                 [weakself.searchResultArray removeAllObjects];
+//             }
+//            [weakself.easeConvsVC.dataAry addObjectsFromArray:results];
+//            [weakself.easeConvsVC.tableView reloadData];
+//             self.noDataPromptView.hidden = weakself.searchResultArray.count >0 ? YES : NO;
+//        });
+//    }];
+//    
+//}
+
 #pragma mark - EaseConversationsViewControllerDelegate
 
 - (id<EaseUserDelegate>)easeUserDelegateAtConversationId:(NSString *)conversationId conversationType:(EMConversationType)type
@@ -447,6 +420,7 @@
                     userData.avatarURL = userInfo.avatarUrl;
                 }
             }else{
+                userData.showName = conversationId;
                 
                 [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[conversationId]];
             }
@@ -615,5 +589,14 @@
     }
     return _titleView;
 }
+
+- (EMSearchBar *)searchBar {
+    if (_searchBar == nil) {
+        _searchBar = [[EMSearchBar alloc] init];
+        _searchBar.delegate = self.easeConvsVC;
+    }
+    return _searchBar;
+}
+
 
 @end

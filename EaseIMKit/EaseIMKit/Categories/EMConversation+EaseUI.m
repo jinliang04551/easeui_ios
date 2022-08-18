@@ -60,21 +60,24 @@
     BOOL ret = NO;
     NSMutableArray *msgIdArray = [self remindMeArray];
     //*
-    for (NSString *msgId in msgIdArray) {
-        EMChatMessage *msg = [self loadMessageWithId:msgId error:nil];
-        if (!msg.isRead && msg.body.type == EMMessageBodyTypeText) {
-            EMTextMessageBody *textBody = (EMTextMessageBody*)msg.body;
-            if ([textBody.text containsString:[NSString stringWithFormat:@"@%@",EMClient.sharedClient.currentUsername]]) {
-                ret = YES;
-                break;
-            }
-        }
-    }
-    
-    
-//    if ([msgIdArray count] > 0) {
-//        ret = YES;
+//    for (NSString *msgId in msgIdArray) {
+//        EMChatMessage *msg = [self loadMessageWithId:msgId error:nil];
+//        if (!msg.isRead && msg.body.type == EMMessageBodyTypeText) {
+//            EMTextMessageBody *textBody = (EMTextMessageBody*)msg.body;
+//
+//            NSString *nickName = [EaseKitUtil fetchUserDicWithUserId:EMClient.sharedClient.currentUsername][EaseUserNicknameKey];
+//
+//            if ([textBody.text containsString:[NSString stringWithFormat:@"@%@",EMClient.sharedClient.currentUsername]]||[textBody.text containsString:nickName]||[textBody.text containsString:@"@所有成员"]) {
+//                ret = YES;
+//                break;
+//            }
+//        }
 //    }
+    
+    
+    if ([msgIdArray count] > 0) {
+        ret = YES;
+    }
     
     return ret;
 }

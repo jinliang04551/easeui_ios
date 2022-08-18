@@ -35,6 +35,11 @@
 {
     [self setupBubbleBackgroundImage];
     
+    [self mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@(230.0));
+        make.height.equalTo(@(66.0));
+    }];
+    
     self.iconView = [[UIImageView alloc] init];
     self.iconView.contentMode = UIViewContentModeScaleAspectFit;
     self.iconView.clipsToBounds = YES;
@@ -42,14 +47,24 @@
     
     self.textLabel = [[UILabel alloc] init];
     self.textLabel.font = [UIFont systemFontOfSize:12];
-    self.textLabel.textColor = [UIColor colorWithHexString:@"#171717"];
     self.textLabel.numberOfLines = 0;
     [self addSubview:self.textLabel];
     
     self.detailLabel = [[UILabel alloc] init];
     self.detailLabel.font = [UIFont systemFontOfSize:10];
     self.detailLabel.numberOfLines = 0;
-    self.detailLabel.textColor = [UIColor colorWithHexString:@"#252525"];
+    
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        self.textLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+        self.detailLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
+
+    }else {
+        self.textLabel.textColor = [UIColor colorWithHexString:@"#171717"];
+        self.detailLabel.textColor = [UIColor colorWithHexString:@"#252525"];
+
+    }
+    
     
     
     [self addSubview:self.detailLabel];

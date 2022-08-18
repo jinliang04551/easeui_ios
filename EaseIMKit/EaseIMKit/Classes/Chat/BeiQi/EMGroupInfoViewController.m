@@ -28,6 +28,8 @@
 #import "EaseConversationModel.h"
 #import "EaseIMKitManager.h"
 #import "EaseIMHelper.h"
+#import "UserInfoStore.h"
+
 
 @interface EMGroupInfoViewController ()<EMMultiDevicesDelegate, EMGroupManagerDelegate>
 
@@ -43,6 +45,7 @@
 @property (nonatomic, strong) NSMutableArray *serverArray;
 
 @property (nonatomic, strong) UIView *titleView;
+@property (nonatomic, strong) NSString *groupOwnerNickname;
 
 @end
 
@@ -221,7 +224,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             return titleValueCell;
         }else if (indexPath.row == 1){
             titleValueCell.nameLabel.text = @"群主";
-            titleValueCell.detailLabel.text = self.group.owner;
+            
+            titleValueCell.detailLabel.text = self.groupOwnerNickname;
             return titleValueCell;
 
         }else if (indexPath.row == 2){
@@ -250,7 +254,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
                 return titleValueAccessCell;
             }else if (indexPath.row == 1){
                 titleValueCell.nameLabel.text = @"群主";
-                titleValueCell.detailLabel.text = self.group.owner;
+                titleValueCell.detailLabel.text = self.groupOwnerNickname;
                 return titleValueCell;
 
             }else if (indexPath.row == 2){
@@ -437,17 +441,13 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 {
     __weak typeof(self) weakself = self;
     
-    if (aIsShowHUD) {
-//        [self showHudInView:self.view hint:NSLocalizedString(@"fetchGroupSubject...", nil)];
-        
-    }
     
     [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:self.groupId fetchMembers:YES completion:^(EMGroup * _Nullable aGroup, EMError * _Nullable aError) {
         [weakself hideHud];
         if (!aError) {
             [weakself _resetGroup:aGroup];
+            [weakself getOwnerNicknameWithUserId:aGroup.owner];
         } else {
-//            [EaseAlertController showErrorAlert:NSLocalizedString(@"fetchGroupSubjectFail", nil)];
             
         }
         [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
@@ -801,6 +801,20 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)getOwnerNicknameWithUserId:(NSString *)aUid {
+    
+    EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:aUid];
+    if(userInfo) {
+        
+        self.groupOwnerNickname = userInfo.nickname.length > 0 ? userInfo.nickname: userInfo.userId;
+        
+    }else{
+        self.groupOwnerNickname = aUid;
+
+        [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[aUid]];
+    }
+    
+}
 
     
 #pragma mark - Private

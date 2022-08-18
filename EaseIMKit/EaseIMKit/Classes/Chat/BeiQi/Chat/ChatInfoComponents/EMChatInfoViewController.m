@@ -61,7 +61,7 @@
 
 - (void)_setupSubviews
 {
-    self.title = NSLocalizedString(@"msgInfo", nil);
+    self.title = @"聊天详情";
 
     self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
 
@@ -206,14 +206,18 @@
     return 24.0;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    if (section == 5)
-        return 40;
-    
-    return 1;
-}
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *hView = [[UIView alloc] init];
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        hView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+    }else {
+        hView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+    }
+
+    return hView;
+
+}
 
 //清除聊天记录
 - (void)deleteChatRecord

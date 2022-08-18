@@ -10,6 +10,7 @@
 #import <HyphenateChat/HyphenateChat.h>
 #import "EaseIMKitOptions.h"
 #import "EaseHeaders.h"
+#import "UserInfoStore.h"
 
 @implementation EaseKitUtil
 
@@ -142,5 +143,24 @@
     NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];
     return bundle;
 }
+
++ (NSDictionary *)fetchUserDicWithUserId:(NSString *)aUid {
+    NSString *nickname = aUid;
+    NSString *avatarUrl = @"";
+    
+    EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:aUid];
+    if(userInfo) {
+        if(userInfo.avatarUrl.length > 0) {
+            avatarUrl = userInfo.avatarUrl;
+        }
+        nickname = userInfo.nickname.length > 0 ? userInfo.nickname: userInfo.userId;
+        
+    }else{
+        [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[aUid]];
+    }
+    
+    return @{EaseUserNicknameKey:nickname,EaseUserAvatarUrlKey:avatarUrl};
+}
+
 
 @end

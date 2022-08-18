@@ -29,6 +29,7 @@
 #import "EaseKitUtil.h"
 #import "EMChatViewController.h"
 #import "EMConversationsViewController.h"
+#import "EMConversation+EaseUI.h"
 
 
 bool gInit;
@@ -332,6 +333,12 @@ static NSString *g_UIKitVersion = @"1.0.0";
     BOOL isShow = NO;
     EMChatMessage *msg = aMessage;
 
+    //优先判断是否有人@自己
+    if ([self isRemindMeMessage:msg]) {
+        return YES;
+    }
+    
+    //免打扰则不提示横幅
     if ([self isNoDisturbWithConvId:aMessage.conversationId]) {
         isShow = NO;
         return isShow;
@@ -389,6 +396,58 @@ static NSString *g_UIKitVersion = @"1.0.0";
     BOOL unremindGroup = [self _unremindGroup:convId];//群组免打扰
     return unremindChat || unremindGroup;
 }
+
+//判断会话类型和消息是否包含@我/@所有成员
+- (BOOL)isRemindMeMessage:(EMChatMessage *)msg {
+    if (msg.chatType != EMChatTypeGroupChat) {
+        return NO;
+    }
+    
+    
+    BOOL ret = NO;
+    if (!msg.isRead && msg.body.type == EMMessageBodyTypeText) {
+        EMTextMessageBody *textBody = (EMTextMessageBody*)msg.body;
+        
+//        @列表 "em_at_list":["hxtest1","123"]
+//        @全体  "em_at_list":ALL
+        
+        if (msg.ext.count > 0) {
+            id obj = msg.ext[MSG_EXT_AT];
+            if ([obj isKindOfClass:[NSString class]]) {
+                NSString *atAll = (NSString *)obj;
+                if ([atAll isEqualToString:@"ALL"]) {
+                    ret = YES;
+                }
+            }
+            
+            if ([obj isKindOfClass:[NSMutableArray class]]||[obj isKindOfClass:[NSArray class]]) {
+                NSMutableArray *atArray = (NSMutableArray *)obj;
+                if ([atArray containsObject:EMClient.sharedClient.currentUsername]) {
+                    ret = YES;
+                }
+            }
+            //包含@me
+            if(ret) {
+                            
+                EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:msg.conversationId type:EMConversationTypeGroupChat createIfNotExist:NO];
+                
+                [conversation setRemindMe:msg.messageId];
+                
+            }
+        
+        }
+    }
+
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        //非专属群没有横幅
+        if (![self.exGroupIds containsObject:msg.conversationId]) {
+            return NO;
+        }
+    }
+    
+    return ret;
+}
+
 
 
 - (BOOL)_unremindGroup:(NSString *)fromChatter {

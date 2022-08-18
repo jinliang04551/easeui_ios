@@ -521,28 +521,28 @@ static EaseIMHelper *helper = nil;
 
 - (void)didLeaveGroup:(EMGroup *)aGroup reason:(EMGroupLeaveReason)aReason
 {
-    __block EaseAlertView *alertView = nil;
-    if (aReason == EMGroupLeaveReasonBeRemoved) {
-        alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.leave", @"Leave group") message:[NSString stringWithFormat:NSLocalizedString(@"removedFromGroupPrompt", nil), aGroup.groupName]];
-        
-        [[EMClient sharedClient].chatManager deleteServerConversation:aGroup.groupId conversationType:EMConversationTypeGroupChat isDeleteServerMessages:NO completion:^(NSString *aConversationId, EMError *aError) {
-            
-            alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.leave", @"Leave group") message:[NSString stringWithFormat:NSLocalizedString(@"removedFromGroupPrompt", nil), aError.errorDescription]];
-            [alertView show];
-            
-            [[EMClient sharedClient].chatManager deleteConversation:aGroup.groupId isDeleteMessages:NO completion:nil];
-        }];
-    }
-    if (aReason == EMGroupLeaveReasonDestroyed) {
-        alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.leave", @"Leave group") message:[NSString stringWithFormat:NSLocalizedString(@"groupDestroiedPrompt", nil), aGroup.groupName]];
-        [[EMClient sharedClient].chatManager deleteServerConversation:aGroup.groupId conversationType:EMConversationTypeGroupChat isDeleteServerMessages:NO completion:^(NSString *aConversationId, EMError *aError) {
-            
-            alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.leave", @"Leave group") message:[NSString stringWithFormat:NSLocalizedString(@"removedFromGroupPrompt", nil), aError.errorDescription]];
-            [alertView show];
-            
-            [[EMClient sharedClient].chatManager deleteConversation:aGroup.groupId isDeleteMessages:NO completion:nil];
-        }];
-    }
+//    __block EaseAlertView *alertView = nil;
+//    if (aReason == EMGroupLeaveReasonBeRemoved) {
+//        alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.leave", @"Leave group") message:[NSString stringWithFormat:NSLocalizedString(@"removedFromGroupPrompt", nil), aGroup.groupName]];
+//
+//        [[EMClient sharedClient].chatManager deleteServerConversation:aGroup.groupId conversationType:EMConversationTypeGroupChat isDeleteServerMessages:NO completion:^(NSString *aConversationId, EMError *aError) {
+//
+//            alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.leave", @"Leave group") message:[NSString stringWithFormat:NSLocalizedString(@"removedFromGroupPrompt", nil), aError.errorDescription]];
+//            [alertView show];
+//
+//            [[EMClient sharedClient].chatManager deleteConversation:aGroup.groupId isDeleteMessages:NO completion:nil];
+//        }];
+//    }
+//    if (aReason == EMGroupLeaveReasonDestroyed) {
+//        alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.leave", @"Leave group") message:[NSString stringWithFormat:NSLocalizedString(@"groupDestroiedPrompt", nil), aGroup.groupName]];
+//        [[EMClient sharedClient].chatManager deleteServerConversation:aGroup.groupId conversationType:EMConversationTypeGroupChat isDeleteServerMessages:NO completion:^(NSString *aConversationId, EMError *aError) {
+//
+//            alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.leave", @"Leave group") message:[NSString stringWithFormat:NSLocalizedString(@"removedFromGroupPrompt", nil), aError.errorDescription]];
+//            [alertView show];
+//
+//            [[EMClient sharedClient].chatManager deleteConversation:aGroup.groupId isDeleteMessages:NO completion:nil];
+//        }];
+//    }
 }
 
 - (void)groupAnnouncementDidUpdate:(EMGroup *)aGroup
@@ -551,8 +551,8 @@ static EaseIMHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_INFO_REFRESH object:aGroup];
 
     NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"annoumentUpdate", nil),aGroup.groupName];
-    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.announcementUpdate", @"Group Announcement Update") message:msg];
-    [alertView show];
+//    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.announcementUpdate", @"Group Announcement Update") message:msg];
+//    [alertView show];
 }
 
 - (void)groupFileListDidUpdate:(EMGroup *)aGroup
@@ -865,6 +865,11 @@ static EaseIMHelper *helper = nil;
     }
 }
 
+- (void)clearGroupAtInfo {
+    [self.grpupAtArray removeAllObjects];
+    self.isAtAll = NO;
+}
+
 #pragma mark getter and setter
 - (NSMutableArray<NSString *> *)pushedConvIdArray {
     if (_pushedConvIdArray == nil) {
@@ -873,5 +878,11 @@ static EaseIMHelper *helper = nil;
     return _pushedConvIdArray;
 }
 
+- (NSMutableArray *)grpupAtArray {
+    if (_grpupAtArray == nil) {
+        _grpupAtArray = [NSMutableArray array];
+    }
+    return _grpupAtArray;
+}
 
 @end

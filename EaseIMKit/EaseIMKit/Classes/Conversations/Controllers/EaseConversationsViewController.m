@@ -15,6 +15,9 @@
 #import "EaseIMKitManager.h"
 #import "UIViewController+HUD.h"
 #import "EaseIMKitMessageHelper.h"
+#import "EMSearchBar.h"
+#import "EMRealtimeSearch.h"
+#import "EaseNoDataPlaceHolderView.h"
 
 
 @interface EaseConversationsViewController ()
@@ -24,7 +27,8 @@ UITableViewDataSource,
 EMContactManagerDelegate,
 EMChatManagerDelegate,
 EMGroupManagerDelegate,
-EMClientDelegate
+EMClientDelegate,
+EMSearchBarDelegate
 >
 {
     dispatch_queue_t _loadDataQueue;
@@ -32,6 +36,10 @@ EMClientDelegate
 @property (nonatomic, strong) UIView *blankPerchView;
 
 @property (nonatomic, strong) NSString *mutiCallMsgId;
+
+@property (nonatomic) BOOL isSearching;
+@property (nonatomic, strong) NSMutableArray *searchResultArray;
+@property (nonatomic, strong) EaseNoDataPlaceHolderView *noDataPromptView;
 
 @end
 
@@ -59,6 +67,13 @@ EMClientDelegate
     [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
 
     [self addNotifacationObserver];
+    
+    [self.view addSubview:self.noDataPromptView];
+    [self.noDataPromptView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.tableView.mas_bottom).offset(60.0);
+        make.centerX.left.right.equalTo(self.view);
+    }];
+
 }
 
 - (void)addNotifacationObserver {
@@ -150,6 +165,44 @@ EMClientDelegate
     return dic;
 }
 
+#pragma mark - EMSearchBarDelegate
+
+- (void)searchBarShouldBeginEditing:(EMSearchBar *)searchBar
+{
+    self.isSearching = YES;
+
+}
+
+- (void)searchBarCancelButtonAction:(EMSearchBar *)searchBar
+{
+    [[EMRealtimeSearch shared] realtimeSearchStop];
+    
+    self.isSearching = NO;
+    
+    [self.searchResultArray removeAllObjects];
+    [self.tableView reloadData];
+    self.noDataPromptView.hidden = YES;
+}
+
+
+- (void)searchBarSearchButtonClicked:(EMSearchBar *)searchBar
+{
+    
+}
+
+- (void)searchTextDidChangeWithString:(NSString *)aString {
+    __weak typeof(self) weakself = self;
+    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataAry searchText:aString collationStringSelector:@selector(showName) resultBlock:^(NSArray *results) {
+         dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself.searchResultArray = results mutableCopy];
+            [weakself.tableView reloadData];
+             self.noDataPromptView.hidden = weakself.searchResultArray.count >0 ? YES : NO;
+        });
+    }];
+    
+}
+
+
 
 #pragma mark - Table view data source
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -165,21 +218,30 @@ EMClientDelegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (self.isSearching) {
+        return self.searchResultArray.count;
+    }
     return [self.dataAry count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(easeTableView:cellForRowAtIndexPath:)]) {
-        UITableViewCell *cell = [self.delegate easeTableView:tableView cellForRowAtIndexPath:indexPath];
-        if (cell) {
-            return cell;
-        }
-    }
+//    if (self.delegate && [self.delegate respondsToSelector:@selector(easeTableView:cellForRowAtIndexPath:)]) {
+//        UITableViewCell *cell = [self.delegate easeTableView:tableView cellForRowAtIndexPath:indexPath];
+//        if (cell) {
+//            return cell;
+//        }
+//    }
     
     EaseConversationCell *cell = [EaseConversationCell tableView:tableView cellViewModel:_viewModel];
     
-    EaseConversationModel *model = self.dataAry[indexPath.row];
+    EaseConversationModel *model =  nil;
+    
+    if (self.isSearching) {
+        model = self.searchResultArray[indexPath.row];
+    }else {
+        model = self.dataAry[indexPath.row];
+    }
     
     cell.model = model;
     
@@ -190,6 +252,7 @@ EMClientDelegate
 
 - (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath API_AVAILABLE(ios(11.0)) API_UNAVAILABLE(tvos)
 {
+    
     EaseConversationModel *model = [self.dataAry objectAtIndex:indexPath.row];
     
     __weak typeof(self) weakself = self;
@@ -331,8 +394,12 @@ EMClientDelegate
 
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.isSearching) {
+        return NO;
+    }
     return YES;
 }
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     EaseConversationModel *model = [self.dataAry objectAtIndex:indexPath.row];
@@ -361,15 +428,10 @@ EMClientDelegate
         if(msg.body.type == EMMessageBodyTypeText) {
                         
             EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:msg.conversationId type:EMConversationTypeGroupChat createIfNotExist:NO];
-            //群聊@“我”提醒
-            NSString *content = [NSString stringWithFormat:@"@%@",EMClient.sharedClient.currentUsername];
-            if(conversation.type == EMConversationTypeGroupChat && [((EMTextMessageBody *)msg.body).text containsString:content]) {
-                [conversation setRemindMe:msg.messageId];
-            };
-            //群聊@所有人
-            
+                        
         }
     }
+    
     [self _loadAllConversationsFromDB];
 }
 
@@ -516,6 +578,25 @@ EMClientDelegate
     }else {
         [self.tableView.backgroundView setHidden:YES];
     }
+}
+
+
+#pragma mark getter and setter
+- (NSMutableArray *)searchResultArray {
+    if (_searchResultArray == nil) {
+        _searchResultArray = [[NSMutableArray alloc] init];
+    }
+    return _searchResultArray;
+}
+
+- (EaseNoDataPlaceHolderView *)noDataPromptView {
+    if (_noDataPromptView == nil) {
+        _noDataPromptView = EaseNoDataPlaceHolderView.new;
+        [_noDataPromptView.noDataImageView setImage:[UIImage easeUIImageNamed:@"ji_search_nodata"]];
+        _noDataPromptView.prompt.text = @"搜索无结果";
+        _noDataPromptView.hidden = YES;
+    }
+    return _noDataPromptView;
 }
 
 

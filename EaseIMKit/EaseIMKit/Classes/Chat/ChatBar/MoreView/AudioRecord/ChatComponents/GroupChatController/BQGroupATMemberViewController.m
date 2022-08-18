@@ -14,6 +14,8 @@
 #import "EaseIMKitManager.h"
 #import "EaseNoDataPlaceHolderView.h"
 #import "EMSearchBar.h"
+#import "EaseIMHelper.h"
+
 
 @interface BQGroupATMemberViewController ()<EMSearchBarDelegate>
 
@@ -191,8 +193,20 @@ if (EaseIMKitManager.shared.isJiHuApp){
     
     }
     
+    NSString *selectName = @"";
+    if ([name isEqualToString:@"ALL"]) {
+        selectName = @"所有人";
+        
+        [EaseIMHelper shareHelper].isAtAll = YES;
+        
+    }else {
+        [[EaseIMHelper shareHelper].grpupAtArray addObject:name];
+
+        selectName = [EaseKitUtil fetchUserDicWithUserId:name][EaseUserNicknameKey];
+    }
+    
     if (self.selectedAtMemberBlock) {
-        self.selectedAtMemberBlock(name);
+        self.selectedAtMemberBlock(selectName);
     }
     
     [self backAction];

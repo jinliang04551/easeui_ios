@@ -70,8 +70,10 @@ Pod::Spec.new do |s|
                               'VALID_ARCHS' => 'arm64 armv7 x86_64'
                             }
     s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+    s.ios.vendored_frameworks = 'EaseIMKit/HyphenateChat.framework'
 
-    s.dependency 'HyphenateChat', '3.9.4'
+
+    # s.dependency 'HyphenateChat', '3.9.4'
     s.dependency 'EMVoiceConvert', '0.1.0'
     s.dependency 'MBProgressHUD'
     s.dependency 'Masonry'

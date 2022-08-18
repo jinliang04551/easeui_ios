@@ -175,8 +175,8 @@
 
         
         UIImageView *rightImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        rightImageView.opaque = YES;
         rightImageView.contentMode = UIViewContentModeScaleAspectFit;
-        rightImageView.image = [UIImage easeUIImageNamed:@"jh_invite_delete"];
         
         UIView *rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
         
@@ -191,11 +191,15 @@
             [_textField setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
             _textField.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
             self.backgroundColor = EaseIMKit_ViewBgBlackColor;
+            
+            rightImageView.image = [UIImage easeUIImageNamed:@"jh_invite_delete"];
+
         }else {
             self.backgroundColor = EaseIMKit_ViewBgWhiteColor;
             _textField.backgroundColor = [UIColor whiteColor];
             [_textField setTextColor:UIColor.blackColor];
-            
+            rightImageView.image = [UIImage easeUIImageNamed:@"yg_invite_delete"];
+
         }
         
         _textField.hidden = YES;

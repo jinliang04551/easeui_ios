@@ -266,6 +266,10 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 #define MutiCallUserInfo @"userInfo"
 
 
+//用户昵称头像searchKey
+#define EaseUserNicknameKey @"EaseUserNickname"
+#define EaseUserAvatarUrlKey @"EaseUserAvatarUrl"
+
 
 //通知notificatoin
 #define EaseNotificationRequestJoinGroupEvent @"EaseNotificationRequestJoinGroupEvent"

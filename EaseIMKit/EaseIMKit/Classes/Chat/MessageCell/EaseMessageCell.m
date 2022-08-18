@@ -299,7 +299,9 @@
         if (model.userDataDelegate && [model.userDataDelegate respondsToSelector:@selector(showName)]) {
             self.nameLabel.text = model.userDataDelegate.showName;
         } else {
-            self.nameLabel.text = model.message.from;
+            NSString *nickname = [EaseKitUtil fetchUserDicWithUserId:model.message.from][EaseUserNicknameKey];
+
+            self.nameLabel.text = nickname;
         }
     }
     BOOL isCustomAvatar = NO;
