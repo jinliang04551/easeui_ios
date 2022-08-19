@@ -19,10 +19,23 @@ https://download-sdk.oss-cn-beijing.aliyuncs.com/downloads/BeiQi_SDK/iOS_SDK/Hyp
 1.  初始化
     EaseIMKitOptions *demoOptions = [EaseIMKitOptions sharedOptions];
     demoOptions.appkey = @"您的appkey";
-    demoOptions.apnsCertName = @"推送证书名称";
+    demoOptions.apnsCertName = @"jihu_product";
 
     [EaseIMKitManager initWithEaseIMKitOptions:demoOptions];
-
+1.1 注册推送
+    //注册推送
+    [self _registerRemoteNotification];
+1.2 绑定证书
+// 将得到的deviceToken传给SDK
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    NSLog(@"%s deviceToken:%@",__func__,deviceToken);
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[EMClient sharedClient] bindDeviceToken:deviceToken];
+    });
+}
+    
 
 2. 配置UI入口，是否是极狐
  [EaseIMKitManager.shared configuationIMKitIsJiHuApp:[EaseIMKitOptions sharedOptions].isJiHuApp];
