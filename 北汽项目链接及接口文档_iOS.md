@@ -18,10 +18,11 @@ https://download-sdk.oss-cn-beijing.aliyuncs.com/downloads/BeiQi_SDK/iOS_SDK/Hyp
 #极狐App
 1.  初始化
     EaseIMKitOptions *demoOptions = [EaseIMKitOptions sharedOptions];
-    demoOptions.appkey = @"您的appkey";
+    demoOptions.appkey = @"1100220704109048#arcfox-server";
     demoOptions.apnsCertName = @"jihu_product";
-
-    [EaseIMKitManager initWithEaseIMKitOptions:demoOptions];
+    demoOptions.restServer = @"http://baidu.com";
+    [EaseIMKitManager managerWithEaseIMKitOptions:demoOptions];
+    
 1.1 注册推送
     //注册推送
     [self _registerRemoteNotification];

@@ -84,39 +84,41 @@
         _session = [NSURLSession sessionWithConfiguration:configuration
                                                  delegate:self
                                             delegateQueue:[NSOperationQueue mainQueue]];
-        if ([EaseIMKitOptions sharedOptions]) {
-            self.restSeverHost = @"";
-            
+        if ([EaseIMKitOptions sharedOptions].restServer.length > 0) {
+            self.restSeverHost = [EaseIMKitOptions sharedOptions].restServer;
+        }else {
+            self.restSeverHost = kServerHost;
         }
+        
     }
     return self;
 }
 
-- (void)registerToApperServer:(NSString *)uName
-                          pwd:(NSString *)pwd
-                   completion:(void (^)(NSInteger statusCode, NSString *aUsername))aCompletionBlock
-{
-    NSURL *url = [NSURL URLWithString:@"http://hk.test.easemob.com/app/chat/user/register"];
-    NSMutableURLRequest *request = [NSMutableURLRequest
-                                                requestWithURL:url];
-    request.HTTPMethod = @"POST";
-    
-    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
-    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
-    request.allHTTPHeaderFields = headerDict;
-    
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-    [dict setObject:uName forKey:@"userAccount"];
-    [dict setObject:pwd forKey:@"userPassword"];
-    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
-    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
-        if (aCompletionBlock) {
-            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
-        }
-    }];
-    [task resume];
-}
+//- (void)registerToApperServer:(NSString *)uName
+//                          pwd:(NSString *)pwd
+//                   completion:(void (^)(NSInteger statusCode, NSString *aUsername))aCompletionBlock
+//{
+//    NSURL *url = [NSURL URLWithString:@"http://hk.test.easemob.com/app/chat/user/register"];
+//    NSMutableURLRequest *request = [NSMutableURLRequest
+//                                                requestWithURL:url];
+//    request.HTTPMethod = @"POST";
+//
+//    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
+//    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
+//    request.allHTTPHeaderFields = headerDict;
+//
+//    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+//    [dict setObject:uName forKey:@"userAccount"];
+//    [dict setObject:pwd forKey:@"userPassword"];
+//    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+//    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+//        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+//        if (aCompletionBlock) {
+//            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
+//        }
+//    }];
+//    [task resume];
+//}
 
 
 - (void)loginToApperServer:(NSString *)uName
@@ -124,7 +126,7 @@
                 completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
 {
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kServerHost,kLoginURL]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",self.restSeverHost,kLoginURL]];
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];
     request.HTTPMethod = @"POST";
@@ -154,7 +156,7 @@
 //URL: /v2/gov/arcfox/transport/15811252011/logout
 //Method: GET
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/logout",kServerHost,kLogoutURL,[EMClient sharedClient].currentUsername]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/logout",self.restSeverHost,kLogoutURL,[EMClient sharedClient].currentUsername]];
     
     NSLog(@"%s url:%@",__func__,url);
 
@@ -188,7 +190,7 @@
 //                      completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
 //{
 //
-//    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kServerHost,kCreateGroupURL]];
+//    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",self.restSeverHost,kCreateGroupURL]];
 //    NSMutableURLRequest *request = [NSMutableURLRequest
 //                                                requestWithURL:url];
 //    request.HTTPMethod = @"POST";
@@ -250,7 +252,7 @@
 
     //    /v4/users/{username}/group/createGroup
 
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/group/createGroup",kServerHost,kCreateGroupURL,[EMClient sharedClient].currentUsername]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/group/createGroup",self.restSeverHost,kCreateGroupURL,[EMClient sharedClient].currentUsername]];
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];
     request.HTTPMethod = @"POST";
@@ -309,7 +311,7 @@
                                completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
 {
 
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kServerHost,kGroupApplyListURL]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",self.restSeverHost,kGroupApplyListURL]];
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];
     request.HTTPMethod = @"POST";
@@ -355,7 +357,7 @@
                         completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
 {
 
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/state",kServerHost,kGroupApplyApprovalURL,[EMClient sharedClient].currentUsername]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/state",self.restSeverHost,kGroupApplyApprovalURL,[EMClient sharedClient].currentUsername]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];
@@ -408,9 +410,9 @@
     NSString *urlString = @"";
 
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        urlString = [NSString stringWithFormat:@"%@%@/%@/group/%@/addUsers/inviter/%@/APP",kServerHost,kInviteGroupMemberURL,[EMClient sharedClient].currentUsername,groupId,[EMClient sharedClient].currentUsername];
+        urlString = [NSString stringWithFormat:@"%@%@/%@/group/%@/addUsers/inviter/%@/APP",self.restSeverHost,kInviteGroupMemberURL,[EMClient sharedClient].currentUsername,groupId,[EMClient sharedClient].currentUsername];
     }else {
-        urlString = [NSString stringWithFormat:@"%@%@/%@/group/%@/addUsers/inviter/%@",kServerHost,kInviteGroupMemberURL,[EMClient sharedClient].currentUsername,groupId,[EMClient sharedClient].currentUsername];
+        urlString = [NSString stringWithFormat:@"%@%@/%@/group/%@/addUsers/inviter/%@",self.restSeverHost,kInviteGroupMemberURL,[EMClient sharedClient].currentUsername,groupId,[EMClient sharedClient].currentUsername];
     }
     
     
@@ -470,7 +472,7 @@
         subString = kSearchGroupMemberURL;
     }
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@",kServerHost,subString,[EMClient sharedClient].currentUsername]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@",self.restSeverHost,subString,[EMClient sharedClient].currentUsername]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];
@@ -522,7 +524,7 @@
 
 //URL: /v4/users/{username}/group/{groupId}/getGroupInfo
 
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/group/%@/getGroupInfo",kServerHost,kFetchGroupYunGuanNoteURL,[EMClient sharedClient].currentUsername,groupId]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/group/%@/getGroupInfo",self.restSeverHost,kFetchGroupYunGuanNoteURL,[EMClient sharedClient].currentUsername,groupId]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];
@@ -557,7 +559,7 @@
                       completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
 {
 
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/users/%@/note",kServerHost,kModifyGroupServeNoteURL,groupId,[EMClient sharedClient].currentUsername]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/users/%@/note",self.restSeverHost,kModifyGroupServeNoteURL,groupId,[EMClient sharedClient].currentUsername]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];
@@ -594,7 +596,7 @@
 //                      completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
 //{
 //
-//    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/updateGroup",kServerHost,kModifyGroupInfoURL,groupId]];
+//    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/updateGroup",self.restSeverHost,kModifyGroupInfoURL,groupId]];
 //
 //    NSMutableURLRequest *request = [NSMutableURLRequest
 //                                                requestWithURL:url];
@@ -627,7 +629,7 @@
                       completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
 {
 
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/group/%@/modGroup",kServerHost,kModifyGroupInfoURL,[EMClient sharedClient].currentUsername,groupId]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/group/%@/modGroup",self.restSeverHost,kModifyGroupInfoURL,[EMClient sharedClient].currentUsername,groupId]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];
@@ -677,7 +679,7 @@
                      groupname:(NSString *)groupName
                     completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock {
 
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/group/listGroup",kServerHost,kSearchGroupChatURL,[EMClient sharedClient].currentUsername]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/group/listGroup",self.restSeverHost,kSearchGroupChatURL,[EMClient sharedClient].currentUsername]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];
@@ -724,7 +726,7 @@
         //未登录
         return;
     }
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/action",kServerHost,kExclusiveServerGroupListURL
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/action",self.restSeverHost,kExclusiveServerGroupListURL
 ,[EMClient sharedClient].currentUsername]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest
@@ -761,7 +763,7 @@
                             completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
 {
 
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/getOrders",kServerHost,kSearchCustomOrderURL,[EMClient sharedClient].currentUsername]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/getOrders",self.restSeverHost,kSearchCustomOrderURL,[EMClient sharedClient].currentUsername]];
     
     NSLog(@"%s url:%@",__func__,url);
     
@@ -823,9 +825,9 @@
 
     NSURL *url = nil;
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kServerHost,kEaseCallGenerateTokenJiHuURL]];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",self.restSeverHost,kEaseCallGenerateTokenJiHuURL]];
     }else {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kServerHost,kEaseCallGenerateTokenYunGuanURL]];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",self.restSeverHost,kEaseCallGenerateTokenYunGuanURL]];
     }
     
     
@@ -883,9 +885,9 @@
         
     NSURL *url = nil;
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/show",kServerHost,kEaseCallGetChannalUidsJiHuURL,channelName]];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/show",self.restSeverHost,kEaseCallGetChannalUidsJiHuURL,channelName]];
     }else {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/show",kServerHost,kEaseCallGetChannalUidsYunGuanURL,channelName]];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/show",self.restSeverHost,kEaseCallGetChannalUidsYunGuanURL,channelName]];
     }
     
     NSLog(@"%s url:%@",__func__,url);

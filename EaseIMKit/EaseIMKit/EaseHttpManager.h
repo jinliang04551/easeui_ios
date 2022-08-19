@@ -12,9 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)sharedManager;
 
-- (void)registerToApperServer:(NSString *)uName
-                          pwd:(NSString *)pwd
-                   completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+//- (void)registerToApperServer:(NSString *)uName
+//                          pwd:(NSString *)pwd
+//                   completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
 
 - (void)loginToApperServer:(NSString *)uName
                        pwd:(NSString *)pwd
