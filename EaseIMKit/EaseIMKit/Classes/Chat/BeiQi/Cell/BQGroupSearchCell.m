@@ -88,9 +88,9 @@
     self.currentUserId = aUid;
     
     self.groupUserType = BQGroupUserTypeNone;
-    [self.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_user_icon"]];
-    self.nameLabel.text = aUid;
-
+//    [self.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_user_icon"]];
+//    self.nameLabel.text = aUid;
+    [self updateCellWithUserId:aUid];
 }
 
 
