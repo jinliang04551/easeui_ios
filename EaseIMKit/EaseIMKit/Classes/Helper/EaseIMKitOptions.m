@@ -226,9 +226,9 @@ static EaseIMKitOptions *sharedOptions = nil;
 {
     self.appkey = DEF_APPKEY;
 #if DEBUG
-    self.apnsCertName = @"EaseIM_APNS_Developer";
+    self.apnsCertName = @"Jihu_APNS_Developer";
 #else
-    self.apnsCertName = @"EaseIM_APNS_Product";
+    self.apnsCertName = @"Jihu_APNS_Product";
 #endif
     self.usingHttpsOnly = YES;
     //self.specifyServer = YES;

@@ -1115,23 +1115,30 @@ if (EaseIMKitManager.shared.isJiHuApp){
     }
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    NSMutableDictionary *pushDic = [NSMutableDictionary dictionary];
+
     if (msg.ext.count > 0) {
         [dic setDictionary:msg.ext];
     }
     
-    //    @"em_alert_title": @"customTitle",
-    //            @"em_alert_subTitle": @"customSubTitle",
-    //            @"em_alert_body": @"customBody"
+//    @"em_apns_ext":@{
+//            @"em_alert_title": @"customTitle",
+//            @"em_alert_subTitle": @"customSubTitle",
+//            @"em_alert_body": @"customBody"
+//        }};
+
 
     //    extObject.put("em_push_title", "custom push title");
     //       extObject.put("em_push_content", "custom push content");
     //iOS
-    [dic setObject:title forKey:@"em_alert_title"];
-    [dic setObject:content forKey:@"em_alert_body"];
+    [pushDic setObject:title forKey:@"em_alert_title"];
+    [pushDic setObject:content forKey:@"em_alert_body"];
     //andorid
-    [dic setObject:title forKey:@"em_push_title"];
-    [dic setObject:content forKey:@"em_push_content"];
-
+    [pushDic setObject:title forKey:@"em_push_title"];
+    [pushDic setObject:content forKey:@"em_push_content"];
+    
+    [dic setObject:pushDic forKey:@"em_apns_ext"];
+    
     msg.ext = [dic copy];
     
     NSLog(@"%s msg.txt:%@",__func__,msg.ext);
