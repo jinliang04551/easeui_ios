@@ -2,6 +2,7 @@
 #import "PellTableViewSelect.h"
 #import "UIView+MISRedPoint.h"
 #import "EaseHeaders.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define  LeftView 10.0f
 #define  TopToView 10.0f
@@ -57,32 +58,35 @@ UITableView * tableView;
 
     // TAB
     //tableView = [[UITableView alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - frame.size.width/2 - 15.0 , win.frame.size.height - frame.origin.y - 20 , frame.size.width, 52 * selectData.count) style:0];
+    
     tableView = [[UITableView alloc]init];
     tableView.scrollEnabled = NO;
     tableView.dataSource = backgroundView;
 //    tableView.transform =  CGAffineTransformMakeScale(0.5, 0.5);
     tableView.delegate = backgroundView;
     
-    tableView.layer.shadowColor = [UIColor colorWithHexString:@"#6C8AB6"].CGColor;
-    tableView.layer.shadowOpacity = 1.0f;
-    tableView.layer.shadowRadius = 10.f;
-    tableView.layer.shadowOffset = CGSizeMake(1,1);
+    tableView.layer.shadowColor = [UIColor blackColor].CGColor;
+    tableView.layer.shadowOpacity = 1.0;
+    tableView.layer.shadowRadius = 8.0;
+    tableView.layer.shadowOffset = CGSizeMake(2,2);
+    
+//    tableView.layer.borderColor = [UIColor colorWithHexString:@"#979797"].CGColor;
+//    tableView.layer.borderWidth = 1.0;
+    tableView.layer.cornerRadius = 8.0;
+    tableView.layer.masksToBounds = YES;
     
 
-    
-    
-    // 定点
-    tableView.layer.anchorPoint = CGPointMake(1.0, 0);
-    
-    tableView.transform =CGAffineTransformMakeScale(0.0001, 0.0001);
+//    // 定点
+//    tableView.layer.anchorPoint = CGPointMake(1.0, 0);
+//
+//    tableView.transform =CGAffineTransformMakeScale(0.0001, 0.0001);
     
     tableView.rowHeight = 44.0;
-    
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [win addSubview:tableView];
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(win).offset(locationY);
-        make.right.equalTo(win).offset(frame.size.width/2 - 13);
+        make.top.equalTo(win).offset(EaseIMKit_NavBarAndStatusBarHeight);
+        make.right.equalTo(win).offset(-16.0);
         make.width.equalTo(@(frame.size.width));
         make.height.equalTo(@(frame.size.height));
     }];
@@ -91,6 +95,10 @@ UITableView * tableView;
     [backgroundView addGestureRecognizer:tap];
     backgroundView.action = action;
     backgroundView.selectData = selectData;
+
+//    tableView.backgroundColor = UIColor.yellowColor;
+//    backgroundView.backgroundColor = UIColor.redColor;
+//
 
 
     if (animate == YES) {
@@ -102,6 +110,8 @@ UITableView * tableView;
         }];
     }
 }
+
+
 + (void)tapBackgroundClick
 {
     [PellTableViewSelect hiden];
@@ -113,7 +123,8 @@ UITableView * tableView;
         [UIView animateWithDuration:0.3 animations:^{
 //            UIWindow * win = [[[UIApplication sharedApplication] windows] firstObject];
 //            tableView.frame = CGRectMake(win.bounds.size.width - 35 , 64, 0, 0);
-            tableView.transform = CGAffineTransformMakeScale(0.000001, 0.0001);
+//            tableView.transform = CGAffineTransformMakeScale(0.000001, 0.0001);
+            
         } completion:^(BOOL finished) {
             [backgroundView removeFromSuperview];
             [tableView removeFromSuperview];
@@ -135,7 +146,12 @@ UITableView * tableView;
         cell = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:Identifier];
         cell.textLabel.font = [UIFont systemFontOfSize:14.0];
         cell.textLabel.textColor = [UIColor colorWithHexString:@"#171717"];
+        
+        UIView *view_bg = [[UIView alloc]initWithFrame:cell.frame];
+        view_bg.backgroundColor = [UIColor colorWithHexString:@"#ECF5FF"];;
+        cell.selectedBackgroundView = view_bg;
     }
+    
     cell.imageView.image = [UIImage easeUIImageNamed:self.imagesData[indexPath.row]];
     cell.textLabel.text = _selectData[indexPath.row];
     if (indexPath.row == self.imagesData.count - 1) {
@@ -157,11 +173,13 @@ UITableView * tableView;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     if (self.action) {
         self.action(indexPath.row);
     }
     [PellTableViewSelect hiden];
 }
+
 /*
 #pragma mark 绘制三角形
 - (void)drawRect:(CGRect)rect

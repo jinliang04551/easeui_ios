@@ -80,6 +80,14 @@ static NSString *CellIdentifier = @"YGAvatarTitleAccessCell";
         cell.textLabel.textColor = [UIColor colorWithHexString:@"#171717"];
         cell.textLabel.font = EaseIMKit_NFont(14.0);
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        if (cell.isHighlighted) {
+            cell.contentView.backgroundColor = [UIColor colorWithHexString:@"#ECF5FF"];
+            
+        }
+        
+        UIView *view_bg = [[UIView alloc]initWithFrame:cell.frame];
+        view_bg.backgroundColor = [UIColor colorWithHexString:@"#ECF5FF"];;
+        cell.selectedBackgroundView = view_bg;
     }
     
     NSDictionary *dic = self.dataArray[indexPath.row];
