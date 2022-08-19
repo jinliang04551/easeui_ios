@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <HyphenateChat/HyphenateChat.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSBundle *)easeIMBundle;
 
 + (NSDictionary *)fetchUserDicWithUserId:(NSString *)aUid;
+
++ (NSString *)getContentWithMsg:(EMChatMessage *)msg;
 
 @end
 

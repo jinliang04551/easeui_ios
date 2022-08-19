@@ -7,7 +7,6 @@
 //
 
 #import "EaseKitUtil.h"
-#import <HyphenateChat/HyphenateChat.h>
 #import "EaseIMKitOptions.h"
 #import "EaseHeaders.h"
 #import "UserInfoStore.h"
@@ -162,5 +161,58 @@
     return @{EaseUserNicknameKey:nickname,EaseUserAvatarUrlKey:avatarUrl};
 }
 
+
++ (NSString *)getContentWithMsg:(EMChatMessage *)msg {
+    NSString *msgStr = nil;
+    switch (msg.body.type) {
+        case EMMessageBodyTypeText:
+        {
+            EMTextMessageBody *body = (EMTextMessageBody *)msg.body;
+            msgStr = body.text;
+            if ([msgStr isEqualToString:EMCOMMUNICATE_CALLER_MISSEDCALL]) {
+                msgStr = EaseLocalizableString(@"noRespond", nil);
+            }
+            if ([msgStr isEqualToString:EMCOMMUNICATE_CALLED_MISSEDCALL]) {
+                msgStr = EaseLocalizableString(@"remoteCancel", nil);
+            }
+        }
+            break;
+        case EMMessageBodyTypeLocation:
+        {
+            msgStr = EaseLocalizableString(@"[location]", nil);
+        }
+            break;
+        case EMMessageBodyTypeCustom:
+        {
+            msgStr = EaseLocalizableString(@"[customemsg]", nil);
+        }
+            break;
+        case EMMessageBodyTypeImage:
+        {
+            msgStr = EaseLocalizableString(@"[image]", nil);
+        }
+            break;
+        case EMMessageBodyTypeFile:
+        {
+            msgStr = EaseLocalizableString(@"[file]", nil);
+        }
+            break;
+        case EMMessageBodyTypeVoice:
+        {
+            msgStr = EaseLocalizableString(@"[audio]", nil);
+        }
+            break;
+        case EMMessageBodyTypeVideo:
+        {
+            msgStr = EaseLocalizableString(@"[video]", nil);
+        }
+            break;
+            
+        default:
+            break;
+    }
+        
+    return msgStr;
+}
 
 @end

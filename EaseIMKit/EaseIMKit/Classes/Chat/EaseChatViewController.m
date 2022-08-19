@@ -1086,12 +1086,56 @@ if (EaseIMKitManager.shared.isJiHuApp){
         
     [weakself refreshTableView:YES];
 
+    [self appendCustomAPNSWithMessage:message];
+    
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMChatMessage *message, EMError *error) {
         [weakself msgStatusDidChange:message error:error];
         if (weakself.delegate && [weakself.delegate respondsToSelector:@selector(didSendMessage:error:)]) {
             [weakself.delegate didSendMessage:message error:error];
         }
     }];
+}
+
+- (void)appendCustomAPNSWithMessage:(EMChatMessage *)msg {
+    //添加自定义离线推送
+    NSString *title = @"";
+    NSString *content = @"";
+
+    if (msg.chatType == EMChatTypeChat) {
+        title = [EaseKitUtil fetchUserDicWithUserId:msg.from][EaseUserNicknameKey];
+        content = [EaseKitUtil getContentWithMsg:msg];
+    }
+    
+    if (msg.chatType == EMChatTypeGroupChat) {
+        EMGroup *group = [EMGroup groupWithId:msg.conversationId];
+        title = group.groupName;
+        
+        NSString *nickname = [EaseKitUtil fetchUserDicWithUserId:msg.from][EaseUserNicknameKey];
+        content = [NSString stringWithFormat:@"%@: %@",nickname,[EaseKitUtil getContentWithMsg:msg]];
+    }
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    if (msg.ext.count > 0) {
+        [dic setDictionary:msg.ext];
+    }
+    
+    //    @"em_alert_title": @"customTitle",
+    //            @"em_alert_subTitle": @"customSubTitle",
+    //            @"em_alert_body": @"customBody"
+
+    //    extObject.put("em_push_title", "custom push title");
+    //       extObject.put("em_push_content", "custom push content");
+    //iOS
+    [dic setObject:title forKey:@"em_alert_title"];
+    [dic setObject:content forKey:@"em_alert_body"];
+    //andorid
+    [dic setObject:title forKey:@"em_push_title"];
+    [dic setObject:content forKey:@"em_push_content"];
+
+    msg.ext = [dic copy];
+    
+    NSLog(@"%s msg.txt:%@",__func__,msg.ext);
+    
 }
 
 #pragma mark - Public
