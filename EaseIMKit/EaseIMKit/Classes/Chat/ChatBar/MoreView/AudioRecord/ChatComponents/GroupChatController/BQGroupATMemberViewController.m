@@ -40,13 +40,22 @@
     if (self) {
         self.group = aGroup;
         self.isOwner = (self.group.permissionType == EMGroupPermissionTypeOwner) ? YES : NO;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:USERINFO_UPDATE object:nil];
+
     }
     
     return self;
 }
 
+- (void)refreshTableView {
+    [self.tableView reloadData];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [[EaseIMHelper shareHelper] fetchAllMembersUserInfoWithGroup:self.group];
     
 if (EaseIMKitManager.shared.isJiHuApp){
     self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;

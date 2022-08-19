@@ -83,10 +83,7 @@
 }
 
 - (NSMutableArray *)remindMeArray {
-//    NSMutableArray *dict = [(NSMutableArray *)self.ext[MSG_EXT_AT] mutableCopy];
-//    if (!dict) {
-//        dict = [[NSMutableArray alloc]init];
-//    }
+  
 
     NSMutableArray *dict = [(NSMutableArray *)self.ext[MSG_EXT_AT] mutableCopy];
     if (!dict) {

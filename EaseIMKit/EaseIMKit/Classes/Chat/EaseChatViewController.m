@@ -35,7 +35,7 @@
 #import "EaseWebViewController.h"
 #import "EaseChatViewController+EaseCall.h"
 #import "EaseIMHelper.h"
-
+#import "UserInfoStore.h"
 
 @interface EaseChatViewController ()<UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, EMChatManagerDelegate, EMChatBarDelegate, EaseMessageCellDelegate, EaseChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate, EMMoreFunctionViewDelegate>
 {
@@ -155,6 +155,7 @@
             if (!aError) {
                 //已读数为去除自己的所有人
                 self.groupMemberCount = aGroup.memberList.count;
+                [[EaseIMHelper shareHelper] fetchAllMembersUserInfoWithGroup:aGroup];
             } else {
                 //
             }
@@ -472,7 +473,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
     if ([EaseIMHelper shareHelper].isAtAll) {
         [ext setObject:@"ALL" forKey:MSG_EXT_AT];
     }else if([EaseIMHelper shareHelper].grpupAtArray.count > 0){
-        [ext setObject:[EaseIMHelper shareHelper].grpupAtArray forKey:MSG_EXT_AT];
+        [ext setObject:[[EaseIMHelper shareHelper].grpupAtArray mutableCopy] forKey:MSG_EXT_AT];
     }else {
         
     }
@@ -911,6 +912,9 @@ if (EaseIMKitManager.shared.isJiHuApp){
         return;
     }
     
+    //clearAtCache
+    [[EaseIMHelper shareHelper] clearGroupAtInfo];
+    
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:aText];
     [self sendMessageWithBody:body ext:aExt];
 }
@@ -1086,7 +1090,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
         
     [weakself refreshTableView:YES];
 
-    [self appendCustomAPNSWithMessage:message];
+    [self appendAPNSAndUserInfoExtWithMessage:message];
     
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMChatMessage *message, EMError *error) {
         [weakself msgStatusDidChange:message error:error];
@@ -1096,7 +1100,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
     }];
 }
 
-- (void)appendCustomAPNSWithMessage:(EMChatMessage *)msg {
+- (void)appendAPNSAndUserInfoExtWithMessage:(EMChatMessage *)msg {
     //添加自定义离线推送
     NSString *title = @"";
     NSString *content = @"";
@@ -1116,6 +1120,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     NSMutableDictionary *pushDic = [NSMutableDictionary dictionary];
+    NSMutableDictionary *userInfoDic = [NSMutableDictionary dictionary];
 
     if (msg.ext.count > 0) {
         [dic setDictionary:msg.ext];
@@ -1139,6 +1144,16 @@ if (EaseIMKitManager.shared.isJiHuApp){
     
     [dic setObject:pushDic forKey:@"em_apns_ext"];
     
+    //添加个人信息
+//    {"ext": {"userInfo": { "im_username": "xxx", "nick":"xx", "avatar":"http://xxx.png"}}}
+    NSDictionary *userDic = [EaseKitUtil fetchUserDicWithUserId:[EMClient sharedClient].currentUsername];
+    
+    [userInfoDic setObject:[EMClient sharedClient].currentUsername forKey:@"im_username"];
+    [userInfoDic setObject:userDic[EaseUserNicknameKey] forKey:@"nick"];
+    [userInfoDic setObject:userDic[EaseUserAvatarUrlKey] forKey:@"avatar"];
+
+    [dic setObject:userInfoDic forKey:@"userInfo"];
+
     msg.ext = [dic copy];
     
     NSLog(@"%s msg.txt:%@",__func__,msg.ext);

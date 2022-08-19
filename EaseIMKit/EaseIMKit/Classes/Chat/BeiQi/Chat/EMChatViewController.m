@@ -158,11 +158,21 @@
     
     chatTitle = _conversationModel.showName;
     if (self.conversation.type == EMConversationTypeChat) {
-        EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:self.conversation.conversationId];
-        if(userInfo && userInfo.nickName.length > 0){
-            chatTitle = userInfo.nickName;
-        }else {
-            [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[self.conversation.conversationId]];
+//        EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:self.conversation.conversationId];
+//        if(userInfo && userInfo.nickName.length > 0){
+//            chatTitle = userInfo.nickName;
+//        }else {
+//            [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[self.conversation.conversationId]];
+//        }
+        if (_conversation.lastReceivedMessage) {
+            NSString *nickname = @"";
+            NSDictionary *msgUserExt = _conversation.lastReceivedMessage.ext[@"userInfo"];
+            if (msgUserExt.count > 0) {
+                nickname = msgUserExt[@"nick"];
+            }else {
+                nickname = [EaseKitUtil fetchUserDicWithUserId:_conversation.lastReceivedMessage.from][EaseUserNicknameKey];
+            }
+            chatTitle = nickname;
         }
         
     }
@@ -252,7 +262,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     self.titleDetailLabel.textColor = [UIColor colorWithHexString:@"#A5A5A5"];
 }
 
-    
     self.navigationItem.titleView = titleView;
     [self updateNavigationTitle];
 }
@@ -276,6 +285,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     }
 
 }
+
 
 #pragma mark NSNotification
 - (void)receiveMutiCallLoadConvsationDB:(NSNotification *)notify {

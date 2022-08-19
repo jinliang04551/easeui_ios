@@ -222,8 +222,6 @@ static NSString *g_UIKitVersion = @"1.0.0";
 }
 
 
-
-
 + (EaseIMKitManager *)shared {
     return easeIMKit;
 }
@@ -405,38 +403,34 @@ static NSString *g_UIKitVersion = @"1.0.0";
     
     
     BOOL ret = NO;
-    if (!msg.isRead && msg.body.type == EMMessageBodyTypeText) {
-        EMTextMessageBody *textBody = (EMTextMessageBody*)msg.body;
-        
-//        @列表 "em_at_list":["hxtest1","123"]
-//        @全体  "em_at_list":ALL
-        
-        if (msg.ext.count > 0) {
-            id obj = msg.ext[MSG_EXT_AT];
-            if ([obj isKindOfClass:[NSString class]]) {
-                NSString *atAll = (NSString *)obj;
-                if ([atAll isEqualToString:@"ALL"]) {
-                    ret = YES;
-                }
-            }
-            
-            if ([obj isKindOfClass:[NSMutableArray class]]||[obj isKindOfClass:[NSArray class]]) {
-                NSMutableArray *atArray = (NSMutableArray *)obj;
-                if ([atArray containsObject:EMClient.sharedClient.currentUsername]) {
-                    ret = YES;
-                }
-            }
-            //包含@me
-            if(ret) {
-                            
-                EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:msg.conversationId type:EMConversationTypeGroupChat createIfNotExist:NO];
-                
-                [conversation setRemindMe:msg.messageId];
-                
-            }
-        
-        }
-    }
+//    @列表 "em_at_list":["hxtest1","123"]
+   //        @全体  "em_at_list":ALL
+           
+   if (msg.ext.count > 0) {
+       id obj = msg.ext[MSG_EXT_AT];
+       if ([obj isKindOfClass:[NSString class]]) {
+           NSString *atAll = (NSString *)obj;
+           if ([atAll isEqualToString:@"ALL"]) {
+               ret = YES;
+           }
+       }
+       
+       if ([obj isKindOfClass:[NSMutableArray class]]||[obj isKindOfClass:[NSArray class]]) {
+           NSMutableArray *atArray = (NSMutableArray *)obj;
+           if ([atArray containsObject:EMClient.sharedClient.currentUsername]) {
+               ret = YES;
+           }
+       }
+       //包含@me
+       if(ret) {
+                       
+           EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:msg.conversationId type:EMConversationTypeGroupChat createIfNotExist:NO];
+           
+           [conversation setRemindMe:msg.messageId];
+           
+       }
+   
+   }
 
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         //非专属群没有横幅

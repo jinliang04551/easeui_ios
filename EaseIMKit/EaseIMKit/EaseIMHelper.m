@@ -844,7 +844,7 @@ static EaseIMHelper *helper = nil;
     NSArray *exGroupIds = (NSArray *)notify.object;
 
     if (exGroupIds.count == 0) {
-        return;
+
     }
     
     BOOL isSingleGroupChat = NO;
@@ -877,9 +877,23 @@ static EaseIMHelper *helper = nil;
     }
 }
 
+
 - (void)clearGroupAtInfo {
     [self.grpupAtArray removeAllObjects];
     self.isAtAll = NO;
+}
+
+- (void)fetchAllMembersUserInfoWithGroup:(EMGroup *)aGroup {
+    if (aGroup == nil) {
+        return;
+    }
+    
+    
+    NSMutableArray *mArray = [NSMutableArray array];
+    [mArray addObject:aGroup.owner];
+    [mArray addObjectsFromArray:aGroup.memberList];
+    
+    [[UserInfoStore sharedInstance] fetchUserInfosFromServer:mArray];
 }
 
 #pragma mark getter and setter

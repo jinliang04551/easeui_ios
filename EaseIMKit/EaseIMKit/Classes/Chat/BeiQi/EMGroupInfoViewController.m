@@ -68,10 +68,14 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupInfoUpdated:) name:EaseNotificationReceiveGroupInfoUpdate object:nil];
 
-
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:USERINFO_UPDATE object:nil];
     }
     
     return self;
+}
+
+- (void)refreshTableView {
+    [self.tableView reloadData];
 }
 
 - (void)viewDidLoad {
@@ -445,6 +449,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:self.groupId fetchMembers:YES completion:^(EMGroup * _Nullable aGroup, EMError * _Nullable aError) {
         [weakself hideHud];
         if (!aError) {
+            [[EaseIMHelper shareHelper] fetchAllMembersUserInfoWithGroup:aGroup];
             [weakself _resetGroup:aGroup];
             [weakself getOwnerNicknameWithUserId:aGroup.owner];
         } else {

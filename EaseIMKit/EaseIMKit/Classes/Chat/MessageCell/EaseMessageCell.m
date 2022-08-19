@@ -296,14 +296,30 @@
     }
     
     if (model.type != EMChatTypeChat) {
-        if (model.userDataDelegate && [model.userDataDelegate respondsToSelector:@selector(showName)]) {
-            self.nameLabel.text = model.userDataDelegate.showName;
-        } else {
-            NSString *nickname = [EaseKitUtil fetchUserDicWithUserId:model.message.from][EaseUserNicknameKey];
-
+//        if (model.userDataDelegate && [model.userDataDelegate respondsToSelector:@selector(showName)]) {
+//            self.nameLabel.text = model.userDataDelegate.showName;
+//        } else {
+//            NSString *nickname = [EaseKitUtil fetchUserDicWithUserId:model.message.from][EaseUserNicknameKey];
+//
+//            self.nameLabel.text = nickname;
+//        }
+    
+        
+        //    {"ext": {"userInfo": { "im_username": "xxx", "nick":"xx", "avatar":"http://xxx.png"}}}
+        NSString *nickname = @"";
+        if (model.message.direction == EMMessageDirectionReceive) {
+            NSDictionary *msgUserExt = model.message.ext[@"userInfo"];
+            if (msgUserExt.count > 0) {
+                nickname = msgUserExt[@"nick"];
+            }else {
+                nickname = [EaseKitUtil fetchUserDicWithUserId:model.message.from][EaseUserNicknameKey];
+            }
             self.nameLabel.text = nickname;
+
         }
     }
+    
+    
     BOOL isCustomAvatar = NO;
     if (model.userDataDelegate && [model.userDataDelegate respondsToSelector:@selector(defaultAvatar)]) {
         if (model.userDataDelegate.defaultAvatar) {

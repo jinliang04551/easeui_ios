@@ -31,4 +31,7 @@
 
 - (void)clearGroupAtInfo;
 
+//获取群所有人的个人信息
+- (void)fetchAllMembersUserInfoWithGroup:(EMGroup *)aGroup;
+
 @end
