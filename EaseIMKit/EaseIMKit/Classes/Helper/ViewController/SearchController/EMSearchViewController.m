@@ -75,7 +75,7 @@
         
         [self.view addSubview:self.noDataPromptView];
         [self.noDataPromptView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.searchBar.mas_bottom).offset(60.0);
+            make.top.equalTo(self.searchBar.mas_bottom).offset(kNoDataPlaceHolderViewTopPadding);
             make.centerX.left.right.equalTo(self.view);
         }];
 

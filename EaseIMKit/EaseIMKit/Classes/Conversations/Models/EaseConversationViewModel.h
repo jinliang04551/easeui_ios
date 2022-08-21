@@ -9,6 +9,8 @@
 #import "EaseBaseTableViewModel.h"
 #import "EaseEnums.h"
 
+@class EaseNoDataPlaceHolderView;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EaseConversationViewModel : EaseBaseTableViewModel
@@ -79,6 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 // 未读数显示上限, 超过上限后会显示 xx+
 @property (nonatomic) int badgeMaxNum;
 
+@property (nonatomic, strong) NSString *noDataPrompt;
 
 @end
 

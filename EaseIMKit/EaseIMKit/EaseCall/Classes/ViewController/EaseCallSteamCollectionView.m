@@ -9,15 +9,16 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UserInfoStore.h"
 #import "EaseHeaders.h"
+#import "EaseCallStreamView.h"
 
 #define kAvatarImageHeight 38.0
 
-@interface EaseCallSteamCollectionViewItem : UICollectionViewCell
+@interface EaseCallSteamCollectionCell : UICollectionViewCell
 @property (nonatomic, strong) NSMutableArray* callSteamViewArray;
 
 @end
 
-@implementation EaseCallSteamCollectionViewItem
+@implementation EaseCallSteamCollectionCell
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -39,6 +40,30 @@
 }
 
 - (void)updateWithObj:(id)obj {
+    self.callSteamViewArray = obj;
+    
+    int itemWidth = EaseIMKit_ScreenWidth * 0.5;
+    int itemHeight = itemWidth;
+
+    for (int i = 0; i < self.callSteamViewArray.count; ++i) {
+        UIView *callView = self.callSteamViewArray[i];
+        [callView mas_makeConstraints:^(MASConstraintMaker *make) {
+            if (i == 0 || i == 2) {
+                make.left.equalTo(self);
+            }else {
+                make.left.equalTo(self).offset(itemWidth);
+            }
+        
+            if (i > 1) {
+                make.top.equalTo(self).offset(itemHeight);
+            }else {
+                make.top.equalTo(self);
+            }
+            
+            make.size.equalTo(@(itemWidth));
+            
+        }];
+    }
     
 }
 
@@ -51,16 +76,12 @@
     return _callSteamViewArray;
 }
 
-
 @end
 
 
 @interface EaseCallSteamCollectionView ()<UIScrollViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
 
-@property (nonatomic, strong) UIView* titleView;
-@property (nonatomic, strong) UILabel* nameLabel;
-@property (nonatomic, strong) UILabel* memberCountLabel;
-@property (nonatomic, strong) UIImageView* accessoryImageView;
+
 @property (nonatomic, strong) UICollectionViewFlowLayout *collectionViewLayout;
 @property (nonatomic, strong) UICollectionView* collectionView;
 
@@ -79,18 +100,10 @@
 
 
 - (void)placeAndLayoutSubViews {
-    [self addSubview:self.titleView];
     [self addSubview:self.collectionView];
 
-    
-    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self);
-        make.left.right.equalTo(self);
-        make.height.equalTo(@(56.0));
-    }];
-
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleView.mas_bottom);
+        make.top.equalTo(self);
         make.left.right.equalTo(self);
         make.bottom.equalTo(self);
     }];
@@ -98,15 +111,36 @@
 
 
 - (void)updateUIWithMemberArray:(NSMutableArray *)memberArray {
-
-    
+    [self splitDataWithMemberArray:memberArray];
     [self.collectionView reloadData];
+}
+
+- (void)splitDataWithMemberArray:(NSMutableArray *)memberArray {
+//    int itemArrays = ceilf(memberArray.count/4);
+    NSMutableArray *tArray = [NSMutableArray array];
+    
+    int loc = 0;
+    while (loc < memberArray.count) {
+        int length = 0;
+        if (loc + 4 < memberArray.count) {
+            length = 4;
+        }else {
+            length = (int)memberArray.count - loc;
+        }
+        
+        NSRange range = NSMakeRange(loc, length);
+        NSArray *mArray = [tArray subarrayWithRange:range];
+        [tArray addObjectsFromArray:mArray];
+        
+        loc += length;
+    }
+    
 }
 
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [self.dataArray count] + 1;
+    return [self.dataArray count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -118,7 +152,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    EaseCallSteamCollectionViewItem *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[EaseCallSteamCollectionViewItem reuseIdentifier] forIndexPath:indexPath];
+    EaseCallSteamCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[EaseCallSteamCollectionCell reuseIdentifier] forIndexPath:indexPath];
     
     id obj = [self.dataArray objectAtIndex:indexPath.row -1];
     [cell updateWithObj:obj];
@@ -128,11 +162,8 @@
 
 
 #pragma mark - UICollectionViewDelegate
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.row == 0) {
-       
-    }
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+
     
 }
 
@@ -145,7 +176,7 @@
         _collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
         
-        [_collectionView registerClass:[EaseCallSteamCollectionViewItem class] forCellWithReuseIdentifier:[EaseCallSteamCollectionViewItem reuseIdentifier]];
+        [_collectionView registerClass:[EaseCallSteamCollectionCell class] forCellWithReuseIdentifier:[EaseCallSteamCollectionCell reuseIdentifier]];
 
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.delegate = self;
@@ -166,21 +197,21 @@
 
     flowLayout.itemSize = [EaseCallSteamCollectionView collectionViewItemSize];
     flowLayout.minimumLineSpacing = [EaseCallSteamCollectionView collectionViewMinimumLineSpacing];
-    flowLayout.minimumInteritemSpacing = 12.0;
-    flowLayout.sectionInset = UIEdgeInsetsMake(0, 16.0, 0, 16.0);
+    flowLayout.minimumInteritemSpacing = 0;
+    flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
     
     return flowLayout;
 }
 
 + (CGSize)collectionViewItemSize {
-    CGFloat itemWidth = (EaseIMKit_ScreenWidth - 16.0 * 2 - 5 * 12.0)/6.0;
-    CGFloat itemHeight = 58.0;
+    CGFloat itemWidth = EaseIMKit_ScreenWidth;
+    CGFloat itemHeight = itemWidth;
     return CGSizeMake(itemWidth, itemHeight);
 }
 
 
 + (CGFloat)collectionViewMinimumLineSpacing {
-    return 14.0;
+    return 0;
 }
 
 
@@ -192,61 +223,6 @@
     return _dataArray;
 }
 
-- (UILabel *)nameLabel {
-    if (_nameLabel == nil) {
-        _nameLabel = [[UILabel alloc] init];
-        _nameLabel.font = EaseIMKit_NFont(14.0f);
-        
-        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            _nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
-
-        }else {
-            _nameLabel.textColor = [UIColor colorWithHexString:@"#171717"];
-        }
-        
-        _nameLabel.textAlignment = NSTextAlignmentLeft;
-        _nameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-        _nameLabel.text = @"群成员";
-        
-    }
-    return _nameLabel;
-}
-
-
-- (UILabel *)memberCountLabel {
-    if (_memberCountLabel == nil) {
-        _memberCountLabel = [[UILabel alloc] init];
-        _memberCountLabel.font = EaseIMKit_Font(@"PingFang SC", 14.0);
-        _memberCountLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
-        _memberCountLabel.textAlignment = NSTextAlignmentRight;
-        _memberCountLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    }
-    return _memberCountLabel;
-}
-
-- (UIImageView *)accessoryImageView {
-    if (_accessoryImageView == nil) {
-        _accessoryImageView = [[UIImageView alloc] init];
-        [_accessoryImageView setImage:[UIImage easeUIImageNamed:@"jh_right_access"]];
-        _accessoryImageView.contentMode = UIViewContentModeScaleAspectFit;
-    }
-    return _accessoryImageView;
-}
-
-- (UIView *)titleView {
-    if (_titleView == nil) {
-        _titleView = [[UIView alloc] init];
-        [_titleView addSubview:self.nameLabel];
-
-        [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_titleView).offset(16.0);
-            make.left.equalTo(_titleView).offset(EaseIMKit_Padding * 1.6);
-            make.right.equalTo(_titleView);
-        }];
-        
-    }
-    return _titleView;
-}
 
 @end
 

@@ -121,35 +121,33 @@ if (EaseIMKitManager.shared.isJiHuApp){
 
 - (UIView *)defaultBgView {
     UIView *defaultBgView = [[UIView alloc] initWithFrame:CGRectZero];
-    UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage easeUIImageNamed:@"ji_search_nodata"]];
-    UILabel *txtLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    txtLabel.font = [UIFont systemFontOfSize:14];
-    txtLabel.textColor = [UIColor colorWithHexString:@"#999999"];
-    [view addSubview:imageView];
-    [view addSubview:txtLabel];
-    [defaultBgView addSubview:view];
-
-    txtLabel.text = EaseLocalizableString(@"noMessag", nil);
-    [imageView Ease_updateConstraints:^(EaseConstraintMaker *make) {
-        make.centerX.equalTo(view);
-        make.top.equalTo(view);
-        make.width.Ease_equalTo(60.0);
-        make.height.Ease_equalTo(60.0);
-    }];
+//    UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
+//    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage easeUIImageNamed:@"ji_search_nodata"]];
+//    UILabel *txtLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+//    txtLabel.font = [UIFont systemFontOfSize:14];
+//    txtLabel.textColor = [UIColor colorWithHexString:@"#999999"];
+//    [view addSubview:imageView];
+//    [view addSubview:txtLabel];
+//    [defaultBgView addSubview:view];
+//
+//    txtLabel.text = EaseLocalizableString(@"noMessag", nil);
+//    [imageView Ease_updateConstraints:^(EaseConstraintMaker *make) {
+//        make.centerX.equalTo(view);
+//        make.top.equalTo(view);
+//        make.width.Ease_equalTo(60.0);
+//        make.height.Ease_equalTo(60.0);
+//    }];
+//
+//    [txtLabel Ease_updateConstraints:^(EaseConstraintMaker *make) {
+//        make.centerX.equalTo(view.ease_centerX);
+//        make.top.equalTo(imageView.ease_bottom).offset(19);
+//        make.height.Ease_equalTo(20);
+//    }];
     
-    [txtLabel Ease_updateConstraints:^(EaseConstraintMaker *make) {
-        make.centerX.equalTo(view.ease_centerX);
-        make.top.equalTo(imageView.ease_bottom).offset(19);
-        make.height.Ease_equalTo(20);
-    }];
-    
-    [view Ease_updateConstraints:^(EaseConstraintMaker *make) {
-        make.center.equalTo(defaultBgView);
-        make.top.equalTo(imageView);
-        make.left.equalTo(imageView);
-        make.right.equalTo(imageView);
-        make.bottom.equalTo(txtLabel.ease_bottom);
+    [defaultBgView addSubview:self.noDataPromptView];
+    [self.noDataPromptView Ease_updateConstraints:^(EaseConstraintMaker *make) {
+        make.centerX.equalTo(defaultBgView);
+        make.top.equalTo(defaultBgView).offset(kNoDataPlaceHolderViewTopPadding);
     }];
     
     return defaultBgView;
@@ -159,18 +157,16 @@ if (EaseIMKitManager.shared.isJiHuApp){
     if (_noDataPromptView == nil) {
         _noDataPromptView = EaseNoDataPlaceHolderView.new;
         [_noDataPromptView.noDataImageView setImage:[UIImage easeUIImageNamed:@"ji_search_nodata"]];
-        if (![EaseIMKitOptions sharedOptions].isJiHuApp) {
-            _noDataPromptView.prompt.text = @"您当前未加入任何专属服务群";
-        }else {
-            _noDataPromptView.prompt.text = @"暂无消息";
-        }
-        
-        _noDataPromptView.hidden = YES;
+        _noDataPromptView.prompt.text = @"暂无消息";
+        _noDataPromptView.hidden = NO;
     }
     return _noDataPromptView;
 }
 
+- (void)setNoDataPrompt:(NSString *)noDataPrompt {
+    self.noDataPromptView.prompt.text = noDataPrompt;
+}
 
-
+//您当前未加入任何专属服务群
 
 @end

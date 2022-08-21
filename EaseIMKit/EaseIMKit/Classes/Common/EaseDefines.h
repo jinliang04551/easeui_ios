@@ -309,6 +309,9 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 //收到CMD创建专属服务群组成功消息
 #define EaseNotificationReceiveCMDCreateExGroup @"EaseNotificationReceiveCMDCreateExGroup"
 
+//禁言通知
+#define EaseNotificationReceiveMute @"EaseNotificationReceiveMute"
+#define EaseNotificationReceiveUnMute @"EaseNotificationReceiveUnMute"
 
 //#define DEF_APPKEY @"easemob-demo#chatdemoui"
 

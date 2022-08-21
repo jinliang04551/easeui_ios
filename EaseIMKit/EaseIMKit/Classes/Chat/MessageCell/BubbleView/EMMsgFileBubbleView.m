@@ -47,7 +47,7 @@
     
     self.textLabel = [[UILabel alloc] init];
     self.textLabel.font = [UIFont systemFontOfSize:12];
-    self.textLabel.numberOfLines = 0;
+    self.textLabel.numberOfLines = 2;
     [self addSubview:self.textLabel];
     
     self.detailLabel = [[UILabel alloc] init];
@@ -128,14 +128,15 @@
     EMMessageType type = model.type;
     if (type == EMMessageTypeFile) {
         EMFileMessageBody *body = (EMFileMessageBody *)model.message.body;
-        NSMutableAttributedString *attributedStr = [[NSMutableAttributedString alloc] initWithString:body.displayName];
-        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.lineSpacing = 5.0; // 设置行间距
-        paragraphStyle.alignment = NSTextAlignmentLeft;
-        [attributedStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, attributedStr.length)];
-        [attributedStr addAttribute:NSKernAttributeName value:@0.34 range:NSMakeRange(0, attributedStr.length)];
-
-        self.textLabel.attributedText = attributedStr;
+//        NSMutableAttributedString *attributedStr = [[NSMutableAttributedString alloc] initWithString:body.displayName];
+//        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+//        paragraphStyle.lineSpacing = 5.0; // 设置行间距
+//        paragraphStyle.alignment = NSTextAlignmentLeft;
+//        [attributedStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, attributedStr.length)];
+//        [attributedStr addAttribute:NSKernAttributeName value:@0.34 range:NSMakeRange(0, attributedStr.length)];
+//
+//        self.textLabel.attributedText = attributedStr;
+        self.textLabel.text = body.displayName;
         self.textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
         self.detailLabel.text = [NSString stringWithFormat:@"%.2lf MB",(float)body.fileLength / (1024 * 1024)];
         

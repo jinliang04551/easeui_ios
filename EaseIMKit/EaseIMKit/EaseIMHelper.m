@@ -430,6 +430,9 @@ static EaseIMHelper *helper = nil;
         EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.update", @"Group update") message:message];
         [alertView show];
         
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveMute object:aGroup];
+
     }
        
 }
@@ -445,6 +448,9 @@ static EaseIMHelper *helper = nil;
         message = [NSString stringWithFormat:NSLocalizedString(@"unmutedPrompt", nil),[NSString stringWithFormat:@"「%@」",aGroup.groupName]];
         EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.update", @"Group update") message:message];
         [alertView show];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveUnMute object:aGroup];
+
     }
        
 }
