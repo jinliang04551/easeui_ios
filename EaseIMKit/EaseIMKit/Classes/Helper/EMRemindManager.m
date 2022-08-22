@@ -118,52 +118,54 @@ SystemSoundID soundID = 1007;
 - (void)_localNotification:(EMChatMessage *)message
                   needInfo:(BOOL)isNeed {
     NSString *alertBody = nil;
-    if (isNeed) {
-        EMMessageBody *messageBody = message.body;
-        NSString *messageStr = nil;
-        switch (messageBody.type) {
-            case EMMessageBodyTypeText:
-            {
-                messageStr = ((EMTextMessageBody *)messageBody).text;
-            }
-                break;
-            case EMMessageBodyTypeImage:
-            {
-                messageStr = NSLocalizedString(@"Image", nil);
-            }
-                break;
-            case EMMessageBodyTypeLocation:
-            {
-                messageStr = NSLocalizedString(@"Location", nil);
-            }
-                break;
-            case EMMessageBodyTypeVoice:
-            {
-                messageStr = NSLocalizedString(@"Audio", nil);
-            }
-                break;
-            case EMMessageBodyTypeVideo:{
-                messageStr = NSLocalizedString(@"Video", nil);
-            }
-                break;
-            case EMMessageBodyTypeFile:{
-                messageStr = NSLocalizedString(@"File", nil);
-            }
-                break;
-            default:
-                break;
-        }
-        
-        if (message.chatType == EMChatTypeChat) {
-            alertBody = [NSString stringWithFormat:@"%@:%@", message.from, messageStr];
-        }else {
-            alertBody = [NSString stringWithFormat:@"%@(%@):%@", message.conversationId, message.from, messageStr];
-        }
-    }
-    else{
-        alertBody = NSLocalizedString(@"newmsg", nil);
-    }
     
+//    if (isNeed) {
+//        EMMessageBody *messageBody = message.body;
+//        NSString *messageStr = nil;
+//        switch (messageBody.type) {
+//            case EMMessageBodyTypeText:
+//            {
+//                messageStr = ((EMTextMessageBody *)messageBody).text;
+//            }
+//                break;
+//            case EMMessageBodyTypeImage:
+//            {
+//                messageStr = NSLocalizedString(@"Image", nil);
+//            }
+//                break;
+//            case EMMessageBodyTypeLocation:
+//            {
+//                messageStr = NSLocalizedString(@"Location", nil);
+//            }
+//                break;
+//            case EMMessageBodyTypeVoice:
+//            {
+//                messageStr = NSLocalizedString(@"Audio", nil);
+//            }
+//                break;
+//            case EMMessageBodyTypeVideo:{
+//                messageStr = NSLocalizedString(@"Video", nil);
+//            }
+//                break;
+//            case EMMessageBodyTypeFile:{
+//                messageStr = NSLocalizedString(@"File", nil);
+//            }
+//                break;
+//            default:
+//                break;
+//        }
+//
+//        if (message.chatType == EMChatTypeChat) {
+//            alertBody = [NSString stringWithFormat:@"%@:%@", message.from, messageStr];
+//        }else {
+//            alertBody = [NSString stringWithFormat:@"%@(%@):%@", message.conversationId, message.from, messageStr];
+//        }
+//    }
+//    else{
+//        alertBody = NSLocalizedString(@"newmsg", nil);
+//    }
+    
+    alertBody = @"您有一条新消息";
     NSTimeInterval timeInterval = [[NSDate date] timeIntervalSinceDate:self.lastPlaySoundDate];
     BOOL playSound = NO;
     
