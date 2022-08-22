@@ -62,7 +62,7 @@
     //单聊主叫方才能发送通话记录信息(本地通话记录)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertLocationCallRecord:) name:EMCOMMMUNICATE_RECORD object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:USERINFO_UPDATE object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoUpdateWithNSNotification:) name:USERINFO_UPDATE object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNavigationTitle) name:CHATROOM_INFO_UPDATED object:nil];
     
     //接收通话邀请或者结束时，在当前会话页面
@@ -158,23 +158,13 @@
     
     chatTitle = _conversationModel.showName;
     if (self.conversation.type == EMConversationTypeChat) {
-//        EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:self.conversation.conversationId];
-//        if(userInfo && userInfo.nickName.length > 0){
-//            chatTitle = userInfo.nickName;
-//        }else {
-//            [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[self.conversation.conversationId]];
-//        }
-        if (_conversation.lastReceivedMessage) {
-            NSString *nickname = @"";
-            NSDictionary *msgUserExt = _conversation.lastReceivedMessage.ext[@"userInfo"];
-            if (msgUserExt.count > 0) {
-                nickname = msgUserExt[@"nick"];
-            }else {
-                nickname = [EaseKitUtil fetchUserDicWithUserId:_conversation.lastReceivedMessage.from][EaseUserNicknameKey];
-            }
-            chatTitle = nickname;
+        EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:self.conversation.conversationId];
+        if(userInfo && userInfo.nickName.length > 0){
+            chatTitle = userInfo.nickName;
+        }else {
+            
+            [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[self.conversation.conversationId]];
         }
-        
     }
     
     NSString *groupIdInfo = [NSString stringWithFormat:@"群组ID: %@",self.conversation.conversationId];
@@ -217,8 +207,6 @@
                 make.height.equalTo(@(52.0));
             }
         }
-
-        
     }];
 
 }
@@ -288,6 +276,12 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 
 #pragma mark NSNotification
+- (void)userInfoUpdateWithNSNotification:(NSNotification *)notify {
+    
+    [self updateNavigationTitle];
+    [self refreshTableView];
+}
+
 - (void)receiveMutiCallLoadConvsationDB:(NSNotification *)notify {
     NSString *msgId = notify.object;
     if (msgId.length == 0) {
