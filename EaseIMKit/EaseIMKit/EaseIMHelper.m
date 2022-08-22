@@ -193,15 +193,7 @@ static EaseIMHelper *helper = nil;
 #pragma mark - EMChatManagerDelegate
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
-//    for (EMChatMessage *msg in aMessages) {
-//        NSString *action = msg.ext[@"action"];
-//        if ([action isEqualToString:@"invite"]) {
-//            //通话邀请
-//            continue;
-//        }
-//        
-//        [EMRemindManager remindMessage:msg];
-//    }
+
 }
 
 
@@ -304,14 +296,11 @@ static EaseIMHelper *helper = nil;
     NSString *eventType = ext[@"eventType"];
     if ([eventType isEqualToString:@"groupCreate"]) {
         NSString *groupId = msg.to;
-        //专属群
+        //专属群需要更新本地专属群Id数组
         BOOL isExGroup = [ext[@"action"] boolValue];
-//        if (isExGroup) {
-//            [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveCMDCreateExGroup object:groupId];
-//
-//        }else {
-//
-//        }
+        if (isExGroup) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveCMDCreateExGroup object:groupId];
+        }
         
         [EMClient.sharedClient.groupManager getGroupSpecificationFromServerWithId:groupId completion:^(EMGroup *aGroup, EMError *aError) {
             if (!aError) {

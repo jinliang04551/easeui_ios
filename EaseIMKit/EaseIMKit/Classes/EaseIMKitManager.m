@@ -257,6 +257,9 @@ static NSString *g_UIKitVersion = @"1.0.0";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChanged:) name:ACCOUNT_LOGIN_CHANGED object:nil];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveCMDCreateExGroup:) name:EaseNotificationReceiveCMDCreateExGroup object:nil];
+
+    
 
     return self;
 }
@@ -277,6 +280,13 @@ static NSString *g_UIKitVersion = @"1.0.0";
     }
 }
 
+- (void)receiveCMDCreateExGroup:(NSNotification *)notify {
+    NSString *groupId = (NSString *)notify.object;
+    if (groupId.length > 0) {
+        [self.exGroupIds addObject:groupId];
+    }
+
+}
 
 #pragma mark - Public
 

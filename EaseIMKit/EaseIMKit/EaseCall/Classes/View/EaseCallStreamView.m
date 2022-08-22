@@ -159,7 +159,6 @@
         _nameLabel.textColor = [UIColor whiteColor];
         _nameLabel.font = [UIFont systemFontOfSize:12.0];
         _nameLabel.textAlignment = NSTextAlignmentLeft;
-        _nameLabel.backgroundColor = UIColor.yellowColor;
     }
     return _nameLabel;
 }
