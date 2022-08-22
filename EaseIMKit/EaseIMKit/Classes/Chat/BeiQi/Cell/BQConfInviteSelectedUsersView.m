@@ -148,7 +148,6 @@
     NSInteger count = [self.dataArray count];
     NSLog(@"%s count:%@",__func__,@(count));
     return count;
-//    return [self.dataArray count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView

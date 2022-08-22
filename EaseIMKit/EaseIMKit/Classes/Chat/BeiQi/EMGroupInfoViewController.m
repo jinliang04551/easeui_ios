@@ -620,7 +620,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             if (isEditable) {
                 hint = NSLocalizedString(@"inputGroupAnn", nil);
             } else {
-                hint = NSLocalizedString(@"noGroupAnn", nil);
+                hint = @"暂无新公告";
             }
             EaseTextViewController *controller = [[EaseTextViewController alloc] initWithString:aAnnouncement placeholder:hint isEditable:isEditable];
             controller.title = @"群公告";

@@ -166,7 +166,16 @@
         _textField = [[UITextField alloc] init];
         _textField.delegate = self;
         _textField.font = [UIFont systemFontOfSize:14.0];
-        _textField.placeholder = @"搜索";
+        
+        //设置文字属性
+            NSMutableDictionary *attrs = [NSMutableDictionary dictionary];
+            attrs[NSFontAttributeName] = [UIFont systemFontOfSize:14.0];
+            attrs[NSForegroundColorAttributeName] = [UIColor colorWithHexString:@"#7E7E7F"];
+            
+            //带属性的文字（富文本技术）
+            NSAttributedString *placeholder = [[NSAttributedString alloc] initWithString:@"搜索" attributes:attrs];
+        _textField.attributedPlaceholder  = placeholder;
+        
         _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _textField.leftViewMode = UITextFieldViewModeAlways;
         _textField.returnKeyType = UIReturnKeySearch;

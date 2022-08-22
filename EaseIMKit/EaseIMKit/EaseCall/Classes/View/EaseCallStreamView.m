@@ -9,6 +9,7 @@
 #import "EaseCallStreamView.h"
 #import <Masonry/Masonry.h>
 #import "UIImage+Ext.h"
+#import "EaseHeaders.h"
 
 @interface EaseCallStreamView()
 
@@ -18,7 +19,6 @@
 
 @property (nonatomic, strong) NSMutableArray *talkingImageArray;
 @property (nonatomic, strong) UIImageView *talkingImageView;
-
 
 @end
 
@@ -38,11 +38,12 @@
         self.bgView.image = image;
         [self addSubview:self.bgView];
         [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-            //make.edges.equalTo(self);
-            make.centerX.equalTo(self);
-            make.centerY.equalTo(self).with.offset(-5);
-            make.width.lessThanOrEqualTo(@70);
-            make.height.lessThanOrEqualTo(@70);
+            make.edges.equalTo(self);
+//            make.centerX.equalTo(self);
+//            make.centerY.equalTo(self).with.offset(-5);
+//            make.width.lessThanOrEqualTo(@70);
+//            make.height.lessThanOrEqualTo(@70);
+        
         }];
         
         self.backgroundColor = [UIColor blackColor];
@@ -65,7 +66,7 @@
         [self.nameBgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self).offset(-5);
             make.left.equalTo(self).offset(16.0);
-            make.width.equalTo(self);
+            make.right.equalTo(self);
             make.height.equalTo(@30);
         }];
         
@@ -114,8 +115,6 @@
                 self.timeTimer = [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(timeTalkingAction:) userInfo:nil repeats:NO];
             
         }else{
-            
-            
             if(self.timeTimer) {
                 [self.timeTimer invalidate];
                 self.timeTimer = nil;
@@ -160,7 +159,7 @@
         _nameLabel.textColor = [UIColor whiteColor];
         _nameLabel.font = [UIFont systemFontOfSize:12.0];
         _nameLabel.textAlignment = NSTextAlignmentLeft;
-        
+        _nameLabel.backgroundColor = UIColor.yellowColor;
     }
     return _nameLabel;
 }
@@ -168,6 +167,7 @@
 - (UIView *)nameBgView {
     if (_nameBgView == nil) {
         _nameBgView = [[UIView alloc] init];
+        _nameBgView.backgroundColor = [UIColor clearColor];
         
         [_nameBgView addSubview:self.nameLabel];
         [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -196,9 +196,9 @@
     if (!_talkingImageView) {
         _talkingImageView = [[UIImageView alloc] init];
         //图片播放一次所需时长
-        _talkingImageView.animationDuration = 1.0;
+        _talkingImageView.animationDuration = 0.3;
         //图片播放次数,0表示无限
-        _talkingImageView.animationRepeatCount = 1;
+        _talkingImageView.animationRepeatCount = 0;
 
         //设置动画图片数组
         _talkingImageView.animationImages = self.talkingImageArray;

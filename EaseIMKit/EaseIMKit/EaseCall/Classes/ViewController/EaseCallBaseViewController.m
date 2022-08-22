@@ -46,7 +46,6 @@
 
 - (void)setubSubViews
 {
-    int size = kButtonItemSize;
     
     [self.view addSubview:self.contentView];
     
@@ -82,20 +81,19 @@
     [self.hangupButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.contentView).offset(-60);
         make.left.equalTo(@(40));
-        make.size.equalTo(@(64));
-        //make.centerX.equalTo(@60);
+        make.size.equalTo(@(kButtonItemSize));
     }];
     
     
     [self.answerButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.hangupButton);
         make.right.equalTo(self.contentView).offset(-40.0);
-        make.size.mas_equalTo(@(64));
+        make.size.mas_equalTo(@(kButtonItemSize));
     }];
     
     [self.switchCameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.hangupButton);
-        make.width.height.mas_equalTo(60);
+        make.width.height.mas_equalTo(kButtonItemSize);
         make.centerX.equalTo(self.contentView).with.multipliedBy(1.5);
     }];
     
@@ -104,7 +102,7 @@
         //make.left.equalTo(self.speakerButton.mas_right).offset(40);
         make.centerX.equalTo(self.contentView).with.multipliedBy(0.5);
         make.bottom.equalTo(self.hangupButton.mas_top).with.offset(-40);
-        make.width.height.equalTo(@(size));
+        make.width.height.equalTo(@(kButtonItemSize));
     }];
     self.microphoneButton.selected = NO;
     
@@ -113,7 +111,7 @@
         make.bottom.equalTo(self.microphoneButton);
         //make.left.equalTo(self.switchCameraButton.mas_right).offset(40);
         make.centerX.equalTo(self.contentView);
-        make.width.height.equalTo(@(size));
+        make.width.height.equalTo(@(kButtonItemSize));
     }];
 
    
@@ -121,7 +119,7 @@
         //make.left.equalTo(self.microphoneButton.mas_right).offset(40);
         make.centerX.equalTo(self.contentView).with.multipliedBy(1.5);
         make.bottom.equalTo(self.microphoneButton);
-        make.width.height.equalTo(@(size));
+        make.width.height.equalTo(@(kButtonItemSize));
     }];
     
     [self.enableCameraButton setEnabled:NO];
@@ -286,7 +284,7 @@
         [self.contentView addSubview:self.timeLabel];
         
         [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self.hangupButton.mas_top).with.offset(-20);
+            make.bottom.equalTo(self.hangupButton.mas_top).offset(-20);
             make.centerX.equalTo(self.contentView);
         }];
         _timeTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timeTimerAction:) userInfo:nil repeats:YES];

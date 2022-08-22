@@ -16,6 +16,9 @@
 #import "UIImage+Ext.h"
 #import "EaseDefines.h"
 #import "UIColor+EaseCall.h"
+#import "EaseCallSteamCollectionView.h"
+#import "EaseHeaders.h"
+
 
 @interface EaseCallMultiViewController ()<EaseCallStreamViewDelegate>
 @property (nonatomic) UIButton* inviteButton;
@@ -24,6 +27,8 @@
 @property (nonatomic) EaseCallStreamView* bigView;
 @property (nonatomic) NSMutableDictionary* placeHolderViewsDic;
 @property (atomic) BOOL isNeedLayout;
+@property (nonatomic) EaseCallSteamCollectionView* callSteamCollectionView;
+
 @end
 
 @implementation EaseCallMultiViewController
@@ -98,7 +103,7 @@
             self.acceptLabel.hidden = YES;
             [self.hangupButton mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.centerX.equalTo(self.contentView);
-                make.width.height.equalTo(@60);
+//                make.width.height.equalTo(@60);
                 make.bottom.equalTo(self.contentView).with.offset(-40);
             }];
             self.isJoined = YES;
@@ -107,9 +112,7 @@
             self.inviteButton.hidden = NO;
         }
     }
-//    for(int i = 0;i<5;i++) {
-//        [self addRemoteView:[UIView new] member:[NSNumber numberWithInt:i] enableVideo:NO];
-//    }
+
     [self updateViewPos];
 }
 
@@ -226,25 +229,110 @@
     return displayview;
 }
 
+//- (void)_refreshViewPos
+//{
+//    unsigned long count = self.streamViewsDic.count + self.placeHolderViewsDic.count;
+//    if(self.localView.displayView)
+//        count++;
+//    int index = 0;
+//    int top = 40;
+//    int left = 0;
+//    int right = 0;
+//    int colSize = 1;
+//    int colomns = count>6?3:2;
+//    int bottom = 200;
+//    int cellwidth = (self.contentView.frame.size.width - left - right - (colomns - 1)*colSize)/colomns ;
+//    int cellHeight = (self.contentView.frame.size.height - top - bottom)/(count > 6?5:3);
+//    if(count < 5)
+//        cellHeight = cellwidth;
+//    //int cellwidth = (self.contentView.frame.size.width - left - right - (colomns - 1)*colSize)/colomns ;
+//    //int cellHeight = MIN(cellHeightH, cellWidthV);
+//    //int cellwidth = cellHeight
+//    if(self.isJoined) {
+//
+//        self.microphoneButton.hidden = NO;
+//        self.microphoneLabel.hidden = NO;
+//        self.enableCameraButton.hidden = NO;
+//        self.enableCameraLabel.hidden = NO;
+//        self.speakerButton.hidden = NO;
+//        self.speakerLabel.hidden = NO;
+//        self.switchCameraButton.hidden = NO;
+//        self.switchCameraLabel.hidden = YES;
+//        [self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.centerX.equalTo(self.contentView);
+//            make.centerY.equalTo(self.inviteButton);
+////            make.bottom.equalTo(self.microphoneButton.mas_top).offset(-20.0);
+//            make.width.equalTo(@100);
+//        }];
+//        if(self.bigView) {
+//            [self.bigView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                make.left.equalTo(self.contentView);
+//                make.top.equalTo(self.contentView).offset(top);
+//                make.width.equalTo(@(self.contentView.bounds.size.width));
+//                make.height.equalTo(@(self.contentView.bounds.size.height-top-bottom));
+//            }];
+//            if(self.bigView != self.localView) {
+//                [self.contentView sendSubviewToBack:self.localView];
+//            }
+//            NSArray* views = [self.streamViewsDic allValues];
+//            for(EaseCallStreamView* view in views) {
+//                if(self.bigView != view) {
+//                    [self.contentView sendSubviewToBack:view];
+//                }
+//            }
+//        }else{
+//            [self.localView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                make.left.equalTo(self.contentView).offset(left + index%colomns * (cellwidth + colSize));
+//                make.top.equalTo(self.contentView).offset(top + index/colomns * (cellHeight + colSize));
+//                make.width.equalTo(@(cellwidth));
+//                make.height.equalTo(@(cellHeight));
+//            }];
+//            index++;
+//            NSArray* views = [self.streamViewsDic allValues];
+//            for(EaseCallStreamView* view in views) {
+//                [view mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                    make.left.equalTo(self.contentView).offset(left + index%colomns * (cellwidth + colSize));
+//                    make.top.equalTo(self.contentView).offset(top + index/colomns * (cellHeight + colSize));
+//                    make.width.equalTo(@(cellwidth));
+//                    make.height.equalTo(@(cellHeight));
+//                }];
+//                index++;
+//            }
+//            NSArray* placeViews = [self.placeHolderViewsDic allValues];
+//            for(EaseCallStreamView* view in placeViews) {
+//                [view mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                    make.left.equalTo(self.contentView).offset(left + index%colomns * (cellwidth + colSize));
+//                    make.top.equalTo(self.contentView).offset(top + index/colomns * (cellHeight + colSize));
+//                    make.width.equalTo(@(cellwidth));
+//                    make.height.equalTo(@(cellHeight));
+//                }];
+//                index++;
+//            }
+//        }
+//
+//    }else{
+//        self.microphoneButton.hidden = YES;
+//        self.microphoneLabel.hidden = YES;
+//        self.enableCameraButton.hidden = YES;
+//        self.enableCameraLabel.hidden = YES;
+//        self.speakerButton.hidden = YES;
+//        self.speakerLabel.hidden = YES;
+//        self.switchCameraButton.hidden = YES;
+//        self.switchCameraLabel.hidden = YES;
+//        self.acceptLabel.hidden = YES;
+//    }
+//}
+
 - (void)_refreshViewPos
 {
     unsigned long count = self.streamViewsDic.count + self.placeHolderViewsDic.count;
-    if(self.localView.displayView)
+    if(self.localView.displayView){
         count++;
-    int index = 0;
+    }
+    
     int top = 40;
-    int left = 0;
-    int right = 0;
-    int colSize = 1;
-    int colomns = count>6?3:2;
     int bottom = 200;
-    int cellwidth = (self.contentView.frame.size.width - left - right - (colomns - 1)*colSize)/colomns ;
-    int cellHeight = (self.contentView.frame.size.height - top - bottom)/(count > 6?5:3);
-    if(count < 5)
-        cellHeight = cellwidth;
-    //int cellwidth = (self.contentView.frame.size.width - left - right - (colomns - 1)*colSize)/colomns ;
-    //int cellHeight = MIN(cellHeightH, cellWidthV);
-    //int cellwidth = cellHeight
+
     if(self.isJoined) {
         
         self.microphoneButton.hidden = NO;
@@ -257,10 +345,23 @@
         self.switchCameraLabel.hidden = YES;
         [self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.contentView);
-            make.centerY.equalTo(self.inviteButton);
-//            make.bottom.equalTo(self.microphoneButton.mas_top).offset(-20.0);
+            make.bottom.equalTo(self.microphoneButton.mas_top).offset(-20.0);
             make.width.equalTo(@100);
+            
         }];
+        
+        [self.contentView addSubview:self.callSteamCollectionView];
+        [self.callSteamCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.inviteButton.mas_bottom);
+            make.left.equalTo(self.contentView);
+            make.right.equalTo(self.contentView);
+            make.width.equalTo(@(0));
+            make.height.equalTo(@(EaseIMKit_ScreenWidth));
+        }];
+
+        
+        NSMutableArray *tArray = [NSMutableArray array];
+
         if(self.bigView) {
             [self.bigView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.contentView);
@@ -271,41 +372,29 @@
             if(self.bigView != self.localView) {
                 [self.contentView sendSubviewToBack:self.localView];
             }
-            NSArray* views = [self.streamViewsDic allValues];
-            for(EaseCallStreamView* view in views) {
-                if(self.bigView != view) {
-                    [self.contentView sendSubviewToBack:view];
-                }
-            }
+                    
+            [tArray addObjectsFromArray:[[self.streamViewsDic allValues] mutableCopy]];
+
         }else{
-            [self.localView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.contentView).offset(left + index%colomns * (cellwidth + colSize));
-                make.top.equalTo(self.contentView).offset(top + index/colomns * (cellHeight + colSize));
-                make.width.equalTo(@(cellwidth));
-                make.height.equalTo(@(cellHeight));
-            }];
-            index++;
-            NSArray* views = [self.streamViewsDic allValues];
-            for(EaseCallStreamView* view in views) {
-                [view mas_remakeConstraints:^(MASConstraintMaker *make) {
-                    make.left.equalTo(self.contentView).offset(left + index%colomns * (cellwidth + colSize));
-                    make.top.equalTo(self.contentView).offset(top + index/colomns * (cellHeight + colSize));
-                    make.width.equalTo(@(cellwidth));
-                    make.height.equalTo(@(cellHeight));
-                }];
-                index++;
-            }
-            NSArray* placeViews = [self.placeHolderViewsDic allValues];
-            for(EaseCallStreamView* view in placeViews) {
-                [view mas_remakeConstraints:^(MASConstraintMaker *make) {
-                    make.left.equalTo(self.contentView).offset(left + index%colomns * (cellwidth + colSize));
-                    make.top.equalTo(self.contentView).offset(top + index/colomns * (cellHeight + colSize));
-                    make.width.equalTo(@(cellwidth));
-                    make.height.equalTo(@(cellHeight));
-                }];
-                index++;
-            }
+            
+            [tArray addObject:self.localView];
+            [tArray addObjectsFromArray:[[self.streamViewsDic allValues] mutableCopy]];
+            [tArray addObjectsFromArray:[[self.placeHolderViewsDic allValues] mutableCopy]];
+
         }
+                
+        NSUInteger itemArrays = tArray.count/4;
+        if (tArray.count % 4 > 0) {
+            itemArrays += 1;
+        }
+        
+        CGFloat width = itemArrays * EaseIMKit_ScreenWidth;
+        [self.callSteamCollectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(@(width));
+        }];
+        
+        [self.callSteamCollectionView updateUIWithMemberArray:tArray];
+
         
     }else{
         self.microphoneButton.hidden = YES;
@@ -319,6 +408,8 @@
         self.acceptLabel.hidden = YES;
     }
 }
+
+
 
 - (void)updateViewPos
 {
@@ -349,7 +440,7 @@
     self.remoteHeadView.hidden = YES;
     [self.hangupButton mas_updateConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.contentView);
-        make.width.height.equalTo(@60);
+//        make.width.height.equalTo(@60);
         make.bottom.equalTo(self.contentView).with.offset(-40);
     }];
     self.isJoined = YES;
@@ -389,7 +480,7 @@
     [placeHolderView.nameLabel setText:[[EaseCallManager sharedManager] getNicknameByUserName:uId]];
 //    NSData* data = [NSData dataWithContentsOfURL:url ];
 //    [placeHolderView.placeHolder setImage:[UIImage imageWithData:data]];
-    [placeHolderView.placeHolder sd_setImageWithURL:url];
+    [placeHolderView.placeHolderImageView sd_setImageWithURL:url];
     [self.placeHolderViewsDic setObject:placeHolderView forKey:uId];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self updateViewPos];
@@ -410,26 +501,27 @@
 
 - (void)streamViewDidTap:(EaseCallStreamView *)aVideoView
 {
-    if(aVideoView == self.floatingView) {
-        self.isMini = NO;
-        [self.floatingView removeFromSuperview];
-        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-        UIViewController *rootViewController = window.rootViewController;
-        self.modalPresentationStyle = 0;
-        [rootViewController presentViewController:self animated:YES completion:nil];
-        return;
-    }
+//    if(aVideoView == self.floatingView) {
+//        self.isMini = NO;
+//        [self.floatingView removeFromSuperview];
+//        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+//        UIViewController *rootViewController = window.rootViewController;
+//        self.modalPresentationStyle = 0;
+//        [rootViewController presentViewController:self animated:YES completion:nil];
+//        return;
+//    }
+//
+//    if(aVideoView == self.bigView) {
+//        self.bigView = nil;
+//        [self updateViewPos];
+//    }else{
+//        if(aVideoView.enableVideo)
+//        {
+//            self.bigView = aVideoView;
+//            [self updateViewPos];
+//        }
+//    }
     
-    if(aVideoView == self.bigView) {
-        self.bigView = nil;
-        [self updateViewPos];
-    }else{
-        if(aVideoView.enableVideo)
-        {
-            self.bigView = aVideoView;
-            [self updateViewPos];
-        }
-    }
 }
 
 - (void)miniAction
@@ -468,7 +560,7 @@
             placeHolderView.nameLabel.text = [[EaseCallManager sharedManager] getNicknameByUserName:aUserName];
             NSURL* url = [[EaseCallManager sharedManager] getHeadImageByUserName:aUserName];
             if(url) {
-                [placeHolderView.placeHolder sd_setImageWithURL:url completed:nil];
+                [placeHolderView.placeHolderImageView sd_setImageWithURL:url completed:nil];
             }
         }
     }
@@ -528,5 +620,16 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+
+#pragma mark getter and setter
+- (EaseCallSteamCollectionView *)callSteamCollectionView {
+if (_callSteamCollectionView == nil) {
+    _callSteamCollectionView = [[EaseCallSteamCollectionView alloc] init];
+    
+}
+return _callSteamCollectionView;
+}
+
 
 @end

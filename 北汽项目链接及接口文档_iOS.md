@@ -20,6 +20,7 @@ https://download-sdk.oss-cn-beijing.aliyuncs.com/downloads/BeiQi_SDK/iOS_SDK/Hyp
     EaseIMKitOptions *demoOptions = [EaseIMKitOptions sharedOptions];
     demoOptions.appkey = @"1100220704109048#arcfox-server";
     demoOptions.apnsCertName = @"jihu_product";
+    demoOptions.apnsCertName = @"jihu_developer";
     demoOptions.restServer = @"http://baidu.com";
     [EaseIMKitManager managerWithEaseIMKitOptions:demoOptions];
     

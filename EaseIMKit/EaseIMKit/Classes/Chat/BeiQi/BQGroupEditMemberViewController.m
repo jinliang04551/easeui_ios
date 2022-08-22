@@ -445,6 +445,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     if (_searchBar == nil) {
         _searchBar = [[EMSearchBar alloc] init];
         _searchBar.delegate = self;
+        _searchBar.textField.placeholder = @"请输入手机号搜索用户";
     }
     return _searchBar;
 }

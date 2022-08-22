@@ -30,6 +30,7 @@
         user.headImage = aUrl;
     return user;
 }
+
 @end
 
 @interface EaseCallConfig ()

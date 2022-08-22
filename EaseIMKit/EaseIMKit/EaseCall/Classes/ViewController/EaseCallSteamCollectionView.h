@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface EaseCallSteamCollectionView : UIView
 @property (nonatomic, strong) NSMutableArray* dataArray;
 
+- (void)updateUIWithMemberArray:(NSMutableArray *)memberArray;
+
 @end
 
 NS_ASSUME_NONNULL_END

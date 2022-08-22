@@ -47,17 +47,18 @@
 
     for (int i = 0; i < self.callSteamViewArray.count; ++i) {
         UIView *callView = self.callSteamViewArray[i];
+        [self.contentView addSubview:callView];
         [callView mas_makeConstraints:^(MASConstraintMaker *make) {
             if (i == 0 || i == 2) {
-                make.left.equalTo(self);
+                make.left.equalTo(self.contentView);
             }else {
-                make.left.equalTo(self).offset(itemWidth);
+                make.left.equalTo(self.contentView).offset(itemWidth);
             }
         
             if (i > 1) {
-                make.top.equalTo(self).offset(itemHeight);
+                make.top.equalTo(self.contentView).offset(itemHeight);
             }else {
-                make.top.equalTo(self);
+                make.top.equalTo(self.contentView);
             }
             
             make.size.equalTo(@(itemWidth));
@@ -117,6 +118,10 @@
 
 - (void)splitDataWithMemberArray:(NSMutableArray *)memberArray {
 //    int itemArrays = ceilf(memberArray.count/4);
+    if (memberArray.count <= 0) {
+        return;
+    }
+    
     NSMutableArray *tArray = [NSMutableArray array];
     
     int loc = 0;
@@ -129,11 +134,18 @@
         }
         
         NSRange range = NSMakeRange(loc, length);
-        NSArray *mArray = [tArray subarrayWithRange:range];
-        [tArray addObjectsFromArray:mArray];
+        NSArray *mArray = [memberArray subarrayWithRange:range];
+        [tArray addObject:mArray];
         
         loc += length;
     }
+    
+    self.dataArray = tArray;
+    CGFloat width = self.dataArray.count * EaseIMKit_ScreenWidth;
+    
+    [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@(width));
+    }];
     
 }
 
@@ -154,7 +166,7 @@
     
     EaseCallSteamCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[EaseCallSteamCollectionCell reuseIdentifier] forIndexPath:indexPath];
     
-    id obj = [self.dataArray objectAtIndex:indexPath.row -1];
+    id obj = [self.dataArray objectAtIndex:indexPath.row];
     [cell updateWithObj:obj];
     
     return cell;
@@ -181,11 +193,13 @@
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
-        _collectionView.showsVerticalScrollIndicator = NO;
-        _collectionView.showsHorizontalScrollIndicator = NO;
-        _collectionView.alwaysBounceVertical = YES;
+        
+        _collectionView.alwaysBounceVertical = NO;
+        _collectionView.alwaysBounceHorizontal = YES;
         _collectionView.pagingEnabled = NO;
+        _collectionView.scrollEnabled = YES;
         _collectionView.userInteractionEnabled = YES;
+
         
     }
     return _collectionView;
@@ -193,7 +207,7 @@
 
 - (UICollectionViewFlowLayout *)collectionViewLayout {
     UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
 
     flowLayout.itemSize = [EaseCallSteamCollectionView collectionViewItemSize];
     flowLayout.minimumLineSpacing = [EaseCallSteamCollectionView collectionViewMinimumLineSpacing];
