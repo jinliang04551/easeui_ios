@@ -42,7 +42,7 @@
     _canRefresh = NO;
     
     _avatarType = Circular;
-    _avatarSize = CGSizeMake(48, 48);
+    _avatarSize = CGSizeMake(44, 44);
     _avatarEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     
 if (EaseIMKitManager.shared.isJiHuApp){

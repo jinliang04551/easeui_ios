@@ -472,8 +472,12 @@ if (EaseIMKitManager.shared.isJiHuApp){
     
     if ([EaseIMHelper shareHelper].isAtAll) {
         [ext setObject:@"ALL" forKey:MSG_EXT_AT];
+        [ext setObject:@(YES) forKey:EM_force_notification];
+
     }else if([EaseIMHelper shareHelper].grpupAtArray.count > 0){
         [ext setObject:[[EaseIMHelper shareHelper].grpupAtArray mutableCopy] forKey:MSG_EXT_AT];
+        [ext setObject:@(YES) forKey:EM_force_notification];
+
     }else {
         
     }

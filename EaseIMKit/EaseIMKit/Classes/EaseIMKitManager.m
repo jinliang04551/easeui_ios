@@ -30,6 +30,7 @@
 #import "EMChatViewController.h"
 #import "EMConversationsViewController.h"
 #import "EMConversation+EaseUI.h"
+#import "EMConversationsViewController.h"
 
 
 bool gInit;
@@ -331,18 +332,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
     BOOL isShow = NO;
     EMChatMessage *msg = aMessage;
 
-    //优先判断是否有人@自己
-    if ([self isRemindMeMessage:msg]) {
-        return YES;
-    }
-    
-    //免打扰则不提示横幅
-    if ([self isNoDisturbWithConvId:aMessage.conversationId]) {
-        isShow = NO;
-        return isShow;
-    }
-    
-    
+
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
         UIViewController *currentVC =  [EaseKitUtil currentViewController];
         
@@ -350,35 +340,31 @@ static NSString *g_UIKitVersion = @"1.0.0";
         
         NSString *topConvId = [EaseIMHelper shareHelper].pushedConvIdArray.lastObject;
         
-        //存在active会话页面
-        if (topConvId.length > 0) {
-            
-            NSLog(@"%s topConvId:%@",__func__,topConvId);
-
-            if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-                //是群聊且不是当前消息的专属群页面 应当跳转到专属群
-                if (msg.chatType == EMChatTypeGroupChat && ![msg.conversationId isEqualToString:topConvId] &&[self.exGroupIds containsObject:msg.conversationId]) {
-                    isShow = YES;
-                }
-                
-            }else {
-                if ((msg.chatType == EMChatTypeGroupChat||msg.chatType == EMChatTypeChat) && ![msg.conversationId isEqualToString:topConvId]) {
-                    isShow = YES;
-                }
+        //当前在会话列表或者会话界面， 不提示横幅消息
+        if ([currentVC isKindOfClass:[EMChatViewController class]] || [currentVC isKindOfClass:[EMConversationsViewController class]]) {
+            return NO;
+        }
+        
+        //判断是否有人@自己
+        if ([self isRemindMeMessage:msg]) {
+            return YES;
+        }
+        
+        //免打扰则不提示横幅
+        if ([self isNoDisturbWithConvId:aMessage.conversationId]) {
+            isShow = NO;
+            return isShow;
+        }
+        
+        //非聊天界面
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            if (msg.chatType == EMChatTypeGroupChat &&[self.exGroupIds containsObject:msg.conversationId]) {
+                isShow = YES;
             }
-
-            
         }else {
-            //非聊天界面
-            if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-                if (msg.chatType == EMChatTypeGroupChat &&[self.exGroupIds containsObject:msg.conversationId]) {
-                    isShow = YES;
-                }
-            }else {
-                
-                if (msg.chatType == EMChatTypeGroupChat||msg.chatType == EMChatTypeChat) {
-                    isShow = YES;
-                }
+            
+            if (msg.chatType == EMChatTypeGroupChat||msg.chatType == EMChatTypeChat) {
+                isShow = YES;
             }
         }
         

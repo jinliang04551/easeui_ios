@@ -212,6 +212,9 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 //群组消息ext字典中，kGroupMessageAtList字段的值，用于@所有人
 #define MSG_EXT_ATALL @"all"
 
+//群组@消息 用于离线推送 强制推送
+#define EM_force_notification @"em_force_notification"
+
 //Typing
 #define MSG_TYPING_BEGIN @"TypingBegin"
 #define MSG_TYPING_END @"TypingEnd"
