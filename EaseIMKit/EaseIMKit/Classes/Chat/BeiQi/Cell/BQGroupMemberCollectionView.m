@@ -52,6 +52,23 @@
     return NSStringFromClass([self class]);
 }
 
+- (void)updateWithIsCreate:(BOOL)isCreate {
+    if (isCreate) {
+        [_operationImageView setImage:[UIImage easeUIImageNamed:@"yg_operate_member"]];
+        _titleLabel.text = @"编辑";
+
+    }else {
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            [_operationImageView setImage:[UIImage easeUIImageNamed:@"jh_addMember"]];
+        }else {
+            [_operationImageView setImage:[UIImage easeUIImageNamed:@"yg_addMember"]];
+        }
+        _titleLabel.text = @"添加";
+
+        
+    }
+    
+}
 
 #pragma mark getter and setter
 - (UIImageView *)operationImageView {
@@ -61,12 +78,12 @@
         _operationImageView.clipsToBounds = YES;
         _operationImageView.layer.masksToBounds = YES;
         
-if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    [_operationImageView setImage:[UIImage easeUIImageNamed:@"jh_addMember"]];
-}else {
-    [_operationImageView setImage:[UIImage easeUIImageNamed:@"yg_operate_member"]];
-}
-
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            [_operationImageView setImage:[UIImage easeUIImageNamed:@"jh_addMember"]];
+        }else {
+            [_operationImageView setImage:[UIImage easeUIImageNamed:@"yg_operate_member"]];
+        }
+    
     }
     return _operationImageView;
 }
@@ -76,13 +93,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = EaseIMKit_NFont(12.0);
         _titleLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
-        
-        _titleLabel.textAlignment = NSTextAlignmentCenter;
-        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
-        }else {
-            _titleLabel.text = @"编辑";
-        }
+        _titleLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _titleLabel;
 }
@@ -254,6 +266,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 {
     
     BQGroupMemberOperationCell *addCell = [collectionView dequeueReusableCellWithReuseIdentifier:[BQGroupMemberOperationCell reuseIdentifier] forIndexPath:indexPath];
+    [addCell updateWithIsCreate:self.isCreate];
+
     if (indexPath.row == 0) {
         return addCell;
     }

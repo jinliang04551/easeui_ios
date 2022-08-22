@@ -7,7 +7,6 @@
 //
 
 #import "YGCreateGroupOperationMemberCell.h"
-#import "BQGroupMemberCell.h"
 #import "BQGroupMemberCollectionView.h"
 #import "EaseHeaders.h"
 
@@ -69,6 +68,7 @@
 - (BQGroupMemberCollectionView *)groupMemberView {
     if (_groupMemberView == nil) {
         _groupMemberView = [[BQGroupMemberCollectionView alloc] initWithFrame:CGRectMake(0, 0, EaseIMKit_ScreenWidth, 100)];
+        _groupMemberView.isCreate = YES;
         EaseIMKit_WS
         _groupMemberView.addMemberBlock = ^{
             if (weakSelf.addMemberBlock) {

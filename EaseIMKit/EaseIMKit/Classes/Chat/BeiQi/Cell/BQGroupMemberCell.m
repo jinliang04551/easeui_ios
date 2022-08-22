@@ -73,6 +73,7 @@
 - (BQGroupMemberCollectionView *)memberCollectionView {
     if (_memberCollectionView == nil) {
         _memberCollectionView = [[BQGroupMemberCollectionView alloc] initWithFrame:CGRectMake(0, 0, EaseIMKit_ScreenWidth, 100)];
+        _memberCollectionView.isCreate = NO;
         EaseIMKit_WS
         _memberCollectionView.addMemberBlock = ^{
             if (weakSelf.addMemberBlock) {

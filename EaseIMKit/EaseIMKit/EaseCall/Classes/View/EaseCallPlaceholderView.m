@@ -38,7 +38,9 @@
 //        }
         [self addSubview:self.loadingImageView];
         [self.loadingImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self);
+            make.centerX.equalTo(self);
+            make.centerY.equalTo(self);
+            make.size.equalTo(@(40.0));
         }];
         
     }

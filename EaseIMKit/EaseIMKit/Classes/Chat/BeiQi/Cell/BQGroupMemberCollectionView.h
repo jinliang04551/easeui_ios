@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) void (^addMemberBlock)(void);
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, assign) BOOL isCreate;
+
 
 + (CGSize)collectionViewItemSize;
 
