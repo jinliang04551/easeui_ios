@@ -74,6 +74,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertLocationCallRecord:) name:EMCOMMMUNICATE_RECORD object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoUpdateWithNSNotification:) name:USERINFO_UPDATE object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNavigationTitle) name:CHATROOM_INFO_UPDATED object:nil];
     
     //接收通话邀请或者结束时，在当前会话页面
@@ -166,8 +167,6 @@
         make.left.right.bottom.equalTo(self.view);
     }];
     
-//    _chatController.view.frame = self.view.bounds;
-
 }
 
 
@@ -230,47 +229,6 @@
 }
 
 
-
-- (void)_setupNavigationBarTitle
-{
-    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width * 06, 44.0)];
-    
-    self.titleLabel = [[UILabel alloc] init];
-    self.titleLabel.font = [UIFont systemFontOfSize:18];
-    self.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [titleView addSubview:self.titleLabel];
-    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(titleView);
-        make.left.equalTo(titleView).offset(5);
-        make.right.equalTo(titleView).offset(-5);
-    }];
-    
-    
-    self.titleDetailLabel = [[UILabel alloc] init];
-    self.titleDetailLabel.font = [UIFont systemFontOfSize:15];
-    self.titleDetailLabel.textColor = [UIColor grayColor];
-    self.titleDetailLabel.textAlignment = NSTextAlignmentCenter;
-    [titleView addSubview:self.titleDetailLabel];
-    [self.titleDetailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleLabel.mas_bottom);
-        make.left.equalTo(self.titleLabel);
-        make.right.equalTo(self.titleLabel);
-        make.bottom.equalTo(titleView);
-    }];
-    
-if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    titleView.backgroundColor = EaseIMKit_ViewBgBlackColor;
-    self.titleLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
-}else {
-    titleView.backgroundColor = UIColor.clearColor;
-    self.titleLabel.textColor = [UIColor blackColor];
-
-    self.titleDetailLabel.textColor = [UIColor colorWithHexString:@"#A5A5A5"];
-}
-
-    self.navigationItem.titleView = titleView;
-    [self updateNavigationTitle];
-}
 
 - (void)updateNavigationTitle {
     self.titleLabel.text = _conversationModel.showName;
@@ -685,6 +643,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             [self.chatController triggerUserInfoCallBack:YES];
     });
 }
+
 
 // 确认发送名片消息
 - (void)sendUserCard:(NSNotification*)noti

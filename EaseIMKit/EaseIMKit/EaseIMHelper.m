@@ -625,6 +625,9 @@ static EaseIMHelper *helper = nil;
     if ([object isKindOfClass:[NSString class]]) {
         conversationId = (NSString *)object;
         type = EMConversationTypeChat;
+        
+        [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[conversationId]];
+
     } else if ([object isKindOfClass:[EMGroup class]]) {
         EMGroup *group = (EMGroup *)object;
         conversationId = group.groupId;
@@ -637,6 +640,10 @@ static EaseIMHelper *helper = nil;
         EaseConversationModel *model = (EaseConversationModel *)object;
         conversationId = model.easeId;
         type = model.type;
+        
+        if (model.type == EMConversationTypeChat) {
+            [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[conversationId]];
+        }
     }
     
     EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:conversationId conversationType:type];
