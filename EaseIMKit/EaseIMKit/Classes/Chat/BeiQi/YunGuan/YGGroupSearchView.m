@@ -74,6 +74,11 @@
    
 }
 
+
+- (void)clearSearchContent {
+    self.textField.text = @"";
+}
+
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
@@ -105,6 +110,14 @@
     return YES;
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(hiddenSearchGroupTypeTable)]) {
+        [self.delegate hiddenSearchGroupTypeTable];
+    }
+    
+    return YES;
+}
 
 #pragma mark - Action
 

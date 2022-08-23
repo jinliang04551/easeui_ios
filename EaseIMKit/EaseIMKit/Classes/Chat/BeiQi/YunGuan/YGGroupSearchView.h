@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<YGGroupSearchViewDelegate> delegate;
 @property (nonatomic, copy) void (^backActionBlock)(void);
 
+- (void)clearSearchContent;
+
 @end
 
 @protocol YGGroupSearchViewDelegate <NSObject>
@@ -31,10 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 //点击搜索按钮
 - (void)searchButtonClickedWithKeyword:(NSString *)keyword;
 
-//
-//- (void)searchBarCancelButtonAction:(YGGroupSearchView *)searchView;
-
 - (void)clearSearchText;
+
+- (void)hiddenSearchGroupTypeTable;
 
 @end
 

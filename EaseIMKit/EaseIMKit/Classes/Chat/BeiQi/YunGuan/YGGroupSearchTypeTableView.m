@@ -57,7 +57,7 @@
     [self.dataArray addObject:@{kSearchTypeKey:@"订单号",kSearchTypeValue:@(YGSearchGroupTypeOrderId)}];
     [self.dataArray addObject:@{kSearchTypeKey:@"客户手机号",kSearchTypeValue:@(YGSearchGroupTypePhone)}];
     
-    [self.dataArray addObject:@{kSearchTypeKey:@"WIN码",kSearchTypeValue:@(YGSearchGroupTypeWINCode)}];
+    [self.dataArray addObject:@{kSearchTypeKey:@"VIN码",kSearchTypeValue:@(YGSearchGroupTypeVINCode)}];
 
 }
 

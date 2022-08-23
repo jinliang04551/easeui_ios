@@ -84,10 +84,10 @@
         self.searchMobile = self.searchkeyword;
     }
 
-    if (self.searchGroupType == YGSearchGroupTypeWINCode) {
+    if (self.searchGroupType == YGSearchGroupTypeVINCode) {
         self.searchVin = self.searchkeyword;
     }
-
+    
 }
 
 - (void)searchGroupChat {
@@ -95,6 +95,8 @@
     
     [[EaseHttpManager sharedManager] searchGroupListWithAid:[EMClient sharedClient].currentUsername mobile:self.searchMobile orderId:self.searchOrderId vin:self.searchVin groupname:self.searchGroupName completion:^(NSInteger statusCode, NSString * _Nonnull response) {
     
+        NSLog(@"%s\n response:%@",__func__,response);
+        
         if (response && response.length > 0) {
             NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
@@ -146,6 +148,13 @@
         make.height.equalTo(@(52.0));
     }];
 
+    [self.view addSubview:self.noDataPromptView];
+    [self.noDataPromptView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.groupSearchView.mas_bottom).offset(kNoDataPlaceHolderViewTopPadding);
+        make.centerX.left.right.equalTo(self.view);
+    }];
+
+    
     [self.view addSubview:self.searchTypeTableView];
     [self.searchTypeTableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.groupSearchView.mas_bottom).offset(-10.0);
@@ -163,12 +172,7 @@
         make.bottom.equalTo(self.view);
     }];
     
-    [self.view addSubview:self.noDataPromptView];
-    [self.noDataPromptView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.groupSearchView.mas_bottom).offset(60.0);
-        make.centerX.left.right.equalTo(self.view);
-    }];
-    
+        
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -226,6 +230,12 @@
     self.searchTypeTableView.hidden = NO;
 }
 
+- (void)hiddenSearchGroupTypeTable {
+    self.searchTypeTableView.hidden = YES;
+    self.noDataPromptView.hidden = YES;
+}
+
+
 - (void)searchButtonClickedWithKeyword:(NSString *)keyword {
     [self searchGroupWithKeyword:keyword];
 }
@@ -237,6 +247,7 @@
 
 - (void)clearSearchText {
     self.noDataPromptView.hidden = YES;
+    
 }
 
 #pragma mark private method
@@ -287,6 +298,7 @@
         _groupSearchView.backActionBlock = ^{
             [weakSelf.navigationController popViewControllerAnimated:YES];
         };
+        
     }
     return _groupSearchView;
 }
@@ -301,6 +313,7 @@
     return _noDataPromptView;
 }
 
+
 - (YGGroupSearchTypeTableView *)searchTypeTableView {
     if (_searchTypeTableView == nil) {
         _searchTypeTableView = [[YGGroupSearchTypeTableView alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
@@ -311,14 +324,13 @@
             weakSelf.groupSearchView.searchTypeLabel.text = selectedName;
             weakSelf.searchGroupType = selectedType;
             weakSelf.searchTypeTableView.hidden = YES;
+//            [weakSelf.groupSearchView clearSearchContent];
         };
         
         _searchTypeTableView.layer.shadowColor = [UIColor colorWithHexString:@"#6C8AB6"].CGColor;
         _searchTypeTableView.layer.shadowOpacity = 0.1;
         _searchTypeTableView.layer.shadowRadius = 8.0;
         _searchTypeTableView.layer.shadowOffset = CGSizeMake(2,2);
-        
-        
     }
     return _searchTypeTableView;
 }

@@ -14,7 +14,7 @@ typedef NS_ENUM(NSUInteger, YGSearchGroupType) {
     YGSearchGroupTypeGroupName = 1,
     YGSearchGroupTypeOrderId,
     YGSearchGroupTypePhone,
-    YGSearchGroupTypeWINCode,
+    YGSearchGroupTypeVINCode,
 };
 
 @interface YGGroupSearchTypeTableView : UIView
