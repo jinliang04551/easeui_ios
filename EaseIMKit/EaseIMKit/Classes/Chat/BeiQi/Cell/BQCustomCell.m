@@ -15,7 +15,6 @@
 @interface BQCustomCell ()
 @property (nonatomic, strong) UIView* bottomLine;
 @property (nonatomic, strong)UITapGestureRecognizer *tapGestureRecognizer;
-
 @end
 
 @implementation BQCustomCell

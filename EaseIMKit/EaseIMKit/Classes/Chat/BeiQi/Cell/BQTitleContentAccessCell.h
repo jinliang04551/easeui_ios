@@ -9,7 +9,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BQTitleValueContentAccessCell : BQCustomCell
+@interface BQTitleContentAccessCell : BQCustomCell
+
++ (CGFloat)heightWithObj:(NSString *)obj;
 
 @end
 

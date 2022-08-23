@@ -10,6 +10,8 @@
 #import "EaseCallStreamView.h"
 #import <HyphenateChat/HyphenateChat.h>
 
+@class EaseCallFloatingView;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EaseCallBaseViewController : UIViewController
@@ -31,6 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong) UIButton* miniButton;
 @property (nonatomic,strong) UIView* contentView;
 @property (nonatomic) EaseCallStreamView* floatingView;
+//@property (nonatomic) EaseCallFloatingView* floatingView;
+
+
 @property (nonatomic) BOOL isMini;
 
 - (void)hangupAction;

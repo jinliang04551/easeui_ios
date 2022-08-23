@@ -5,9 +5,9 @@
 //  Created by liu001 on 2022/8/13.
 //
 
-#import "BQTitleValueContentAccessCell.h"
+#import "BQTitleContentAccessCell.h"
 
-@interface BQTitleValueContentAccessCell ()
+@interface BQTitleContentAccessCell ()
 @property (nonatomic, strong) UIImageView* accessoryImageView;
 @property (nonatomic, strong) UILabel* detailLabel;
 @property (nonatomic, strong) UILabel* contentLabel;
@@ -16,13 +16,12 @@
 @end
 
 
-@implementation BQTitleValueContentAccessCell
+@implementation BQTitleContentAccessCell
 
 - (void)prepare {
     
     [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
     [self.contentView addSubview:self.nameLabel];
-    [self.contentView addSubview:self.detailLabel];
     [self.contentView addSubview:self.contentLabel];
     [self.contentView addSubview:self.accessoryImageView];
     [self.contentView addSubview:self.bottomLine];
@@ -34,13 +33,10 @@
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.contentView).offset(EaseIMKit_Padding * 1.6);
         make.width.equalTo(@(150.0));
+        make.height.equalTo(@(20.0));
+        
     }];
     
-    [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.nameLabel.mas_right).offset(5.0);
-        make.centerY.equalTo(self.nameLabel);
-        make.right.equalTo(self.accessoryImageView.mas_left);
-    }];
     
     [self.accessoryImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
@@ -50,8 +46,10 @@
     }];
     
     [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.nameLabel.mas_bottom).offset(8.0);
+        make.top.equalTo(self.nameLabel.mas_bottom).offset(2.0);
+        make.left.equalTo(self.nameLabel);
         make.right.equalTo(self.accessoryImageView.mas_left);
+        make.bottom.equalTo(self.contentView).offset(-12.0);
     }];
     
     
@@ -63,6 +61,24 @@
 
 }
 
++ (CGFloat)heightWithObj:(NSString *)obj {
+    return [BQTitleContentAccessCell heightWithObj:obj];
+}
+
+
+- (CGFloat)heightWithObj:(NSString *)obj {
+
+    NSString *text = obj;
+    
+    CGSize size = CGSizeMake(self.contentLabel.frame.size.width, MAXFLOAT);
+    NSDictionary *dict = [NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:self.contentLabel.font.pointSize] forKey:NSFontAttributeName];
+    CGFloat calculatedHeight = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:dict context:nil].size.height;
+    
+    calculatedHeight += 12.0 + 20.0 + 2.0 + 12.0;
+    return calculatedHeight;
+    
+}
+
 #pragma mark getter and setter
 - (UILabel *)detailLabel {
     if (_detailLabel == nil) {
@@ -71,6 +87,7 @@
         _detailLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
         _detailLabel.textAlignment = NSTextAlignmentRight;
         _detailLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        _detailLabel.text = @"未设置";
     }
     return _detailLabel;
 }
@@ -91,6 +108,7 @@
         _contentLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
         _contentLabel.textAlignment = NSTextAlignmentLeft;
         _contentLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        _contentLabel.numberOfLines = 2;
         
     }
     return _contentLabel;

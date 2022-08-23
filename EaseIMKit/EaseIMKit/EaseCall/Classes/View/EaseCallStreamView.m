@@ -73,7 +73,6 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapAction:)];
         [self addGestureRecognizer:tap];
         
-        
         _isLockedBgView = NO;
     }
     

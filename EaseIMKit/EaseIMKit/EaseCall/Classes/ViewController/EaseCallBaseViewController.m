@@ -13,6 +13,7 @@
 #import "UIColor+EaseCall.h"
 #import "EaseDefines.h"
 #import "EaseHeaders.h"
+#import "EaseCallFloatingView.h"
 
 #define kButtonItemPadding 52.0
 #define kButtonItemSize 64.0
@@ -261,7 +262,7 @@
 //        _floatingView.backgroundColor = [UIColor colorWithHexString:@"#171717"];
         _floatingView.bgView.image = [UIImage imageNamedFromBundle:@"floating_voice"];
         _floatingView.nameLabel.textAlignment = NSTextAlignmentCenter;
-        
+
         [_floatingView.bgView mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.width.height.equalTo(@55);
         }];
@@ -269,6 +270,12 @@
     return _floatingView;
 }
 
+//- (EaseCallFloatingView *)floatingView {
+//    if (_floatingView == nil) {
+//        _floatingView = [[EaseCallFloatingView alloc] init];
+//    }
+//    return _floatingView;
+//}
 
 #pragma mark - timer
 
