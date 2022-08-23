@@ -726,12 +726,12 @@ if (EaseIMKitManager.shared.isJiHuApp){
 #pragma mark - EMChatManagerDelegate
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
-    BOOL isVisiable = self.isViewLoaded && self.view.window;
-    
+//    BOOL isVisiable = self.isViewLoaded && self.view.window;
     //当前页面可见时，消息置为已读状态
-    if (!isVisiable) {
-        return;
-    }
+//    if (!isVisiable) {
+//        return;
+//    }
+
     
     __weak typeof(self) weakself = self;
     dispatch_async(self.msgQueue, ^{
@@ -761,6 +761,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
             [weakself refreshTableView:YES];
         });
     });
+    
 }
 
 

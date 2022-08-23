@@ -23,8 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSArray *)formatMessages:(NSArray<EMChatMessage *> *)aMessages;
 
-- (void)scrollToAssignMessage:(EMChatMessage *)message;
-
 
 @end
 

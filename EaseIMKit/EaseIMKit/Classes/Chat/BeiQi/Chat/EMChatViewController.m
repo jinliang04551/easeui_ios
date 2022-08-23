@@ -67,13 +67,6 @@
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [self _setupChatSubviews];
         
-    if (_conversation.unreadMessagesCount > 0) {
-        [[EMClient sharedClient].chatManager ackConversationRead:_conversation.conversationId completion:nil];
-        
-        [[EaseIMKitManager shared] markAllMessagesAsReadWithConversation:_conversation];
-
-    }
-
 }
 
 - (void)listenNotifications {
@@ -117,6 +110,7 @@
     [self clearRecordSearchCache];
 }
 
+
 - (void)clearRecordSearchCache {
     self.chatRecordKeyMessage = nil;
     self.chatController.chatRecordKeyMessage = nil;
@@ -132,7 +126,22 @@
     }
     
     self.navigationController.navigationBarHidden = YES;
+    
+    [self makeAllMessageRead];
+    
+    [self loadData:YES];
+
 }
+
+
+- (void)makeAllMessageRead {
+    if (_conversation.unreadMessagesCount > 0) {
+        [[EMClient sharedClient].chatManager ackConversationRead:_conversation.conversationId completion:nil];
+        
+        [[EaseIMKitManager shared] markAllMessagesAsReadWithConversation:_conversation];
+    }
+}
+
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -158,7 +167,6 @@
     }];
     
 //    _chatController.view.frame = self.view.bounds;
-    [self loadData:YES];
 
 }
 
