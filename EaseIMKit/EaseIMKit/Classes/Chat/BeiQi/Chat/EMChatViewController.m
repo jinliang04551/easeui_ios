@@ -259,18 +259,18 @@
 }
 
 - (void)receiveMutiCallLoadConvsationDB:(NSNotification *)notify {
-    NSString *msgId = notify.object;
-    if (msgId.length == 0) {
-        return;
-    }
+//    NSString *msgId = notify.object;
+//    if (msgId.length == 0) {
+//        return;
+//    }
     
-    NSLog(@"%s ============msgId:%@ self.moreMsgId:%@",__func__,msgId,self.moreMsgId);
-
-    self.moreMsgId = msgId;
-    
-    NSLog(@"%s ========assignAfter====msgId:%@ self.moreMsgId:%@",__func__,msgId,self.moreMsgId);
-
-    [self loadData:YES];
+//    NSLog(@"%s ============msgId:%@ self.moreMsgId:%@",__func__,msgId,self.moreMsgId);
+//
+//    self.moreMsgId = msgId;
+//
+//    NSLog(@"%s ========assignAfter====msgId:%@ self.moreMsgId:%@",__func__,msgId,self.moreMsgId);
+//
+//    [self loadData:YES];
 
 }
 

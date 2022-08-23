@@ -38,7 +38,9 @@
     if (self) {
         [self _initDataSource];
         [self _setupSubviews];
-        [self segmentedButtonAction:self.emotionButtons[0]];
+//        [self segmentedButtonAction:self.emotionButtons[0]];
+        [self segmentedButtonAction:nil];
+
     }
     
     return self;
@@ -76,14 +78,13 @@
     
     self.extBtn = [[UIButton alloc] init];
     [self.extBtn setBackgroundImage:[UIImage easeUIImageNamed:@"EmojiExt"] forState:UIControlStateNormal];
+    self.extBtn.hidden = YES;
     
     self.deleteBtn = [[UIButton alloc]init];
     self.deleteBtn.backgroundColor = [UIColor clearColor];
-    
-    
+        
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"jh_deleteEmoticon"] forState:UIControlStateNormal];
-//        [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"jh_deleteEmoticonDisable"] forState:UIControlStateDisabled];
 
         [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"jh_deleteEmoticon"] forState:UIControlStateDisabled];
 
@@ -114,30 +115,33 @@
         make.edges.equalTo(self);
     }];
     
-    for (int i = 0; i < count; i++) {
-        UIButton *button = [[UIButton alloc] init];
-        button.tag = i;
-        [button addTarget:self action:@selector(segmentedButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        [self.bottomScrollView addSubview:button];
-        [button Ease_makeConstraints:^(EaseConstraintMaker *make) {
-            make.top.equalTo(self.bottomView);
-            make.left.equalTo(self.bottomView).offset(i * itemWidth);
-            make.width.Ease_equalTo(itemWidth);
-            make.height.Ease_equalTo(self.bottomHeight);
-        }];
-        
-        id icon = [self.groups[i] icon];
-        if ([icon isKindOfClass:[UIImage class]]) {
-            button.imageEdgeInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-            button.imageView.contentMode = UIViewContentModeScaleAspectFit;
-            [button setImage:(UIImage *)icon forState:UIControlStateNormal];
-        } else if ([icon isKindOfClass:[NSString class]]) {
-            button.titleLabel.font = [UIFont fontWithName:@"AppleColorEmoji" size:18.0];
-            [button setTitle:(NSString *)icon forState:UIControlStateNormal];
-        }
-        [self.emotionButtons addObject:button];
-    }
+    //取消显示gif 大表情
+//    for (int i = 0; i < count; i++) {
+//        UIButton *button = [[UIButton alloc] init];
+//        button.tag = i;
+//        [button addTarget:self action:@selector(segmentedButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+//        [self.bottomScrollView addSubview:button];
+//        [button Ease_makeConstraints:^(EaseConstraintMaker *make) {
+//            make.top.equalTo(self.bottomView);
+//            make.left.equalTo(self.bottomView).offset(i * itemWidth);
+//            make.width.Ease_equalTo(itemWidth);
+//            make.height.Ease_equalTo(self.bottomHeight);
+//        }];
+//
+//        id icon = [self.groups[i] icon];
+//        if ([icon isKindOfClass:[UIImage class]]) {
+//            button.imageEdgeInsets = UIEdgeInsetsMake(5, 0, 5, 0);
+//            button.imageView.contentMode = UIViewContentModeScaleAspectFit;
+//            [button setImage:(UIImage *)icon forState:UIControlStateNormal];
+//        } else if ([icon isKindOfClass:[NSString class]]) {
+//            button.titleLabel.font = [UIFont fontWithName:@"AppleColorEmoji" size:18.0];
+//            [button setTitle:(NSString *)icon forState:UIControlStateNormal];
+//        }
+//        [self.emotionButtons addObject:button];
+//    }
+    
 }
+
 
 - (void)_setupEmotionViews
 {
@@ -190,6 +194,7 @@
     [self.groups addObject:group1];
     
 //    [self.groups addObject:[EaseEmoticonGroup getGifGroup]];
+    
 }
 
 #pragma mark - EMEmoticonViewDelegate
