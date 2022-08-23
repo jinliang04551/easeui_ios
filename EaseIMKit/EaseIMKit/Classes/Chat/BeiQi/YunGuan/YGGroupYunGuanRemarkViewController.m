@@ -313,6 +313,7 @@
     if (_yunGuanTextView == nil) {
         _yunGuanTextView = [[YGTextView alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
         _yunGuanTextView.titleLabel.text = @"服务备注";
+        _yunGuanTextView.iconImageView.hidden = YES;
         _yunGuanTextView.textView.delegate = self;
         _yunGuanTextView.textView.textColor = [UIColor colorWithHexString:@"#171717"];
         _yunGuanTextView.textView.editable = NO;

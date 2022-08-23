@@ -416,10 +416,7 @@ static EaseIMHelper *helper = nil;
     NSString *message = NSLocalizedString(@"group.toMute", @"Mute");
     if ([aMutedMembers containsObject:EMClient.sharedClient.currentUsername]){
             message = [NSString stringWithFormat:NSLocalizedString(@"mutedPrompt", nil),[NSString stringWithFormat:@"「%@」",aGroup.groupName]];
-        EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.update", @"Group update") message:message];
-        [alertView show];
-        
-        
+
         [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveMute object:aGroup];
 
     }
@@ -435,9 +432,10 @@ static EaseIMHelper *helper = nil;
     if ([aMutedMembers containsObject:EMClient.sharedClient.currentUsername])
     {
         message = [NSString stringWithFormat:NSLocalizedString(@"unmutedPrompt", nil),[NSString stringWithFormat:@"「%@」",aGroup.groupName]];
-        EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.update", @"Group update") message:message];
-        [alertView show];
-        
+//        EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"group.update", @"Group update") message:message];
+//        [alertView show];
+  
+
         [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveUnMute object:aGroup];
 
     }

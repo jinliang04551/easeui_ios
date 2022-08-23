@@ -45,19 +45,18 @@
 {
     self.bigView = nil;
     self.isNeedLayout = NO;
-//    self.contentView.backgroundColor = [UIColor grayColor];
+
     self.contentView.backgroundColor = [UIColor colorWithHexString:@"#171717"];
 
     [self.timeLabel setHidden:YES];
-    self.inviteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.inviteButton setImage:[UIImage imageNamedFromBundle:@"invite"] forState:UIControlStateNormal];
-    [self.inviteButton addTarget:self action:@selector(inviteAction) forControlEvents:UIControlEventTouchUpInside];
+    
     [self.contentView addSubview:self.inviteButton];
     [self.inviteButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView);
+        make.centerY.equalTo(self.miniButton);
         make.right.equalTo(self.contentView);
-        make.width.height.equalTo(@50);
+        make.width.height.equalTo(@(40));
     }];
+    
     [self.contentView bringSubviewToFront:self.inviteButton];
     [self.inviteButton setHidden:YES];
     [self setLocalVideoView:[UIView new] enableVideo:NO];
@@ -65,6 +64,7 @@
         if([self.inviterId length] > 0) {
             NSURL* remoteUrl = [[EaseCallManager sharedManager] getHeadImageByUserName:self.inviterId];
             self.remoteHeadView = [[UIImageView alloc] init];
+            self.remoteHeadView.layer.cornerRadius = 80 * 0.5;
             [self.contentView addSubview:self.remoteHeadView];
             [self.remoteHeadView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.width.height.equalTo(@80);
@@ -74,7 +74,6 @@
             [self.remoteHeadView sd_setImageWithURL:remoteUrl];
             self.remoteNameLable = [[UILabel alloc] init];
             self.remoteNameLable.backgroundColor = [UIColor clearColor];
-            //self.remoteNameLable.font = [UIFont systemFontOfSize:19];
             self.remoteNameLable.textColor = [UIColor whiteColor];
             self.remoteNameLable.textAlignment = NSTextAlignmentRight;
             self.remoteNameLable.font = [UIFont systemFontOfSize:24];
@@ -103,9 +102,13 @@
             self.acceptLabel.hidden = YES;
             [self.hangupButton mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.centerX.equalTo(self.contentView);
-//                make.width.height.equalTo(@60);
-                make.bottom.equalTo(self.contentView).with.offset(-40);
             }];
+            
+            [self.switchCameraButton mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.hangupButton.mas_right).offset(52.0);
+            }];
+
+            
             self.isJoined = YES;
             self.localView.hidden = NO;
             [self enableVideoAction];
@@ -343,12 +346,12 @@
         self.speakerLabel.hidden = NO;
         self.switchCameraButton.hidden = NO;
         self.switchCameraLabel.hidden = YES;
-        [self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self.contentView);
-            make.bottom.equalTo(self.microphoneButton.mas_top).offset(-20.0);
-            make.width.equalTo(@100);
-            
-        }];
+//        [self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.centerX.equalTo(self.contentView);
+//            make.bottom.equalTo(self.microphoneButton.mas_top).offset(-20.0);
+//            make.width.equalTo(@100);
+//
+//        }];
         
         [self.contentView addSubview:self.callSteamCollectionView];
         [self.callSteamCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -440,9 +443,13 @@
     self.remoteHeadView.hidden = YES;
     [self.hangupButton mas_updateConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.contentView);
-//        make.width.height.equalTo(@60);
-        make.bottom.equalTo(self.contentView).with.offset(-40);
     }];
+    
+    [self.switchCameraButton mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.hangupButton.mas_right).offset(52.0);
+    }];
+
+    
     self.isJoined = YES;
     self.localView.hidden = NO;
     self.inviteButton.hidden = NO;
@@ -532,6 +539,11 @@
     self.floatingView.delegate = self;
     self.floatingView.nameLabel.textAlignment = NSTextAlignmentCenter;
 
+    EaseIMKit_WS
+    [self.floatingView.nameLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(weakSelf.floatingView);
+    }];
+    
     if(self.isJoined) {
         self.floatingView.nameLabel.text = EaseLocalizableString(@"Call in progress",nil);
     }else{
@@ -554,6 +566,7 @@
             }
         }
     }
+    
     if([aView isKindOfClass:[EaseCallPlaceholderView class]]) {
         EaseCallPlaceholderView* placeHolderView = (EaseCallPlaceholderView*)aView;
         if(placeHolderView && aUserName.length > 0) {
@@ -631,5 +644,13 @@ if (_callSteamCollectionView == nil) {
 return _callSteamCollectionView;
 }
 
+- (UIButton *)inviteButton {
+    if (_inviteButton == nil) {
+        _inviteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_inviteButton setImage:[UIImage imageNamedFromBundle:@"invite"] forState:UIControlStateNormal];
+        [_inviteButton addTarget:self action:@selector(inviteAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _inviteButton;
+}
 
 @end

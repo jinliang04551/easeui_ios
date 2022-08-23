@@ -223,7 +223,8 @@
                 if ([self.dataArray containsObject:userId]) {
                     [self.dataArray removeObject:userId];
                 }
-
+                
+                [self.unMuteArray addObject:userId];
                 [self.tableView reloadData];
             });
         }else {

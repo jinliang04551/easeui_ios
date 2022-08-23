@@ -137,6 +137,7 @@
 //    } completion:^(BOOL finished) {
 //        self.isTalking = NO;
 //    }];
+    
 }
 
 #pragma mark - UITapGestureRecognizer

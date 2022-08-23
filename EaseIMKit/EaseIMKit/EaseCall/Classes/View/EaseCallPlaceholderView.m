@@ -28,14 +28,7 @@
         [self.placeHolderImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self);
         }];
-        
-        
-//        _activity = [[UIActivityIndicatorView alloc] init];
-//        if(@available(iOS 13.0, *)) {
-//            _activity.activityIndicatorViewStyle = UIActivityIndicatorViewStyleLarge;
-//        }else{
-//            _activity.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-//        }
+                
         [self addSubview:self.loadingImageView];
         [self.loadingImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self);

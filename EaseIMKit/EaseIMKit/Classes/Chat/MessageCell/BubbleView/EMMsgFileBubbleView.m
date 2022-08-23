@@ -190,8 +190,17 @@
         self.iconView.image = [UIImage easeUIImageNamed:@"msg_file_text"];
         hasSurfix = YES;
     }
-    
 
+    if ([fileSurfix isEqualToString:@"mov"]) {
+        self.iconView.image = [UIImage easeUIImageNamed:@"msg_file_mov"];
+        hasSurfix = YES;
+    }
+    
+    if ([fileSurfix isEqualToString:@"mp4"]) {
+        self.iconView.image = [UIImage easeUIImageNamed:@"msg_file_mp4"];
+        hasSurfix = YES;
+    }
+    
     if (!hasSurfix) {
         self.iconView.image = [UIImage easeUIImageNamed:@"msg_file_other"];
     }

@@ -12,6 +12,7 @@
 #import "UIImage+Ext.h"
 #import "UIColor+EaseCall.h"
 #import "EaseDefines.h"
+#import "EaseHeaders.h"
 
 #define kButtonItemPadding 52.0
 #define kButtonItemSize 64.0
@@ -79,7 +80,8 @@
     }];
     
     [self.hangupButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.contentView).offset(-60);
+        CGFloat offset = 26.0 + EaseIMKit_BottomSafeHeight;
+        make.bottom.equalTo(self.contentView).offset(-offset);
         make.left.equalTo(@(40));
         make.size.equalTo(@(kButtonItemSize));
     }];
@@ -92,33 +94,31 @@
     }];
     
     [self.switchCameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.hangupButton);
+        make.centerY.equalTo(self.hangupButton);
         make.width.height.mas_equalTo(kButtonItemSize);
-        make.centerX.equalTo(self.contentView).with.multipliedBy(1.5);
+        make.left.equalTo(self.hangupButton.mas_right).offset(kButtonItemPadding);
     }];
     
+    self.switchCameraButton.backgroundColor = UIColor.yellowColor;
+    
+    [self.speakerButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.hangupButton.mas_top).offset(-40);
+        make.centerX.equalTo(self.contentView);
+        make.width.height.equalTo(@(kButtonItemSize));
+    }];
+
     
     [self.microphoneButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        //make.left.equalTo(self.speakerButton.mas_right).offset(40);
-        make.centerX.equalTo(self.contentView).with.multipliedBy(0.5);
-        make.bottom.equalTo(self.hangupButton.mas_top).with.offset(-40);
+        make.right.equalTo(self.speakerButton.mas_left).offset(-kButtonItemPadding);
+        make.centerY.equalTo(self.speakerButton);
         make.width.height.equalTo(@(kButtonItemSize));
     }];
     self.microphoneButton.selected = NO;
     
     
-    [self.speakerButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.microphoneButton);
-        //make.left.equalTo(self.switchCameraButton.mas_right).offset(40);
-        make.centerX.equalTo(self.contentView);
-        make.width.height.equalTo(@(kButtonItemSize));
-    }];
-
-   
     [self.enableCameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        //make.left.equalTo(self.microphoneButton.mas_right).offset(40);
-        make.centerX.equalTo(self.contentView).with.multipliedBy(1.5);
-        make.bottom.equalTo(self.microphoneButton);
+        make.left.equalTo(self.speakerButton.mas_right).offset(kButtonItemPadding);
+        make.centerY.equalTo(self.speakerButton);
         make.width.height.equalTo(@(kButtonItemSize));
     }];
     
@@ -284,9 +284,11 @@
         [self.contentView addSubview:self.timeLabel];
         
         [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self.hangupButton.mas_top).offset(-20);
+            make.bottom.equalTo(self.speakerButton.mas_top).offset(-18.0);
             make.centerX.equalTo(self.contentView);
+            make.width.equalTo(@100);
         }];
+        
         _timeTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timeTimerAction:) userInfo:nil repeats:YES];
     }
     

@@ -129,16 +129,44 @@
         [self.imgView setNeedsLayout];
         [self.imgView layoutIfNeeded];
         
-        float width = kEMMsgAudioMinWidth * body.duration / 10;
-        if (width > _maxWidth) {
-            width = _maxWidth;
-        } else if (width < kEMMsgAudioMinWidth) {
-            width = kEMMsgAudioMinWidth;
-        }
-        [self.textLabel Ease_updateConstraints:^(EaseConstraintMaker *make) {
-            make.width.Ease_equalTo(width);
+//        float width = kEMMsgAudioMinWidth * body.duration / 10;
+//        if (width > _maxWidth) {
+//            width = _maxWidth;
+//        } else if (width < kEMMsgAudioMinWidth) {
+//            width = kEMMsgAudioMinWidth;
+//        }
+//        [self.textLabel Ease_updateConstraints:^(EaseConstraintMaker *make) {
+//            make.width.Ease_equalTo(width);
+//        }];3
+        
+        float width = [self bgWidthWithAudioDuration:body.duration];
+        
+        [self Ease_updateConstraints:^(EaseConstraintMaker *make) {                        make.width.Ease_equalTo(width);
         }];
     }
+}
+
+
+- (CGFloat)bgWidthWithAudioDuration:(int)duration {
+    CGFloat width = 82.0;
+    if (duration < 5) {
+        width = 82.0;
+    }else if(duration < 10) {
+        width += 40.0;
+    }else if(duration < 20) {
+        width += 50.0;
+    }else if(duration < 30) {
+        width += 60.0;
+    }else if(duration < 40) {
+        width += 70.0;
+    }else if(duration < 50) {
+        width += 80.0;
+    }else if(duration < 60) {
+        width += 90.0;
+    }else {
+        width += 90.0;
+    }
+    return width;
 }
 
 @end

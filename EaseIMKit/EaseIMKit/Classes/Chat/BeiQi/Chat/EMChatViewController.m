@@ -59,17 +59,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //单聊主叫方才能发送通话记录信息(本地通话记录)
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertLocationCallRecord:) name:EMCOMMMUNICATE_RECORD object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoUpdateWithNSNotification:) name:USERINFO_UPDATE object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNavigationTitle) name:CHATROOM_INFO_UPDATED object:nil];
-    
-    //接收通话邀请或者结束时，在当前会话页面
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMutiCallLoadConvsationDB:) name:EaseNotificationReceiveMutiCallLoadConvsationDB object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveGroupInfoUpdate:) name:EaseNotificationReceiveGroupInfoUpdate object:nil];
-
+    [self listenNotifications];
 
     self.chatController.chatRecordKeyMessage = self.chatRecordKeyMessage;
     
@@ -86,13 +76,33 @@
 
 }
 
+- (void)listenNotifications {
+    //单聊主叫方才能发送通话记录信息(本地通话记录)
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertLocationCallRecord:) name:EMCOMMMUNICATE_RECORD object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoUpdateWithNSNotification:) name:USERINFO_UPDATE object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNavigationTitle) name:CHATROOM_INFO_UPDATED object:nil];
+    
+    //接收通话邀请或者结束时，在当前会话页面
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMutiCallLoadConvsationDB:) name:EaseNotificationReceiveMutiCallLoadConvsationDB object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveGroupInfoUpdate:) name:EaseNotificationReceiveGroupInfoUpdate object:nil];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMute:) name:EaseNotificationReceiveMute object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveUnMute:) name:EaseNotificationReceiveUnMute object:nil];
+
+
+}
+
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
     [[EMClient sharedClient].roomManager removeDelegate:self];
     [[EMClient sharedClient].groupManager removeDelegate:self];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
     [self removeCurrentConvIdFromPushedIdArray];
     
 }
@@ -309,6 +319,27 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     }
     
 }
+
+
+- (void)receiveMute:(NSNotification *)notify {
+    //被群主禁言
+    EMGroup *group = (EMGroup *)notify.object;
+    if ([group.groupId isEqualToString:self.conversation.conversationId]) {
+        [EaseAlertController showErrorAlert:@"你已被群主禁言"];
+    }
+    
+}
+
+- (void)receiveUnMute:(NSNotification *)notify {
+    //被群主解除禁言
+    EMGroup *group = (EMGroup *)notify.object;
+    if ([group.groupId isEqualToString:self.conversation.conversationId]) {
+        [EaseAlertController showErrorAlert:@"你的禁言已解除"];
+    }
+    
+}
+
+
 
 #pragma mark - EaseChatViewControllerDelegate
 
