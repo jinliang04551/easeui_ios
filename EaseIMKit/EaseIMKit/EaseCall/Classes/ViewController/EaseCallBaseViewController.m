@@ -83,25 +83,25 @@
     [self.hangupButton mas_makeConstraints:^(MASConstraintMaker *make) {
         CGFloat offset = 26.0 + EaseIMKit_BottomSafeHeight;
         make.bottom.equalTo(self.contentView).offset(-offset);
-        make.left.equalTo(@(40));
-        make.size.equalTo(@(kButtonItemSize));
+        make.left.equalTo(self.contentView).offset(40.0);
+        make.width.height.equalTo(@(kButtonItemSize));
     }];
     
     
     [self.answerButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.hangupButton);
         make.right.equalTo(self.contentView).offset(-40.0);
-        make.size.mas_equalTo(@(kButtonItemSize));
+        make.width.height.equalTo(@(kButtonItemSize));
     }];
     
     [self.switchCameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.hangupButton);
         make.width.height.mas_equalTo(kButtonItemSize);
-        make.left.equalTo(self.hangupButton.mas_right).offset(kButtonItemPadding);
+        make.left.equalTo(self.hangupButton.mas_right).offset(20);
+
     }];
     
-    self.switchCameraButton.backgroundColor = UIColor.yellowColor;
-    
+  
     [self.speakerButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.hangupButton.mas_top).offset(-40);
         make.centerX.equalTo(self.contentView);
@@ -334,8 +334,8 @@
 
 - (UIButton *)hangupButton {
     if (_hangupButton == nil) {
-        _hangupButton = [[UIButton alloc] init];
-        _hangupButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        _hangupButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        _hangupButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
         [_hangupButton setImage:[UIImage imageNamedFromBundle:@"hangup"] forState:UIControlStateNormal];
         [_hangupButton addTarget:self action:@selector(hangupAction) forControlEvents:UIControlEventTouchUpInside];
 
@@ -346,13 +346,14 @@
 
 - (UIButton *)answerButton {
     if (_answerButton == nil) {
-        _answerButton = [[UIButton alloc] init];
-        _answerButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        _answerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        _answerButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
         [_answerButton setImage:[UIImage imageNamedFromBundle:@"answer"] forState:UIControlStateNormal];
         [_answerButton addTarget:self action:@selector(answerAction) forControlEvents:UIControlEventTouchUpInside];
     }
     return _answerButton;
 }
+
 
 - (UIButton *)switchCameraButton {
     if (_switchCameraButton == nil) {

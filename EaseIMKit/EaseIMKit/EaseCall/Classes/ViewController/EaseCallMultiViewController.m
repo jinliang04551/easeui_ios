@@ -100,8 +100,12 @@
         }else{
             self.answerButton.hidden = YES;
             self.acceptLabel.hidden = YES;
-            [self.hangupButton mas_updateConstraints:^(MASConstraintMaker *make) {
+            [self.hangupButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+                CGFloat offset = 26.0 + EaseIMKit_BottomSafeHeight;
+                make.bottom.equalTo(self.contentView).offset(-offset);
                 make.centerX.equalTo(self.contentView);
+                make.width.height.equalTo(@(64.0));
+
             }];
             
             [self.switchCameraButton mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -441,12 +445,17 @@
     self.statusLable.hidden = YES;
     self.remoteNameLable.hidden = YES;
     self.remoteHeadView.hidden = YES;
-    [self.hangupButton mas_updateConstraints:^(MASConstraintMaker *make) {
+    [self.hangupButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        CGFloat offset = 26.0 + EaseIMKit_BottomSafeHeight;
+        make.bottom.equalTo(self.contentView).offset(-offset);  
         make.centerX.equalTo(self.contentView);
+        make.width.height.equalTo(@(64.0));
     }];
     
-    [self.switchCameraButton mas_updateConstraints:^(MASConstraintMaker *make) {
+    [self.switchCameraButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.hangupButton.mas_right).offset(52.0);
+        make.width.height.equalTo(@(64.0));
+        make.centerY.equalTo(self.hangupButton);
     }];
 
     

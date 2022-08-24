@@ -152,9 +152,15 @@
             weakself.address = placemark.thoroughfare;
             weakself.buildingName = placemark.name;//自主获取
             [weakself _moveToLocation:userLocation.coordinate];
+            
+            for (int i = 0; i < array.count; ++i) {
+                CLPlacemark *placemark = array[i];
+                NSLog(@"%s placemark.name:%@ thoroughfare:%@ subThoroughfare:%@",__func__,placemark.name,placemark.thoroughfare,placemark.subThoroughfare);
+            }
         }
     }];
 }
+
 
 - (void)mapView:(MKMapView *)mapView didFailToLocateUserWithError:(NSError *)error
 {

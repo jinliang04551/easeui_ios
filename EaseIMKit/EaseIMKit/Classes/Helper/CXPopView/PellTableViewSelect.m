@@ -3,6 +3,7 @@
 #import "UIView+MISRedPoint.h"
 #import "EaseHeaders.h"
 #import <QuartzCore/QuartzCore.h>
+#import "YGPopOperationCell.h"
 
 #define  LeftView 10.0f
 #define  TopToView 10.0f
@@ -64,6 +65,7 @@ UITableView * tableView;
     tableView.dataSource = backgroundView;
 //    tableView.transform =  CGAffineTransformMakeScale(0.5, 0.5);
     tableView.delegate = backgroundView;
+    [tableView registerClass:[YGPopOperationCell class] forCellReuseIdentifier:NSStringFromClass([YGPopOperationCell class])];
     
     tableView.layer.shadowColor = [UIColor blackColor].CGColor;
     tableView.layer.shadowOpacity = 1.0;
@@ -140,32 +142,16 @@ UITableView * tableView;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *Identifier = @"PellTableViewSelectIdentifier";
-    UITableViewCell *cell =  [tableView dequeueReusableCellWithIdentifier:Identifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:Identifier];
-        cell.textLabel.font = [UIFont systemFontOfSize:14.0];
-        cell.textLabel.textColor = [UIColor colorWithHexString:@"#171717"];
-        
-        UIView *view_bg = [[UIView alloc]initWithFrame:cell.frame];
-        view_bg.backgroundColor = [UIColor colorWithHexString:@"#ECF5FF"];;
-        cell.selectedBackgroundView = view_bg;
-    }
+    YGPopOperationCell *cell =  [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([YGPopOperationCell class])];
     
-    cell.imageView.image = [UIImage easeUIImageNamed:self.imagesData[indexPath.row]];
-    cell.textLabel.text = _selectData[indexPath.row];
+    cell.iconImageView.image = [UIImage easeUIImageNamed:self.imagesData[indexPath.row]];
+    cell.nameLabel.text = _selectData[indexPath.row];
+    
     if (indexPath.row == self.imagesData.count - 1) {
-        cell.contentView.MIS_redDot = [MISRedDot redDotWithConfig:({
-            MISRedDotConfig *config = [[MISRedDotConfig alloc] init];
-            config.offsetY = tableView.rowHeight* 0.4;
-            config.offsetX = 5.0;
-            config.size = CGSizeMake(8.0, 8.0);
-            config;
-        })];
         if ([EaseIMKitMessageHelper shareMessageHelper].hasJoinGroupApply) {
-            cell.contentView.MIS_redDot.hidden = NO;
+            [cell showRedPoint:YES];
         }else {
-            cell.contentView.MIS_redDot.hidden = YES;
+            [cell showRedPoint:NO];
         }
     }
     
