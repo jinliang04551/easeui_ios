@@ -665,6 +665,7 @@ static EaseIMHelper *helper = nil;
 - (void)handlePushGroupsController:(NSNotification *)aNotif
 {
 
+    
 }
 
 #pragma mark BannerView

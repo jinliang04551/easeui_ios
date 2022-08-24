@@ -109,7 +109,10 @@ SystemSoundID soundID = 1007;
                         needInfo:EMClient.sharedClient.pushOptions.displayStyle != EMPushDisplayStyleSimpleBanner];
     } else {
         if (options.isAlertMsg) {
-            AudioServicesPlaySystemSound(soundID);
+            //仅仅震动
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+            
+//            AudioServicesPlaySystemSound(soundID);
         }
     }
 }
@@ -168,6 +171,8 @@ SystemSoundID soundID = 1007;
     alertBody = @"您有一条新消息";
     NSTimeInterval timeInterval = [[NSDate date] timeIntervalSinceDate:self.lastPlaySoundDate];
     BOOL playSound = NO;
+    
+    //前台不要铃声
     
     if (!self.lastPlaySoundDate || timeInterval >= kDefaultPlaySoundInterval) {
         self.lastPlaySoundDate = [NSDate date];

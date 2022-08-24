@@ -342,7 +342,6 @@ static NSString *g_UIKitVersion = @"1.0.0";
     BOOL isShow = NO;
     EMChatMessage *msg = aMessage;
 
-
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
         UIViewController *currentVC =  [EaseKitUtil currentViewController];
         
@@ -360,6 +359,11 @@ static NSString *g_UIKitVersion = @"1.0.0";
             return YES;
         }
         
+        EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
+        if (!options.isAlertMsg) {
+            return NO;
+        }
+
         //免打扰则不提示横幅
         if ([self isNoDisturbWithConvId:aMessage.conversationId]) {
             isShow = NO;

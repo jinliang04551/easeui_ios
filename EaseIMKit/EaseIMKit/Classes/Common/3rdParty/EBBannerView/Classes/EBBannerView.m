@@ -113,11 +113,13 @@ static EBBannerWindow *sharedWindow;
     }
     WEAK_SELF(weakSelf);
     [[EBMuteDetector sharedDetecotr] detectComplete:^(BOOL isMute) {
-        if (isMute && weakSelf.maker.vibrateOnMute) {
-            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        } else {
-            AudioServicesPlaySystemSound(soundID);
-        }
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+
+//        if (isMute && weakSelf.maker.vibrateOnMute) {
+//            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+//        } else {
+//            AudioServicesPlaySystemSound(soundID);
+//        }
     }];
         
     self.imageView.image = _maker.icon;
