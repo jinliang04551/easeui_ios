@@ -191,12 +191,6 @@ static EaseIMHelper *helper = nil;
 }
 
 #pragma mark - EMChatManagerDelegate
-- (void)messagesDidReceive:(NSArray *)aMessages
-{
-
-}
-
-
 - (void)cmdMessagesDidReceive:(NSArray<EMChatMessage *> *)aCmdMessages {
     
     for (int i = 0; i < aCmdMessages.count; ++i) {

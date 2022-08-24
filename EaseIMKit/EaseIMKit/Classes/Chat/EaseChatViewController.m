@@ -726,13 +726,11 @@ if (EaseIMKitManager.shared.isJiHuApp){
 #pragma mark - EMChatManagerDelegate
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
-//    BOOL isVisiable = self.isViewLoaded && self.view.window;
     //当前页面可见时，消息置为已读状态
-//    if (!isVisiable) {
-//        return;
-//    }
+//    BOOL isVisiable = self.isViewLoaded && self.view.window;
+   
+    BOOL isVisiable = self.view.window;
 
-    
     __weak typeof(self) weakself = self;
     dispatch_async(self.msgQueue, ^{
         NSString *conId = weakself.currentConversation.conversationId;
@@ -749,8 +747,12 @@ if (EaseIMKitManager.shared.isJiHuApp){
                 
             }
            
-            [weakself.currentConversation markMessageAsReadWithId:msg.messageId error:nil];
 
+            if (isVisiable) {
+                [weakself.currentConversation markMessageAsReadWithId:msg.messageId error:nil];
+            }
+            
+            
         
             [msgArray addObject:msg];
             [weakself.messageList addObject:msg];
