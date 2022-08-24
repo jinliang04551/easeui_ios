@@ -47,6 +47,8 @@ static const void *imagePickerKey = &imagePickerKey;
                     dispatch_async(dispatch_get_main_queue(), ^{
                         weakself.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
                         weakself.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
+                        [weakself.imagePicker setVideoMaximumDuration:15];
+
                         [weakself presentViewController:self.imagePicker animated:YES completion:nil];
                     });
                 }
