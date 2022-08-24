@@ -73,8 +73,10 @@ SystemSoundID soundID = 1007;
 
 - (void)remindMessage:(EMChatMessage *)aMessage {
     if ([aMessage.from isEqualToString:EMClient.sharedClient.currentUsername]) {
+        //多设备收到自己消息不提醒震动
         return;
     }
+        
     EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
     if (!options.isReceiveNewMsgNotice)
         return;

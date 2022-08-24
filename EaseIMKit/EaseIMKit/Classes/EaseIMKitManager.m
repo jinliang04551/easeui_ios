@@ -336,12 +336,17 @@ static NSString *g_UIKitVersion = @"1.0.0";
     
 }
 
-
-
 - (BOOL)isShowbannerMessage:(EMChatMessage *)aMessage {
     BOOL isShow = NO;
     EMChatMessage *msg = aMessage;
 
+    if([aMessage.from isEqualToString:[EMClient sharedClient].currentUsername]){
+        //多设备收到自己消息不提醒震动
+        return NO;
+    }
+    
+    
+    
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
         UIViewController *currentVC =  [EaseKitUtil currentViewController];
         
