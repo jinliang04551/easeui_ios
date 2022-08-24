@@ -7,10 +7,12 @@
 
 #import "EaseCallFloatingView.h"
 #import "EaseHeaders.h"
+#import "UIImage+Ext.h"
+
 
 @interface EaseCallFloatingView()
-
 @property (nonatomic, strong) UIView *contentBgView;
+@property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong)UITapGestureRecognizer *tapGestureRecognizer;
 
@@ -26,9 +28,11 @@
 }
 
 - (void)placeAndLayoutSubviews {
+    [self addGestureRecognizer:self.tapGestureRecognizer];
+    
     [self addSubview:self.contentBgView];
     [self.contentBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self).insets(UIEdgeInsetsMake(8.0, 8.0, 8.0, 8.0));
+        make.edges.equalTo(self);
     }];
 }
 
@@ -44,46 +48,46 @@
 - (UIImageView *)iconImageView {
     if (!_iconImageView) {
         _iconImageView = [[UIImageView alloc] init];
-        [_iconImageView setImage:[UIImage easeUIImageNamed:@"floating_voice"]];
+        [_iconImageView setImage:[UIImage imageNamedFromBundle:@"floating_voice"]];
     }
     return _iconImageView;
 }
 
-- (UILabel *)timeLabel {
-    if (_timeLabel == nil) {
-        _timeLabel = [[UILabel alloc] init];
-        _timeLabel.textColor = [UIColor whiteColor];
-        _timeLabel.font = [UIFont systemFontOfSize:12.0];
-        _timeLabel.textAlignment = NSTextAlignmentCenter;
-        _timeLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+- (UILabel *)nameLabel {
+    if (_nameLabel == nil) {
+        _nameLabel = [[UILabel alloc] init];
+        _nameLabel.textColor = [UIColor whiteColor];
+        _nameLabel.font = [UIFont systemFontOfSize:12.0];
+        _nameLabel.textAlignment = NSTextAlignmentCenter;
+        _nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
     }
-    return _timeLabel;
+    return _nameLabel;
 }
 
-- (UIView *)contentBgView {
-    if (_contentBgView == nil) {
-        _contentBgView = [[UIView alloc] init];
-        _contentBgView.backgroundColor = [UIColor clearColor];
-        _contentBgView.backgroundColor = [UIColor colorWithHexString:@"#1C1C1C"];
+- (UIView *)contentView {
+    if (_contentView == nil) {
+        _contentView = [[UIView alloc] init];
+        _contentView.backgroundColor = [UIColor clearColor];
+        _contentView.backgroundColor = [UIColor colorWithHexString:@"#1C1C1C"];
        
-        [_contentBgView addSubview:self.iconImageView];
-        [_contentBgView addSubview:self.timeLabel];
+        [_contentView addSubview:self.iconImageView];
+        [_contentView addSubview:self.nameLabel];
 
         [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(_contentBgView);
-            make.top.equalTo(_contentBgView).offset(8.0);
+            make.top.equalTo(_contentView).offset(8.0);
             make.size.equalTo(@(28.0));
+            make.centerX.equalTo(_contentView);
 
         }];
         
-        [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.iconImageView).offset(4.0);
-            make.centerX.equalTo(_contentBgView);
-            make.left.right.equalTo(_contentBgView);
+        [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.iconImageView.mas_bottom).offset(4.0);
+            make.centerX.equalTo(_contentView);
+            make.left.right.equalTo(_contentView);
             
         }];
     }
-    return _contentBgView;
+    return _contentView;
 }
 
 - (UITapGestureRecognizer *)tapGestureRecognizer {
@@ -92,6 +96,23 @@
         _tapGestureRecognizer.numberOfTapsRequired = 1;
     }
     return _tapGestureRecognizer;
+}
+
+- (UIView *)contentBgView {
+    if (_contentBgView == nil) {
+        _contentBgView = [[UIView alloc] init];
+        
+        _contentBgView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+        _contentBgView.layer.cornerRadius = 4.0;
+        _contentBgView.layer.borderColor = [UIColor colorWithHexString:@"#2D2C2C"].CGColor;
+        _contentBgView.layer.borderWidth = 1.0;
+        
+        [_contentBgView addSubview:self.contentView];
+        [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(_contentBgView).insets(UIEdgeInsetsMake(8.0, 8.0, 8.0, 8.0));
+        }];
+    }
+    return _contentBgView;
 }
 
 

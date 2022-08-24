@@ -41,11 +41,25 @@
 
 }
 
+- (void)floatViewDidTap {
+    self.isMini = NO;
+    [self.floatingView removeFromSuperview];
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    UIViewController *rootViewController = window.rootViewController;
+    self.modalPresentationStyle = 0;
+    [rootViewController presentViewController:self animated:YES completion:nil];
+}
+
 - (void)setupSubViews
 {
     self.bigView = nil;
     self.isNeedLayout = NO;
 
+    EaseIMKit_WS
+    self.floatingView.tapViewBlock = ^{
+        [weakSelf floatViewDidTap];
+    };
+    
     self.contentView.backgroundColor = [UIColor colorWithHexString:@"#171717"];
 
     [self.timeLabel setHidden:YES];
@@ -540,18 +554,30 @@
     
 }
 
+//- (void)miniAction
+//{
+//    self.isMini = YES;
+//    [super miniAction];
+//    self.floatingView.enableVideo = NO;
+//    self.floatingView.delegate = self;
+//    self.floatingView.nameLabel.textAlignment = NSTextAlignmentCenter;
+//
+//    EaseIMKit_WS
+//    [self.floatingView.nameLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.centerX.equalTo(weakSelf.floatingView);
+//    }];
+//
+//    if(self.isJoined) {
+//        self.floatingView.nameLabel.text = EaseLocalizableString(@"Call in progress",nil);
+//    }else{
+//        self.floatingView.nameLabel.text = EaseLocalizableString(@"waitforanswer",nil);
+//    }
+//}
+
 - (void)miniAction
 {
     self.isMini = YES;
     [super miniAction];
-    self.floatingView.enableVideo = NO;
-    self.floatingView.delegate = self;
-    self.floatingView.nameLabel.textAlignment = NSTextAlignmentCenter;
-
-    EaseIMKit_WS
-    [self.floatingView.nameLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(weakSelf.floatingView);
-    }];
     
     if(self.isJoined) {
         self.floatingView.nameLabel.text = EaseLocalizableString(@"Call in progress",nil);
@@ -559,6 +585,7 @@
         self.floatingView.nameLabel.text = EaseLocalizableString(@"waitforanswer",nil);
     }
 }
+
 
 - (void)showNicknameAndAvartarForUsername:(NSString*)aUserName view:(UIView*)aView
 {

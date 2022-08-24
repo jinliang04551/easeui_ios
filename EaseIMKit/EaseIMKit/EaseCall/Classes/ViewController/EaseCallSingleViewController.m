@@ -181,7 +181,7 @@
     if(self.type == EaseCallType1v1Audio)
         return;
     if(self.isMini) {
-        self.floatingView.enableVideo = NO;
+//        self.floatingView.enableVideo = NO;
     }
     self.type = EaseCallType1v1Audio;
     [self updatePos];
@@ -445,39 +445,40 @@
 {
     self.isMini = YES;
     [super miniAction];
-    self.floatingView.enableVideo = self.type == EaseCallType1v1Video ? YES : NO;
-    self.floatingView.delegate = self;
-    if(self.type == EaseCallType1v1Video) {
-        self.floatingView.displayView = self.remoteView.displayView;
-        [self.floatingView addSubview:self.remoteView.displayView];
-        self.floatingView.enableVideo = self.remoteView.enableVideo;
-        [self.floatingView.displayView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.floatingView);
-        }];
-    }
-    if(self.isConnected) {
-        self.floatingView.nameLabel.text = EaseLocalizableString(@"Call in progress",nil);
-    }else{
-        self.floatingView.nameLabel.text = EaseLocalizableString(@"waitforanswer",nil);
-        self.floatingView.enableVideo = NO;
-    }
+//    self.floatingView.enableVideo = self.type == EaseCallType1v1Video ? YES : NO;
+//    self.floatingView.delegate = self;
+//    if(self.type == EaseCallType1v1Video) {
+//        self.floatingView.displayView = self.remoteView.displayView;
+//        [self.floatingView addSubview:self.remoteView.displayView];
+//        self.floatingView.enableVideo = self.remoteView.enableVideo;
+//        [self.floatingView.displayView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.edges.equalTo(self.floatingView);
+//        }];
+//    }
+//    if(self.isConnected) {
+//        self.floatingView.nameLabel.text = EaseLocalizableString(@"Call in progress",nil);
+//    }else{
+//        self.floatingView.nameLabel.text = EaseLocalizableString(@"waitforanswer",nil);
+//        self.floatingView.enableVideo = NO;
+//    }
 }
 
 - (void)streamViewDidTap:(EaseCallStreamView *)aVideoView
 {
-    if(aVideoView == self.floatingView) {
-        self.isMini = NO;
-        [self.floatingView removeFromSuperview];
-        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-        UIViewController *rootViewController = window.rootViewController;
-        self.modalPresentationStyle = 0;
-        [rootViewController presentViewController:self animated:YES completion:nil];
-        if(self.type == EaseCallType1v1Video) {
-            [self.floatingView.displayView removeFromSuperview];
-                [self setRemoteDisplayView:self.floatingView.displayView enableVideo:YES];
-        }
-        return;
-    }
+//    if(aVideoView == self.floatingView) {
+//        self.isMini = NO;
+//        [self.floatingView removeFromSuperview];
+//        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+//        UIViewController *rootViewController = window.rootViewController;
+//        self.modalPresentationStyle = 0;
+//        [rootViewController presentViewController:self animated:YES completion:nil];
+//        if(self.type == EaseCallType1v1Video) {
+//            [self.floatingView.displayView removeFromSuperview];
+//                [self setRemoteDisplayView:self.floatingView.displayView enableVideo:YES];
+//        }
+//        return;
+//    }
+    
     if(aVideoView.frame.size.width == 80) {
         [self.contentView sendSubviewToBack:aVideoView];
         EaseCallStreamView *otherView = aVideoView == self.localView?self.remoteView:self.localView;
@@ -527,8 +528,8 @@
         }
     };
     if(self.isMini) {
-        setDisplayView(self.floatingView);
-        self.floatingView.nameLabel.text = EaseLocalizableString(@"Call in progress",nil);
+//        setDisplayView(self.floatingView);
+//        self.floatingView.nameLabel.text = EaseLocalizableString(@"Call in progress",nil);
         return;
     }else{
         setDisplayView(self.remoteView);
@@ -576,8 +577,8 @@
     {
         [self startTimer];
         if(self.isMini && self.type == EaseCallType1v1Video) {
-            self.floatingView.enableVideo = YES;
-            self.floatingView.nameLabel.text = EaseLocalizableString(@"Call in progress",nil);
+//            self.floatingView.enableVideo = YES;
+//            self.floatingView.nameLabel.text = EaseLocalizableString(@"Call in progress",nil);
         }
     }
     if(self.type == EaseCallType1v1Video && isConnected)

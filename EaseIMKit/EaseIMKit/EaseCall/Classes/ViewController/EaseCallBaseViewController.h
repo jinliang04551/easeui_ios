@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "EaseCallStreamView.h"
 #import <HyphenateChat/HyphenateChat.h>
+#import "EaseCallFloatingView.h"
 
-@class EaseCallFloatingView;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,8 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong) UILabel* acceptLabel;
 @property (nonatomic,strong) UIButton* miniButton;
 @property (nonatomic,strong) UIView* contentView;
-@property (nonatomic) EaseCallStreamView* floatingView;
-//@property (nonatomic) EaseCallFloatingView* floatingView;
+
+@property (nonatomic) EaseCallFloatingView* floatingView;
 
 
 @property (nonatomic) BOOL isMini;

@@ -246,36 +246,21 @@
 - (void)miniAction
 {
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-    self.floatingView.frame = CGRectMake(self.contentView.bounds.size.width - 100, 80, 88.0, 88.0);
+    self.floatingView.frame = CGRectMake(self.contentView.bounds.size.width - 100, 80, 80.0, 80.0);
+    
     [keyWindow addSubview:self.floatingView];
     [keyWindow bringSubviewToFront:self.floatingView];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (EaseCallStreamView*)floatingView
-{
-    if(!_floatingView)
-    {
-        _floatingView = [[EaseCallStreamView alloc] init];
-        _floatingView.backgroundColor = [UIColor grayColor];
-//        _floatingView.backgroundColor = [UIColor colorWithHexString:@"#171717"];
-        _floatingView.bgView.image = [UIImage imageNamedFromBundle:@"floating_voice"];
-        _floatingView.nameLabel.textAlignment = NSTextAlignmentCenter;
 
-        [_floatingView.bgView mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.width.height.equalTo(@55);
-        }];
+- (EaseCallFloatingView *)floatingView {
+    if (_floatingView == nil) {
+        _floatingView = [[EaseCallFloatingView alloc] init];
     }
     return _floatingView;
 }
-
-//- (EaseCallFloatingView *)floatingView {
-//    if (_floatingView == nil) {
-//        _floatingView = [[EaseCallFloatingView alloc] init];
-//    }
-//    return _floatingView;
-//}
 
 #pragma mark - timer
 
@@ -309,6 +294,10 @@
     int s = _timeLength - m * 60;
     
     self.timeLabel.text = [NSString stringWithFormat:@"通话时长 %02d:%02d", m, s];
+    
+    if (self.isMini) {
+        self.floatingView.nameLabel.text = [NSString stringWithFormat:@"%02d:%02d", m, s];
+    }
 }
 
 /*

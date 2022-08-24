@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EaseCallFloatingView : UIView
-@property (nonatomic, strong) UILabel *timeLabel;
+@property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, copy) void (^tapViewBlock)(void);
 
 @end
