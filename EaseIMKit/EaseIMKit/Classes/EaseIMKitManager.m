@@ -677,8 +677,12 @@ static NSString *g_UIKitVersion = @"1.0.0";
 {
     if (conversation && conversation.unreadMessagesCount > 0) {
         [conversation markAllMessagesAsRead:nil];
-        [self _resetConversationsUnreadCount];
     }
+    [self _resetConversationsUnreadCount];
+}
+
+- (void)updateConversationsUnreadCount {
+    [self _resetConversationsUnreadCount];
 }
 
 //未读总数变化

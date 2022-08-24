@@ -130,6 +130,8 @@
     
     [self makeAllMessageRead];
     
+    [[EaseIMKitManager shared] updateConversationsUnreadCount];
+    
     [self loadData:YES];
 
 }

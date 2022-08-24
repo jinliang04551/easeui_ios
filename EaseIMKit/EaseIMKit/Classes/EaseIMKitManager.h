@@ -111,6 +111,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)markAllMessagesAsReadWithConversation:(EMConversation *)conversation;
 
+- (void)updateConversationsUnreadCount;
+
+
 - (void)configuationIMKitIsJiHuApp:(BOOL)isJiHuApp;
 
 
