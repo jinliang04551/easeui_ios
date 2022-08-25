@@ -116,7 +116,7 @@
     if ([CLLocationManager locationServicesEnabled]) {
         _locationManager = [[CLLocationManager alloc] init];
         _locationManager.delegate = self;
-        _locationManager.distanceFilter = 5;
+        _locationManager.distanceFilter = 20;
         _locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;//kCLLocationAccuracyBest;
         if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
             [_locationManager requestWhenInUseAuthorization];
@@ -140,8 +140,40 @@
     [self.mapView addAnnotation:self.annotation];
 }
 
-#pragma mark - MKMapViewDelegate
 
+- (void)fetchNearbyInfoWithLocation:(CLLocation *)location KeyStr:(NSString *)keyStr{
+    
+    MKCoordinateRegion region=MKCoordinateRegionMakeWithDistance(location.coordinate, 100 ,100);
+    
+    MKLocalSearchRequest *requst = [[MKLocalSearchRequest alloc] init];
+    requst.region = region;
+    requst.naturalLanguageQuery = keyStr; //想要的信息
+    MKLocalSearch *localSearch = [[MKLocalSearch alloc] initWithRequest:requst];
+    
+    [localSearch startWithCompletionHandler:^(MKLocalSearchResponse *response, NSError *error){
+        if (!error) {
+            [self loadCurrentArroundPosition:response];
+        }else{
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"获取附近地理位置信息失败，请手动输入。" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//
+//            [alert show];
+        }
+    }];
+    
+}
+
+- (void)loadCurrentArroundPosition:(MKLocalSearchResponse *)response {
+    NSLog(@"%s",__func__);
+    
+    for (MKMapItem *mapItem in response.mapItems) {
+        
+        NSLog(@"%@",[NSString stringWithFormat:@"%@%@",[mapItem.placemark.addressDictionary[@"FormattedAddressLines"] lastObject],mapItem.name]);
+        
+    }
+}
+
+
+#pragma mark - MKMapViewDelegate
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
     __weak typeof(self) weakself = self;
@@ -153,12 +185,16 @@
             weakself.buildingName = placemark.name;//自主获取
             [weakself _moveToLocation:userLocation.coordinate];
             
-            for (int i = 0; i < array.count; ++i) {
-                CLPlacemark *placemark = array[i];
-                NSLog(@"%s placemark.name:%@ thoroughfare:%@ subThoroughfare:%@",__func__,placemark.name,placemark.thoroughfare,placemark.subThoroughfare);
-            }
+            NSLog(@"%s array.count:%ld",__func__,array.count);
+//            for (int i = 0; i < array.count; ++i) {
+//                CLPlacemark *placemark = array[i];
+//
+//                NSLog(@"%s placemark.name:%@ thoroughfare:%@ subThoroughfare:%@",__func__,placemark.name,placemark.thoroughfare,placemark.subThoroughfare);
+//            }
         }
     }];
+    
+    [self fetchNearbyInfoWithLocation:userLocation.location KeyStr:@"大厦"];
 }
 
 

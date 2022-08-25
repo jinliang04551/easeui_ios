@@ -140,6 +140,9 @@
     [dict setObject:uName forKey:@"phone"];
     [dict setObject:pwd forKey:@"password"];
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+    
+    NSLog(@"%s url:%@ headerDict:%@ dict:%@",__func__,url,headerDict,dict);
+
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
         if (aCompletionBlock) {

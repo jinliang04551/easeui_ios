@@ -346,7 +346,6 @@ static NSString *g_UIKitVersion = @"1.0.0";
     }
     
     
-    
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
         UIViewController *currentVC =  [EaseKitUtil currentViewController];
         
@@ -1213,9 +1212,17 @@ static NSString *g_UIKitVersion = @"1.0.0";
                 if (statusCode == 200) {
                     NSDictionary *entityDic = responsedict[@"entity"];
                     NSString *token = [entityDic objectForKey:@"token"];
-                    [EaseKitUtil saveLoginUserToken:token userId:userName];
                     
-                    [[EMClient sharedClient] loginWithUsername:[userName lowercaseString] password:password completion:finishBlock];
+                    NSDictionary *imDic = [entityDic objectForKey:@"imUserToken"];
+
+                    NSString *yg_username = [imDic objectForKey:@"username"];
+                    
+                    NSString *yg_password = [imDic objectForKey:@"password"];
+
+                    [EaseKitUtil saveLoginUserToken:token userId:yg_username];
+                    
+                    
+                    [[EMClient sharedClient] loginWithUsername:yg_username password:yg_password completion:finishBlock];
                     
                     return;
                 }else {
@@ -1233,30 +1240,41 @@ static NSString *g_UIKitVersion = @"1.0.0";
 }
 
 - (void)logoutWithCompletion:(void (^)(BOOL success,NSString *errorMsg))completion {
-    [[EaseHttpManager sharedManager] logoutWithCompletion:^(NSInteger statusCode, NSString * _Nonnull response) {
-            
-        NSLog(@"%s response:%@ state:%@",__func__,response,@(statusCode));
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        [self logoutWithIMSDKWithCompletion:completion];
         
-        if (response && response.length > 0 && statusCode) {
-            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
-            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+    }else {
+        [[EaseHttpManager sharedManager] logoutWithCompletion:^(NSInteger statusCode, NSString * _Nonnull response) {
+                
+            NSLog(@"%s response:%@ state:%@",__func__,response,@(statusCode));
             
-            [[EMClient sharedClient] logout:YES completion:^(EMError * _Nullable aError) {
-                if (aError == nil) {
-                    [self clearCacheAfterLogoutSuccessed];
-                    completion(YES,nil);
-                }else {
-                    
-                    [[EMClient sharedClient] logout:NO completion:^(EMError * _Nullable aError) {
-                        [self clearCacheAfterLogoutSuccessed];
-                        completion(YES,nil);
-                    }];
-                }
-                                    
-            }];
+            if (response && response.length > 0 && statusCode) {
+                NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+                
+                [self logoutWithIMSDKWithCompletion:completion];
+            }
+        }];
+        
+    }
+    
+    
+}
 
+- (void)logoutWithIMSDKWithCompletion:(void (^)(BOOL success,NSString *errorMsg))completion {
+    [[EMClient sharedClient] logout:YES completion:^(EMError * _Nullable aError) {
+        if (aError == nil) {
+            [self clearCacheAfterLogoutSuccessed];
+            completion(YES,nil);
+        }else {
             
+            [[EMClient sharedClient] logout:NO completion:^(EMError * _Nullable aError) {
+                [self clearCacheAfterLogoutSuccessed];
+                completion(YES,nil);
+            }];
         }
+                            
     }];
     
 }
@@ -1265,10 +1283,8 @@ static NSString *g_UIKitVersion = @"1.0.0";
 - (void)clearCacheAfterLogoutSuccessed {
     [EaseKitUtil removeLoginUserToken];
     [[EaseIMKitMessageHelper shareMessageHelper] clearMemeryCache];
-    
     [EaseIMHelper shareHelper].pushedConvIdArray = nil;
 
-    
     EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
     options.isAutoLogin = NO;
     options.loggedInUsername = @"";
