@@ -12,6 +12,9 @@
 #import <UserNotifications/UserNotifications.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "EaseIMKitOptions.h"
+#import "EaseKitUtil.h"
+#import "EaseHeaders.h"
+
 
 // 提示音时间间隔
 static const CGFloat kDefaultPlaySoundInterval = 3.0;
@@ -107,8 +110,10 @@ SystemSoundID soundID = 1007;
     
     // App 是否在后台
     if (isBackground) {
+        if (options.isAlertMsg){
         [self _localNotification:aMessage
-                        needInfo:EMClient.sharedClient.pushOptions.displayStyle != EMPushDisplayStyleSimpleBanner];
+                needInfo:EMClient.sharedClient.pushOptions.displayStyle != EMPushDisplayStyleSimpleBanner];
+        }
     } else {
         if (options.isAlertMsg) {
             //仅仅震动
@@ -122,55 +127,22 @@ SystemSoundID soundID = 1007;
 // 本地通知 needInfo: 是否显示通知详情
 - (void)_localNotification:(EMChatMessage *)message
                   needInfo:(BOOL)isNeed {
-    NSString *alertBody = nil;
+    NSString *alertTitle = @"";
+    NSString *alertBody = @"";
     
-//    if (isNeed) {
-//        EMMessageBody *messageBody = message.body;
-//        NSString *messageStr = nil;
-//        switch (messageBody.type) {
-//            case EMMessageBodyTypeText:
-//            {
-//                messageStr = ((EMTextMessageBody *)messageBody).text;
-//            }
-//                break;
-//            case EMMessageBodyTypeImage:
-//            {
-//                messageStr = NSLocalizedString(@"Image", nil);
-//            }
-//                break;
-//            case EMMessageBodyTypeLocation:
-//            {
-//                messageStr = NSLocalizedString(@"Location", nil);
-//            }
-//                break;
-//            case EMMessageBodyTypeVoice:
-//            {
-//                messageStr = NSLocalizedString(@"Audio", nil);
-//            }
-//                break;
-//            case EMMessageBodyTypeVideo:{
-//                messageStr = NSLocalizedString(@"Video", nil);
-//            }
-//                break;
-//            case EMMessageBodyTypeFile:{
-//                messageStr = NSLocalizedString(@"File", nil);
-//            }
-//                break;
-//            default:
-//                break;
-//        }
-//
-//        if (message.chatType == EMChatTypeChat) {
-//            alertBody = [NSString stringWithFormat:@"%@:%@", message.from, messageStr];
-//        }else {
-//            alertBody = [NSString stringWithFormat:@"%@(%@):%@", message.conversationId, message.from, messageStr];
-//        }
-//    }
-//    else{
-//        alertBody = NSLocalizedString(@"newmsg", nil);
-//    }
+    if (message.chatType == EMChatTypeChat) {
+        alertTitle = [EaseKitUtil fetchUserDicWithUserId:message.from][EaseUserNicknameKey];
+        alertBody = [EaseKitUtil getContentWithMsg:message];
+    }
     
-    alertBody = @"您有一条新消息";
+    if (message.chatType == EMChatTypeGroupChat) {
+        EMGroup *group = [EMGroup groupWithId:message.conversationId];
+        alertTitle = group.groupName;
+        
+        NSString *nickname = [EaseKitUtil fetchUserDicWithUserId:message.from][EaseUserNicknameKey];
+        alertBody = [NSString stringWithFormat:@"%@: %@",nickname,[EaseKitUtil getContentWithMsg:message]];
+    }
+    
     NSTimeInterval timeInterval = [[NSDate date] timeIntervalSinceDate:self.lastPlaySoundDate];
     BOOL playSound = NO;
     
@@ -189,6 +161,7 @@ SystemSoundID soundID = 1007;
             content.sound = [UNNotificationSound defaultSound];
         }
         content.body = alertBody;
+        content.title = alertTitle;
         UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:message.messageId content:content trigger:trigger];
         [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
     }
@@ -196,6 +169,7 @@ SystemSoundID soundID = 1007;
         UILocalNotification *notification = [[UILocalNotification alloc] init];
         notification.fireDate = [NSDate date]; //触发通知的时间
         notification.alertBody = alertBody;
+        notification.alertTitle = alertTitle;
         notification.alertAction = NSLocalizedString(@"open", nil);
         notification.timeZone = [NSTimeZone defaultTimeZone];
         

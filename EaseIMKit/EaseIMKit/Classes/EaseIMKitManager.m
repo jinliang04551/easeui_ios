@@ -336,6 +336,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
     
 }
 
+
 - (BOOL)isShowbannerMessage:(EMChatMessage *)aMessage {
     BOOL isShow = NO;
     EMChatMessage *msg = aMessage;
@@ -345,22 +346,27 @@ static NSString *g_UIKitVersion = @"1.0.0";
         return NO;
     }
     
-    
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
-        UIViewController *currentVC =  [EaseKitUtil currentViewController];
         
+        UIViewController *currentVC =  [EaseKitUtil currentViewController];
         NSLog(@"%s currentVC:%@",__func__,currentVC);
         
-        NSString *topConvId = [EaseIMHelper shareHelper].pushedConvIdArray.lastObject;
+        //当前在SDK的所有页面,不提示横幅消息
+    //    if ([currentVC isKindOfClass:[EMChatViewController class]] || [currentVC isKindOfClass:[EMConversationsViewController class]]) {
+    //        return NO;
+    //    }
         
-        //当前在会话列表或者会话界面， 不提示横幅消息
-        if ([currentVC isKindOfClass:[EMChatViewController class]] || [currentVC isKindOfClass:[EMConversationsViewController class]]) {
+        NSString *currentVCString = NSStringFromClass([currentVC class]);
+        NSLog(@"%s currentVCString:%@",__func__,currentVCString);
+
+        if ([currentVCString hasPrefix:@"EM"] ||[currentVCString hasPrefix:@"Ease"]) {
             return NO;
         }
         
         //判断是否有人@自己
         if ([self isRemindMeMessage:msg]) {
-            return YES;
+            isShow = YES;
+            return isShow;
         }
         
         EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
@@ -378,6 +384,8 @@ static NSString *g_UIKitVersion = @"1.0.0";
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             if (msg.chatType == EMChatTypeGroupChat &&[self.exGroupIds containsObject:msg.conversationId]) {
                 isShow = YES;
+            }else {
+                isShow = NO;
             }
         }else {
             
