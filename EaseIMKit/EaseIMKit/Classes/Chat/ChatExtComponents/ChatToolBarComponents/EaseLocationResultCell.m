@@ -18,13 +18,16 @@
 @implementation EaseLocationResultCell
 
 - (void)prepare {
-    [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
+//    [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
+    
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.detailLabel];
     [self.contentView addSubview:self.checkedImageView];
 
     self.nameLabel.numberOfLines = 0;
     self.detailLabel.numberOfLines = 0;
+    
+//    self.backgroundColor = UIColor.yellowColor;
     
 }
 
@@ -40,6 +43,7 @@
         make.top.equalTo(self.nameLabel.mas_bottom).offset(4.0);
         make.left.equalTo(self.nameLabel);
         make.right.equalTo(self.nameLabel);
+        make.bottom.equalTo(self.contentView).offset(-12.0);
     }];
     
     [self.checkedImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -55,6 +59,16 @@
 - (void)updateWithObj:(id)obj {
     EaseLocationResultModel *model = (EaseLocationResultModel *)obj;
     self.model = model;
+    
+    CLPlacemark *placemark = model.mapItem.placemark;
+    self.detailLabel.text = placemark.thoroughfare;
+    self.nameLabel.text = placemark.name;
+    
+    if (model.isSelected) {
+        self.checkedImageView.hidden = NO;
+    }else {
+        self.checkedImageView.hidden = YES;
+    }
     
 }
 
@@ -72,7 +86,7 @@
             _detailLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
         }
         
-        _detailLabel.textAlignment = NSTextAlignmentRight;
+        _detailLabel.textAlignment = NSTextAlignmentLeft;
         _detailLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     }
     return _detailLabel;

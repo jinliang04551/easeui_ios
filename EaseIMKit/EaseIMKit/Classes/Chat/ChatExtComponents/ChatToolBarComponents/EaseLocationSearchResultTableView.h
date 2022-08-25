@@ -9,10 +9,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class EaseLocationResultModel;
 @interface EaseLocationSearchResultTableView : UIView
 
-@property (nonatomic, copy) void (^selectedBlock)(NSString *selectedName, NSInteger selectedType);
+@property (nonatomic, copy) void (^selectedBlock)(EaseLocationResultModel *model);
 
+@property (nonatomic, copy) void (^searchLocationBlock)(NSString *searchLocation);
+
+
+- (void)updateWithSearchResultArray:(NSMutableArray *)tArray;
 
 @end
 

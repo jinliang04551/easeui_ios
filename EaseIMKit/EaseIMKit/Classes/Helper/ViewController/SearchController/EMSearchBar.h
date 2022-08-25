@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UIControl *control;
 
+@property (nonatomic, strong) NSString *placeHolder;
+
 @end
 
 @protocol EMSearchBarDelegate <NSObject>

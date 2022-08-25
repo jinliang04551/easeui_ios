@@ -1244,28 +1244,29 @@ static NSString *g_UIKitVersion = @"1.0.0";
         }];
     }
 
-
 }
 
 - (void)logoutWithCompletion:(void (^)(BOOL success,NSString *errorMsg))completion {
     
-    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        [self logoutWithIMSDKWithCompletion:completion];
-        
-    }else {
-        [[EaseHttpManager sharedManager] logoutWithCompletion:^(NSInteger statusCode, NSString * _Nonnull response) {
-                
-            NSLog(@"%s response:%@ state:%@",__func__,response,@(statusCode));
-            
-            if (response && response.length > 0 && statusCode) {
-                NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
-                NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-                
-                [self logoutWithIMSDKWithCompletion:completion];
-            }
-        }];
-        
-    }
+    [self logoutWithIMSDKWithCompletion:completion];
+    
+//    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+//        [self logoutWithIMSDKWithCompletion:completion];
+//
+//    }else {
+//        [[EaseHttpManager sharedManager] logoutWithCompletion:^(NSInteger statusCode, NSString * _Nonnull response) {
+//
+//            NSLog(@"%s response:%@ state:%@",__func__,response,@(statusCode));
+//
+//            if (response && response.length > 0 && statusCode) {
+//                NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+//                NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+//
+//                [self logoutWithIMSDKWithCompletion:completion];
+//            }
+//        }];
+//
+//    }
     
     
 }

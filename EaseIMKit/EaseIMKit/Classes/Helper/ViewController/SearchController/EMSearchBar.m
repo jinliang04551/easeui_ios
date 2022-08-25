@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) UIButton *operateButton;
 @property (nonatomic, strong) UIView *leftView;
+@property (nonatomic, strong) UILabel *controlLabel;
 
 
 @end
@@ -252,14 +253,10 @@
         [_control addGestureRecognizer:tap];
 
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage easeUIImageNamed:@"jh_search_leftIcon"]];
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-        label.font = [UIFont systemFontOfSize:14.0];
-        label.text = @"搜索";
-        label.textColor = [UIColor colorWithHexString:@"#7E7E7F"];
-        [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        
         UIView *subView = [[UIView alloc] init];
         [subView addSubview:imageView];
-        [subView addSubview:label];
+        [subView addSubview:self.controlLabel];
         [_control addSubview:subView];
 
         [imageView mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -269,7 +266,7 @@
             make.bottom.equalTo(subView);
         }];
 
-        [label mas_updateConstraints:^(MASConstraintMaker *make) {
+        [self.controlLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(imageView.mas_right).offset(3);
             make.right.equalTo(subView);
             make.top.equalTo(subView);
@@ -284,6 +281,22 @@
     return _control;
 }
 
+- (UILabel *)controlLabel {
+    if (_controlLabel == nil) {
+        _controlLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _controlLabel.font = [UIFont systemFontOfSize:14.0];
+        _controlLabel.text = @"搜索";
+        _controlLabel.textColor = [UIColor colorWithHexString:@"#7E7E7F"];
+        [_controlLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+
+    }
+    return _controlLabel;
+}
+
+- (void)setPlaceHolder:(NSString *)placeHolder {
+    self.textField.placeholder = placeHolder;
+    self.controlLabel.text = placeHolder;
+}
 
 
 @end

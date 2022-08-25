@@ -10,6 +10,9 @@
 #import "EaseHeaders.h"
 #import "EaseAlertController.h"
 #import "EaseAlertView.h"
+#import "EaseLocationSearchResultTableView.h"
+#import "EaseLocationResultModel.h"
+
 
 @interface EMLocationViewController ()<MKMapViewDelegate, CLLocationManagerDelegate>
 
@@ -25,6 +28,13 @@
 
 @property (nonatomic, strong) UIButton *sendLocationBtn;
 @property (nonatomic, strong) UIButton *cancelBtn;
+@property (nonatomic, strong) EaseLocationSearchResultTableView *searchResultTableView;
+
+@property (nonatomic, assign) float zoomLevel;
+
+
+@property (nonatomic, strong) MKUserLocation *currentUserLocation;
+
 
 @end
 
@@ -107,6 +117,15 @@
     }];
     
     self.annotation = [[MKPointAnnotation alloc] init];
+    
+    [self.view addSubview:self.searchResultTableView];
+    [self.searchResultTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+        make.bottom.equalTo(self.view);
+        make.top.equalTo(self.view.mas_centerY).offset(-20);
+    }];
+    
 }
 
 #pragma mark - Private
@@ -122,9 +141,8 @@
             [_locationManager requestWhenInUseAuthorization];
         }
     }
-    
-    [self showHudInView:self.view hint:EaseLocalizableString(@"Locating...", nil)];
 }
+
 
 - (void)_moveToLocation:(CLLocationCoordinate2D)locationCoordinate
 {
@@ -143,7 +161,7 @@
 
 - (void)fetchNearbyInfoWithLocation:(CLLocation *)location KeyStr:(NSString *)keyStr{
     
-    MKCoordinateRegion region=MKCoordinateRegionMakeWithDistance(location.coordinate, 100 ,100);
+    MKCoordinateRegion region=MKCoordinateRegionMakeWithDistance(location.coordinate, 1000 ,1000);
     
     MKLocalSearchRequest *requst = [[MKLocalSearchRequest alloc] init];
     requst.region = region;
@@ -164,18 +182,31 @@
 
 - (void)loadCurrentArroundPosition:(MKLocalSearchResponse *)response {
     NSLog(@"%s",__func__);
-    
-    for (MKMapItem *mapItem in response.mapItems) {
-        
-        NSLog(@"%@",[NSString stringWithFormat:@"%@%@",[mapItem.placemark.addressDictionary[@"FormattedAddressLines"] lastObject],mapItem.name]);
-        
+    NSMutableArray *tArray = [NSMutableArray array];
+
+    for (int i = 0; i < response.mapItems.count; ++i) {
+        MKMapItem *mapItem = response.mapItems[i];
+
+        EaseLocationResultModel *model = [[EaseLocationResultModel alloc] init];
+        model.mapItem = mapItem;
+        if (i == 0) {
+            model.isSelected = YES;
+            [self updateLocationInfoWithPlaceMark:model.mapItem.placemark];
+        }
+        if (model) {
+            [tArray addObject:model];
+        }
     }
+    
+    [self.searchResultTableView updateWithSearchResultArray:tArray];
 }
 
 
 #pragma mark - MKMapViewDelegate
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
+    self.currentUserLocation = userLocation;
+    
     __weak typeof(self) weakself = self;
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     [geocoder reverseGeocodeLocation:userLocation.location completionHandler:^(NSArray *array, NSError *error) {
@@ -184,13 +215,6 @@
             weakself.address = placemark.thoroughfare;
             weakself.buildingName = placemark.name;//自主获取
             [weakself _moveToLocation:userLocation.coordinate];
-            
-            NSLog(@"%s array.count:%ld",__func__,array.count);
-//            for (int i = 0; i < array.count; ++i) {
-//                CLPlacemark *placemark = array[i];
-//
-//                NSLog(@"%s placemark.name:%@ thoroughfare:%@ subThoroughfare:%@",__func__,placemark.name,placemark.thoroughfare,placemark.subThoroughfare);
-//            }
         }
     }];
     
@@ -246,7 +270,7 @@
         _sendLocationBtn = [[UIButton alloc]init];
         [_sendLocationBtn setTitle:EaseLocalizableString(@"send", nil) forState:UIControlStateNormal];
         _sendLocationBtn.layer.cornerRadius = 4;
-        _sendLocationBtn.backgroundColor = [UIColor colorWithRed:72/255.0 green:200/255.0 blue:144/255.0 alpha:1.0];
+        _sendLocationBtn.backgroundColor = [UIColor colorWithHexString:@"#4798CB"];
         [_sendLocationBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_sendLocationBtn.titleLabel setFont:[UIFont systemFontOfSize:12.0]];
         [_sendLocationBtn addTarget:self action:@selector(sendAction) forControlEvents:UIControlEventTouchUpInside];
@@ -266,5 +290,33 @@
     }
     return _cancelBtn;
 }
+
+
+- (EaseLocationSearchResultTableView *)searchResultTableView {
+    if (_searchResultTableView == nil) {
+        _searchResultTableView = [[EaseLocationSearchResultTableView alloc] init];
+        EaseIMKit_WS
+        
+        _searchResultTableView.selectedBlock = ^(EaseLocationResultModel * _Nonnull model) {          CLLocationCoordinate2D move = model.mapItem.placemark.coordinate;
+
+            [weakSelf updateLocationInfoWithPlaceMark:model.mapItem.placemark];
+            
+            [weakSelf _moveToLocation:move];
+        };
+        
+        _searchResultTableView.searchLocationBlock = ^(NSString * _Nonnull searchLocation) {
+            [weakSelf fetchNearbyInfoWithLocation:weakSelf.currentUserLocation.location KeyStr:searchLocation];
+
+        };
+    }
+    return _searchResultTableView;
+}
+
+- (void)updateLocationInfoWithPlaceMark:(MKPlacemark *)placemark {
+    self.locationCoordinate = placemark.coordinate;
+    self.address = placemark.thoroughfare;
+    self.buildingName = placemark.name;
+}
+
 
 @end
