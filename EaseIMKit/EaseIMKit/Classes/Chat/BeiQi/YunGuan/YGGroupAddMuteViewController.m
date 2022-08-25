@@ -37,14 +37,6 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-//    [self addPopBackLeftItem];
-//
-//    self.title = @"添加禁言人员";
-//
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
-    
-//    [self setRightNavBarItemTitleColor];
     
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 

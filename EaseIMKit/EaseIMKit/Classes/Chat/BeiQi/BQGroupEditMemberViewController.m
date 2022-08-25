@@ -64,12 +64,6 @@
         self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     }
 
-//    self.title = @"选择用户";
-//    [self addPopBackLeftItemWithTarget:self action:@selector(backItemAction)];
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(completionAction)];
-//
-//    [self setRightNavBarItemTitleColor];
-
     [self placeAndLayoutSubviews];
     [self.groupSearchAddView updateUIWithMemberArray:self.memberArray];
 }

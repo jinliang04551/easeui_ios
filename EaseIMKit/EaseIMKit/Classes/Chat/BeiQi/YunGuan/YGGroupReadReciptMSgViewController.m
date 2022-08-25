@@ -10,7 +10,6 @@
 #import "MISScrollPage.h"
 
 #import "EMChatRecordViewController.h"
-#import "BQChatRecordFileViewController.h"
 #import "BQChatRecordImageVideoViewController.h"
 #import "EMChatViewController.h"
 #import "BQChatRecordFilePreviewViewController.h"

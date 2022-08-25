@@ -15,7 +15,6 @@
 #import "BQTitleValueCell.h"
 #import "BQTitleSwitchCell.h"
 #import "BQGroupEditMemberViewController.h"
-#import "BQChatRecordContainerViewController.h"
 #import "YGCreateGroupOperationMemberCell.h"
 #import "BQTitleValueTapCell.h"
 #import "EaseHeaders.h"
@@ -64,8 +63,6 @@
 #pragma mark - Subviews
 - (void)placeAndLayoutSubviews
 {
-//    [self addPopBackLeftItem];
-//    self.title = @"创建群组";
     
     self.titleView = [self customNavWithTitle:@"创建群组" rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
 

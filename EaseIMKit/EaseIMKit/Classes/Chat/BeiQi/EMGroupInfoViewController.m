@@ -140,8 +140,7 @@
 
 - (void)_setupSubviews
 {
-//    [self addPopBackLeftItem];
-//    self.title = @"群设置";
+
     
      self.titleView = [self customNavWithTitle:@"群设置" rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
 

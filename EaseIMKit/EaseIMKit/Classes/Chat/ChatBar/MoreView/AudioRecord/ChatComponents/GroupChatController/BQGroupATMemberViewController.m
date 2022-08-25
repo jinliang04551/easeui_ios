@@ -81,9 +81,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
 #pragma mark - Subviews
 
 - (void)_setupSubviews
-{
-//    [self addPopBackLeftItemWithTarget:self action:@selector(backAction)];
-    
+{    
     self.title = @"选择提醒人";
     
     self.titleView = [self customNavWithTitle:self.title rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
