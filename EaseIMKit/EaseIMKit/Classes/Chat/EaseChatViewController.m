@@ -941,10 +941,17 @@ if (EaseIMKitManager.shared.isJiHuApp){
         
         
         if (msg.chatType == EMChatTypeGroupChat && msg.isNeedGroupAck && !msg.isReadAcked && msg.direction == EMMessageDirectionReceive) {
-            [[EMClient sharedClient].chatManager sendGroupMessageReadAck:msg.messageId toGroup:msg.conversationId content:@"123" completion:nil];
-            
-            NSLog(@"%s msg.messageId:%@ isreadCk:%d",__func__,msg.messageId,msg.isReadAcked);
+                     
+            dispatch_async(dispatch_get_main_queue(), ^{
+                BOOL isVisiable = self.view.window;
+                if (isVisiable) {
+                    [[EMClient sharedClient].chatManager sendGroupMessageReadAck:msg.messageId toGroup:msg.conversationId content:@"123" completion:nil];
+                }
+                
+                NSLog(@"%s msg.messageId:%@ isreadCk:%d",__func__,msg.messageId,msg.isReadAcked);
 
+            });
+            
         }
         
         CGFloat interval = (self.msgTimelTag - msg.timestamp) / 1000;

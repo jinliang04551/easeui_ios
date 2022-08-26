@@ -139,7 +139,10 @@
 
 - (void)makeAllMessageRead {
     if (_conversation.unreadMessagesCount > 0) {
-        [[EMClient sharedClient].chatManager ackConversationRead:_conversation.conversationId completion:nil];
+        //单聊的设置已读
+        if (_conversation.type == EMConversationTypeChat) {
+            [[EMClient sharedClient].chatManager ackConversationRead:_conversation.conversationId completion:nil];
+        }
         
         [[EaseIMKitManager shared] markAllMessagesAsReadWithConversation:_conversation];
     }

@@ -162,6 +162,8 @@ MISScrollPageControllerDelegate>
                 }
             }
             self.readMsgArray = tArray;
+            NSLog(@"%s readArray:%@",__func__,self.readMsgArray);
+            
             [self.memberIdArray removeObjectsInArray:self.readMsgArray];
             [self.memberIdArray removeObject:[EMClient sharedClient].currentUsername];
             

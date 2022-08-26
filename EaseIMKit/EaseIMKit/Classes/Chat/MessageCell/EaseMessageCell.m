@@ -311,11 +311,15 @@
             NSDictionary *msgUserExt = model.message.ext[@"userInfo"];
             if (msgUserExt.count > 0) {
                 nickname = msgUserExt[@"nick"];
+                if (nickname.length == 0) {
+                    nickname = [EaseKitUtil fetchUserDicWithUserId:model.message.from][EaseUserNicknameKey];
+                }
             }else {
                 nickname = [EaseKitUtil fetchUserDicWithUserId:model.message.from][EaseUserNicknameKey];
             }
-            self.nameLabel.text = nickname;
 
+            self.nameLabel.text = nickname;
+            
         }
     }
     
