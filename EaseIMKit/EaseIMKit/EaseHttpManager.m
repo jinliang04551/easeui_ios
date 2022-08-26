@@ -784,14 +784,14 @@
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
     
     NSString *jiHuAid = EaseIMKitManager.shared.jihuCurrentUid;
-    if (jiHuAid.length == 0) {
-        jiHuAid = @"222600";
-    }
+//    if (jiHuAid.length == 0) {
+//        jiHuAid = @"222600";
+//    }
     
     NSString *jiHuToken = EaseIMKitManager.shared.jihuToken;
-    if (jiHuToken.length == 0) {
-        jiHuToken = @"ad8s8d9adhka";
-    }
+//    if (jiHuToken.length == 0) {
+//        jiHuToken = @"ad8s8d9adhka";
+//    }
     
     // "aid":"222600",
     //    "orderType":"MAIN",

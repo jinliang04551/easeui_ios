@@ -74,6 +74,13 @@
 
 
 - (void)completionAction {
+    if (self.userArray.count == 0 && self.serverArray.count == 0 && self.searchResultArray.count > 0) {
+        
+        [self showHint:@"请选择用户身份"];
+        return;
+    }
+    
+    
     if (self.addedMemberBlock) {
         self.addedMemberBlock(self.userArray,self.serverArray);
     }

@@ -664,9 +664,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             [EaseAlertController showErrorAlert:NSLocalizedString(@"emtpyGroupSubject", nil)];
             return NO;
         }
-        
-        [weakController showHudInView:weakController.view hint:NSLocalizedString(@"updateGroupName...", nil)];
-        
+                
         EaseIMKit_WS
         [[EaseHttpManager sharedManager] modifyGroupInfoWithGroupId:weakSelf.group.groupId groupname:aString bussinessRemark:@"" completion:^(NSInteger statusCode, NSString * _Nonnull response) {
             
@@ -756,7 +754,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     controller.addedMemberBlock = ^(NSMutableArray * _Nonnull userArray, NSMutableArray * _Nonnull serverArray) {
         weakSelf.userArray = userArray;
         weakSelf.serverArray = serverArray;
-
+        
         [weakSelf updateUI];
     };
     
@@ -765,6 +763,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 }
 
 - (void)updateUI {
+    if (self.userArray.count == 0 && self.serverArray.count ==0) {
+        return;
+    }
     
     [[EaseHttpManager sharedManager] inviteGroupMemberWithGroupId:self.group.groupId customerUserIds:self.userArray waiterUserIds:self.serverArray completion:^(NSInteger statusCode, NSString * _Nonnull response) {
        

@@ -97,11 +97,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    id obj = self.dataArray[indexPath.row];
+    EaseLocationResultModel *model = self.dataArray[indexPath.row];
     if (self.selectedBlock) {
-        self.selectedBlock(obj);
+        self.selectedBlock(model);
     }
+
 }
+
 
 #pragma mark - EMSearchBarDelegate
 - (void)searchBarShouldBeginEditing:(EMSearchBar *)searchBar

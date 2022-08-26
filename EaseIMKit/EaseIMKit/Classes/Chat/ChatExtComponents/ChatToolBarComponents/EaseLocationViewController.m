@@ -1,12 +1,11 @@
 //
-//  EMLocationViewController.m
-//  ChatDemo-UI3.0
+//  EaseLocationViewController.m
+//  EaseIMKit
 //
-//  Created by XieYajie on 2019/1/29.
-//  Copyright © 2019 XieYajie. All rights reserved.
+//  Created by liu001 on 2022/8/26.
 //
 
-#import "EMLocationViewController.h"
+#import "EaseLocationViewController.h"
 #import "EaseHeaders.h"
 #import "EaseAlertController.h"
 #import "EaseAlertView.h"
@@ -14,7 +13,7 @@
 #import "EaseLocationResultModel.h"
 
 
-@interface EMLocationViewController ()<MKMapViewDelegate, CLLocationManagerDelegate>
+@interface EaseLocationViewController ()<MKMapViewDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic) BOOL canSend;
 
@@ -29,16 +28,19 @@
 @property (nonatomic, strong) UIButton *sendLocationBtn;
 @property (nonatomic, strong) UIButton *cancelBtn;
 @property (nonatomic, strong) EaseLocationSearchResultTableView *searchResultTableView;
-
-@property (nonatomic, assign) float zoomLevel;
+@property (nonatomic, strong) NSMutableArray *searchDataArray;
 
 
 @property (nonatomic, strong) MKUserLocation *currentUserLocation;
 
+@property (nonatomic, strong) NSString *searchKey;
+@property (nonatomic, strong) EaseLocationResultModel *currentLocationModel;
+
+@property (nonatomic) BOOL hasLocationed;
 
 @end
 
-@implementation EMLocationViewController
+@implementation EaseLocationViewController
 
 - (instancetype)init
 {
@@ -63,7 +65,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    self.searchKey = @"大厦";
+    
     [self _setupSubviews];
     
     if (self.canSend) {
@@ -89,43 +92,54 @@
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:EaseLocalizableString(@"send", nil) style:UIBarButtonItemStylePlain target:self action:@selector(sendAction)];
     }
     self.title = @"地理位置";*/
+    
     self.navigationController.navigationBar.hidden = YES;
     self.view.backgroundColor = [UIColor whiteColor];
-    self.mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
-    self.mapView.delegate = self;
-    self.mapView.mapType = MKMapTypeStandard;
-    self.mapView.zoomEnabled = YES;
-    [self.view addSubview:self.mapView];
     
+    [self.view addSubview:self.mapView];
     [self.view addSubview:self.sendLocationBtn];
+    [self.view addSubview:self.cancelBtn];
+    
+    
     [self.sendLocationBtn Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.width.equalTo(@55);
-        make.height.equalTo(@25);
+        make.width.equalTo(@58);
+        make.height.equalTo(@28);
         make.top.equalTo(self.view).offset(55);
-        make.right.equalTo(self.view).offset(-24);
+        make.right.equalTo(self.view).offset(-16.0);
     }];
+    
+    [self.cancelBtn Ease_makeConstraints:^(EaseConstraintMaker *make) {
+        make.width.equalTo(@(38.0));
+        make.height.equalTo(@(40.0));
+        make.centerY.equalTo(self.sendLocationBtn);
+        make.left.equalTo(self.view).offset(12.0);
+    }];
+
+    
     if (!self.canSend) {
         self.sendLocationBtn.hidden = YES;
+        [self.mapView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+
+    }else {
+        [self.mapView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view).insets(UIEdgeInsetsMake(0, 0, EaseIMKit_ScreenHeight * 0.5, 0));
+        }];
+
+        
+        [self.view addSubview:self.searchResultTableView];
+        [self.searchResultTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.view);
+            make.right.equalTo(self.view);
+            make.bottom.equalTo(self.view);
+//            make.top.equalTo(self.view.mas_centerY);
+            make.top.equalTo(self.mapView.mas_bottom);
+        }];
     }
     
-    [self.view addSubview:self.cancelBtn];
-    [self.cancelBtn Ease_makeConstraints:^(EaseConstraintMaker *make) {
-        make.width.equalTo(@55);
-        make.height.equalTo(@25);
-        make.top.equalTo(self.view).offset(55);
-        make.left.equalTo(self.view).offset(24);
-    }];
-    
     self.annotation = [[MKPointAnnotation alloc] init];
-    
-    [self.view addSubview:self.searchResultTableView];
-    [self.searchResultTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.bottom.equalTo(self.view);
-        make.top.equalTo(self.view.mas_centerY).offset(-20);
-    }];
-    
+
 }
 
 #pragma mark - Private
@@ -183,42 +197,31 @@
 - (void)loadCurrentArroundPosition:(MKLocalSearchResponse *)response {
     NSLog(@"%s",__func__);
     NSMutableArray *tArray = [NSMutableArray array];
-
+    
     for (int i = 0; i < response.mapItems.count; ++i) {
         MKMapItem *mapItem = response.mapItems[i];
 
         EaseLocationResultModel *model = [[EaseLocationResultModel alloc] init];
         model.mapItem = mapItem;
         if (i == 0) {
+            self.currentLocationModel = model;
             model.isSelected = YES;
-            [self updateLocationInfoWithPlaceMark:model.mapItem.placemark];
+            [self saveLocationInfoWithPlacemark:model.mapItem.placemark];
         }
         if (model) {
             [tArray addObject:model];
         }
     }
+    self.searchDataArray = [tArray mutableCopy];
+    self.hasLocationed = YES;
     
-    [self.searchResultTableView updateWithSearchResultArray:tArray];
+    [self.searchResultTableView updateWithSearchResultArray:self.searchDataArray];
 }
 
 
 #pragma mark - MKMapViewDelegate
-- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
-{
-    self.currentUserLocation = userLocation;
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
     
-    __weak typeof(self) weakself = self;
-    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-    [geocoder reverseGeocodeLocation:userLocation.location completionHandler:^(NSArray *array, NSError *error) {
-        if (!error && array.count > 0) {
-            CLPlacemark *placemark = [array objectAtIndex:0];
-            weakself.address = placemark.thoroughfare;
-            weakself.buildingName = placemark.name;//自主获取
-            [weakself _moveToLocation:userLocation.coordinate];
-        }
-    }];
-    
-    [self fetchNearbyInfoWithLocation:userLocation.location KeyStr:@"大厦"];
 }
 
 
@@ -229,6 +232,47 @@
         EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:nil message:[error.userInfo objectForKey:NSLocalizedRecoverySuggestionErrorKey]];
         [alertView show];
     }
+}
+
+- (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView {
+    NSLog(@"%s",__func__);
+
+    MKUserLocation *location = mapView.userLocation;
+    self.currentUserLocation = location;
+
+    if (self.hasLocationed) {
+        return;
+    }
+    
+    [self fetchNearbyInfoWithLocation:location.location KeyStr:self.searchKey];
+
+}
+
+
+#pragma mark CLLocationManagerDelegate
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
+    CLLocation *loc = [locations firstObject];
+
+    //根据获取的地理位置，获取位置信息
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    [geocoder reverseGeocodeLocation:[locations objectAtIndex:0] completionHandler:^(NSArray *array, NSError *error) {
+        //成功
+        if (array.count > 0) {
+            CLPlacemark *placemark = [array objectAtIndex:0];
+            NSLog(@"dic ---- %@", [placemark addressDictionary]);//具体代表什么，看输出就知道了
+        //失败
+        }else if (error == nil && array.count == 0){
+            NSLog(@"无返回信息");
+        }else if (error != nil){
+            NSLog(@"error occurred = %@", error);
+        }
+    }];
+    
+    CLLocation *location = locations[0];
+    [self _moveToLocation:location.coordinate];
+    
+    [self.locationManager stopUpdatingLocation];
+
 }
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
@@ -245,6 +289,7 @@
             break;
     }
 }
+
 
 #pragma mark - Action
 
@@ -282,13 +327,23 @@
 {
     if (_cancelBtn == nil) {
         _cancelBtn = [[UIButton alloc]init];
-        [_cancelBtn setTitle:EaseLocalizableString(@"cancel", nil) forState:UIControlStateNormal];
-        _cancelBtn.backgroundColor = [UIColor clearColor];
-        [_cancelBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_cancelBtn.titleLabel setFont:[UIFont systemFontOfSize:14.0]];
+        [_cancelBtn setImage:[UIImage easeUIImageNamed:@"ease_location_cancel"] forState:UIControlStateNormal];
+        
         [_cancelBtn addTarget:self action:@selector(closeAction) forControlEvents:UIControlEventTouchUpInside];
     }
     return _cancelBtn;
+}
+
+- (MKMapView *)mapView {
+    if (_mapView == nil) {
+        _mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
+        _mapView.delegate = self;
+        _mapView.mapType = MKMapTypeStandard;
+        _mapView.zoomEnabled = YES;
+        _mapView.userTrackingMode = MKUserTrackingModeFollow;
+        
+    }
+    return _mapView;
 }
 
 
@@ -297,14 +352,13 @@
         _searchResultTableView = [[EaseLocationSearchResultTableView alloc] init];
         EaseIMKit_WS
         
-        _searchResultTableView.selectedBlock = ^(EaseLocationResultModel * _Nonnull model) {          CLLocationCoordinate2D move = model.mapItem.placemark.coordinate;
-
-            [weakSelf updateLocationInfoWithPlaceMark:model.mapItem.placemark];
+        _searchResultTableView.selectedBlock = ^(EaseLocationResultModel * _Nonnull model) {
+            [weakSelf updateLocationInfoWithModel:model];
             
-            [weakSelf _moveToLocation:move];
         };
         
         _searchResultTableView.searchLocationBlock = ^(NSString * _Nonnull searchLocation) {
+            weakSelf.searchKey = searchLocation;
             [weakSelf fetchNearbyInfoWithLocation:weakSelf.currentUserLocation.location KeyStr:searchLocation];
 
         };
@@ -312,11 +366,41 @@
     return _searchResultTableView;
 }
 
-- (void)updateLocationInfoWithPlaceMark:(MKPlacemark *)placemark {
+- (NSMutableArray *)searchDataArray {
+    if (_searchDataArray == nil) {
+        _searchDataArray = [NSMutableArray array];
+    }
+    return _searchDataArray;
+}
+
+
+- (void)updateSearchResultData {
+    for (EaseLocationResultModel *model in self.searchDataArray) {
+        if (self.currentLocationModel == model) {
+            model.isSelected = YES;
+        }else {
+            model.isSelected = NO;
+        }
+    }
+    
+    [self.searchResultTableView updateWithSearchResultArray:self.searchDataArray];
+}
+
+- (void)updateLocationInfoWithModel:(EaseLocationResultModel *)model {
+    self.currentLocationModel = model;
+    
+    MKPlacemark *placemark = model.mapItem.placemark;
+    [self saveLocationInfoWithPlacemark:placemark];
+    [self _moveToLocation:self.locationCoordinate];
+    
+    [self updateSearchResultData];
+}
+
+- (void)saveLocationInfoWithPlacemark:(MKPlacemark *)placemark {
     self.locationCoordinate = placemark.coordinate;
     self.address = placemark.thoroughfare;
     self.buildingName = placemark.name;
 }
 
-
 @end
+

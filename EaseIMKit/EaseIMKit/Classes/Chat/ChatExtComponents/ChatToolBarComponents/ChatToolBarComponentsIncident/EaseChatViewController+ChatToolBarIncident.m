@@ -12,12 +12,13 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "EMLocationViewController.h"
+#import "EaseLocationViewController.h"
 #import "EaseAlertController.h"
 #import "EaseAlertView.h"
 #import "UIViewController+HUD.h"
 #import "JHOrderContainerViewController.h"
 #import "JHOrderViewModel.h"
+#import "EaseLocationViewController.h"
 
 /**
     媒体库
@@ -282,7 +283,7 @@ static const void *imagePickerKey = &imagePickerKey;
 - (void)chatToolBarLocationAction
 {
     if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied) {
-        EMLocationViewController *controller = [[EMLocationViewController alloc] init];
+        EaseLocationViewController *controller = [[EaseLocationViewController alloc] init];
         __weak typeof(self) weakself = self;
         [controller setSendCompletion:^(CLLocationCoordinate2D aCoordinate, NSString * _Nonnull aAddress, NSString * _Nonnull aBuildingName) {
             [weakself _sendLocationAction:aCoordinate address:aAddress buildingName:aBuildingName];

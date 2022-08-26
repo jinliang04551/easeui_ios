@@ -10,7 +10,7 @@
 #import "EMMsgTouchIncident.h"
 
 #import "EMMessageTimeCell.h"
-#import "EMLocationViewController.h"
+#import "EaseLocationViewController.h"
 #import "EMImageBrowser.h"
 #import "EaseDateHelper.h"
 #import "EMAudioPlayerUtil.h"
@@ -169,7 +169,7 @@
 - (void)messageCellEventOperation:(EaseMessageCell *)aCell
 {
     EMLocationMessageBody *body = (EMLocationMessageBody *)aCell.model.message.body;
-    EMLocationViewController *controller = [[EMLocationViewController alloc] initWithLocation:CLLocationCoordinate2DMake(body.latitude, body.longitude)];
+    EaseLocationViewController *controller = [[EaseLocationViewController alloc] initWithLocation:CLLocationCoordinate2DMake(body.latitude, body.longitude)];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     navController.modalPresentationStyle = 0;
     [self.chatController.navigationController presentViewController:navController animated:YES completion:nil];
