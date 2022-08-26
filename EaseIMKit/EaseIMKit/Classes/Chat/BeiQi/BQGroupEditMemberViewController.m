@@ -32,14 +32,6 @@
 @end
 
 @implementation BQGroupEditMemberViewController
-//- (instancetype)initWithMemberArray:(NSMutableArray *)memberArray {
-//    self = [super init];
-//    if (self) {
-//        self.memberArray = memberArray;
-//        self.isModify = YES;
-//    }
-//    return self;
-//}
 
 - (instancetype)initWithUserArray:(NSMutableArray *)userArray serverArray:(NSMutableArray *)serverArray {
     self = [super init];
@@ -50,6 +42,8 @@
         [self.memberArray addObjectsFromArray:self.serverArray];
         
         self.isModify = YES;
+        
+        
     }
     return self;
 
@@ -58,6 +52,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:USERINFO_UPDATE object:nil];
+
+    
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
     }else {
@@ -67,6 +65,12 @@
     [self placeAndLayoutSubviews];
     [self.groupSearchAddView updateUIWithMemberArray:self.memberArray];
 }
+
+- (void)refreshTableView {
+    [self.groupSearchAddView updateUIWithMemberArray:self.memberArray];
+    [self.searchResultTableView reloadData];
+}
+
 
 - (void)backItemAction {
     [self.navigationController popViewControllerAnimated:YES];

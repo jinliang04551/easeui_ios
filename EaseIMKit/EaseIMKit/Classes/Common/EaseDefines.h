@@ -316,6 +316,10 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 #define EaseNotificationReceiveMute @"EaseNotificationReceiveMute"
 #define EaseNotificationReceiveUnMute @"EaseNotificationReceiveUnMute"
 
+//被服务器强制下线
+#define EaseNotificationReceiveEnforceKickOffByServer @"EaseNotificationReceiveEnforceKickOffByServer"
+
+
 //#define DEF_APPKEY @"easemob-demo#chatdemoui"
 
 #define DEF_APPKEY @"1100220704109048#arcfox-server"

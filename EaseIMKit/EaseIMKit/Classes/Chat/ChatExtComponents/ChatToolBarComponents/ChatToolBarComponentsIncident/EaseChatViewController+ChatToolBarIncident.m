@@ -19,6 +19,7 @@
 #import "JHOrderContainerViewController.h"
 #import "JHOrderViewModel.h"
 #import "EaseLocationViewController.h"
+#import "EaseHeaders.h"
 
 /**
     媒体库
@@ -322,9 +323,18 @@ static const void *imagePickerKey = &imagePickerKey;
 - (void)chatToolBarFileOpenAction
 {
     NSArray *documentTypes = @[@"public.content", @"public.text", @"public.source-code", @"public.image", @"public.jpeg", @"public.png", @"com.adobe.pdf", @"com.apple.keynote.key", @"com.microsoft.word.doc", @"com.microsoft.excel.xls", @"com.microsoft.powerpoint.ppt"];
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgWhiteColor;
+
+    }else {
+        [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgBlackColor;
+    }
+
     UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeOpen];
     picker.delegate = self;
     picker.modalPresentationStyle = 0;
+    
     [self presentViewController:picker animated:YES completion:nil];
 }
 

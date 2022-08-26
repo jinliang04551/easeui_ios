@@ -134,42 +134,40 @@ static EaseIMHelper *helper = nil;
     }
 }
 
+
 - (void)userAccountDidLoginFromOtherDevice
 {
-    [[EMClient sharedClient] logout:NO];
-    [self showAlertWithMessage:NSLocalizedString(@"loginOtherPrompt", nil)];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
+    [self kickedOffByServer];
+
 }
 
 - (void)userAccountDidRemoveFromServer
 {
-    EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
-    options.isAutoLogin = NO;
-    [options archive];
-    [[EMClient sharedClient] logout:NO];
-    [self showAlertWithMessage:NSLocalizedString(@"removedByServerPrompt", nil)];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
+    [self kickedOffByServer];
 }
 
 - (void)userDidForbidByServer
 {
-    EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
-    options.isAutoLogin = NO;
-    [options archive];
-    [[EMClient sharedClient] logout:NO];
-    [self showAlertWithMessage:NSLocalizedString(@"accountForbiddenPrompt", nil)];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
+    [self kickedOffByServer];
 }
 
 - (void)userAccountDidForcedToLogout:(EMError *)aError
 {
+    [self kickedOffByServer];
+    
+}
+
+//被服务器强制踢下线
+- (void)kickedOffByServer {
+    EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
+    options.isAutoLogin = NO;
+    [options archive];
     [[EMClient sharedClient] logout:NO];
-    [self showAlertWithMessage:aError.errorDescription];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveEnforceKickOffByServer object:nil];
+
 }
 
 #pragma mark - EMMultiDevicesDelegate

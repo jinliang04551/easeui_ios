@@ -259,7 +259,8 @@ static NSString *g_UIKitVersion = @"1.0.0";
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveCMDCreateExGroup:) name:EaseNotificationReceiveCMDCreateExGroup object:nil];
 
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveEnforceKickOffByServer:) name:EaseNotificationReceiveEnforceKickOffByServer object:nil];
+
 
     return self;
 }
@@ -286,6 +287,13 @@ static NSString *g_UIKitVersion = @"1.0.0";
         [self.exGroupIds addObject:groupId];
     }
 
+}
+
+
+- (void)receiveEnforceKickOffByServer:(NSNotification *)notify {
+    if (self.delegates && [self.delegates respondsToSelector:@selector(enForceKickOffByServer)]) {
+        [self.delegates respondsToSelector:@selector(enForceKickOffByServer)];
+    }
 }
 
 #pragma mark - Public

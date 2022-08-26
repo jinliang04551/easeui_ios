@@ -67,6 +67,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)conversationsUnreadCountUpdate:(NSInteger)unreadTotalCount undisturbCount:(NSInteger)undisturbCount;
 
+
+/// 被服务器强制踢下线
+- (void)enForceKickOffByServer;
+
 @end
 
 

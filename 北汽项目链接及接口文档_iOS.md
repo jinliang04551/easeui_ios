@@ -87,12 +87,34 @@ EMConversationsViewController * conversationsVC= [[EMConversationsViewController
     EaseIMKitManager.shared.jihuCurrentUid = @"jihuAid";
     EaseIMKitManager.shared.jihuToken = @"jihuToken";
 
+11. 被服务器强制下线
+- (void)enForceKickOffByServer {
+    
+}
+
     
 #运管App
 1.  初始化
-       EaseIMKitOptions *demoOptions = [EaseIMKitOptions sharedOptions];
-    demoOptions.appkey = @"您的appkey";
-    [EaseIMKitManager initWithEaseIMKitOptions:demoOptions];
+    EaseIMKitOptions *demoOptions = [EaseIMKitOptions sharedOptions];
+    demoOptions.appkey = @"1100220704109048#arcfox-server";
+    demoOptions.apnsCertName = @"jihu_product";
+    demoOptions.apnsCertName = @"jihu_developer";
+    demoOptions.restServer = @"http://baidu.com";
+    [EaseIMKitManager managerWithEaseIMKitOptions:demoOptions];
+    
+1.1 注册推送
+    //注册推送
+    [self _registerRemoteNotification];
+1.2 绑定证书
+// 将得到的deviceToken传给SDK
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    NSLog(@"%s deviceToken:%@",__func__,deviceToken);
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[EMClient sharedClient] bindDeviceToken:deviceToken];
+    });
+}
 
 
 2. 配置UI入口，是否是极狐
@@ -122,4 +144,7 @@ EMConversationsViewController * conversationsVC=  [[EMConversationsViewControlle
 6. 未读总数 
 - (void)conversationsUnreadCountUpdate:(NSInteger)unreadCount;
 
+7. 被服务器强制下线
+- (void)enForceKickOffByServer {
     
+}
