@@ -78,8 +78,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNavigationTitle) name:CHATROOM_INFO_UPDATED object:nil];
     
     //接收通话邀请或者结束时，在当前会话页面
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMutiCallLoadConvsationDB:) name:EaseNotificationReceiveMutiCallLoadConvsationDB object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMutiCallStartOrEnd:) name:EaseNotificationReceiveMutiCallStartOrEnd object:nil];
 
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveGroupInfoUpdate:) name:EaseNotificationReceiveGroupInfoUpdate object:nil];
     
     
@@ -263,22 +265,14 @@
     [self refreshTableView];
 }
 
-- (void)receiveMutiCallLoadConvsationDB:(NSNotification *)notify {
-//    NSString *msgId = notify.object;
-//    if (msgId.length == 0) {
-//        return;
-//    }
+
+- (void)receiveMutiCallStartOrEnd:(NSNotification *)notify {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        EMChatMessage *msg = notify.object;
+        [self.chatController refreshTableViewWithData:@[msg] isInsertBottom:YES isScrollBottom:YES];
+    });
     
-//    NSLog(@"%s ============msgId:%@ self.moreMsgId:%@",__func__,msgId,self.moreMsgId);
-//
-//    self.moreMsgId = msgId;
-//
-//    NSLog(@"%s ========assignAfter====msgId:%@ self.moreMsgId:%@",__func__,msgId,self.moreMsgId);
-//
-//    [self loadData:YES];
-
 }
-
 
 - (void)receiveGroupInfoUpdate:(NSNotification *)notify {
     //群聊更新名称

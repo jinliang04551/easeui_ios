@@ -509,6 +509,7 @@ static EaseCallManager *easeCallManager = nil;
 //    if(aType == EaseCallType1v1Video) {
 //        [ext setObject:EMCOMMUNICATE_TYPE_VIDEO forKey:EMCOMMUNICATE_TYPE];
 //    }
+    
     EMChatMessage* msg = [[EMChatMessage alloc] initWithConversationID:aUid from:self.modal.curUserAccount to:aUid body:cmdBody ext:ext];
     __weak typeof(self) weakself = self;
     [[[EMClient sharedClient] chatManager] sendMessage:msg progress:nil completion:^(EMChatMessage *message, EMError *error) {
@@ -902,6 +903,10 @@ static EaseCallManager *easeCallManager = nil;
     }else{
         __weak typeof(self) weakself = self;
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (weakself.modal.currentCall.isCaller && self.callTimerDic.count == 0) {
+                [weakself getMultiVC].isAllTimeout = YES;
+            }
+            
             [[weakself getMultiVC] removePlaceHolderForMember:aRemoteUser];
         });
     }

@@ -36,6 +36,7 @@
     EaseConversationCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
         cell = [[EaseConversationCell alloc] initWithConversationsViewModel:viewModel identifier: cellId];
+        
     }
     
     return cell;
@@ -64,6 +65,7 @@
     [self.contentView addSubview:self.timeLabel];
     [self.contentView addSubview:self.groupIdLabel];
     [self.contentView addSubview:self.detailLabel];
+    [self.contentView addSubview:self.redDot];
     [self.contentView addSubview:self.badgeLabel];
     [self.contentView addSubview:self.undisturbRing];
 
@@ -95,6 +97,17 @@
         make.height.offset(weakSelf.viewModel.avatarSize.height).priority(750);
     }];
     
+
+//    CGFloat r = _viewModel.avatarSize.width/2.0;
+//    CGFloat padding = r - ceilf(r/sqrt(2)) - 6;//求得以内切圆半径为斜边的等直角边直角三角形的单直角边长度，用内切圆半径减去它再减去红点视图的一半距离求得偏移量
+
+//    [self.redDot Ease_remakeConstraints:^(EaseConstraintMaker *make) {
+//        make.height.Ease_equalTo(10);
+//        make.width.Ease_equalTo(10);
+//        make.top.equalTo(self.avatarView.ease_top).offset(padding);
+//        make.right.equalTo(self.avatarView.ease_right).offset(-padding);
+//    }];
+        
     [self.nameLabel Ease_remakeConstraints:^(EaseConstraintMaker *make) {
         make.top.equalTo(weakSelf.contentView.ease_top).offset(weakSelf.viewModel.nameLabelEdgeInsets.top + 14.0);
         make.left.equalTo(weakSelf.avatarView.ease_right).offset(weakSelf.viewModel.avatarEdgeInsets.right + weakSelf.viewModel.nameLabelEdgeInsets.left + 10.0);
@@ -135,6 +148,7 @@
             make.centerX.equalTo(weakSelf.avatarView.ease_right).offset(weakSelf.viewModel.badgeLabelCenterVector.dx - 8);
         }];
         
+        
         [self.detailLabel Ease_updateConstraints:^(EaseConstraintMaker *make) {
             make.right.equalTo(weakSelf.contentView.ease_right).offset(-weakSelf.viewModel.detailLabelEdgeInsets.right - 18);
         }];
@@ -147,6 +161,12 @@
         }];
     }
     
+    [self.redDot mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.Ease_equalTo(10);
+        make.width.Ease_equalTo(10);
+        make.center.equalTo(self.badgeLabel);
+    }];
+
     
 }
 
@@ -311,7 +331,7 @@
                 _avatarView.layer.cornerRadius = 5;
             }
             else if(_viewModel.avatarType == Circular) {
-                _avatarView.layer.cornerRadius = _viewModel.avatarSize.width / 2;
+                _avatarView.layer.cornerRadius = _viewModel.avatarSize.width * 0.5;
             }
             
         }else {
@@ -320,18 +340,6 @@
         
         _avatarView.backgroundColor = [UIColor clearColor];
         _avatarView.contentMode = UIViewContentModeScaleAspectFit;
-        
-        [_avatarView addSubview:self.redDot];
-
-        CGFloat r = _viewModel.avatarSize.width/2.0;
-        CGFloat padding = r - ceilf(r/sqrt(2)) - 6;//求得以内切圆半径为斜边的等直角边直角三角形的单直角边长度，用内切圆半径减去它再减去红点视图的一半距离求得偏移量
-
-        [self.redDot Ease_remakeConstraints:^(EaseConstraintMaker *make) {
-            make.height.Ease_equalTo(12);
-            make.width.Ease_equalTo(12);
-            make.top.equalTo(_avatarView.ease_top).offset(padding);
-            make.right.equalTo(_avatarView.ease_right).offset(-padding);
-        }];
         
     }
     return _avatarView;

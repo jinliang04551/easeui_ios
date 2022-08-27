@@ -27,6 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) EaseCallStreamView* localView;
 @property (nonatomic) NSMutableDictionary* streamViewsDic;
 
+//被邀请的人都没有接听，接听超时
+@property (nonatomic) BOOL isAllTimeout;
+
 @end
 
 NS_ASSUME_NONNULL_END

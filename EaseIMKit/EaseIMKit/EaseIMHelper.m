@@ -276,7 +276,7 @@ static EaseIMHelper *helper = nil;
     
     [groupChat insertMessage:message error:nil];
         
-    [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveMutiCallStartOrEnd object:message.messageId];
+    [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveMutiCallStartOrEnd object:message];
 }
 
 

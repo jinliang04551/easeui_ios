@@ -250,99 +250,6 @@
     return displayview;
 }
 
-//- (void)_refreshViewPos
-//{
-//    unsigned long count = self.streamViewsDic.count + self.placeHolderViewsDic.count;
-//    if(self.localView.displayView)
-//        count++;
-//    int index = 0;
-//    int top = 40;
-//    int left = 0;
-//    int right = 0;
-//    int colSize = 1;
-//    int colomns = count>6?3:2;
-//    int bottom = 200;
-//    int cellwidth = (self.contentView.frame.size.width - left - right - (colomns - 1)*colSize)/colomns ;
-//    int cellHeight = (self.contentView.frame.size.height - top - bottom)/(count > 6?5:3);
-//    if(count < 5)
-//        cellHeight = cellwidth;
-//    //int cellwidth = (self.contentView.frame.size.width - left - right - (colomns - 1)*colSize)/colomns ;
-//    //int cellHeight = MIN(cellHeightH, cellWidthV);
-//    //int cellwidth = cellHeight
-//    if(self.isJoined) {
-//
-//        self.microphoneButton.hidden = NO;
-//        self.microphoneLabel.hidden = NO;
-//        self.enableCameraButton.hidden = NO;
-//        self.enableCameraLabel.hidden = NO;
-//        self.speakerButton.hidden = NO;
-//        self.speakerLabel.hidden = NO;
-//        self.switchCameraButton.hidden = NO;
-//        self.switchCameraLabel.hidden = YES;
-//        [self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.centerX.equalTo(self.contentView);
-//            make.centerY.equalTo(self.inviteButton);
-////            make.bottom.equalTo(self.microphoneButton.mas_top).offset(-20.0);
-//            make.width.equalTo(@100);
-//        }];
-//        if(self.bigView) {
-//            [self.bigView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//                make.left.equalTo(self.contentView);
-//                make.top.equalTo(self.contentView).offset(top);
-//                make.width.equalTo(@(self.contentView.bounds.size.width));
-//                make.height.equalTo(@(self.contentView.bounds.size.height-top-bottom));
-//            }];
-//            if(self.bigView != self.localView) {
-//                [self.contentView sendSubviewToBack:self.localView];
-//            }
-//            NSArray* views = [self.streamViewsDic allValues];
-//            for(EaseCallStreamView* view in views) {
-//                if(self.bigView != view) {
-//                    [self.contentView sendSubviewToBack:view];
-//                }
-//            }
-//        }else{
-//            [self.localView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//                make.left.equalTo(self.contentView).offset(left + index%colomns * (cellwidth + colSize));
-//                make.top.equalTo(self.contentView).offset(top + index/colomns * (cellHeight + colSize));
-//                make.width.equalTo(@(cellwidth));
-//                make.height.equalTo(@(cellHeight));
-//            }];
-//            index++;
-//            NSArray* views = [self.streamViewsDic allValues];
-//            for(EaseCallStreamView* view in views) {
-//                [view mas_remakeConstraints:^(MASConstraintMaker *make) {
-//                    make.left.equalTo(self.contentView).offset(left + index%colomns * (cellwidth + colSize));
-//                    make.top.equalTo(self.contentView).offset(top + index/colomns * (cellHeight + colSize));
-//                    make.width.equalTo(@(cellwidth));
-//                    make.height.equalTo(@(cellHeight));
-//                }];
-//                index++;
-//            }
-//            NSArray* placeViews = [self.placeHolderViewsDic allValues];
-//            for(EaseCallStreamView* view in placeViews) {
-//                [view mas_remakeConstraints:^(MASConstraintMaker *make) {
-//                    make.left.equalTo(self.contentView).offset(left + index%colomns * (cellwidth + colSize));
-//                    make.top.equalTo(self.contentView).offset(top + index/colomns * (cellHeight + colSize));
-//                    make.width.equalTo(@(cellwidth));
-//                    make.height.equalTo(@(cellHeight));
-//                }];
-//                index++;
-//            }
-//        }
-//
-//    }else{
-//        self.microphoneButton.hidden = YES;
-//        self.microphoneLabel.hidden = YES;
-//        self.enableCameraButton.hidden = YES;
-//        self.enableCameraLabel.hidden = YES;
-//        self.speakerButton.hidden = YES;
-//        self.speakerLabel.hidden = YES;
-//        self.switchCameraButton.hidden = YES;
-//        self.switchCameraLabel.hidden = YES;
-//        self.acceptLabel.hidden = YES;
-//    }
-//}
 
 - (void)_refreshViewPos
 {
@@ -364,12 +271,7 @@
         self.speakerLabel.hidden = NO;
         self.switchCameraButton.hidden = NO;
         self.switchCameraLabel.hidden = YES;
-//        [self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.centerX.equalTo(self.contentView);
-//            make.bottom.equalTo(self.microphoneButton.mas_top).offset(-20.0);
-//            make.width.equalTo(@100);
-//
-//        }];
+
         
         [self.contentView addSubview:self.callSteamCollectionView];
         [self.callSteamCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -401,7 +303,7 @@
             [tArray addObject:self.localView];
             [tArray addObjectsFromArray:[[self.streamViewsDic allValues] mutableCopy]];
             [tArray addObjectsFromArray:[[self.placeHolderViewsDic allValues] mutableCopy]];
-
+            
         }
                 
         NSUInteger itemArrays = tArray.count/4;
@@ -416,6 +318,10 @@
         
         [self.callSteamCollectionView updateUIWithMemberArray:tArray];
 
+        //所有被邀请的人都超时未接听 挂断电话
+        if (!self.inviterId && self.isAllTimeout) {
+            [self hangupAction];
+        }
         
     }else{
         self.microphoneButton.hidden = YES;

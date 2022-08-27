@@ -111,8 +111,8 @@ EMSearchBarDelegate
 }
 
 - (void)receiveMutiCallStartOrEnd:(NSNotification *)notify {
-    NSString *msgId = notify.object;
-    self.mutiCallMsgId = msgId;
+    EMChatMessage *msg = notify.object;
+    self.mutiCallMsgId = msg.messageId;
     [self refreshTabView];
 }
 
