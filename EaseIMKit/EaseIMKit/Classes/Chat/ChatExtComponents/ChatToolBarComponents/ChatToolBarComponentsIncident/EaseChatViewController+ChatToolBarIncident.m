@@ -258,6 +258,18 @@ static const void *imagePickerKey = &imagePickerKey;
 {
     if (self.imagePicker == nil) {
         self.imagePicker = [[UIImagePickerController alloc] init];
+
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            self.imagePicker.navigationController.navigationBar.tintColor = EaseIMKit_ViewBgWhiteColor;
+
+//            self.imagePicker.navigationBar.barTintColor = EaseIMKit_ViewBgWhiteColor;
+
+        }else {
+            self.imagePicker.navigationController.navigationBar.tintColor = EaseIMKit_ViewBgBlackColor;
+//            self.imagePicker.navigationBar.barTintColor = EaseIMKit_ViewBgBlackColor;
+
+        }
+                
         self.imagePicker.modalPresentationStyle = UIModalPresentationOverFullScreen;
         self.imagePicker.delegate = self;
     }
@@ -324,16 +336,15 @@ static const void *imagePickerKey = &imagePickerKey;
 {
     NSArray *documentTypes = @[@"public.content", @"public.text", @"public.source-code", @"public.image", @"public.jpeg", @"public.png", @"com.adobe.pdf", @"com.apple.keynote.key", @"com.microsoft.word.doc", @"com.microsoft.excel.xls", @"com.microsoft.powerpoint.ppt"];
     
-    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgWhiteColor;
-
-    }else {
-        [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgBlackColor;
-    }
-
     UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeOpen];
     picker.delegate = self;
     picker.modalPresentationStyle = 0;
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        picker.navigationController.navigationBar.tintColor = EaseIMKit_ViewBgWhiteColor;
+
+    }else {
+        picker.navigationController.navigationBar.tintColor = EaseIMKit_ViewBgBlackColor;
+    }
     
     [self presentViewController:picker animated:YES completion:nil];
 }

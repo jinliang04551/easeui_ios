@@ -61,7 +61,7 @@
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self);
     }];
-    
+ 
 }
 
 - (void)updateWithSearchResultArray:(NSMutableArray *)tArray {
@@ -173,14 +173,14 @@
 - (UIView *)contentView {
     if (_contentView == nil) {
         _contentView = [[UIView alloc] init];
-        _contentView.layer.cornerRadius = 4.0;
+        _contentView.layer.cornerRadius = 8.0;
         _contentView.clipsToBounds = YES;
         
         [_contentView addSubview:self.searchBar];
         [_contentView addSubview:self.tableView];
 
         [self.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_contentView).offset(16.0);
+            make.top.equalTo(_contentView);
             make.left.equalTo(_contentView);
             make.right.equalTo(_contentView);
             make.height.equalTo(@(48.0));

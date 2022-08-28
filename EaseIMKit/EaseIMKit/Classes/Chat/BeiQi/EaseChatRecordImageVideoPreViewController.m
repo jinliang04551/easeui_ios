@@ -12,7 +12,7 @@
 #import <AVKit/AVKit.h>
 
 
-@interface EaseChatRecordImageVideoPreViewController (){
+@interface EaseChatRecordImageVideoPreViewController ()<AVPlayerViewControllerDelegate>{
     id _observer;
 }
 
@@ -192,23 +192,24 @@
     
     void (^playBlock)(NSString *aPath) = ^(NSString *aPathe) {
         NSURL *videoURL = [NSURL fileURLWithPath:aPathe];
-//        AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
-//        playerViewController.player = [AVPlayer playerWithURL:videoURL];
-//        playerViewController.videoGravity = AVLayerVideoGravityResizeAspect;
-//        playerViewController.showsPlaybackControls = YES;
-//        playerViewController.modalPresentationStyle = 0;
-//        [self presentViewController:playerViewController animated:YES completion:^{
-//            [playerViewController.player play];
-//        }];
+        AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
+        playerViewController.delegate = self;
+        playerViewController.player = [AVPlayer playerWithURL:videoURL];
+        playerViewController.videoGravity = AVLayerVideoGravityResizeAspect;
+        playerViewController.showsPlaybackControls = YES;
+        playerViewController.modalPresentationStyle = 0;
+        [self presentViewController:playerViewController animated:YES completion:^{
+            [playerViewController.player play];
+        }];
       
         
-    AVPlayer *player=[AVPlayer playerWithURL:videoURL];
-    player.rate = 1.0;
-    AVPlayerLayer *playerLayer=[AVPlayerLayer playerLayerWithPlayer:player];
-    playerLayer.frame = CGRectMake(0, 0, EaseIMKit_ScreenWidth, 300);
-    playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-    [self.view.layer addSublayer:playerLayer];
-    [player play];
+//    AVPlayer *player=[AVPlayer playerWithURL:videoURL];
+//    player.rate = 1.0;
+//    AVPlayerLayer *playerLayer=[AVPlayerLayer playerLayerWithPlayer:player];
+//    playerLayer.frame = CGRectMake(0, 0, EaseIMKit_ScreenWidth, 300);
+//    playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+//    [self.view.layer addSublayer:playerLayer];
+//    [player play];
         
 //    [self startPlayVodStream:videoURL];
         
@@ -252,7 +253,11 @@
     
 }
 
+#pragma mark AVPlayerViewControllerDelegate
+- (void)playerViewController:(AVPlayerViewController *)playerViewController willEndFullScreenPresentationWithAnimationCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    [self.navigationController popViewControllerAnimated:NO];
 
+}
 
 #pragma mark getter and setter
 - (UIImageView *)iconImageView {

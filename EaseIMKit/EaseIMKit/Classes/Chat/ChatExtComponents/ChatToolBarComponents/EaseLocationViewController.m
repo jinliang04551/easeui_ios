@@ -67,6 +67,10 @@
     [super viewDidLoad];
     self.searchKey = @"大厦";
     
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
     [self _setupSubviews];
     
     if (self.canSend) {
@@ -246,6 +250,43 @@
     
     [self fetchNearbyInfoWithLocation:location.location KeyStr:self.searchKey];
 
+}
+
+#pragma mark - KeyBoard
+- (void)keyBoardWillShow:(NSNotification *)note
+{
+    // 获取用户信息
+    NSDictionary *userInfo = [NSDictionary dictionaryWithDictionary:note.userInfo];
+    // 获取键盘高度
+    CGRect keyBoardBounds  = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGFloat keyBoardHeight = keyBoardBounds.size.height;
+    
+    CGFloat offset = 0;
+    CGFloat searchBarBottomY = EaseIMKit_ScreenHeight * 0.5 +48;
+    
+    if (EaseIMKit_ScreenHeight - keyBoardHeight <= searchBarBottomY) {
+        offset = searchBarBottomY - (EaseIMKit_ScreenHeight - keyBoardHeight);
+    } else {
+        return;
+    }
+
+    void (^animation)(void) = ^void(void) {
+        [self.searchResultTableView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.mapView.mas_bottom).offset(-offset);
+        }];
+    };
+    
+    [self keyBoardWillShow:note animations:animation completion:nil];
+}
+
+- (void)keyBoardWillHide:(NSNotification *)note
+{
+    void (^animation)(void) = ^void(void) {
+        [self.searchResultTableView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.mapView.mas_bottom);
+        }];
+    };
+    [self keyBoardWillHide:note animations:animation completion:nil];
 }
 
 

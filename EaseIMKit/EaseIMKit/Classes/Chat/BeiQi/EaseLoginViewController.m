@@ -53,6 +53,7 @@
     [self _setupSubviews];
 }
 
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
