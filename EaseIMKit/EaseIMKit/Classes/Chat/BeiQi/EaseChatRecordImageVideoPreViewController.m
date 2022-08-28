@@ -41,6 +41,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [self placeAndLayoutSubViews];
     [self displayImageOrVideo];
 }
@@ -168,8 +169,9 @@
     [self.avPlayer seekToTime:CMTimeMakeWithSeconds(0, 600) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     AVPlayerItem *item = [dic objectForKey:@"playItem"];
     [item seekToTime:kCMTimeZero];
-    [self startPlayVodStream:pushUrl];
+//    [self startPlayVodStream:pushUrl];
 }
+
 
 -(void)addProgressObserver:(NSString*)url {
     __weak typeof(self) weakSelf = self;
@@ -190,33 +192,23 @@
     
     void (^playBlock)(NSString *aPath) = ^(NSString *aPathe) {
         NSURL *videoURL = [NSURL fileURLWithPath:aPathe];
-        AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
-        playerViewController.player = [AVPlayer playerWithURL:videoURL];
-        playerViewController.videoGravity = AVLayerVideoGravityResizeAspect;
-        playerViewController.showsPlaybackControls = YES;
-        playerViewController.modalPresentationStyle = 0;
-        [self presentViewController:playerViewController animated:YES completion:^{
-            [playerViewController.player play];
-        }];
+//        AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
+//        playerViewController.player = [AVPlayer playerWithURL:videoURL];
+//        playerViewController.videoGravity = AVLayerVideoGravityResizeAspect;
+//        playerViewController.showsPlaybackControls = YES;
+//        playerViewController.modalPresentationStyle = 0;
+//        [self presentViewController:playerViewController animated:YES completion:^{
+//            [playerViewController.player play];
+//        }];
       
         
 //    AVPlayer *player=[AVPlayer playerWithURL:videoURL];
-//
-//    player.rate=1.0;
-//
-//
+//    player.rate = 1.0;
 //    AVPlayerLayer *playerLayer=[AVPlayerLayer playerLayerWithPlayer:player];
-//
-//
-//    playerLayer.frame=CGRectMake(0, 0, EaseIMKit_ScreenWidth, 300);
-//
-//
+//    playerLayer.frame = CGRectMake(0, 0, EaseIMKit_ScreenWidth, 300);
 //    [self.view.layer addSublayer:playerLayer];
-//
-//
 //    [player play];
-     
-//        [self startPlayVodStream:videoURL];
+    [self startPlayVodStream:videoURL];
         
     };
 

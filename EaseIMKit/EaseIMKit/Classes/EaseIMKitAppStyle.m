@@ -53,7 +53,7 @@
 //         [NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, [UIFont systemFontOfSize:16.0], NSFontAttributeName, nil]];
         
         
-        [[UINavigationBar appearance] setBackgroundImage:[UIImage easeUIImageNamed:@"navbar_white"] forBarMetrics:UIBarMetricsDefault];
+//        [[UINavigationBar appearance] setBackgroundImage:[UIImage easeUIImageNamed:@"navbar_white"] forBarMetrics:UIBarMetricsDefault];
         [[UINavigationBar appearance].layer setMasksToBounds:YES];
         [UINavigationBar appearance].backgroundColor = [UIColor whiteColor];
     }

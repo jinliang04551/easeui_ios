@@ -7,7 +7,8 @@
 //
 
 #import "EMImageBrowser.h"
-
+#import "EaseIMKitOptions.h"
+#import "EaseHeaders.h"
 
 #define IMAGE_MAX_SIZE_5k 5120*2880
 
@@ -53,7 +54,15 @@ static EMImageBrowser *browser = nil;
         [_photoBrowser setCurrentPhotoIndex:0];
         
         _photoNavigationController = [[UINavigationController alloc] initWithRootViewController:self.photoBrowser];
-        _photoNavigationController.navigationBar.tintColor = UIColor.yellowColor;
+
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            _photoNavigationController.navigationBar.tintColor = EaseIMKit_ViewBgWhiteColor;
+
+        }else {
+            _photoNavigationController.navigationBar.tintColor = EaseIMKit_ViewBgBlackColor;
+        }
+        
+        _photoNavigationController.modalPresentationStyle = UIModalPresentationFullScreen;
 
         _photoNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     }
