@@ -29,6 +29,7 @@
 #import "UserInfoStore.h"
 #import "EMSearchBar.h"
 #import "EaseNoDataPlaceHolderView.h"
+#import "EaseNavPopView.h"
 
 
 @interface EMConversationsViewController() <EaseConversationsViewControllerDelegate, EMGroupManagerDelegate>
@@ -45,6 +46,8 @@
 @property (nonatomic, strong) UIView *titleView;
 
 @property (nonatomic, strong) EMSearchBar *searchBar;
+
+@property (nonatomic, strong) EaseNavPopView *navPopView;
 
 
 @end
@@ -102,7 +105,9 @@
 {
     [super viewWillDisappear:animated];
     self.navigationController.navigationBarHidden = NO;
+    self.navPopView.hidden = YES;
 }
+
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -157,6 +162,14 @@
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
+    }];
+    
+    [self.view addSubview:self.navPopView];
+    [self.navPopView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.titleView.mas_bottom);
+        make.right.equalTo(self.view).offset(-16.0);
+        make.width.equalTo(@(138));
+        make.height.equalTo(@(180.0));
     }];
     
     if ([EaseIMKitOptions sharedOptions].isJiHuApp && self.enterType == EMConversationEnterTypeMyChat) {
@@ -278,24 +291,7 @@
 
 - (void)moreAction
 {
-    NSArray *titleArray = @[@"消息提醒",@"搜索群聊",@"创建群组",@"群组申请"];
-    EaseIMKitOptions *options = [EaseIMKitOptions sharedOptions];
-    NSString *msgAlertName = options.isAlertMsg ? @"yg_msg_alert_on": @"yg_msg_alert_off";
-    
-    NSArray *imageNameArray = @[msgAlertName,@"yg_group_search",@"yg_group_create",@"yg_group_apply"];
-    
-    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-220.0,EaseIMKit_NavBarAndStatusBarHeight, 138.0, 180) selectData:titleArray images:imageNameArray locationY:44.0 action:^(NSInteger index){
-        if(index == 0) {
-            [self messageAlertAction];
-        } else if (index == 1) {
-            [self searchGroupAction];
-        }else if (index == 2) {
-            [self createGroupAction];
-        }else if (index == 3) {
-            [self groupApplyAction];
-        }
-        
-    } animated:YES];
+    self.navPopView.hidden = !self.navPopView.hidden;
 }
 
 
@@ -516,6 +512,7 @@
             config.offsetY = 2;
             config.offsetX = -2;
             config.size = CGSizeMake(8.0, 8.0);
+            config.radius = 8.0 * 0.5;
             config;
         })];
         _rightNavBarBtn.MIS_redDot.hidden = YES;
@@ -542,7 +539,7 @@
             
             
             titleLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
-            titleLabel.font = [UIFont systemFontOfSize:18];
+            titleLabel.font = [UIFont systemFontOfSize:16.0];
             [_titleView addSubview:titleLabel];
             [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerX.equalTo(_titleView);
@@ -601,6 +598,29 @@
         _searchBar.delegate = self.easeConvsVC;
     }
     return _searchBar;
+}
+
+- (EaseNavPopView *)navPopView {
+    if (_navPopView == nil) {
+        _navPopView = [[EaseNavPopView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        _navPopView.hidden = YES;
+
+        EaseIMKit_WS
+        _navPopView.actionBlock = ^(NSInteger index) {
+            if(index == 0) {
+                [weakSelf messageAlertAction];
+            } else if (index == 1) {
+                [weakSelf searchGroupAction];
+            }else if (index == 2) {
+                [weakSelf createGroupAction];
+            }else if (index == 3) {
+                [weakSelf groupApplyAction];
+            }
+            
+            weakSelf.navPopView.hidden = YES;
+        };
+    }
+    return _navPopView;
 }
 
 

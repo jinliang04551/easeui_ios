@@ -327,10 +327,6 @@
 //            [weakSelf.groupSearchView clearSearchContent];
         };
         
-        _searchTypeTableView.layer.shadowColor = [UIColor colorWithHexString:@"#6C8AB6"].CGColor;
-        _searchTypeTableView.layer.shadowOpacity = 0.1;
-        _searchTypeTableView.layer.shadowRadius = 8.0;
-        _searchTypeTableView.layer.shadowOffset = CGSizeMake(2,2);
     }
     return _searchTypeTableView;
 }

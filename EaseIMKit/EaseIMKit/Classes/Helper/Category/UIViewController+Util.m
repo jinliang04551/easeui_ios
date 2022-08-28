@@ -84,7 +84,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     UIView *contentView = [[UIView alloc] init];
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.text = title;
-    titleLabel.font = [UIFont systemFontOfSize:18];
+    titleLabel.font = [UIFont systemFontOfSize:16.0];
 
     UIButton *backImageBtn = [[UIButton alloc]init];
     [backImageBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];

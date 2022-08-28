@@ -33,6 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSString *inviter;
 @property (nonatomic, strong, readonly) NSString *approvalId;
 
+@property (nonatomic, strong, readonly) NSString *inviterNickName;
+@property (nonatomic, strong, readonly) NSString *userNickName;
+
 
 - (instancetype)initWithDic:(NSDictionary *)dic;
 

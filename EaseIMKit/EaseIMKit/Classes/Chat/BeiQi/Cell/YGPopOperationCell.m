@@ -37,7 +37,7 @@
         config.offsetY = [YGPopOperationCell height]* 0.4;
         config.offsetX = 5.0;
         config.size = CGSizeMake(8.0, 8.0);
-        config.radius = 4.0;
+        config.radius = 8.0 * 0.5;
         config;
     })];
     self.contentView.MIS_redDot.hidden = YES;

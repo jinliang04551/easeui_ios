@@ -12,6 +12,7 @@
 @property (nonatomic,copy) NSArray *selectData;
 @property (nonatomic,copy) void(^action)(NSInteger index);
 @property (nonatomic,copy) NSArray * imagesData;
+
 @end
 
 
