@@ -10,7 +10,6 @@
 @interface BQTitleContentAccessCell ()
 @property (nonatomic, strong) UIImageView* accessoryImageView;
 @property (nonatomic, strong) UILabel* detailLabel;
-@property (nonatomic, strong) UILabel* contentLabel;
 
 
 @end

@@ -903,7 +903,7 @@ static EaseCallManager *easeCallManager = nil;
     }else{
         __weak typeof(self) weakself = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (weakself.modal.currentCall.isCaller && self.callTimerDic.count == 0) {
+            if (weakself.modal.currentCall.isCaller && self.callTimerDic.count == 0 && self.modal.currentCall.allUserAccounts.count == 0) {
                 [weakself getMultiVC].isAllTimeout = YES;
             }
             
@@ -1290,6 +1290,8 @@ static EaseCallManager *easeCallManager = nil;
             self.modal.state = EaseCallState_Idle;
         }
     }
+    
+    [self getMultiVC].isAllTimeout = NO;
 }
 
 - (void)sendCallFinishCMDMessageWithGroupId:(NSString *)groupId {
@@ -1359,14 +1361,21 @@ static EaseCallManager *easeCallManager = nil;
 }
 -(NSString*) getNicknameByUserName:(NSString*)aUserName
 {
-    if([aUserName length] > 0){
-        EaseCallUser*user = [self.config.users objectForKey:aUserName];
-        if(user && user.nickName.length > 0) {
-            return user.nickName;
-        }
-    }
-    return aUserName;
+//    if([aUserName length] > 0){
+//        EaseCallUser*user = [self.config.users objectForKey:aUserName];
+//        if(user && user.nickName.length > 0) {
+//            return user.nickName;
+//        }else {
+//            return aUserName;
+//        }
+//    }
+//    return aUserName;
+    
+    NSString *nickName = [EaseKitUtil fetchUserDicWithUserId:aUserName][EaseUserNicknameKey];
+    return nickName;
+    
 }
+
 -(NSURL*) getHeadImageByUserName:(NSString *)aUserName
 {
     if([aUserName length] > 0){

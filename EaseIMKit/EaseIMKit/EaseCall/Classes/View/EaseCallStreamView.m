@@ -11,6 +11,8 @@
 #import "UIImage+Ext.h"
 #import "EaseHeaders.h"
 
+#define kTalkingAnimationDuration 0.3
+
 @interface EaseCallStreamView()
 
 @property (nonatomic, strong) UIImageView *statusView;
@@ -66,7 +68,7 @@
         [self.nameBgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self).offset(-5);
             make.left.equalTo(self).offset(16.0);
-            make.right.equalTo(self);
+            make.right.equalTo(self.statusView.mas_left).offset(-5.0);
             make.height.equalTo(@30);
         }];
         
@@ -109,11 +111,18 @@
 {
     if(isTalking != _isTalking) {
         if(isTalking) {
-            _statusView.image = [UIImage imageNamedFromBundle:@"talking_green"];
+//            _statusView.image = [UIImage imageNamedFromBundle:@"talking_green"];
+
+            self.talkingImageView.hidden = NO;
+            [self.talkingImageView startAnimating];
+
             if(!self.timeTimer)
-                self.timeTimer = [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(timeTalkingAction:) userInfo:nil repeats:NO];
+                self.timeTimer = [NSTimer scheduledTimerWithTimeInterval:kTalkingAnimationDuration target:self selector:@selector(timeTalkingAction:) userInfo:nil repeats:NO];
             
         }else{
+            [self.talkingImageView stopAnimating];
+            self.talkingImageView.hidden = YES;
+            
             if(self.timeTimer) {
                 [self.timeTimer invalidate];
                 self.timeTimer = nil;
@@ -159,6 +168,8 @@
         _nameLabel.textColor = [UIColor whiteColor];
         _nameLabel.font = [UIFont systemFontOfSize:12.0];
         _nameLabel.textAlignment = NSTextAlignmentLeft;
+        
+        _nameLabel.backgroundColor = UIColor.redColor;
     }
     return _nameLabel;
 }
@@ -195,7 +206,7 @@
     if (!_talkingImageView) {
         _talkingImageView = [[UIImageView alloc] init];
         //图片播放一次所需时长
-        _talkingImageView.animationDuration = 0.3;
+        _talkingImageView.animationDuration = kTalkingAnimationDuration;
         //图片播放次数,0表示无限
         _talkingImageView.animationRepeatCount = 0;
 
@@ -208,13 +219,6 @@
 }
 
 
-- (NSTimer *)timeTimer {
-    if (_timeTimer == nil) {
-        _timeTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timeTalkingAction:) userInfo:nil repeats:NO];
-    }
-    return _timeTimer;
-}
-
-
 
 @end
+#undef kTalkingAnimationDuration

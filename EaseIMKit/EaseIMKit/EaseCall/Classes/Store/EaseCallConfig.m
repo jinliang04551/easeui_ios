@@ -14,13 +14,15 @@
     self = [super init];
     if(self) {
         NSBundle* bundle = [NSBundle bundleForClass:[self class]];
-        NSString* path = [NSString stringWithFormat:@"EaseCall.bundle/icon"];
+        NSString* path = [NSString stringWithFormat:@"EaseCall.bundle/call_default_user_icon"];
         NSURL* url = [bundle URLForResource:path withExtension:@"png"];
         self.headImage = url;
         self.nickName = @"";
     }
     return self;
 }
+
+
 +(instancetype)userWithNickName:(NSString*)aNickName image:(NSURL*)aUrl
 {
     EaseCallUser* user = [[EaseCallUser alloc] init];

@@ -77,24 +77,20 @@
     {
         if([self.inviterId length] > 0) {
             NSURL* remoteUrl = [[EaseCallManager sharedManager] getHeadImageByUserName:self.inviterId];
-            self.remoteHeadView = [[UIImageView alloc] init];
-            self.remoteHeadView.layer.cornerRadius = 80 * 0.5;
+            [self.remoteHeadView sd_setImageWithURL:remoteUrl];
             [self.contentView addSubview:self.remoteHeadView];
             [self.remoteHeadView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.width.height.equalTo(@80);
                 make.centerX.equalTo(self.contentView);
                 make.top.equalTo(@100);
             }];
-            [self.remoteHeadView sd_setImageWithURL:remoteUrl];
-            self.remoteNameLable = [[UILabel alloc] init];
-            self.remoteNameLable.backgroundColor = [UIColor clearColor];
-            self.remoteNameLable.textColor = [UIColor whiteColor];
-            self.remoteNameLable.textAlignment = NSTextAlignmentRight;
-            self.remoteNameLable.font = [UIFont systemFontOfSize:24];
-            self.remoteNameLable.text = [[EaseCallManager sharedManager] getNicknameByUserName:self.inviterId];
-            [self.timeLabel setHidden:YES];
-            [self.contentView addSubview:self.remoteNameLable];
-            [self.remoteNameLable mas_makeConstraints:^(MASConstraintMaker *make) {
+            
+
+            self.remoteNameLabel.text = [[EaseCallManager sharedManager] getNicknameByUserName:self.inviterId];
+
+            
+            [self.contentView addSubview:self.remoteNameLabel];
+            [self.remoteNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.remoteHeadView.mas_bottom).offset(20);
                 make.centerX.equalTo(self.contentView);
             }];
@@ -108,7 +104,7 @@
             self.acceptLabel.hidden = YES;
             [self.contentView addSubview:self.statusLable];
             [self.statusLable mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.remoteNameLable.mas_bottom).offset(20);
+                make.top.equalTo(self.remoteNameLabel.mas_bottom).offset(20);
                 make.centerX.equalTo(self.contentView);
             }];
         }else{
@@ -232,7 +228,7 @@
     [self.switchCameraButton setEnabled:YES];
     [self.microphoneButton setEnabled:YES];
     if([self.inviterId length] > 0) {
-        [self.remoteNameLable removeFromSuperview];
+        [self.remoteNameLabel removeFromSuperview];
         [self.statusLable removeFromSuperview];
         [self.remoteHeadView removeFromSuperview];
     }
@@ -363,7 +359,7 @@
     self.answerButton.hidden = YES;
     self.acceptLabel.hidden = YES;
     self.statusLable.hidden = YES;
-    self.remoteNameLable.hidden = YES;
+    self.remoteNameLabel.hidden = YES;
     self.remoteHeadView.hidden = YES;
     [self.hangupButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         CGFloat offset = 26.0 + EaseIMKit_BottomSafeHeight;
@@ -593,6 +589,28 @@ return _callSteamCollectionView;
         [_inviteButton addTarget:self action:@selector(inviteAction) forControlEvents:UIControlEventTouchUpInside];
     }
     return _inviteButton;
+}
+
+
+- (UIImageView *)remoteHeadView {
+    if (_remoteHeadView == nil) {
+        _remoteHeadView = [[UIImageView alloc] init];
+        _remoteHeadView.layer.cornerRadius = 80 * 0.5;
+        _remoteHeadView.clipsToBounds = YES;
+    }
+    return _remoteHeadView;
+}
+
+- (UILabel *)remoteNameLabel {
+    if (_remoteNameLabel == nil) {
+        _remoteNameLabel = [[UILabel alloc] init];
+        _remoteNameLabel.backgroundColor = [UIColor clearColor];
+        _remoteNameLabel.textColor = [UIColor whiteColor];
+        _remoteNameLabel.textAlignment = NSTextAlignmentRight;
+        _remoteNameLabel.font = [UIFont systemFontOfSize:24];
+        _remoteNameLabel.hidden = YES;
+    }
+    return _remoteNameLabel;
 }
 
 @end

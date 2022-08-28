@@ -10,6 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BQTitleContentAccessCell : BQCustomCell
+@property (nonatomic, strong) UILabel* contentLabel;
 
 + (CGFloat)heightWithObj:(NSString *)obj;
 

@@ -29,6 +29,8 @@
 #import "EaseIMKitManager.h"
 #import "EaseIMHelper.h"
 #import "UserInfoStore.h"
+#import "BQTitleContentAccessCell.h"
+
 
 
 @interface EMGroupInfoViewController ()<EMMultiDevicesDelegate, EMGroupManagerDelegate>
@@ -46,6 +48,12 @@
 
 @property (nonatomic, strong) UIView *titleView;
 @property (nonatomic, strong) NSString *groupOwnerNickname;
+
+//群组公告
+@property (nonatomic, strong) NSString *groupAnnocement;
+
+//群组介绍
+@property (nonatomic, strong) NSString *groupIntroduce;
 
 @end
 
@@ -99,6 +107,9 @@
     [self.tableView registerClass:[BQTitleValueCell class] forCellReuseIdentifier:NSStringFromClass([BQTitleValueCell class])];
 
     [self.tableView registerClass:[BQTitleAvatarAccessCell class] forCellReuseIdentifier:NSStringFromClass([BQTitleAvatarAccessCell class])];
+    
+    [self.tableView registerClass:[BQTitleContentAccessCell class] forCellReuseIdentifier:NSStringFromClass([BQTitleContentAccessCell class])];
+
     
 }
 
@@ -198,6 +209,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
     BQTitleSwitchCell *titleSwitchCell = [tableView dequeueReusableCellWithIdentifier:[BQTitleSwitchCell reuseIdentifier]];
     
+    BQTitleContentAccessCell *titleContentAccessCell = [tableView dequeueReusableCellWithIdentifier:[BQTitleContentAccessCell reuseIdentifier]];
+
     
     if (indexPath.section == 0) {
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
@@ -263,19 +276,38 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
                 return titleValueCell;
 
             }else if (indexPath.row == 2){
-                titleValueAccessCell.nameLabel.text = @"群公告";
-                titleValueAccessCell.detailLabel.text = @"";
-                titleValueAccessCell.tapCellBlock = ^{
-                    [self groupAnnouncementAction];
-                };
-                return titleValueAccessCell;
+                if (self.groupAnnocement.length > 0) {
+                    titleContentAccessCell.nameLabel.text = @"群公告";
+                    titleContentAccessCell.contentLabel .text = self.groupAnnocement;
+                    titleContentAccessCell.tapCellBlock = ^{
+                        [self groupAnnouncementAction];
+                    };
+                    return titleContentAccessCell;
+                }else {
+                    titleValueAccessCell.nameLabel.text = @"群公告";
+                    titleValueAccessCell.detailLabel.text = @"未设置";
+                    titleValueAccessCell.tapCellBlock = ^{
+                        [self groupAnnouncementAction];
+                    };
+                    return titleValueAccessCell;
+                }
             }else  if (indexPath.row == 3){
-                titleValueAccessCell.nameLabel.text = @"群介绍";
-                titleValueAccessCell.detailLabel.text = @"";
-                titleValueAccessCell.tapCellBlock = ^{
-                    [self _updateGroupDetailAction];
-                };
-                return titleValueAccessCell;
+                if (self.groupIntroduce.length > 0) {
+                    titleContentAccessCell.nameLabel.text = @"群介绍";
+                    titleContentAccessCell.contentLabel.text = @"";
+                    titleContentAccessCell.tapCellBlock = ^{
+                        [self _updateGroupDetailAction];
+                    };
+                    return titleContentAccessCell;
+                }else {
+                    titleValueAccessCell.nameLabel.text = @"群介绍";
+                    titleValueAccessCell.detailLabel.text = @"";
+                    titleValueAccessCell.tapCellBlock = ^{
+                        [self _updateGroupDetailAction];
+                    };
+                    return titleValueAccessCell;
+                }
+                
             }else if (indexPath.row == 4){
                 titleValueAccessCell.nameLabel.text = @"群禁言";
                 titleValueAccessCell.detailLabel.text = @"";
@@ -303,12 +335,27 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
                 return titleValueCell;
 
             }else if (indexPath.row == 2){
-                titleValueAccessCell.nameLabel.text = @"群公告";
-                titleValueAccessCell.detailLabel.text = @"";
-                titleValueAccessCell.tapCellBlock = ^{
-                    [self groupAnnouncementAction];
-                };
-                return titleValueAccessCell;
+//                titleValueAccessCell.nameLabel.text = @"群公告";
+//                titleValueAccessCell.detailLabel.text = @"";
+//                titleValueAccessCell.tapCellBlock = ^{
+//                    [self groupAnnouncementAction];
+//                };
+//                return titleValueAccessCell;
+                if (self.groupAnnocement.length > 0) {
+                    titleContentAccessCell.nameLabel.text = @"群公告";
+                    titleContentAccessCell.contentLabel .text = self.groupAnnocement;
+                    titleContentAccessCell.tapCellBlock = ^{
+                        [self groupAnnouncementAction];
+                    };
+                    return titleContentAccessCell;
+                }else {
+                    titleValueAccessCell.nameLabel.text = @"群公告";
+                    titleValueAccessCell.detailLabel.text = @"未设置";
+                    titleValueAccessCell.tapCellBlock = ^{
+                        [self groupAnnouncementAction];
+                    };
+                    return titleValueAccessCell;
+                }
             }else  if (indexPath.row == 3){
                 titleValueAccessCell.nameLabel.text = @"群介绍";
                 titleValueAccessCell.detailLabel.text = @"";
@@ -358,6 +405,19 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         return [BQGroupMemberCell cellHeightWithObj:self.memberArray];
     }
     
+//    if (indexPath.section == 1 && indexPath.row == 2){
+//        if (self.groupAnnocement.length > 0) {
+//            return [BQTitleContentAccessCell heightWithObj:self.groupAnnocement];
+//        }
+//    }
+    
+    if (indexPath.section == 1 && indexPath.row == 3){
+        if (self.groupIntroduce.length > 0) {
+            return [BQTitleContentAccessCell heightWithObj:self.groupIntroduce];
+        }
+    }
+    
+
     return 64.0;
 }
 
@@ -436,9 +496,22 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     }
     
     self.group = aGroup;
-    
+    self.groupIntroduce = self.group.description;
     [self getGroupMembers];
+    [self getOwnerNicknameWithUserId:self.group.owner];
+//    [self fetchGroupAnnocement];
     [self.tableView reloadData];
+}
+
+- (void)fetchGroupAnnocement {
+    [[EMClient sharedClient].groupManager getGroupAnnouncementWithId:self.group.groupId completion:^(NSString *aAnnouncement, EMError * _Nullable aError) {
+        if (aError == nil) {
+            self.groupAnnocement = aAnnouncement;
+//            [self refreshTableView];
+            [self.tableView reloadData];
+
+        }
+    }];
 }
 
 - (void)_fetchGroupWithId:(NSString *)aGroupId
@@ -452,7 +525,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         if (!aError) {
             [[EaseIMHelper shareHelper] fetchAllMembersUserInfoWithGroup:aGroup];
             [weakself _resetGroup:aGroup];
-            [weakself getOwnerNicknameWithUserId:aGroup.owner];
         } else {
             
         }

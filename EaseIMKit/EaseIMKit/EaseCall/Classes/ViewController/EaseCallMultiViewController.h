@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIView*) getViewByUid:(NSNumber*)uId;
 - (void)setPlaceHolderUrl:(NSURL*)url member:(NSString*)uId;
 - (void)removePlaceHolderForMember:(NSString*)uId;
-@property (nonatomic,strong) UILabel* remoteNameLable;
+@property (nonatomic,strong) UILabel* remoteNameLabel;
 @property (nonatomic,strong) NSString* inviterId;
 @property (nonatomic,strong) UIImageView* remoteHeadView;
 @property (nonatomic) EaseCallStreamView* localView;
