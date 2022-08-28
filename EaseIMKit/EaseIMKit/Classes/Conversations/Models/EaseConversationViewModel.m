@@ -45,7 +45,7 @@
     _avatarSize = CGSizeMake(44, 44);
     _avatarEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     
-if (EaseIMKitManager.shared.isJiHuApp){
+if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     _nameLabelFont = [UIFont systemFontOfSize:14.0];
     _nameLabelColor = [UIColor colorWithHexString:@"#B9B9B9"];
     _nameLabelEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);

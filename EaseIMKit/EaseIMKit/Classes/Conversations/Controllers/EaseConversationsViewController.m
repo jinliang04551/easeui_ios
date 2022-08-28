@@ -243,6 +243,7 @@ EMSearchBarDelegate
         model = self.dataAry[indexPath.row];
     }
     
+    
     cell.model = model;
     
     return cell;

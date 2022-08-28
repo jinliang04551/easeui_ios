@@ -18,7 +18,7 @@
     self = [super init];
     if (self) {
   
-    if (EaseIMKitManager.shared.isJiHuApp){
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 //        _chatViewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
 //        _chatBarBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
 

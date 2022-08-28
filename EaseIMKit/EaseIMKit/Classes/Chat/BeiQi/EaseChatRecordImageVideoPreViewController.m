@@ -202,13 +202,15 @@
 //        }];
       
         
-//    AVPlayer *player=[AVPlayer playerWithURL:videoURL];
-//    player.rate = 1.0;
-//    AVPlayerLayer *playerLayer=[AVPlayerLayer playerLayerWithPlayer:player];
-//    playerLayer.frame = CGRectMake(0, 0, EaseIMKit_ScreenWidth, 300);
-//    [self.view.layer addSublayer:playerLayer];
-//    [player play];
-    [self startPlayVodStream:videoURL];
+    AVPlayer *player=[AVPlayer playerWithURL:videoURL];
+    player.rate = 1.0;
+    AVPlayerLayer *playerLayer=[AVPlayerLayer playerLayerWithPlayer:player];
+    playerLayer.frame = CGRectMake(0, 0, EaseIMKit_ScreenWidth, 300);
+    playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+    [self.view.layer addSublayer:playerLayer];
+    [player play];
+        
+//    [self startPlayVodStream:videoURL];
         
     };
 

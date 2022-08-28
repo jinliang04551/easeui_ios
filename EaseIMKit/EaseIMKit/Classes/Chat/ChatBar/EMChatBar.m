@@ -101,7 +101,7 @@
 //    self.textView = [[EaseTextView alloc] init];
 //    self.textView.delegate = self;
 
-if (EaseIMKitManager.shared.isJiHuApp){
+if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     [self.audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"audio-unSelected"] forState:UIControlStateNormal];
     [self.audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
     

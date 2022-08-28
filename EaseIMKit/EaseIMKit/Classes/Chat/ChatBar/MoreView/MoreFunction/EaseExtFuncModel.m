@@ -17,7 +17,7 @@
 {
     if (self = [super init]) {
 
-if (EaseIMKitManager.shared.isJiHuApp){
+if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         _iconBgColor = [UIColor clearColor];
         _viewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
         _fontColor = [UIColor colorWithHexString:@"#B9B9B9"];

@@ -99,7 +99,7 @@
     
     self.bottomScrollView = [[UIScrollView alloc] init];
     self.bottomScrollView.scrollEnabled = NO;
-    if (EaseIMKitManager.shared.isJiHuApp){
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         self.bottomView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
         self.bottomScrollView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
 
@@ -146,7 +146,7 @@
 - (void)_setupEmotionViews
 {
     self.emotionBgView = [[UIView alloc] init];
-    if (EaseIMKitManager.shared.isJiHuApp){
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         self.emotionBgView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
 
     }else {
@@ -233,7 +233,7 @@
     
     aButton.selected = YES;
     
-    if (EaseIMKitManager.shared.isJiHuApp){
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         aButton.backgroundColor = [UIColor colorWithHexString:@"#252525"];
     }else {
         aButton.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];

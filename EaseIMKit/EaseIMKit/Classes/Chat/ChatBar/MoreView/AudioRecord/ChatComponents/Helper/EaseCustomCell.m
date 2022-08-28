@@ -25,7 +25,7 @@
     if (self) {
         [self prepare];
         [self placeSubViews];
-if (EaseIMKitManager.shared.isJiHuApp){
+if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         self.contentView.backgroundColor = EaseIMKit_ViewCellBgBlackColor;
         self.nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
 

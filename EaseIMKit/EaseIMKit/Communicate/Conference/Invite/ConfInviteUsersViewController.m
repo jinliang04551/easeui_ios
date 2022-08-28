@@ -580,7 +580,7 @@
 }
 
 - (void)updateCustomNavView {
-    if (EaseIMKitManager.shared.isJiHuApp){
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         [self.cancelButton setTitleColor:[UIColor colorWithHexString:@"#B9B9B9"] forState:UIControlStateNormal];
 
         [self.titleLabel setTextColor:[UIColor whiteColor]];

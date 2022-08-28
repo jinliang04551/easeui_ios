@@ -103,7 +103,7 @@
             _viewModel = [[EaseChatViewModel alloc] init];
         }
         
-    if (EaseIMKitManager.shared.isJiHuApp){
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         _viewModel.extFuncModel.viewBgColor = [UIColor colorWithHexString:@"#252525"];
     }else {
         _viewModel.extFuncModel.viewBgColor = [UIColor colorWithHexString:@"#F5F5F5"];
@@ -276,7 +276,7 @@
     UIImage *fileImage = nil;
     UIImage *orderImage = nil;
 
-if (EaseIMKitManager.shared.isJiHuApp){
+if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     photoImage =  [UIImage easeUIImageNamed:@"photo-album"];
     cameraImage =  [UIImage easeUIImageNamed:@"camera"];
     locationImage =  [UIImage easeUIImageNamed:@"location"];
@@ -311,7 +311,7 @@ if (EaseIMKitManager.shared.isJiHuApp){
 //    NSMutableArray<EaseExtMenuModel*> *extMenuArray = [@[photoAlbumExtModel,cameraExtModel,locationExtModel,fileExtModel] mutableCopy];
     
     NSMutableArray<EaseExtMenuModel*> *extMenuArray = nil;
-if (EaseIMKitManager.shared.isJiHuApp){
+if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     if (self.currentConversation.type == EMChatTypeGroupChat) {
         extMenuArray = [@[photoAlbumExtModel,cameraExtModel,locationExtModel,fileExtModel,orderExtModel] mutableCopy];
     }else {

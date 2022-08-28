@@ -59,7 +59,7 @@
     
     [[EaseIMHelper shareHelper] fetchAllMembersUserInfoWithGroup:self.group];
     
-if (EaseIMKitManager.shared.isJiHuApp){
+if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
     self.tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
     self.tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;

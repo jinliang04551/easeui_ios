@@ -56,7 +56,7 @@
     self.textField.returnKeyType = UIReturnKeySearch;
     self.textField.layer.cornerRadius = kTextFieldHeight * 0.5;
     
-if (EaseIMKitManager.shared.isJiHuApp){
+if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     self.backgroundColor = EaseIMKit_ViewBgBlackColor;
     self.textField.backgroundColor = [UIColor colorWithHexString:@"#252525"];
     [self.textField setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
