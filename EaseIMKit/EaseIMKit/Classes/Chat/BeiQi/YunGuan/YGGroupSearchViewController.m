@@ -93,7 +93,9 @@
 - (void)searchGroupChat {
     [self updateSearchKeyword];
     
-    [[EaseHttpManager sharedManager] searchGroupListWithAid:[EMClient sharedClient].currentUsername mobile:self.searchMobile orderId:self.searchOrderId vin:self.searchVin groupname:self.searchGroupName completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+    NSString *aid = @"";
+    
+    [[EaseHttpManager sharedManager] searchGroupListWithAid:aid mobile:self.searchMobile orderId:self.searchOrderId vin:self.searchVin groupname:self.searchGroupName completion:^(NSInteger statusCode, NSString * _Nonnull response) {
     
         NSLog(@"%s\n response:%@",__func__,response);
         
@@ -117,7 +119,12 @@
                 self.noDataPromptView.hidden = self.dataArray.count > 0 ? YES : NO;
                 
             }else {
-                [EaseAlertController showErrorAlert:errorDescription];
+                self.dataArray = [@[] mutableCopy];
+                [self.tableView reloadData];
+
+                self.noDataPromptView.hidden = self.dataArray.count > 0 ? YES : NO;
+
+//                [EaseAlertController showErrorAlert:errorDescription];
             }
         }
 
@@ -227,8 +234,9 @@
 
 #pragma mark - YGGroupSearchViewDelegate
 - (void)showSearchGroupTypeTable {
-    self.searchTypeTableView.hidden = NO;
+    self.searchTypeTableView.hidden = !self.searchTypeTableView.hidden;
 }
+
 
 - (void)hiddenSearchGroupTypeTable {
     self.searchTypeTableView.hidden = YES;

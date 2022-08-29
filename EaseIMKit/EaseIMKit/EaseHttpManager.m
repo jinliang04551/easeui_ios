@@ -701,7 +701,7 @@
     [dict setObject:orderId forKey:@"orderId"];
     [dict setObject:vin forKey:@"vin"];
     [dict setObject:groupName forKey:@"groupName"];
-    [dict setObject:@"MANUAL" forKey:@"groupType"];
+//    [dict setObject:@"MANUAL" forKey:@"groupType"];
     [dict setObject:@"MANAGE" forKey:@"source"];
 
     NSLog(@"%s url:%@ dict:%@",__func__,url,dict);

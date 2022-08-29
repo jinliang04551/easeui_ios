@@ -66,7 +66,8 @@
     [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [self _setupChatSubviews];
-        
+    
+    [self loadData:YES];
 }
 
 - (void)listenNotifications {
@@ -134,8 +135,6 @@
     
     [[EaseIMKitManager shared] updateConversationsUnreadCount];
     
-    [self loadData:YES];
-
 }
 
 

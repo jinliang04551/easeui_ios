@@ -1233,10 +1233,11 @@ static NSString *g_UIKitVersion = @"1.0.0";
 
                     NSString *yg_username = [imDic objectForKey:@"username"];
                     
+                    NSLog(@"%s,yg_username:%@",__func__,yg_username);
+                    
                     NSString *yg_password = [imDic objectForKey:@"password"];
 
                     [EaseKitUtil saveLoginUserToken:token userId:yg_username];
-                    
                     
                     [[EMClient sharedClient] loginWithUsername:yg_username password:yg_password completion:finishBlock];
                     

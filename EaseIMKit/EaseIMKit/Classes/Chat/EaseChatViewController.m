@@ -52,6 +52,9 @@
 //群成员个数（包括群主）
 @property (nonatomic, assign) NSInteger groupMemberCount;
 
+//当前页面不可见时收到消息
+@property (nonatomic, assign) BOOL isReceiveMsgNotVisiable;
+
 
 @end
 
@@ -145,6 +148,9 @@
     [self.tableView addGestureRecognizer:tap];
         
     [self fetchGroupAllMembers];
+    
+    [self refreshTableView:YES];
+
 }
 
 - (void)fetchGroupAllMembers {
@@ -182,8 +188,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cleanPopupControllerView) name:CALL_MAKE1V1 object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cleanPopupControllerView) name:CALL_MAKECONFERENCE object:nil];
     
-    [self refreshTableView:YES];
 
+    if (self.isReceiveMsgNotVisiable) {
+        self.isReceiveMsgNotVisiable = NO;
+        [self refreshTableView:YES];
+    }
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -435,6 +445,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         }
     }
 }
+
 
 #pragma mark - UIScrollViewDelegate
 
@@ -750,6 +761,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 
             if (isVisiable) {
                 [weakself.currentConversation markMessageAsReadWithId:msg.messageId error:nil];
+            }else {
+                self.isReceiveMsgNotVisiable = YES;
             }
             
             
