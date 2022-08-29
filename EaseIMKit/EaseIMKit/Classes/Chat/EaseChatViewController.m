@@ -188,7 +188,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cleanPopupControllerView) name:CALL_MAKE1V1 object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cleanPopupControllerView) name:CALL_MAKECONFERENCE object:nil];
     
-
     if (self.isReceiveMsgNotVisiable) {
         self.isReceiveMsgNotVisiable = NO;
         [self refreshTableView:YES];
