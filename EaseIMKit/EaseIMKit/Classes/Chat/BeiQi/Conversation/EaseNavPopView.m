@@ -115,12 +115,11 @@
         [_tableView registerClass:[YGPopOperationCell class] forCellReuseIdentifier:NSStringFromClass([YGPopOperationCell class])];
 
         
-//        _tableView.layer.shadowColor = [UIColor colorWithHexString:@"#6C8AB6"].CGColor;
-//        _tableView.layer.shadowOpacity = 0.1;
-//        _tableView.layer.shadowRadius = 8.0;
-//        _tableView.layer.shadowOffset = CGSizeMake(2,2);
-//        _tableView.layer.cornerRadius = 6;
-
+        _tableView.layer.shadowColor = [UIColor colorWithHexString:@"#6C8AB6"].CGColor;
+        _tableView.layer.shadowOpacity = 0.1;
+        _tableView.layer.shadowRadius = 8.0;
+        _tableView.layer.shadowOffset = CGSizeMake(2,2);
+        _tableView.layer.cornerRadius = 6;
     }
     return _tableView;
 }

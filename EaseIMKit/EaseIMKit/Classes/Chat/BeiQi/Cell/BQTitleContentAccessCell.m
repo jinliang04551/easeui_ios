@@ -29,7 +29,7 @@
 
 - (void)placeSubViews {
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.contentView);
+        make.top.equalTo(self.contentView).offset(12.0);
         make.left.equalTo(self.contentView).offset(EaseIMKit_Padding * 1.6);
         make.width.equalTo(@(150.0));
         make.height.equalTo(@(20.0));
@@ -48,7 +48,6 @@
         make.top.equalTo(self.nameLabel.mas_bottom).offset(2.0);
         make.left.equalTo(self.nameLabel);
         make.right.equalTo(self.accessoryImageView.mas_left);
-        make.bottom.equalTo(self.contentView).offset(-12.0);
     }];
     
     
@@ -60,20 +59,23 @@
 
 }
 
+
 + (CGFloat)heightWithObj:(NSString *)obj {
-    return [BQTitleContentAccessCell heightWithObj:obj];
-}
-
-
-- (CGFloat)heightWithObj:(NSString *)obj {
 
     NSString *text = obj;
     
-    CGSize size = CGSizeMake(self.contentLabel.frame.size.width, MAXFLOAT);
-    NSDictionary *dict = [NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:self.contentLabel.font.pointSize] forKey:NSFontAttributeName];
-    CGFloat calculatedHeight = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:dict context:nil].size.height;
+    CGFloat conMaxWidth = EaseIMKit_ScreenWidth - 16.0 *2 -28.0;
+    CGSize size = CGSizeMake(conMaxWidth, MAXFLOAT);
+    NSDictionary *dict = [NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:12.0] forKey:NSFontAttributeName];
     
+    CGFloat calculatedHeight = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:dict context:nil].size.height;
+
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        [paragraphStyle setLineSpacing:5.0];
+
     calculatedHeight += 12.0 + 20.0 + 2.0 + 12.0;
+    calculatedHeight = MAX(calculatedHeight, 64.0);
+    
     return calculatedHeight;
     
 }
