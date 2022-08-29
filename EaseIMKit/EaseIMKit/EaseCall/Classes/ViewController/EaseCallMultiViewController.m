@@ -18,16 +18,21 @@
 #import "UIColor+EaseCall.h"
 #import "EaseCallSteamCollectionView.h"
 #import "EaseHeaders.h"
+#import "EaseCallWaterView.h"
 
 
 @interface EaseCallMultiViewController ()<EaseCallStreamViewDelegate>
 @property (nonatomic) UIButton* inviteButton;
-@property (nonatomic) UILabel* statusLable;
+@property (nonatomic) UILabel* statusLabel;
 @property (nonatomic) BOOL isJoined;
 @property (nonatomic) EaseCallStreamView* bigView;
 @property (nonatomic) NSMutableDictionary* placeHolderViewsDic;
 @property (atomic) BOOL isNeedLayout;
 @property (nonatomic) EaseCallSteamCollectionView* callSteamCollectionView;
+
+@property (nonatomic) EaseCallWaterView* callWaterView;
+@property (nonatomic) UIView* remoteCallView;
+
 
 @end
 
@@ -78,35 +83,53 @@
         if([self.inviterId length] > 0) {
             NSURL* remoteUrl = [[EaseCallManager sharedManager] getHeadImageByUserName:self.inviterId];
             [self.remoteHeadView sd_setImageWithURL:remoteUrl];
-            [self.contentView addSubview:self.remoteHeadView];
-            [self.remoteHeadView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.height.equalTo(@80);
-                make.centerX.equalTo(self.contentView);
-                make.top.equalTo(@100);
-            }];
             
-
             self.remoteNameLabel.text = [[EaseCallManager sharedManager] getNicknameByUserName:self.inviterId];
+            self.remoteNameLabel.hidden = NO;
 
-            
-            [self.contentView addSubview:self.remoteNameLabel];
-            [self.remoteNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.remoteHeadView.mas_bottom).offset(20);
-                make.centerX.equalTo(self.contentView);
-            }];
-            self.statusLable = [[UILabel alloc] init];
-            self.statusLable.backgroundColor = [UIColor clearColor];
-            self.statusLable.font = [UIFont systemFontOfSize:15];
-            self.statusLable.textColor = [UIColor colorWithWhite:1.0 alpha:0.5];
-            self.statusLable.textAlignment = NSTextAlignmentRight;
-            self.statusLable.text = EaseLocalizableString(@"receiveCallInviteprompt",nil);
             self.answerButton.hidden = NO;
             self.acceptLabel.hidden = YES;
-            [self.contentView addSubview:self.statusLable];
-            [self.statusLable mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.remoteNameLabel.mas_bottom).offset(20);
+            
+            [self.contentView addSubview:self.remoteCallView];
+            
+            [self.remoteCallView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.contentView).offset(100.0);
                 make.centerX.equalTo(self.contentView);
+                make.width.equalTo(self.contentView);
+                make.height.equalTo(@(EaseIMKit_ScreenHeight * 0.5));
+
             }];
+            
+            
+//            [self.contentView addSubview:self.remoteHeadView];
+//            [self.remoteHeadView mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.width.height.equalTo(@80);
+//                make.centerX.equalTo(self.contentView);
+//                make.top.equalTo(@100);
+//            }];
+            
+
+            
+//            [self.contentView addSubview:self.remoteNameLabel];
+//            [self.remoteNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.top.equalTo(self.remoteHeadView.mas_bottom).offset(20);
+//                make.centerX.equalTo(self.contentView);
+//            }];
+            
+//            self.statusLabel = [[UILabel alloc] init];
+//            self.statusLabel.backgroundColor = [UIColor clearColor];
+//            self.statusLabel.font = [UIFont systemFontOfSize:15];
+//            self.statusLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.5];
+//            self.statusLabel.textAlignment = NSTextAlignmentRight;
+//            self.statusLabel.text = EaseLocalizableString(@"receiveCallInviteprompt",nil);
+            
+          
+            
+//            [self.contentView addSubview:self.statusLabel];
+//            [self.statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.top.equalTo(self.remoteNameLabel.mas_bottom).offset(20);
+//                make.centerX.equalTo(self.contentView);
+//            }];
         }else{
             self.answerButton.hidden = YES;
             self.acceptLabel.hidden = YES;
@@ -228,9 +251,11 @@
     [self.switchCameraButton setEnabled:YES];
     [self.microphoneButton setEnabled:YES];
     if([self.inviterId length] > 0) {
-        [self.remoteNameLabel removeFromSuperview];
-        [self.statusLable removeFromSuperview];
-        [self.remoteHeadView removeFromSuperview];
+//        [self.remoteNameLabel removeFromSuperview];
+//        [self.statusLabel removeFromSuperview];
+//        [self.remoteHeadView removeFromSuperview];
+        
+        [self.remoteCallView removeFromSuperview];
     }
     self.localView.hidden = YES;
     [[EaseCallManager sharedManager] enableVideo:aEnableVideo];
@@ -358,9 +383,11 @@
     [super answerAction];
     self.answerButton.hidden = YES;
     self.acceptLabel.hidden = YES;
-    self.statusLable.hidden = YES;
-    self.remoteNameLabel.hidden = YES;
-    self.remoteHeadView.hidden = YES;
+//    self.statusLabel.hidden = YES;
+//    self.remoteNameLabel.hidden = YES;
+//    self.remoteHeadView.hidden = YES;
+    self.remoteCallView.hidden = YES;
+    
     [self.hangupButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         CGFloat offset = 26.0 + EaseIMKit_BottomSafeHeight;
         make.bottom.equalTo(self.contentView).offset(-offset);  
@@ -607,10 +634,72 @@ return _callSteamCollectionView;
         _remoteNameLabel.backgroundColor = [UIColor clearColor];
         _remoteNameLabel.textColor = [UIColor whiteColor];
         _remoteNameLabel.textAlignment = NSTextAlignmentRight;
-        _remoteNameLabel.font = [UIFont systemFontOfSize:24];
+        _remoteNameLabel.font = [UIFont systemFontOfSize:16.0];
         _remoteNameLabel.hidden = YES;
     }
     return _remoteNameLabel;
 }
+
+
+- (EaseCallWaterView *)callWaterView {
+    if (_callWaterView == nil) {
+        _callWaterView = [[EaseCallWaterView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
+        _callWaterView.backgroundColor = UIColor.greenColor;
+        
+    }
+    return _callWaterView;
+}
+
+
+- (UIView *)remoteCallView {
+    if (_remoteCallView == nil) {
+        _remoteCallView = [[UIView alloc] init];
+        
+//        [_remoteCallView addSubview:self.callWaterView];
+//        [self.callWaterView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.centerX.equalTo(_remoteCallView);
+//            make.centerY.equalTo(_remoteCallView.mas_top).offset(120.0);
+//            make.size.equalTo(@(160.0));
+//        }];
+        
+        [_remoteCallView addSubview:self.remoteHeadView];
+        [self.remoteHeadView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_remoteCallView);
+            make.width.height.equalTo(@80);
+            make.centerX.equalTo(_remoteCallView);
+        }];
+
+    
+        [_remoteCallView addSubview:self.remoteNameLabel];
+        [self.remoteNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.remoteHeadView.mas_bottom).offset(20);
+            make.centerX.equalTo(_remoteCallView);
+        }];
+        
+        [_remoteCallView addSubview:self.statusLabel];
+        [self.statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.remoteNameLabel.mas_bottom).offset(5.0);
+            make.centerX.equalTo(_remoteCallView);
+        }];
+        
+//        _remoteCallView.backgroundColor = UIColor.grayColor;
+        
+    }
+    return _remoteCallView;
+}
+
+
+- (UILabel *)statusLabel {
+    if (_statusLabel == nil) {
+        _statusLabel = [[UILabel alloc] init];
+        _statusLabel.backgroundColor = [UIColor clearColor];
+        _statusLabel.font = [UIFont systemFontOfSize:12.0];
+        _statusLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+        _statusLabel.textAlignment = NSTextAlignmentRight;
+        _statusLabel.text = EaseLocalizableString(@"receiveCallInviteprompt",nil);
+    }
+    return _statusLabel;
+}
+
 
 @end

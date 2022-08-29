@@ -169,7 +169,7 @@
         _nameLabel.font = [UIFont systemFontOfSize:12.0];
         _nameLabel.textAlignment = NSTextAlignmentLeft;
         
-        _nameLabel.backgroundColor = UIColor.redColor;
+//        _nameLabel.backgroundColor = UIColor.redColor;
     }
     return _nameLabel;
 }

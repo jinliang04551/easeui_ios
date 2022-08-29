@@ -121,7 +121,7 @@ static const void *recallViewKey = &recallViewKey;
             
             EaseMessageModel *model = [[EaseMessageModel alloc] initWithEMMessage:message];
             [weakself.dataArray replaceObjectAtIndex:indexPath.row withObject:model];
-            [weakself.tableView reloadData];
+            [weakself refreshTableView:YES];
         }
     }];
     
