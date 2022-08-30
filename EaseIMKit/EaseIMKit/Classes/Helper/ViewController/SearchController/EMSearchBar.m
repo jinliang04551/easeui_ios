@@ -15,6 +15,8 @@
 
 @property (nonatomic, strong) UIButton *operateButton;
 @property (nonatomic, strong) UIView *leftView;
+@property (nonatomic, strong) UIView *rightView;
+
 @property (nonatomic, strong) UILabel *controlLabel;
 
 
@@ -184,17 +186,17 @@
         _textField.leftView = self.leftView;
 
         
-        UIImageView *rightImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-        rightImageView.opaque = YES;
-        rightImageView.contentMode = UIViewContentModeScaleAspectFit;
-        
-        UIView *rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
-        
-        [rightView addSubview:rightImageView];
-        [rightImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(rightView).insets(UIEdgeInsetsMake(0, 0, 0, 14.0));
-        }];
-        _textField.rightView = rightView;
+//        UIImageView *rightImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+//        rightImageView.opaque = YES;
+//        rightImageView.contentMode = UIViewContentModeScaleAspectFit;
+//
+//        UIView *rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
+//
+//        [rightView addSubview:rightImageView];
+//        [rightImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.edges.equalTo(rightView).insets(UIEdgeInsetsMake(0, 0, 0, 14.0));
+//        }];
+        _textField.rightView = self.rightView;
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             _textField.backgroundColor = [UIColor colorWithHexString:@"#252525"];
@@ -202,13 +204,11 @@
             _textField.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
             self.backgroundColor = EaseIMKit_ViewBgBlackColor;
             
-            rightImageView.image = [UIImage easeUIImageNamed:@"jh_invite_delete"];
 
         }else {
             self.backgroundColor = EaseIMKit_ViewBgWhiteColor;
             _textField.backgroundColor = [UIColor whiteColor];
             [_textField setTextColor:UIColor.blackColor];
-            rightImageView.image = [UIImage easeUIImageNamed:@"yg_invite_delete"];
 
         }
         
@@ -216,6 +216,7 @@
     }
     return _textField;
 }
+
 
 - (UIView *)leftView {
     if (_leftView == nil) {
@@ -234,6 +235,24 @@
     }
     return _leftView;
 }
+
+- (UIView *)rightView {
+    if (_rightView == nil) {
+        _rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
+
+        UIImageView *rightImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        rightImageView.contentMode = UIViewContentModeScaleAspectFit;
+        rightImageView.image = [UIImage easeUIImageNamed:@"jh_invite_delete"];
+
+        
+        [_rightView addSubview:rightImageView];
+        [rightImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(_rightView).insets(UIEdgeInsetsMake(0, 0, 0, 14.0));
+        }];
+    }
+    return _rightView;
+}
+
 
 - (UIControl *)control {
     if (_control == nil) {

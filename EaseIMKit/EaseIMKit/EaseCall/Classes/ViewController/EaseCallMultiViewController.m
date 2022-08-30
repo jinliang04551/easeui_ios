@@ -338,7 +338,7 @@
         }];
         
         [self.callSteamCollectionView updateUIWithMemberArray:tArray];
-
+        
         //所有被邀请的人都超时未接听 挂断电话
         if (!self.inviterId && self.isAllTimeout) {
             [self hangupAction];

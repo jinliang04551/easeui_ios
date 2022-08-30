@@ -291,6 +291,7 @@
 
 - (void)moreAction
 {
+    [self.navPopView updateUI];
     self.navPopView.hidden = !self.navPopView.hidden;
 }
 

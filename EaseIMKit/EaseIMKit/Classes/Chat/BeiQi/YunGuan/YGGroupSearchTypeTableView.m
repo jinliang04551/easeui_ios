@@ -120,6 +120,7 @@ static NSString *CellIdentifier = @"YGAvatarTitleAccessCell";
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
         _tableView.showsVerticalScrollIndicator = NO;
+        _tableView.scrollEnabled = NO;
         
         _tableView.layer.shadowColor = [UIColor colorWithHexString:@"#6C8AB6"].CGColor;
         _tableView.layer.shadowOpacity = 0.1;

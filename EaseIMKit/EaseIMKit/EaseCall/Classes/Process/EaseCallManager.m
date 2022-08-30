@@ -895,6 +895,7 @@ static EaseCallManager *easeCallManager = nil;
 {
     NSString* aRemoteUser = (NSString*)[timer userInfo];
     NSLog(@"_timeoutCall,user:%@",aRemoteUser);
+        
     [self.callTimerDic removeObjectForKey:aRemoteUser];
     [self sendCancelCallMsgToCallee:aRemoteUser callId:self.modal.currentCall.callId];
     if(self.modal.currentCall.callType != EaseCallTypeMulti) {
@@ -903,7 +904,7 @@ static EaseCallManager *easeCallManager = nil;
     }else{
         __weak typeof(self) weakself = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (weakself.modal.currentCall.isCaller && self.callTimerDic.count == 0 && self.modal.currentCall.allUserAccounts.count == 0) {
+            if (weakself.modal.currentCall.isCaller && self.callTimerDic.count == 0 && self.modal.currentCall.allUserAccounts.count == 1) {
                 [weakself getMultiVC].isAllTimeout = YES;
             }
             

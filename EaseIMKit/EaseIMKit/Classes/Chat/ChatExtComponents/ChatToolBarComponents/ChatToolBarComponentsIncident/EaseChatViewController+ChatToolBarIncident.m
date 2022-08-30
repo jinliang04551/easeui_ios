@@ -49,7 +49,8 @@ static const void *imagePickerKey = &imagePickerKey;
                     dispatch_async(dispatch_get_main_queue(), ^{
                         weakself.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
                         weakself.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
-                        [weakself.imagePicker setVideoMaximumDuration:15];
+#warning test video max duration, need modify
+//                        [weakself.imagePicker setVideoMaximumDuration:15];
 
                         [weakself presentViewController:self.imagePicker animated:YES completion:nil];
                     });
@@ -261,8 +262,6 @@ static const void *imagePickerKey = &imagePickerKey;
 
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             self.imagePicker.navigationController.navigationBar.tintColor = EaseIMKit_ViewBgWhiteColor;
-
-//            self.imagePicker.navigationBar.barTintColor = EaseIMKit_ViewBgWhiteColor;
 
         }else {
             self.imagePicker.navigationController.navigationBar.tintColor = EaseIMKit_ViewBgBlackColor;

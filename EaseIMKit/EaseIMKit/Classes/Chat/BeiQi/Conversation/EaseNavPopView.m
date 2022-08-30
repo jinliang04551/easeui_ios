@@ -38,7 +38,7 @@
     [self addSubview:self.contentView];
     
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(8.0);
+        make.top.equalTo(self);
         make.left.equalTo(self);
         make.right.equalTo(self);
         make.bottom.equalTo(self);
@@ -111,7 +111,8 @@
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
         _tableView.showsVerticalScrollIndicator = NO;
-        
+        _tableView.scrollEnabled = NO;
+
         [_tableView registerClass:[YGPopOperationCell class] forCellReuseIdentifier:NSStringFromClass([YGPopOperationCell class])];
 
         
