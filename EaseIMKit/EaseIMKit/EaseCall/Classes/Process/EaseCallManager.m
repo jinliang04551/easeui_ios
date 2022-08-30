@@ -1191,13 +1191,17 @@ static EaseCallManager *easeCallManager = nil;
         return;
     if(self.modal.currentCall && self.modal.currentCall.callType == EaseCallTypeMulti) {
         for (AgoraRtcAudioVolumeInfo *speakerInfo in speakers) {
+            NSLog(@"==========speakerInfo.volume:%ld",speakerInfo.volume);
+            
             if(speakerInfo.volume > 5) {
                 if(speakerInfo.uid == 0) {
-                    [self getMultiVC].localView.isTalking = YES;
+//                    [self getMultiVC].localView.isTalking = YES;
+                    [[self getMultiVC].localView updateStreamViewWithWithVolume:speakerInfo.volume];
                 }else{
                     EaseCallStreamView* view = [[self getMultiVC].streamViewsDic objectForKey:[NSNumber numberWithUnsignedInteger:speakerInfo.uid]];
                     if(view) {
-                        view.isTalking = YES;
+//                        view.isTalking = YES;
+                        [view updateStreamViewWithWithVolume:speakerInfo.volume];
                     }
                 }
             }

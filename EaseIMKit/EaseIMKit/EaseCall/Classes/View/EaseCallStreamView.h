@@ -29,6 +29,8 @@
 
 @property (nonatomic, strong) id ext;
 
+- (void)updateStreamViewWithWithVolume:(NSInteger)volume;
+
 @end
 
 @protocol EaseCallStreamViewDelegate <NSObject>

@@ -30,6 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 //被邀请的人都没有接听，接听超时
 @property (nonatomic) BOOL isAllTimeout;
 
+//音量大小
+@property (nonatomic) NSInteger speakerVolume;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -21,6 +21,8 @@
 
 @property (nonatomic, strong) NSMutableArray *talkingImageArray;
 @property (nonatomic, strong) UIImageView *talkingImageView;
+@property (nonatomic, assign) NSInteger imageIndex;
+
 
 @end
 
@@ -87,7 +89,8 @@
     
     [self bringSubviewToFront:_statusView];
     if (enableVoice) {
-        _statusView.image = nil;
+        _statusView.image = [UIImage imageNamedFromBundle:@"call_talking_0"];
+
     } else {
         self.isTalking = NO;
         _statusView.image = [UIImage imageNamedFromBundle:@"microphonenclose"];
@@ -111,41 +114,60 @@
 {
     if(isTalking != _isTalking) {
         if(isTalking) {
-//            _statusView.image = [UIImage imageNamedFromBundle:@"talking_green"];
 
-            self.talkingImageView.hidden = NO;
-            [self.talkingImageView startAnimating];
+//            self.talkingImageView.hidden = NO;
+//            [self.talkingImageView startAnimating];
+            NSString *imageName = [NSString stringWithFormat:@"call_talking_%@",@(self.imageIndex)];
+            
+            _statusView.image = [UIImage imageNamedFromBundle:imageName];
 
             if(!self.timeTimer)
                 self.timeTimer = [NSTimer scheduledTimerWithTimeInterval:kTalkingAnimationDuration target:self selector:@selector(timeTalkingAction:) userInfo:nil repeats:NO];
             
         }else{
-            [self.talkingImageView stopAnimating];
-            self.talkingImageView.hidden = YES;
+//            [self.talkingImageView stopAnimating];
+//            self.talkingImageView.hidden = YES;
             
             if(self.timeTimer) {
                 [self.timeTimer invalidate];
                 self.timeTimer = nil;
             }
+            
+            _statusView.image = [UIImage imageNamedFromBundle:@"call_talking_0"];
+
         }
     }
     _isTalking = isTalking;
 }
 
+
+- (void)updateStreamViewWithWithVolume:(NSInteger)volume {
+    NSInteger index = [self indexOfImagesWithVolume:volume];
+    self.imageIndex = index;
+    
+//    NSArray *tImages = [self.talkingImageArray subarrayWithRange:NSMakeRange(0, index)];
+//    self.talkingImageView.animationImages = [tImages copy];
+    
+    self.isTalking  = YES;
+
+}
+
+
+- (NSInteger)indexOfImagesWithVolume:(NSInteger)volume {
+    NSInteger index = ceilf(volume/15);
+    
+    if (index >= 13) {
+        index = 13;
+    }
+    return index;
+}
+
+
 - (void)timeTalkingAction:(id)sender
 {
     _statusView.image = nil;
     self.isTalking = NO;
-    
-//    [UIView animateWithDuration:1.0 animations:^{
-//        self.statusView.hidden = YES;
-//        [self.talkingImageView startAnimating];
-//        self.talkingImageView.hidden = NO;
-//
-//    } completion:^(BOOL finished) {
-//        self.isTalking = NO;
-//    }];
-    
+        
 }
 
 #pragma mark - UITapGestureRecognizer
@@ -208,10 +230,8 @@
         //图片播放一次所需时长
         _talkingImageView.animationDuration = kTalkingAnimationDuration;
         //图片播放次数,0表示无限
-        _talkingImageView.animationRepeatCount = 0;
+        _talkingImageView.animationRepeatCount = 1;
 
-        //设置动画图片数组
-        _talkingImageView.animationImages = self.talkingImageArray;
         _talkingImageView.hidden = YES;
     }
     

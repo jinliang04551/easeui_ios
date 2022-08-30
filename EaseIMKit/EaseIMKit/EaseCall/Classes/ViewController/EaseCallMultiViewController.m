@@ -313,14 +313,18 @@
                 make.width.equalTo(@(self.contentView.bounds.size.width));
                 make.height.equalTo(@(self.contentView.bounds.size.height-top-bottom));
             }];
-            if(self.bigView != self.localView) {
-                [self.contentView sendSubviewToBack:self.localView];
-            }
-                    
+//            if(self.bigView != self.localView) {
+//                [self.contentView sendSubviewToBack:self.localView];
+//            }
+              
+            NSLog(@"=========self.bigView=============");
+
+            [self.contentView sendSubviewToBack:self.localView];
             [tArray addObjectsFromArray:[[self.streamViewsDic allValues] mutableCopy]];
 
         }else{
             
+            NSLog(@"=========notself.bigView=============");
             [tArray addObject:self.localView];
             [tArray addObjectsFromArray:[[self.streamViewsDic allValues] mutableCopy]];
             [tArray addObjectsFromArray:[[self.placeHolderViewsDic allValues] mutableCopy]];
@@ -552,6 +556,8 @@
         [self showNicknameAndAvartarForUsername:[EMClient sharedClient].currentUsername view:self.localView];
         for(NSNumber* uid in self.streamViewsDic) {
             NSString * username = [[EaseCallManager sharedManager] getUserNameByUid:uid];
+            NSLog(@"%s username:%@",__func__,username);
+            
             if(username.length > 0) {
                 EaseCallStreamView* view = [self.streamViewsDic objectForKey:uid];
                 [self showNicknameAndAvartarForUsername:username view:view];
@@ -563,6 +569,8 @@
         }
     });
     
+//    [self updateViewPos];
+
 }
 
 - (BOOL)isEquivalent:(NSURL *)aURL1 with:(NSURL *)aURL2 {
