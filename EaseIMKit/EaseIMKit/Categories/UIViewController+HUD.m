@@ -45,7 +45,6 @@ static const void *HttpRequestHUDKey = &HttpRequestHUDKey;
     hud.label.text = hint;
     hud.margin = 10.f;
     CGPoint offset = hud.offset;
-    offset.y = 180;
     hud.offset = offset;
     hud.removeFromSuperViewOnHide = YES;
     [hud hideAnimated:YES afterDelay:2];
@@ -61,7 +60,9 @@ static const void *HttpRequestHUDKey = &HttpRequestHUDKey;
     hud.label.text = hint;
     hud.margin = 10.f;
     CGPoint offset = hud.offset;
-    offset.y = 180 + yOffset;
+//    offset.y = 180 + yOffset;
+    offset.y = yOffset;
+
     hud.offset = offset;
     hud.removeFromSuperViewOnHide = YES;
     [hud hideAnimated:YES afterDelay:2];

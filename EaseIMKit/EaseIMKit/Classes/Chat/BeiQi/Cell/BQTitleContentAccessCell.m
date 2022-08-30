@@ -18,12 +18,13 @@
 @implementation BQTitleContentAccessCell
 
 - (void)prepare {
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.contentLabel];
     [self.contentView addSubview:self.accessoryImageView];
-    [self.contentView addSubview:self.bottomLine];
+//    [self.contentView addSubview:self.bottomLine];
 
 }
 
@@ -51,11 +52,11 @@
     }];
     
     
-    [self.bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self);
-        make.height.equalTo(@(EaseIMKit_ONE_PX));
-        make.bottom.equalTo(self.contentView);
-    }];
+//    [self.bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.right.equalTo(self);
+//        make.height.equalTo(@(EaseIMKit_ONE_PX));
+//        make.bottom.equalTo(self.contentView);
+//    }];
 
 }
 
@@ -74,7 +75,10 @@
         [paragraphStyle setLineSpacing:5.0];
 
     calculatedHeight += 12.0 + 20.0 + 2.0 + 12.0;
-    calculatedHeight = MAX(calculatedHeight, 64.0);
+
+    if (calculatedHeight > 64.0) {
+        calculatedHeight = 80.0;
+    }
     
     return calculatedHeight;
     

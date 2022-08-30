@@ -36,11 +36,11 @@ static const void *imagePickerKey = &imagePickerKey;
 
     if (componentType == EMChatToolBarCamera) {
         #if TARGET_IPHONE_SIMULATOR
-            [EaseAlertController showErrorAlert:EaseLocalizableString(@"simUnsupportCamera", nil)];
+            [EaseKitUtil showHint:EaseLocalizableString(@"simUnsupportCamera", nil)];
         #elif TARGET_OS_IPHONE
             AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
             if (authStatus == AVAuthorizationStatusRestricted || authStatus ==AVAuthorizationStatusDenied) {
-                [EaseAlertController showErrorAlert:EaseLocalizableString(@"cameraPermissionDisabled", nil)];
+                [EaseKitUtil showHint:EaseLocalizableString(@"cameraPermissionDisabled", nil)];
                 return;
             }
             __weak typeof(self) weakself = self;
@@ -82,11 +82,13 @@ static const void *imagePickerKey = &imagePickerKey;
             }
             if (status == PHAuthorizationStatusDenied) {
                 //用户已经明确否认了这一照片数据的应用程序访问
-                [EaseAlertController showErrorAlert:EaseLocalizableString(@"photoPermissionDisabled", nil)];
+//                [EaseKitUtil showHint:EaseLocalizableString(@"photoPermissionDisabled", nil)];
+                [EaseKitUtil showHint:EaseLocalizableString(@"photoPermissionDisabled", nil)];
+
             }
             if (status == PHAuthorizationStatusRestricted) {
                 //此应用程序没有被授权访问的照片数据。可能是家长控制权限
-                [EaseAlertController showErrorAlert:EaseLocalizableString(@"fetchPhotoPermissionFail", nil)];
+                [EaseKitUtil showHint:EaseLocalizableString(@"fetchPhotoPermissionFail", nil)];
             }
         });
     }];
@@ -120,7 +122,7 @@ static const void *imagePickerKey = &imagePickerKey;
             if ([[UIDevice currentDevice].systemVersion doubleValue] >= 9.0f) {
                 PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:@[url] options:nil];
                 if(result.count == 0){
-                    [EaseAlertController showErrorAlert:@"无权访问该相册"];
+                    [EaseKitUtil showHint:@"无权访问该相册"];
                 }else{
                     for (PHAsset *asset in result) {
                         NSArray <PHAssetResource *>*resources = [PHAssetResource assetResourcesForAsset:asset];
@@ -134,7 +136,7 @@ static const void *imagePickerKey = &imagePickerKey;
                                 } completionHandler:^(NSError * _Nullable error) {
                                     if (error) {
                                         dispatch_async(dispatch_get_main_queue(), ^{
-                                            [EaseAlertController showErrorAlert:[error localizedDescription]];
+                                            [EaseKitUtil showHint:[error localizedDescription]];
                                         });
                                     } else {
                                         [self _sendImageDataAction:[imgData copy]];
@@ -145,7 +147,7 @@ static const void *imagePickerKey = &imagePickerKey;
                                     if (imageData != nil) {
                                         [self _sendImageDataAction:imageData];
                                     } else {
-                                        [EaseAlertController showErrorAlert:EaseLocalizableString(@"imageTooLarge", nil)];
+                                        [EaseKitUtil showHint:EaseLocalizableString(@"imageTooLarge", nil)];
                                     }
                                 }];
                             }
@@ -302,7 +304,8 @@ static const void *imagePickerKey = &imagePickerKey;
         navController.modalPresentationStyle = 0;
         [self.navigationController presentViewController:navController animated:YES completion:nil];
     } else {
-        [EaseAlertController showErrorAlert:EaseLocalizableString(@"LocationPermissionDisabled", nil)];
+        
+        [EaseKitUtil showHint:EaseLocalizableString(@"LocationPermissionDisabled", nil)];
     }
 }
 
@@ -316,7 +319,7 @@ static const void *imagePickerKey = &imagePickerKey;
         
         [self sendMessageWithBody:body ext:nil];
     } else {
-        [EaseAlertController showErrorAlert:EaseLocalizableString(@"getLocaionPermissionFail", nil)];
+        [EaseKitUtil showHint:EaseLocalizableString(@"getLocaionPermissionFail", nil)];
     }
 }
 
@@ -355,7 +358,7 @@ static const void *imagePickerKey = &imagePickerKey;
         [urls.firstObject stopAccessingSecurityScopedResource];
         return;
     }
-    [self showHint:EaseLocalizableString(@"getPermissionfail", nil)];
+    [EaseKitUtil showHint:EaseLocalizableString(@"getPermissionfail", nil)];
 }
 - (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller
 {
@@ -370,7 +373,7 @@ static const void *imagePickerKey = &imagePickerKey;
         [url stopAccessingSecurityScopedResource];
         return;
     }
-    [self showHint:EaseLocalizableString(@"getPermissionfail", nil)];
+    [EaseKitUtil showHint:EaseLocalizableString(@"getPermissionfail", nil)];
 }
 
 //icloud
@@ -385,7 +388,7 @@ static const void *imagePickerKey = &imagePickerKey;
             NSError *error = nil;
             NSData *fileData = [NSData dataWithContentsOfURL:newURL options:NSDataReadingMappedIfSafe error:&error];
             if (error) {
-                [self showHint:EaseLocalizableString(@"fileOpenFail", nil)];
+                [EaseKitUtil showHint:EaseLocalizableString(@"fileOpenFail", nil)];
                 return;
             }
             NSLog(@"fileName: %@\nfileUrl: %@", fileName, newURL);

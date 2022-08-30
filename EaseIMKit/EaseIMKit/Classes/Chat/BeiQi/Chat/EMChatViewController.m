@@ -492,7 +492,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         NSLog(@"%s error.errorDescription:%@",__func__,error.errorDescription);
         
         if ([error.errorDescription isEqualToString:@"User muted"]) {
-            [EaseAlertController showErrorAlert:@"您已被禁言"];
+//            [EaseKitUtil showHint:@"您已被禁言"];
+            [EaseKitUtil showHint:@"您已被禁言"];
+
         }else {
             [EaseAlertController showErrorAlert:error.errorDescription];
         }
@@ -811,7 +813,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 {
     if (self.conversation.type == EMChatTypeChatRoom && [aChatroom.chatroomId isEqualToString:self.conversation.conversationId]) {
         NSString *str = [NSString stringWithFormat:NSLocalizedString(@"joinChatroomPrompt", nil), aUsername];
-        [self showHint:str];
+        [EaseKitUtil showHint:str];
     }
 }
 
@@ -820,7 +822,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 {
     if (self.conversation.type == EMChatTypeChatRoom && [aChatroom.chatroomId isEqualToString:self.conversation.conversationId]) {
         NSString *str = [NSString stringWithFormat:NSLocalizedString(@"leaveChatroomPrompt", nil), aUsername];
-        [self showHint:str];
+        [EaseKitUtil showHint:str];
     }
 }
 
@@ -828,11 +830,11 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
                         reason:(EMChatroomBeKickedReason)aReason
 {
     if (aReason == 0)
-        [self showHint:[NSString stringWithFormat:NSLocalizedString(@"removedChatroom", nil), aChatroom.subject]];
+        [EaseKitUtil showHint:[NSString stringWithFormat:NSLocalizedString(@"removedChatroom", nil), aChatroom.subject]];
     if (aReason == 1)
-        [self showHint:[NSString stringWithFormat:NSLocalizedString(@"chatroomDestroed", nil), aChatroom.subject]];
+        [EaseKitUtil showHint:[NSString stringWithFormat:NSLocalizedString(@"chatroomDestroed", nil), aChatroom.subject]];
     if (aReason == 2)
-        [self showHint:NSLocalizedString(@"offlinePrompt", nil)];
+        [EaseKitUtil showHint:NSLocalizedString(@"offlinePrompt", nil)];
     if (self.conversation.type == EMChatTypeChatRoom && [aChatroom.chatroomId isEqualToString:self.conversation.conversationId]) {
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -841,54 +843,54 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 - (void)chatroomMuteListDidUpdate:(EMChatroom *)aChatroom removedMutedMembers:(NSArray *)aMutes
 {
     if ([aMutes containsObject:EMClient.sharedClient.currentUsername]) {
-        [self showHint:NSLocalizedString(@"unmutePrompt", nil)];
+        [EaseKitUtil showHint:NSLocalizedString(@"unmutePrompt", nil)];
     }
 }
 
 - (void)chatroomMuteListDidUpdate:(EMChatroom *)aChatroom addedMutedMembers:(NSArray *)aMutes muteExpire:(NSInteger)aMuteExpire
 {
     if ([aMutes containsObject:EMClient.sharedClient.currentUsername]) {
-        [self showHint:NSLocalizedString(@"muteePrompt", nil)];
+        [EaseKitUtil showHint:NSLocalizedString(@"muteePrompt", nil)];
     }
 }
 
 - (void)chatroomWhiteListDidUpdate:(EMChatroom *)aChatroom addedWhiteListMembers:(NSArray *)aMembers
 {
     if ([aMembers containsObject:EMClient.sharedClient.currentUsername]) {
-        [self showHint:NSLocalizedString(@"inwhitelist", nil)];
+        [EaseKitUtil showHint:NSLocalizedString(@"inwhitelist", nil)];
     }
 }
 
 - (void)chatroomWhiteListDidUpdate:(EMChatroom *)aChatroom removedWhiteListMembers:(NSArray *)aMembers
 {
     if ([aMembers containsObject:EMClient.sharedClient.currentUsername]) {
-        [self showHint:NSLocalizedString(@"outwhitelist", nil)];
+        [EaseKitUtil showHint:NSLocalizedString(@"outwhitelist", nil)];
     }
 }
 
 - (void)chatroomAllMemberMuteChanged:(EMChatroom *)aChatroom isAllMemberMuted:(BOOL)aMuted
 {
-    [self showHint:[NSString stringWithFormat:NSLocalizedString(@"allMute", nil), aMuted ? NSLocalizedString(@"enable", nil) : NSLocalizedString(@"close", nil)]];
+    [EaseKitUtil showHint:[NSString stringWithFormat:NSLocalizedString(@"allMute", nil), aMuted ? NSLocalizedString(@"enable", nil) : NSLocalizedString(@"close", nil)]];
 }
 
 - (void)chatroomAdminListDidUpdate:(EMChatroom *)aChatroom addedAdmin:(NSString *)aAdmin
 {
-    [self showHint:[NSString stringWithFormat:NSLocalizedString(@"becomeAdmin", nil), aAdmin]];
+    [EaseKitUtil showHint:[NSString stringWithFormat:NSLocalizedString(@"becomeAdmin", nil), aAdmin]];
 }
 
 - (void)chatroomAdminListDidUpdate:(EMChatroom *)aChatroom removedAdmin:(NSString *)aAdmin
 {
-    [self showHint:[NSString stringWithFormat:NSLocalizedString(@"becomeMember", nil), aAdmin]];
+    [EaseKitUtil showHint:[NSString stringWithFormat:NSLocalizedString(@"becomeMember", nil), aAdmin]];
 }
 
 - (void)chatroomOwnerDidUpdate:(EMChatroom *)aChatroom newOwner:(NSString *)aNewOwner oldOwner:(NSString *)aOldOwner
 {
-    [self showHint:[NSString stringWithFormat:NSLocalizedString(@"changeChatroomOwnerPrompt", nil), aOldOwner, aNewOwner]];
+    [EaseKitUtil showHint:[NSString stringWithFormat:NSLocalizedString(@"changeChatroomOwnerPrompt", nil), aOldOwner, aNewOwner]];
 }
 
 - (void)chatroomAnnouncementDidUpdate:(EMChatroom *)aChatroom announcement:(NSString *)aAnnouncement
 {
-    [self showHint:NSLocalizedString(@"annupdated", nil)];
+    [EaseKitUtil showHint:NSLocalizedString(@"annupdated", nil)];
 }
 
 

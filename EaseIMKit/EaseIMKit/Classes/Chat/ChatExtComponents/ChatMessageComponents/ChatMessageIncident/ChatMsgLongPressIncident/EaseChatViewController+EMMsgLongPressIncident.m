@@ -92,7 +92,7 @@ static const void *recallViewKey = &recallViewKey;
     pasteboard.string = body.text;
     
     self.longPressIndexPath = nil;
-    [self showHint:EaseLocalizableString(@"copied", nil)];
+    [EaseKitUtil showHint:EaseLocalizableString(@"copied", nil)];
 }
 
 - (void)recallLongPressAction

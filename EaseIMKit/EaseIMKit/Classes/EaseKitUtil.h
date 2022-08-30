@@ -30,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSString *)getContentWithMsg:(EMChatMessage *)msg;
 
++ (void)showHint:(NSString *)hint;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -834,7 +834,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
     }
     
     if([msg length] > 0){
-        [self showHint:msg];
+        [EaseKitUtil showHint:msg];
     }
     
 }
@@ -1141,22 +1141,6 @@ static NSString *g_UIKitVersion = @"1.0.0";
 }
     
     
-- (void)showHint:(NSString *)hint
-{
-    UIWindow *win = [[[UIApplication sharedApplication] windows] firstObject];
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:win animated:YES];
-    hud.userInteractionEnabled = NO;
-    // Configure for text only and offset down
-    hud.mode = MBProgressHUDModeText;
-    hud.label.text = hint;
-    hud.margin = 10.f;
-    CGPoint offset = hud.offset;
-    offset.y = 180;
-    hud.offset = offset;
-    hud.removeFromSuperViewOnHide = YES;
-    [hud hideAnimated:YES afterDelay:2];
-}
-
 
 - (void)loginWithUserName:(NSString *)userName
                  password:(NSString *)password

@@ -171,6 +171,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
     YGGroupMuteItemCell *cell = (YGGroupMuteItemCell *)[tableView dequeueReusableCellWithIdentifier:NSStringFromClass([YGGroupMuteItemCell class])];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     NSString *username = self.isSearching ? [self.searchDataArray objectAtIndex:indexPath.row] : [self.dataArray objectAtIndex:indexPath.row];
     BOOL isChecked = [self userIsChecked:username];
