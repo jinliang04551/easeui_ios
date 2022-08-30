@@ -11,6 +11,8 @@
 #import "EaseHeaders.h"
 #import "BQGroupApplyApprovalModel.h"
 #import "EaseHeaders.h"
+#import "EMChatViewController.h"
+
 
 @interface YGGroupApplyApprovalController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) NSMutableArray *dataArray;
@@ -121,7 +123,17 @@
         [weakSelf approvalJoinGroupApplyWithModel:model];
     };
     
+    cell.accessBlock = ^(BQGroupApplyApprovalModel * _Nonnull model) {
+        [weakSelf goGroupChatPageWithGroupId:model.groupId];
+    };
     return cell;
+}
+
+
+- (void)goGroupChatPageWithGroupId:(NSString *)groupId {
+    EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:groupId conversationType:EMConversationTypeGroupChat];
+    
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)approvalJoinGroupApplyWithModel:(BQGroupApplyApprovalModel *)model {

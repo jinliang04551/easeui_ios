@@ -793,9 +793,9 @@ static NSString *g_UIKitVersion = @"1.0.0";
 }
 
 - (void)configuationIMKitIsJiHuApp:(BOOL)isJiHuApp {
-
     _isJiHuApp = isJiHuApp;
-    [[EaseIMKitAppStyle shareAppStyle] updateNavAndTabbarWithIsJihuApp:isJiHuApp];
+    
+//    [[EaseIMKitAppStyle shareAppStyle] updateNavAndTabbarWithIsJihuApp:isJiHuApp];
 }
 
 

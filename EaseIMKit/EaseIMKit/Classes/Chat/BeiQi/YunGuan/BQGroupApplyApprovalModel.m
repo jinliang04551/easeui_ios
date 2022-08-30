@@ -45,7 +45,7 @@
         self.approvalId = dic[@"id"];
         
         id inviterNickName = dic[@"inviterNickName"];
-        if ([inviterNickName isKindOfClass:[NSNull null]]) {
+        if (inviterNickName == [NSNull null]) {
             self.inviterNickName = self.inviter;
         }else {
             NSString *tNickname = (NSString *)inviterNickName;
@@ -59,10 +59,10 @@
         
         id userNickName = dic[@"userNickName"];
 
-        if ([userNickName isKindOfClass:[NSNull null]]) {
+        if (userNickName == [NSNull null]) {
             self.userNickName = self.userName;
         }else {
-            NSString *tname = (NSString *)inviterNickName;
+            NSString *tname = (NSString *)userNickName;
             if (tname.length > 0) {
                 self.userNickName = tname;
             }else {

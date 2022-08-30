@@ -26,6 +26,7 @@
 //        NSNull
         self.avatar = dic[@"avatar"];
         self.nickName = dic[@"nickName"];
+        
         self.phone = dic[@"phone"];
         self.type = dic[@"type"];
         self.userId = dic[@"userId"];
@@ -37,7 +38,6 @@
 
 - (NSString *)displayName {
     
-//    return self.nickName.length > 0 ?self.nickName : self.userName;
     return self.userName;
 }
 

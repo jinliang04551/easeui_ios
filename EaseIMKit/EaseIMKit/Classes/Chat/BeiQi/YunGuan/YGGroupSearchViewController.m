@@ -124,7 +124,6 @@
 
                 self.noDataPromptView.hidden = self.dataArray.count > 0 ? YES : NO;
 
-//                [EaseAlertController showErrorAlert:errorDescription];
             }
         }
 
@@ -225,11 +224,6 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//}
 
 
 #pragma mark - YGGroupSearchViewDelegate

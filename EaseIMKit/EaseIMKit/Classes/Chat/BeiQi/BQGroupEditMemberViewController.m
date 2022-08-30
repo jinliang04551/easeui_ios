@@ -11,6 +11,7 @@
 #import "BQGroupSearchCell.h"
 #import "EaseHeaders.h"
 #import "BQEaseUserModel.h"
+#import "EaseNoDataPlaceHolderView.h"
 
 
 @interface BQGroupEditMemberViewController ()<UITableViewDelegate,UITableViewDataSource,BQGroupSearchAddViewDelegate>
@@ -28,6 +29,8 @@
 @property (nonatomic) BOOL isModify;
 
 @property (nonatomic, strong) UIView *titleView;
+
+@property (nonatomic, strong) EaseNoDataPlaceHolderView *noDataPromptView;
 
 @end
 
@@ -66,9 +69,13 @@
     [self.groupSearchAddView updateUIWithMemberArray:self.memberArray];
 }
 
+
 - (void)refreshTableView {
-    [self.groupSearchAddView updateUIWithMemberArray:self.memberArray];
-    [self.searchResultTableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.groupSearchAddView updateUIWithMemberArray:self.memberArray];
+        [self.searchResultTableView reloadData];
+    });
+    
 }
 
 
@@ -131,6 +138,13 @@
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
     }];
+    
+    [self.view addSubview:self.noDataPromptView];
+    [self.noDataPromptView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.groupSearchAddView.mas_bottom).offset(kNoDataPlaceHolderViewTopPadding);
+        make.centerX.left.right.equalTo(self.view);
+    }];
+    
 }
 
 
@@ -180,7 +194,10 @@
     
     [self.searchResultArray removeAllObjects];
     [_searchResultTableView reloadData];
+    self.noDataPromptView.hidden = YES;
 }
+
+
 
 - (void)searchBarSearchButtonClicked:(EMSearchBar *)searchBar
 {
@@ -214,6 +231,7 @@
                 self.searchResultArray = dArray;
                 [self.searchResultTableView reloadData];
                 
+                self.noDataPromptView.hidden = self.searchResultArray.count > 0 ? YES : NO;
             }else {
                 [EaseAlertController showErrorAlert:errorDescription];
             }
@@ -490,6 +508,17 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         };
     }
     return _groupSearchCell;
+}
+
+
+- (EaseNoDataPlaceHolderView *)noDataPromptView {
+    if (_noDataPromptView == nil) {
+        _noDataPromptView = EaseNoDataPlaceHolderView.new;
+        [_noDataPromptView.noDataImageView setImage:[UIImage easeUIImageNamed:@"ji_search_nodata"]];
+        _noDataPromptView.prompt.text = @"搜索无结果";
+        _noDataPromptView.hidden = YES;
+    }
+    return _noDataPromptView;
 }
 
 @end

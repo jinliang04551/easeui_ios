@@ -29,12 +29,14 @@
     if (isJihuApp) {
         [UINavigationBar appearance].barStyle = UIBarStyleBlack;
         [UINavigationBar appearance].translucent = NO;
-        [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgBlackColor;
-        [[UINavigationBar appearance] setBarTintColor:EaseIMKit_ViewBgBlackColor];
+        [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgWhiteColor;
+        [[UINavigationBar appearance] setBarTintColor:EaseIMKit_ViewBgWhiteColor];
         
         [[UINavigationBar appearance] setTitleTextAttributes:
              [NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithHexString:@"#F5F5F5"], NSForegroundColorAttributeName, [UIFont systemFontOfSize:16.0], NSFontAttributeName, nil]];
+        
     }else {
+        
 //        [[UINavigationBar appearance] setTitleTextAttributes:
 //         [NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, [UIFont systemFontOfSize:16.0], NSFontAttributeName, nil]];
 //
@@ -42,11 +44,11 @@
         
         [UINavigationBar appearance].barStyle = UIBarStyleDefault;
         [UINavigationBar appearance].translucent = NO;
-        [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgWhiteColor;
-        [[UINavigationBar appearance] setBarTintColor:EaseIMKit_ViewBgWhiteColor];
+        [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgBlackColor;
+        [[UINavigationBar appearance] setBarTintColor:EaseIMKit_ViewBgBlackColor];
 
-        [[UINavigationBar appearance] setTitleTextAttributes:
-             [NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithHexString:@"#171717"], NSForegroundColorAttributeName, [UIFont systemFontOfSize:16.0], NSFontAttributeName, nil]];
+//        [[UINavigationBar appearance] setTitleTextAttributes:
+//             [NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithHexString:@"#171717"], NSForegroundColorAttributeName, [UIFont systemFontOfSize:16.0], NSFontAttributeName, nil]];
         
         
 //        [[UINavigationBar appearance] setTitleTextAttributes:

@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface YGGroupApplyApprovalCell : BQCustomCell
 @property (nonatomic, copy) void (^approvalBlock)(BQGroupApplyApprovalModel *model);
+@property (nonatomic, copy) void (^accessBlock)(BQGroupApplyApprovalModel *model);
 
 
 @end

@@ -25,6 +25,7 @@
 
 @property (nonatomic, strong) BQGroupApplyApprovalModel *model;
 
+@property (nonatomic, strong)UITapGestureRecognizer *tapGesture;
 
 @end
 
@@ -32,6 +33,9 @@
 @implementation YGGroupApplyApprovalCell
 
 - (void)prepare {
+    self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(accessAction)];
+    [self.contentView addGestureRecognizer:self.tapGesture];
+    
     [self.contentView addSubview:self.applyLabel];
     [self.contentView addSubview:self.groupNameLabel];
     [self.contentView addSubview:self.inviteLabel];
@@ -86,6 +90,15 @@
 
 }
 
+
+- (void)accessAction {
+    if (self.accessBlock) {
+        self.accessBlock(self.model);
+    }
+}
+
+
+
 //fail是拒绝 success 是同意 wait是邀请加入的初始状态
 - (void)updateWithObj:(id)obj {
     
@@ -104,8 +117,8 @@
         }
     }
     
-    self.applyLabel.text = self.model.userName;
-    self.inviteLabel.text = [NSString stringWithFormat:@"邀请人: %@",self.model.inviter];
+    self.applyLabel.text = self.model.userNickName;
+    self.inviteLabel.text = [NSString stringWithFormat:@"邀请人: %@",self.model.inviterNickName];
     
     NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] init];
     
