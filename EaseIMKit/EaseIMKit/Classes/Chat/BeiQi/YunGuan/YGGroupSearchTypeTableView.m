@@ -41,7 +41,7 @@
     [self addSubview:self.contentView];
     
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(8.0);
+        make.top.equalTo(self);
         make.left.equalTo(self);
         make.right.equalTo(self);
         make.bottom.equalTo(self);

@@ -55,9 +55,10 @@
         self.statusView.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:self.statusView];
         [self.statusView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self).offset(-5);
             make.right.equalTo(self).offset(-5);
             make.width.height.equalTo(@20);
+            make.centerY.equalTo(self.nameBgView);
+            
         }];
         
         [self addSubview:self.talkingImageView];

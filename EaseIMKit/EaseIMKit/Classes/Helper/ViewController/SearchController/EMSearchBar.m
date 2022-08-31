@@ -87,6 +87,7 @@
     return YES;
 }
 
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
@@ -239,9 +240,11 @@
 - (UIView *)rightView {
     if (_rightView == nil) {
         _rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
-
+        _rightView.backgroundColor = UIColor.whiteColor;
+        
         UIImageView *rightImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
         rightImageView.contentMode = UIViewContentModeScaleAspectFit;
+        
         rightImageView.image = [UIImage easeUIImageNamed:@"jh_invite_delete"];
 
         

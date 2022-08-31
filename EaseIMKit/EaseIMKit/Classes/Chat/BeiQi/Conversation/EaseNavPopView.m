@@ -87,8 +87,10 @@
         }else {
             [cell showRedPoint:NO];
         }
+    }else {
+        [cell showRedPoint:NO];
     }
-    
+
     return cell;
 }
 
