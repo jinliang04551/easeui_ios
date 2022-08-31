@@ -289,7 +289,8 @@
     //被群主禁言
     EMGroup *group = (EMGroup *)notify.object;
     if ([group.groupId isEqualToString:self.conversation.conversationId]) {
-        [EaseAlertController showErrorAlert:@"你已被群主禁言"];
+//        [EaseAlertController showErrorAlert:@"你已被群主禁言"];
+        [self showHint:@"你已被群主禁言"];
     }
     
 }
@@ -298,7 +299,8 @@
     //被群主解除禁言
     EMGroup *group = (EMGroup *)notify.object;
     if ([group.groupId isEqualToString:self.conversation.conversationId]) {
-        [EaseAlertController showErrorAlert:@"你的禁言已解除"];
+//        [EaseAlertController showErrorAlert:@"你的禁言已解除"];
+        [self showHint:@"你的禁言已解除"];
     }
     
 }

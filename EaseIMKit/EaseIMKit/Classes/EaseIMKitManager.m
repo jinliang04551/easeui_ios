@@ -367,7 +367,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
         NSString *currentVCString = NSStringFromClass([currentVC class]);
         NSLog(@"%s currentVCString:%@",__func__,currentVCString);
 
-        if ([currentVCString hasPrefix:@"EM"] ||[currentVCString hasPrefix:@"Ease"]) {
+        if ([currentVCString hasPrefix:@"EM"] ||[currentVCString hasPrefix:@"Ease"]||[currentVCString hasPrefix:@"JH"]||[currentVCString hasPrefix:@"YG"]) {
             return NO;
         }
         
