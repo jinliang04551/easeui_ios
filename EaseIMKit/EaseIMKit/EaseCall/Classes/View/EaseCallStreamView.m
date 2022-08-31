@@ -57,8 +57,8 @@
         [self.statusView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self).offset(-5);
             make.width.height.equalTo(@20);
-            make.centerY.equalTo(self.nameBgView);
-            
+            make.bottom.equalTo(self).offset(-5);
+
         }];
         
         [self addSubview:self.talkingImageView];
@@ -69,7 +69,7 @@
         
         [self addSubview:self.nameBgView];
         [self.nameBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self).offset(-5);
+            make.centerY.equalTo(self.statusView);
             make.left.equalTo(self).offset(16.0);
             make.right.equalTo(self.statusView.mas_left).offset(-5.0);
             make.height.equalTo(@30);
