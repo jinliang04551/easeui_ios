@@ -216,22 +216,50 @@
     return msgStr;
 }
 
-+ (void)showHint:(NSString *)hint
+//+ (void)showHint:(NSString *)hint
+//{
+//
+//    UIWindow *win = [[[UIApplication sharedApplication] windows] firstObject];
+//
+//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:win animated:YES];
+//    hud.userInteractionEnabled = NO;
+//    // Configure for text only and offset down
+//    hud.mode = MBProgressHUDModeText;
+//    hud.label.text = hint;
+//    hud.margin = 10.f;
+//    CGPoint offset = hud.offset;
+//    hud.offset = offset;
+//    hud.removeFromSuperViewOnHide = YES;
+//    [hud hideAnimated:YES afterDelay:2];
+//
+//}
+
+
++ (void)showHint:(NSString *)hint {
+    [EaseKitUtil showHint:hint yOffset:0];
+}
+
++ (void)showHint:(NSString *)hint yOffset:(float)yOffset
 {
-    
     UIWindow *win = [[[UIApplication sharedApplication] windows] firstObject];
-  
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:win animated:YES];
     hud.userInteractionEnabled = NO;
-    // Configure for text only and offset down
     hud.mode = MBProgressHUDModeText;
     hud.label.text = hint;
-    hud.margin = 10.f;
+    hud.margin = 20.f;
+    hud.label.font = EaseIMKit_NFont(14.0);
+    hud.label.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+    
+    hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
+    hud.bezelView.color = [UIColor colorWithHexString:@"#252525"];
+//    hud.bezelView.alpha = 0.7;
+    hud.bezelView.layer.cornerRadius = 8.0;
+    
     CGPoint offset = hud.offset;
+    offset.y  += yOffset;
     hud.offset = offset;
     hud.removeFromSuperViewOnHide = YES;
     [hud hideAnimated:YES afterDelay:2];
-    
 }
 
 @end

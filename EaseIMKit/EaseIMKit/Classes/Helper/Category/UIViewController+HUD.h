@@ -20,6 +20,5 @@
 
 - (void)showHint:(NSString *)hint;
 
-- (void)showHint:(NSString *)hint yOffset:(float)yOffset;
 
 @end

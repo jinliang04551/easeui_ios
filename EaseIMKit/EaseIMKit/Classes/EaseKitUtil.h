@@ -32,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)showHint:(NSString *)hint;
 
++ (void)showHint:(NSString *)hint yOffset:(float)yOffset;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -11,6 +11,7 @@
 #import "EaseHeaders.h"
 #import "EaseEmojiHelper.h"
 #import "EaseIMKitManager.h"
+#import "EasePageControl.h"
 
 @interface EaseChatBarEmoticonView()<EMEmoticonViewDelegate>
 
@@ -27,6 +28,9 @@
 @property (nonatomic, strong) UIButton *extBtn;
 @property (nonatomic, strong) UIButton *deleteBtn;
 @property (nonatomic, strong) UIButton *sendBtn;
+@property (nonatomic, strong) UIPageControl *pageControl;
+//@property (nonatomic, strong) EasePageControl *pageControl;
+
 
 @end
 
@@ -90,7 +94,6 @@
 
     }else {
         [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"yg_deleteEmoticon"] forState:UIControlStateNormal];
-//        [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"yg_deleteEmoticonDisable"] forState:UIControlStateDisabled];
 
         [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"yg_deleteEmoticon"] forState:UIControlStateDisabled];
     }
@@ -114,6 +117,7 @@
     [self.bottomScrollView Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.edges.equalTo(self);
     }];
+    
     
     //取消显示gif 大表情
 //    for (int i = 0; i < count; i++) {
@@ -160,7 +164,7 @@
         make.right.equalTo(self);
         make.bottom.equalTo(self.bottomView.ease_top);
     }];
-    
+        
     NSInteger count = [self.groups count];
     for (int i = 0; i < count; i++) {
         EMEmoticonView *view = [[EMEmoticonView alloc] initWithEmotionGroup:self.groups[i]];
@@ -206,6 +210,11 @@
     }
 }
 
+
+- (void)emoticonViewDidScrollToIndex:(NSInteger)index {
+    self.pageControl.currentPage = index;
+}
+
 #pragma mark - Action
 
 - (void)sendEmoticonAction
@@ -249,6 +258,7 @@
             make.right.equalTo(self.bottomView.ease_right).offset(-22);
             make.width.height.Ease_equalTo(@18);
         }];
+        
         [self.bottomScrollView Ease_remakeConstraints:^(EaseConstraintMaker *make) {
             make.left.equalTo(self);
             make.right.equalTo(self.extBtn.ease_left);
@@ -269,6 +279,16 @@
             make.width.Ease_equalTo(@36);
             make.height.Ease_equalTo(@28);
         }];
+        
+        [self addSubview:self.pageControl];
+        [self.pageControl Ease_makeConstraints:^(EaseConstraintMaker *make) {
+            make.top.equalTo(self.deleteBtn.ease_bottom);
+            make.centerX.equalTo(self);
+            make.width.Ease_equalTo(@100);
+            make.height.Ease_equalTo(@20);
+            
+        }];
+        
     } else {
         [self.sendBtn removeFromSuperview];
         [self.extBtn removeFromSuperview];
@@ -284,6 +304,8 @@
     [view Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.edges.equalTo(self.emotionBgView);
     }];
+    
+    
 }
 
 - (void)deleteAction
@@ -306,5 +328,39 @@
         self.deleteBtn.enabled = YES;
     }
 }
+
+
+- (UIPageControl *)pageControl {
+    if (_pageControl ==  nil) {
+        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+        _pageControl.numberOfPages = 2;
+        _pageControl.currentPage = 0;
+        _pageControl.userInteractionEnabled = NO;
+
+
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            _pageControl.pageIndicatorTintColor = [UIColor colorWithHexString:@"#818181"];
+            _pageControl.currentPageIndicatorTintColor = [UIColor colorWithHexString:@"#C4C4C4"];
+        }else {
+            _pageControl.pageIndicatorTintColor = [UIColor colorWithHexString:@"#C4C4C4"];
+            _pageControl.currentPageIndicatorTintColor = [UIColor colorWithHexString:@"#818181"];
+        }
+    }
+
+    return _pageControl;
+}
+
+//- (EasePageControl *)pageControl {
+//    if (_pageControl == nil) {
+//        _pageControl = [[EasePageControl alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+//        _pageControl.numberOfPages = 2;
+//        _pageControl.userInteractionEnabled = NO;
+//        [_pageControl updateWithCurrentPage:0];
+//    }
+//    _pageControl.backgroundColor = UIColor.grayColor;
+//
+//    return _pageControl;
+//}
+
 
 @end

@@ -28,6 +28,7 @@ EaseEmoticonGroup *gGifGroup = nil;
 @end
 
 
+
 @implementation EaseEmoticonGroup
 
 - (instancetype)initWithType:(EMEmotionType)aType
@@ -42,7 +43,7 @@ EaseEmoticonGroup *gGifGroup = nil;
         _dataArray = aDataArray;
         _icon = aIcon;
         _rowCount = aRowCount;
-        _colCount = aColCount;
+        _colCount = aColCount;        
     }
     
     return self;
@@ -140,6 +141,8 @@ EaseEmoticonGroup *gGifGroup = nil;
 @property (nonatomic) CGSize itemSize;
 
 @property (nonatomic) CGFloat itemMargin;
+
+@property (nonatomic, assign) NSInteger currentPageIndex;
 
 @end
 
@@ -253,5 +256,22 @@ EaseEmoticonGroup *gGifGroup = nil;
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
     return self.itemMargin;
 }
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGRect visibleBounds = scrollView.bounds;
+    NSInteger index = (NSInteger)(floorf(CGRectGetMidX(visibleBounds) / CGRectGetWidth(visibleBounds)));
+    if (index < 0) index = 0;
+    if (index > 2) index = 2;
+    
+    self.currentPageIndex = index;
+    
+    NSLog(@"%s self.currentPageIndex:%@",__func__,@(self.currentPageIndex));
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(emoticonViewDidScrollToIndex:)]) {
+        [self.delegate emoticonViewDidScrollToIndex:self.currentPageIndex];
+    }
+    
+}
+
 
 @end

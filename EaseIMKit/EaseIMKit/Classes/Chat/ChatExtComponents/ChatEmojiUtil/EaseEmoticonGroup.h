@@ -84,6 +84,8 @@ typedef NS_ENUM(NSUInteger, EMEmotionType) {
 
 - (void)emoticonViewDidSelectedModel:(EaseEmoticonModel *)aModel;
 
+- (void)emoticonViewDidScrollToIndex:(NSInteger)index;
+
 @end
 
 NS_ASSUME_NONNULL_END

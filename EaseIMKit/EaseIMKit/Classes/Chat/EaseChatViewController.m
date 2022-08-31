@@ -161,6 +161,8 @@
             if (!aError) {
                 //已读数为去除自己的所有人
                 self.groupMemberCount = aGroup.memberList.count;
+                [self refreshTableView:NO];
+                
                 [[EaseIMHelper shareHelper] fetchAllMembersUserInfoWithGroup:aGroup];
             } else {
                 //
