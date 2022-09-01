@@ -37,7 +37,7 @@
     
     [self mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@(230.0));
-        make.height.equalTo(@(66.0));
+        make.height.equalTo(@(68.0));
     }];
     
     self.iconView = [[UIImageView alloc] init];
@@ -95,12 +95,12 @@
         [self.iconView Ease_makeConstraints:^(EaseConstraintMaker *make) {
             make.top.equalTo(self).offset(12.0);
             make.left.equalTo(self).offset(15.0);
-            make.centerY.equalTo(self);
             make.size.equalTo(@(44.0));
+            make.bottom.equalTo(self).offset(-12.0);
         }];
         [self.textLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
-            make.top.equalTo(self).offset(9.0);
-            make.left.equalTo(self.iconView.ease_right).offset(10.0);
+            make.top.equalTo(self.iconView);
+            make.left.equalTo(self.iconView.ease_right).offset(8.0);
             make.right.equalTo(self).offset(-10.0);
         }];
 
@@ -109,11 +109,11 @@
         [self.iconView Ease_makeConstraints:^(EaseConstraintMaker *make) {
             make.top.equalTo(self).offset(12.0);
             make.left.equalTo(self).offset(15.0);
-            make.centerY.equalTo(self);
             make.size.equalTo(@(44.0));
+            make.bottom.equalTo(self).offset(-12.0);
         }];
         [self.textLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
-            make.top.equalTo(self).offset(9.0);
+            make.top.equalTo(self.iconView);
             make.left.equalTo(self.iconView.ease_right).offset(10.0);
             make.right.equalTo(self).offset(-10.0);
         }];

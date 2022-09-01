@@ -171,7 +171,7 @@
                 make.top.equalTo(self.avatarView);
             }
             make.bottom.equalTo(self.contentView).offset(-15);
-            make.left.equalTo(self.avatarView.ease_right).offset(componentSpacing);
+            make.left.equalTo(self.avatarView.ease_right).offset(3);
             make.right.lessThanOrEqualTo(self.contentView).offset(-70);
         }];
     } else {

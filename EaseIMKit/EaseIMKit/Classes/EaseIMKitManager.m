@@ -73,6 +73,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
     return gInit;
 }
 
+
 - (void)configIMKitWithOption:(EaseIMKitOptions *)option {
     [EaseIMKitManager.shared configuationIMKitIsJiHuApp:option.isJiHuApp];
     

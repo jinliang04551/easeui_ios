@@ -16,15 +16,33 @@
 {
     self = [super initWithDirection:aDirection type:aType viewModel:viewModel];
     if (self) {
-        if (self.direction == EMMessageDirectionSend) {
-            self.iconView.image = [UIImage easeUIImageNamed:@"locationMsg"];
-        } else {
-            self.iconView.image = [UIImage easeUIImageNamed:@"locationMsg"];
-        }
+        
+        [self mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(@(230.0));
+            make.height.equalTo(@(54.0));
+        }];
         
         [self.iconView Ease_updateConstraints:^(EaseConstraintMaker *make) {
             make.size.equalTo(@(28.0));
         }];
+        
+        
+        if (self.direction == EMMessageDirectionSend) {
+            self.iconView.image = [UIImage easeUIImageNamed:@"locationMsg"];
+            
+            [self.textLabel Ease_updateConstraints:^(EaseConstraintMaker *make) {
+                make.left.equalTo(self.iconView.ease_right).offset(10.0);
+            }];
+            
+        } else {
+            self.iconView.image = [UIImage easeUIImageNamed:@"locationMsg"];
+            [self.textLabel Ease_updateConstraints:^(EaseConstraintMaker *make) {
+                make.left.equalTo(self.iconView.ease_right).offset(7.0);
+            }];
+
+        }
+        
+        
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             self.textLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
@@ -40,8 +58,6 @@
             self.detailLabel.font = EaseIMKit_NFont(12.0);
         }
 
-       
-        
     }
     
     return self;
