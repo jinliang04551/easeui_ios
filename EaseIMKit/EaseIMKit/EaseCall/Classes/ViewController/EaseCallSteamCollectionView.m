@@ -40,10 +40,17 @@
 }
 
 - (void)updateWithObj:(id)obj {
+    for (UIView *view in self.callSteamViewArray) {
+        if (view) {
+            [view removeFromSuperview];
+        }
+    }
+    
+    
     self.callSteamViewArray = obj;
     
-    int itemWidth = EaseIMKit_ScreenWidth * 0.5;
-    int itemHeight = itemWidth;
+    int itemWidth = KEaseCallStreamViewWidth;
+    int itemHeight = KEaseCallStreamViewWidth;
 
     for (int i = 0; i < self.callSteamViewArray.count; ++i) {
         UIView *callView = self.callSteamViewArray[i];
@@ -141,7 +148,7 @@
     }
     
     self.dataArray = tArray;
-    NSLog(@"%s self.dataArray:%@",__func__,self.dataArray);
+    NSLog(@"%s ===========self.dataArray:%@",__func__,self.dataArray);
     
     CGFloat width = self.dataArray.count * EaseIMKit_ScreenWidth;
     

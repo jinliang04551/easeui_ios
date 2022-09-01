@@ -123,6 +123,16 @@
         }
     }
 
+    [self.contentView addSubview:self.callSteamCollectionView];
+    [self.callSteamCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.inviteButton.mas_bottom);
+        make.left.equalTo(self.contentView);
+        make.right.equalTo(self.contentView);
+        make.width.equalTo(@(0));
+        make.height.equalTo(@(EaseIMKit_ScreenWidth));
+    }];
+
+    
     [self updateViewPos];
 }
 
@@ -146,7 +156,9 @@
 {
     if([self.streamViewsDic objectForKey:uId])
         return;
-    EaseCallStreamView* view = [[EaseCallStreamView alloc] init];
+    
+    
+    EaseCallStreamView* view = [[EaseCallStreamView alloc] initWithFrame:CGRectMake(0, 0, KEaseCallStreamViewWidth, KEaseCallStreamViewWidth)];
     view.displayView = remoteView;
     view.enableVideo = aEnableVideo;
     view.delegate = self;
@@ -200,7 +212,7 @@
 
 - (void)setLocalVideoView:(UIView*)aDisplayView  enableVideo:(BOOL)aEnableVideo
 {
-    self.localView = [[EaseCallStreamView alloc] init];
+    self.localView = [[EaseCallStreamView alloc] initWithFrame:CGRectMake(0, 0, KEaseCallStreamViewWidth, KEaseCallStreamViewWidth)];
     self.localView.displayView = aDisplayView;
     self.localView.enableVideo = aEnableVideo;
     self.localView.delegate = self;
@@ -264,16 +276,7 @@
         self.switchCameraLabel.hidden = YES;
 
         
-        [self.contentView addSubview:self.callSteamCollectionView];
-        [self.callSteamCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.inviteButton.mas_bottom);
-            make.left.equalTo(self.contentView);
-            make.right.equalTo(self.contentView);
-            make.width.equalTo(@(0));
-            make.height.equalTo(@(EaseIMKit_ScreenWidth));
-        }];
-
-        
+    
         NSMutableArray *tArray = [NSMutableArray array];
 
         if(self.bigView) {
@@ -308,6 +311,9 @@
         }
         
         CGFloat width = itemArrays * EaseIMKit_ScreenWidth;
+        
+        self.callSteamCollectionView.hidden = NO;
+        
         [self.callSteamCollectionView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.width.equalTo(@(width));
         }];
@@ -562,11 +568,11 @@
 
 #pragma mark getter and setter
 - (EaseCallSteamCollectionView *)callSteamCollectionView {
-if (_callSteamCollectionView == nil) {
-    _callSteamCollectionView = [[EaseCallSteamCollectionView alloc] init];
-    
-}
-return _callSteamCollectionView;
+    if (_callSteamCollectionView == nil) {
+        _callSteamCollectionView = [[EaseCallSteamCollectionView alloc] init];
+        _callSteamCollectionView.hidden = YES;
+    }
+    return _callSteamCollectionView;
 }
 
 - (UIButton *)inviteButton {

@@ -95,4 +95,6 @@
 
 #define kNoDataPlaceHolderViewTopPadding 72.0
 
+#define KEaseCallStreamViewWidth EaseIMKit_ScreenWidth * 0.5
+
 #endif /* EaseUIDefine_h */
