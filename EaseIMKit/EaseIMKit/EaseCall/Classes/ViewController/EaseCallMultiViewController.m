@@ -100,36 +100,6 @@
 
             }];
             
-            
-//            [self.contentView addSubview:self.remoteHeadView];
-//            [self.remoteHeadView mas_makeConstraints:^(MASConstraintMaker *make) {
-//                make.width.height.equalTo(@80);
-//                make.centerX.equalTo(self.contentView);
-//                make.top.equalTo(@100);
-//            }];
-            
-
-            
-//            [self.contentView addSubview:self.remoteNameLabel];
-//            [self.remoteNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//                make.top.equalTo(self.remoteHeadView.mas_bottom).offset(20);
-//                make.centerX.equalTo(self.contentView);
-//            }];
-            
-//            self.statusLabel = [[UILabel alloc] init];
-//            self.statusLabel.backgroundColor = [UIColor clearColor];
-//            self.statusLabel.font = [UIFont systemFontOfSize:15];
-//            self.statusLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.5];
-//            self.statusLabel.textAlignment = NSTextAlignmentRight;
-//            self.statusLabel.text = EaseLocalizableString(@"receiveCallInviteprompt",nil);
-            
-          
-            
-//            [self.contentView addSubview:self.statusLabel];
-//            [self.statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//                make.top.equalTo(self.remoteNameLabel.mas_bottom).offset(20);
-//                make.centerX.equalTo(self.contentView);
-//            }];
         }else{
             self.answerButton.hidden = YES;
             self.acceptLabel.hidden = YES;
@@ -313,9 +283,10 @@
                 make.width.equalTo(@(self.contentView.bounds.size.width));
                 make.height.equalTo(@(self.contentView.bounds.size.height-top-bottom));
             }];
-//            if(self.bigView != self.localView) {
-//                [self.contentView sendSubviewToBack:self.localView];
-//            }
+            
+            if(self.bigView != self.localView) {
+                [self.contentView sendSubviewToBack:self.localView];
+            }
               
             NSLog(@"=========self.bigView=============");
 
@@ -487,25 +458,6 @@
     
 }
 
-//- (void)miniAction
-//{
-//    self.isMini = YES;
-//    [super miniAction];
-//    self.floatingView.enableVideo = NO;
-//    self.floatingView.delegate = self;
-//    self.floatingView.nameLabel.textAlignment = NSTextAlignmentCenter;
-//
-//    EaseIMKit_WS
-//    [self.floatingView.nameLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-//        make.centerX.equalTo(weakSelf.floatingView);
-//    }];
-//
-//    if(self.isJoined) {
-//        self.floatingView.nameLabel.text = EaseLocalizableString(@"Call in progress",nil);
-//    }else{
-//        self.floatingView.nameLabel.text = EaseLocalizableString(@"waitforanswer",nil);
-//    }
-//}
 
 - (void)miniAction
 {

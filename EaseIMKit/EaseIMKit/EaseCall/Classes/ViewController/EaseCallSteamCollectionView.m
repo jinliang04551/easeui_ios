@@ -141,6 +141,8 @@
     }
     
     self.dataArray = tArray;
+    NSLog(@"%s self.dataArray:%@",__func__,self.dataArray);
+    
     CGFloat width = self.dataArray.count * EaseIMKit_ScreenWidth;
     
     [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {

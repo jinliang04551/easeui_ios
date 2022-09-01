@@ -53,18 +53,16 @@
     self.detailLabel = [[UILabel alloc] init];
     self.detailLabel.font = [UIFont systemFontOfSize:10];
     self.detailLabel.numberOfLines = 0;
-    
-    
+        
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         self.textLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
-        self.detailLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
-
+        
+        self.detailLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
     }else {
         self.textLabel.textColor = [UIColor colorWithHexString:@"#171717"];
-        self.detailLabel.textColor = [UIColor colorWithHexString:@"#252525"];
-
+        
+        self.detailLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
     }
-    
     
     
     [self addSubview:self.detailLabel];
