@@ -19,6 +19,7 @@
 
 @property (nonatomic, strong) UILabel *controlLabel;
 
+@property (nonatomic, strong) UIButton *clearButton;
 
 @end
 
@@ -106,8 +107,10 @@
 {
     if (self.textField.text.length > 0) {
         [self.operateButton setTitle:@"搜索" forState:UIControlStateNormal];
+        self.rightView.hidden = NO;
     }else {
         [self.operateButton setTitle:@"取消" forState:UIControlStateNormal];
+        self.rightView.hidden = YES;
     }
     
 }
@@ -170,7 +173,9 @@
         _textField = [[UITextField alloc] init];
         _textField.delegate = self;
         _textField.font = [UIFont systemFontOfSize:14.0];
+
         
+
         //设置文字属性
             NSMutableDictionary *attrs = [NSMutableDictionary dictionary];
             attrs[NSFontAttributeName] = [UIFont systemFontOfSize:14.0];
@@ -180,23 +185,13 @@
             NSAttributedString *placeholder = [[NSAttributedString alloc] initWithString:@"搜索" attributes:attrs];
         _textField.attributedPlaceholder  = placeholder;
         
-        _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+//        _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _textField.leftViewMode = UITextFieldViewModeAlways;
         _textField.returnKeyType = UIReturnKeySearch;
         _textField.layer.cornerRadius = kTextFieldHeight * 0.5;
         _textField.leftView = self.leftView;
-
         
-//        UIImageView *rightImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-//        rightImageView.opaque = YES;
-//        rightImageView.contentMode = UIViewContentModeScaleAspectFit;
-//
-//        UIView *rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
-//
-//        [rightView addSubview:rightImageView];
-//        [rightImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.edges.equalTo(rightView).insets(UIEdgeInsetsMake(0, 0, 0, 14.0));
-//        }];
+        _textField.rightViewMode = UITextFieldViewModeWhileEditing;
         _textField.rightView = self.rightView;
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
@@ -227,7 +222,6 @@
         leftImageView.contentMode = UIViewContentModeScaleAspectFit;
         leftImageView.image = [UIImage easeUIImageNamed:@"jh_search_leftIcon"];
         
-        
         [_leftView addSubview:leftImageView];
         [leftImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(_leftView).insets(UIEdgeInsetsMake(0, 10.0, 0, 6.0));
@@ -240,18 +234,14 @@
 - (UIView *)rightView {
     if (_rightView == nil) {
         _rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
-        _rightView.backgroundColor = UIColor.whiteColor;
         
-        UIImageView *rightImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-        rightImageView.contentMode = UIViewContentModeScaleAspectFit;
-        
-        rightImageView.image = [UIImage easeUIImageNamed:@"jh_invite_delete"];
-
-        
-        [_rightView addSubview:rightImageView];
-        [rightImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(_rightView).insets(UIEdgeInsetsMake(0, 0, 0, 14.0));
+        [_rightView addSubview:self.clearButton];
+        [self.clearButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(_rightView).insets(UIEdgeInsetsMake(0, 0, 0, 10.0));
         }];
+        
+        _rightView.hidden = YES;
+
     }
     return _rightView;
 }
@@ -318,6 +308,22 @@
 - (void)setPlaceHolder:(NSString *)placeHolder {
     self.textField.placeholder = placeHolder;
     self.controlLabel.text = placeHolder;
+}
+
+- (UIButton *)clearButton {
+    if (_clearButton == nil) {
+        _clearButton = [[UIButton alloc] init];
+        [_clearButton setImage:[UIImage easeUIImageNamed:@"jh_invite_delete"] forState:UIControlStateNormal];
+        
+        [_clearButton addTarget:self action:@selector(clearButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _clearButton;
+}
+
+- (void)clearButtonAction {
+    self.textField.text = @"";
+    self.rightView.hidden = YES;
+    [self.operateButton setTitle:@"取消" forState:UIControlStateNormal];
 }
 
 
