@@ -350,8 +350,9 @@
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _nameLabel.font = _viewModel.nameLabelFont;
         _nameLabel.textColor = _viewModel.nameLabelColor;
-        _nameLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        _nameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         _nameLabel.backgroundColor = [UIColor clearColor];
+
     }
     return _nameLabel;
 }
