@@ -284,7 +284,7 @@
         [self.pageControl Ease_makeConstraints:^(EaseConstraintMaker *make) {
             make.top.equalTo(self.deleteBtn.ease_bottom);
             make.centerX.equalTo(self);
-            make.width.Ease_equalTo(@100);
+//            make.width.Ease_equalTo(@100);
             make.height.Ease_equalTo(@20);
             
         }];
