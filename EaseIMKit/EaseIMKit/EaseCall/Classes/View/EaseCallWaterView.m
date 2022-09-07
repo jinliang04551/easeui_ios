@@ -6,6 +6,8 @@
 //
 
 #import "EaseCallWaterView.h"
+#import "EaseHeaders.h"
+
 
 #define ColorWithAlpha(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 @implementation EaseCallWaterView
@@ -14,13 +16,13 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
-        _multiple = 1.423;
+        _multiple = 1.5;
         
         [UIView animateWithDuration:4 animations:^{
-            
+
             self.transform = CGAffineTransformScale(self.transform, 1.5, 1.5);
             self.alpha = 0;
-            
+
         } completion:^(BOOL finished) {
             [self removeFromSuperview];
         }];
@@ -56,6 +58,7 @@
     CAKeyframeAnimation *borderColorAnimation = [self backgroundColorAnimation];
     CAKeyframeAnimation *backGroundColorAnimation = [self backgroundColorAnimation];
     animationArray = @[scaleAnimation, backGroundColorAnimation, borderColorAnimation];
+    
     return animationArray;
 }
 
@@ -81,24 +84,35 @@
 - (CAKeyframeAnimation *)backgroundColorAnimation {
     CAKeyframeAnimation *backgroundColorAnimation = [CAKeyframeAnimation animation];
     backgroundColorAnimation.keyPath = @"backgroundColor";
-    backgroundColorAnimation.values = @[(__bridge id)ColorWithAlpha(255, 216, 87, 0.5).CGColor,(__bridge id)ColorWithAlpha(255, 231, 152, 0.5).CGColor,(__bridge id)ColorWithAlpha(255, 241, 197, 0.5).CGColor,(__bridge id)ColorWithAlpha(255, 241, 197, 0).CGColor];
-    backgroundColorAnimation.keyTimes = @[@0.3,@0.6,@0.9,@1];
+    
+//    backgroundColorAnimation.values = @[(__bridge id)EaseIMKit_COLOR_HEX(0x969696).CGColor,(__bridge id)EaseIMKit_COLOR_HEX(0x646464).CGColor,(__bridge id)EaseIMKit_COLOR_HEX(0x242424).CGColor];
+//    backgroundColorAnimation.keyTimes = @[@0.4,@0.7,@1];
+
+    backgroundColorAnimation.values = @[(__bridge id)EaseIMKit_COLOR_HEX(0x808080).CGColor,(__bridge id)EaseIMKit_COLOR_HEX(0x4B4B4B).CGColor,(__bridge id)EaseIMKit_COLOR_HEX(0x242424).CGColor];
+    backgroundColorAnimation.keyTimes = @[@0.4,@0.7,@1];
+    
     return backgroundColorAnimation;
 }
 
 - (CAKeyframeAnimation *)borderColorAnimation {
     CAKeyframeAnimation *borderColorAnimation = [CAKeyframeAnimation animation];
     borderColorAnimation.keyPath = @"borderColor";
-    borderColorAnimation.values = @[(__bridge id)ColorWithAlpha(255, 216, 87, 0.5).CGColor,(__bridge id)ColorWithAlpha(255, 231, 152, 0.5).CGColor,(__bridge id)ColorWithAlpha(255, 241, 197, 0.5).CGColor,(__bridge id)ColorWithAlpha(255, 241, 197, 0).CGColor];
-    borderColorAnimation.keyTimes = @[@0.3,@0.6,@0.9,@1];
+      
+//    borderColorAnimation.values = @[(__bridge id)EaseIMKit_COLOR_HEX(0xB9B9B9).CGColor,(__bridge id)EaseIMKit_COLOR_HEX(0x252525).CGColor,(__bridge id)EaseIMKit_COLOR_HEX(0x171717).CGColor];
+//    borderColorAnimation.keyTimes = @[@0.4,@0.7,@1];
+
+    borderColorAnimation.values = @[(__bridge id)EaseIMKit_COLOR_HEX(0x808080).CGColor,(__bridge id)EaseIMKit_COLOR_HEX(0x4B4B4B).CGColor,(__bridge id)EaseIMKit_COLOR_HEX(0x242424).CGColor];
+    borderColorAnimation.keyTimes = @[@0.4,@0.7,@1];
+
+    
     return borderColorAnimation;
 }
-
+    
 
 - (CALayer *)pulsingLayer:(CGRect)rect animation:(CAAnimationGroup *)animation {
     CALayer *pulsingLayer = [CALayer layer];
-    pulsingLayer.borderWidth = 0.5;
-    pulsingLayer.borderColor = ColorWithAlpha(255, 216, 87, 0.5).CGColor;
+//    pulsingLayer.borderWidth = 0.5;
+//    pulsingLayer.borderColor = ColorWithAlpha(1.0, 1.0, 1.0, 0.5).CGColor;
     pulsingLayer.frame = CGRectMake(0, 0, rect.size.width, rect.size.height);
     pulsingLayer.cornerRadius = rect.size.height / 2;
     [pulsingLayer addAnimation:animation forKey:@"plulsing"];

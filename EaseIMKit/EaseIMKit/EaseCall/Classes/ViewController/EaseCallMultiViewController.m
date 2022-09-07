@@ -20,6 +20,7 @@
 #import "EaseHeaders.h"
 #import "EaseCallWaterView.h"
 
+#define kHeadBgAnimationViewSize 80.0
 
 @interface EaseCallMultiViewController ()<EaseCallStreamViewDelegate>
 @property (nonatomic) UIButton* inviteButton;
@@ -91,15 +92,15 @@
             self.acceptLabel.hidden = YES;
             
             [self.contentView addSubview:self.remoteCallView];
-            
             [self.remoteCallView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.contentView).offset(100.0);
                 make.centerX.equalTo(self.contentView);
                 make.width.equalTo(self.contentView);
                 make.height.equalTo(@(EaseIMKit_ScreenHeight * 0.5));
-
             }];
-            
+
+            [self startCallAnimation];
+
         }else{
             self.answerButton.hidden = YES;
             self.acceptLabel.hidden = YES;
@@ -135,6 +136,25 @@
     
     [self updateViewPos];
 }
+
+- (void)startCallAnimation {
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(playCallAnimation) userInfo:nil repeats:YES];
+}
+
+- (void)playCallAnimation {
+    EaseCallWaterView *waterView = [[EaseCallWaterView alloc]initWithFrame:CGRectMake(0, 0, kHeadBgAnimationViewSize, kHeadBgAnimationViewSize)];
+    waterView.multiple = 2.5;
+    waterView.backgroundColor = [UIColor clearColor];
+    [self.remoteCallView addSubview:waterView];
+    [self.remoteCallView insertSubview:waterView belowSubview:self.remoteHeadView];
+    
+    [waterView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.remoteHeadView);
+        make.centerX.equalTo(self.remoteHeadView);
+        make.size.equalTo(@(kHeadBgAnimationViewSize));
+    }];
+}
+
 
 - (NSMutableDictionary*)streamViewsDic
 {
@@ -621,35 +641,26 @@
     if (_remoteCallView == nil) {
         _remoteCallView = [[UIView alloc] init];
         
-//        [_remoteCallView addSubview:self.callWaterView];
-//        [self.callWaterView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.centerX.equalTo(_remoteCallView);
-//            make.centerY.equalTo(_remoteCallView.mas_top).offset(120.0);
-//            make.size.equalTo(@(160.0));
-//        }];
-        
         [_remoteCallView addSubview:self.remoteHeadView];
         [self.remoteHeadView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_remoteCallView);
-            make.width.height.equalTo(@80);
+            make.top.equalTo(_remoteCallView).offset(80.0);
+            make.width.height.equalTo(@(80.0));
             make.centerX.equalTo(_remoteCallView);
         }];
 
-    
+
         [_remoteCallView addSubview:self.remoteNameLabel];
         [self.remoteNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.remoteHeadView.mas_bottom).offset(20);
+            make.top.equalTo(self.remoteHeadView.mas_bottom).offset(100.0);
             make.centerX.equalTo(_remoteCallView);
         }];
-        
+
         [_remoteCallView addSubview:self.statusLabel];
         [self.statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.remoteNameLabel.mas_bottom).offset(5.0);
             make.centerX.equalTo(_remoteCallView);
         }];
-        
-//        _remoteCallView.backgroundColor = UIColor.grayColor;
-        
+                
     }
     return _remoteCallView;
 }
@@ -669,3 +680,6 @@
 
 
 @end
+
+#undef kHeadBgAnimationViewSize
+
