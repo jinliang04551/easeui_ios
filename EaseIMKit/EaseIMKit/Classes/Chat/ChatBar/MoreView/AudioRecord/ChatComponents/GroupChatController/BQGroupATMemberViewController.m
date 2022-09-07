@@ -8,9 +8,7 @@
 
 #import "BQGroupATMemberViewController.h"
 #import "EMRealtimeSearch.h"
-#import "EaseSearchBar.h"
 #import "EaseGroupAtCell.h"
-#import "EaseSearchNoDataView.h"
 #import "EaseIMKitManager.h"
 #import "EaseNoDataPlaceHolderView.h"
 #import "EMSearchBar.h"
