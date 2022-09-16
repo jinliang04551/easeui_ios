@@ -340,7 +340,7 @@ static const void *imagePickerKey = &imagePickerKey;
     picker.delegate = self;
     picker.modalPresentationStyle = 0;
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        picker.navigationController.navigationBar.tintColor = EaseIMKit_ViewBgWhiteColor;
+        picker.navigationController.navigationBar.tintColor = EaseIMKit_ViewBgBlackColor;
 
     }else {
         picker.navigationController.navigationBar.tintColor = EaseIMKit_ViewBgBlackColor;

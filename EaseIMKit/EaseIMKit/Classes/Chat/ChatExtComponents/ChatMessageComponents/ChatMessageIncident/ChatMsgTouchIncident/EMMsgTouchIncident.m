@@ -326,19 +326,19 @@
     [EaseAlertController showErrorAlert:@"模拟器无法打开文件"];
 #elif TARGET_OS_IPHONE
         
-        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgWhiteColor;
-
-        }else {
-            [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgBlackColor;
-        }
-            
 
         NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:aPathe];
         NSLog(@"\nfile  --    :%@",[fileHandle readDataToEndOfFile]);
         [fileHandle closeFile];
         UIDocumentInteractionController *docVc = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:aPathe]];
         docVc.delegate = weakself;
+        
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgWhiteColor;
+        }else {
+            [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgBlackColor;
+        }
+
         [docVc presentPreviewAnimated:YES];
 
 #endif

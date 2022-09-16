@@ -377,6 +377,7 @@
         _timeLabel.backgroundColor = [UIColor clearColor];
         [_timeLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     
+        
     }
     return _timeLabel;
 }
