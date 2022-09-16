@@ -200,14 +200,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     [EaseAlertController showErrorAlert:@"模拟器无法打开文件"];
 #elif TARGET_OS_IPHONE
     NSString *fileLocalPath = [(EMFileMessageBody*)self.message.body localPath];
-    
-    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgWhiteColor;
-
-    }else {
-        [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgBlackColor;
-    }
-    
+        
     NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:fileLocalPath];
     NSLog(@"\nfile  --    :%@",[fileHandle readDataToEndOfFile]);
     [fileHandle closeFile];

@@ -339,12 +339,6 @@ static const void *imagePickerKey = &imagePickerKey;
     UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeOpen];
     picker.delegate = self;
     picker.modalPresentationStyle = 0;
-    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        picker.navigationController.navigationBar.tintColor = EaseIMKit_ViewBgBlackColor;
-
-    }else {
-        picker.navigationController.navigationBar.tintColor = EaseIMKit_ViewBgBlackColor;
-    }
     
     [self presentViewController:picker animated:YES completion:nil];
 }

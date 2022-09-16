@@ -332,13 +332,6 @@
         [fileHandle closeFile];
         UIDocumentInteractionController *docVc = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:aPathe]];
         docVc.delegate = weakself;
-        
-        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgWhiteColor;
-        }else {
-            [UINavigationBar appearance].tintColor = EaseIMKit_ViewBgBlackColor;
-        }
-
         [docVc presentPreviewAnimated:YES];
 
 #endif
