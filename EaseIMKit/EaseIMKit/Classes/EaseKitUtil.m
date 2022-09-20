@@ -241,25 +241,50 @@
 
 + (void)showHint:(NSString *)hint yOffset:(float)yOffset
 {
-    UIWindow *win = [[[UIApplication sharedApplication] windows] firstObject];
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:win animated:YES];
-    hud.userInteractionEnabled = NO;
-    hud.mode = MBProgressHUDModeText;
-    hud.label.text = hint;
-    hud.margin = 20.f;
-    hud.label.font = EaseIMKit_NFont(14.0);
-    hud.label.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
-    
-    hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
-    hud.bezelView.color = [UIColor colorWithHexString:@"#252525"];
-//    hud.bezelView.alpha = 0.7;
-    hud.bezelView.layer.cornerRadius = 8.0;
-    
-    CGPoint offset = hud.offset;
-    offset.y  += yOffset;
-    hud.offset = offset;
-    hud.removeFromSuperViewOnHide = YES;
-    [hud hideAnimated:YES afterDelay:2];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIWindow *win = [[[UIApplication sharedApplication] windows] firstObject];
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:win animated:YES];
+        hud.userInteractionEnabled = NO;
+        hud.mode = MBProgressHUDModeText;
+        hud.label.text = hint;
+        hud.margin = 20.f;
+        hud.label.font = EaseIMKit_NFont(14.0);
+        hud.label.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+        
+        hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
+        hud.bezelView.color = [UIColor colorWithHexString:@"#252525"];
+    //    hud.bezelView.alpha = 0.7;
+        hud.bezelView.layer.cornerRadius = 8.0;
+        
+        CGPoint offset = hud.offset;
+        offset.y  += yOffset;
+        hud.offset = offset;
+        hud.removeFromSuperViewOnHide = YES;
+        [hud hideAnimated:YES afterDelay:2];
+    });
 }
+
++ (CGFloat)getFileSize:(NSString *)path
+{
+     NSLog(@"%@",path);
+     NSFileManager *fileManager = [NSFileManager defaultManager];
+     float filesize = -1.0;
+     if ([fileManager fileExistsAtPath:path]) {
+      NSDictionary *fileDic = [fileManager attributesOfItemAtPath:path error:nil];//获取文件的属性
+      unsigned long long size = [[fileDic objectForKey:NSFileSize] longLongValue];
+      filesize = 1.0*size/1024;
+     }else{
+      NSLog(@"找不到文件");
+     }
+     return filesize;
+}
+
++ (CGFloat) getVideoLength:(NSURL *)URL
+{
+     AVURLAsset *avUrl = [AVURLAsset assetWithURL:URL];
+     CMTime time = [avUrl duration];
+     int second = ceil(time.value/time.timescale);
+     return second;
+}//此方法可以获取视频文件的时长。
 
 @end

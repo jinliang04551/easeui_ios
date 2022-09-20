@@ -7,6 +7,7 @@
 //
 
 #import "EaseChatViewController.h"
+#import "TZImagePickerController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,7 +19,7 @@ typedef NS_ENUM(NSInteger, EMChatToolBarComponentType) {
     EMChatToolBarOrder,
 };
 
-@interface EaseChatViewController (ChatToolBarMeida) <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface EaseChatViewController (ChatToolBarMeida) <UINavigationControllerDelegate, UIImagePickerControllerDelegate,TZImagePickerControllerDelegate>
 
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
 

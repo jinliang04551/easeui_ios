@@ -34,6 +34,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)showHint:(NSString *)hint yOffset:(float)yOffset;
 
++ (CGFloat)getFileSize:(NSString *)path;
+
++ (CGFloat)getVideoLength:(NSURL *)URL;
+
 @end
 
 NS_ASSUME_NONNULL_END

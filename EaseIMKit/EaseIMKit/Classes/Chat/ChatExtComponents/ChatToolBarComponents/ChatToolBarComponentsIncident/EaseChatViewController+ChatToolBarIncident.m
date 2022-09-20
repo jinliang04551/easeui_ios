@@ -20,6 +20,8 @@
 #import "JHOrderViewModel.h"
 #import "EaseLocationViewController.h"
 #import "EaseHeaders.h"
+#import "EaseImagePickerViewController.h"
+#import "TZImageUploadOperation.h"
 
 /**
     媒体库
@@ -67,18 +69,24 @@ static const void *imagePickerKey = &imagePickerKey;
         dispatch_async(dispatch_get_main_queue(), ^{
             if (status == permissions) {
                 //limit权限
-                self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-                self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
-                [self presentViewController:self.imagePicker animated:YES completion:nil];
+//                self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+//                self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
+//                [self presentViewController:self.imagePicker animated:YES completion:nil];
+                
+                [self openMutiImageOrVideo];
+
             }
             if (status == PHAuthorizationStatusAuthorized) {
                 //已获取权限
-                self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-                self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
+//                self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+//                self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
+//
+//                [self presentViewController:self.imagePicker animated:YES completion:^{
+//
+//                }];
                 
-                [self presentViewController:self.imagePicker animated:YES completion:^{
-
-                }];
+                [self openMutiImageOrVideo];
+                
             }
             if (status == PHAuthorizationStatusDenied) {
                 //用户已经明确否认了这一照片数据的应用程序访问
@@ -94,13 +102,155 @@ static const void *imagePickerKey = &imagePickerKey;
     }];
 }
 
+- (void)openImagePicker {
+    self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
+
+    [self presentViewController:self.imagePicker animated:YES completion:^{
+
+    }];
+}
+
+- (void)openMutiImageOrVideo {
+    
+//    [self openImagePicker];
+//    return;
+
+    TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:9 delegate:self];
+    imagePickerVc.allowPickingMultipleVideo = YES;
+    imagePickerVc.showSelectedIndex = YES;
+    
+    // You can get the photos by block, the same as by delegate.
+    // 你可以通过block或者代理，来得到用户选择的照片.
+    [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
+        for (int i = 0; i< assets.count; ++i) {
+            PHAsset *asset = assets[i];
+            if (asset.mediaType == PHAssetMediaTypeImage) {
+                [self parseImageWithAsset:asset];
+            }
+            
+            if (asset.mediaType == PHAssetMediaTypeVideo) {
+                [self parseVideoWithAsset:asset];
+            }
+
+        }
+        
+    }];
+    
+    imagePickerVc.didFinishPickingVideoHandle = ^(UIImage *coverImage, PHAsset *asset) {
+
+        
+    };
+    
+    imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:imagePickerVc animated:YES completion:nil];
+}
+
+
+- (void)parseImageWithAsset:(PHAsset *)asset {
+    [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info) {
+         float imageSize = imageData.length; //convert to MB
+         imageSize = imageSize/(1024*1024.0);
+         NSLog(@"%f",imageSize);
+        
+        [self _sendImageDataAction:imageData];
+     }];
+}
+
+
+- (void)parseVideoWithAsset:(PHAsset *)asset {
+    PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
+    options.version = PHVideoRequestOptionsVersionOriginal;
+    [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:options resultHandler:^(AVAsset *asset, AVAudioMix *audioMix, NSDictionary *info) {
+        if ([asset isKindOfClass:[AVURLAsset class]]) {
+            AVURLAsset* urlAsset = (AVURLAsset*)asset;
+            NSNumber *size;
+            [urlAsset.URL getResourceValue:&size forKey:NSURLFileSizeKey error:nil];
+            NSLog(@"======size is %fM",[size floatValue]/(1024.0*1024.0)); //size is 43.703005
+
+            NSURL *videoURL = urlAsset.URL;
+            NSLog(@"%s parseVideoWithAsset",__func__);
+            NSLog(@"%@",[NSString stringWithFormat:@"%f s", [EaseKitUtil getVideoLength:videoURL]]);
+             NSLog(@"%@", [NSString stringWithFormat:@"%.2f kb", [EaseKitUtil getFileSize:[videoURL path]]]);
+
+            
+//            NSURL *mp4 = [self _videoConvert2Mp4:videoURL];
+//            NSFileManager *fileman = [NSFileManager defaultManager];
+//            if ([fileman fileExistsAtPath:videoURL.path]) {
+//                NSError *error = nil;
+//                [fileman removeItemAtURL:videoURL error:&error];
+//                if (error) {
+//                    NSLog(@"failed to remove file, error:%@.", error);
+//                }
+//            }
+            [self _sendVideoAction:videoURL];
+        }
+
+    }];
+}
+
+
+- (BOOL)isAssetCanBeSelected:(PHAsset *)asset {
+    __block BOOL isCanSelected = YES;
+
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+       dispatch_queue_t queue = dispatch_queue_create("task", DISPATCH_QUEUE_CONCURRENT);
+       dispatch_async(queue, ^{
+           NSLog(@"1===task===%@", [NSThread currentThread]);
+
+           if (asset.mediaType == PHAssetMediaTypeVideo) {
+               PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
+               options.version = PHVideoRequestOptionsVersionOriginal;
+
+               [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:options resultHandler:^(AVAsset *asset, AVAudioMix *audioMix, NSDictionary *info) {
+                   if ([asset isKindOfClass:[AVURLAsset class]]) {
+                       AVURLAsset* urlAsset = (AVURLAsset*)asset;
+                       NSNumber *size;
+                       [urlAsset.URL getResourceValue:&size forKey:NSURLFileSizeKey error:nil];
+                       
+                       if ([size floatValue] > 10 * 1024 * 1024) {
+                           dispatch_async(dispatch_get_main_queue(), ^{
+                            [self showHint:@"视频文件不能超过10M"];
+                           });
+
+                           isCanSelected = NO;
+                       }
+                   }
+
+                   dispatch_semaphore_signal(semaphore);
+
+                }];
+           }else {
+               dispatch_semaphore_signal(semaphore);
+           }
+       });
+
+       dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+       dispatch_async(queue, ^{
+       });
+    
+    return isCanSelected;
+        
+}
+
+
+
 #pragma mark - UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSString *mediaType = info[UIImagePickerControllerMediaType];
+    
     if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
         NSURL *videoURL = info[UIImagePickerControllerMediaURL];
+        
+        NSLog(@"%s didFinishPickingMediaWithInfo",__func__);
+
+        NSLog(@"%@",[NSString stringWithFormat:@"%f s", [EaseKitUtil getVideoLength:videoURL]]);
+         NSLog(@"%@", [NSString stringWithFormat:@"%.2f kb", [EaseKitUtil getFileSize:[videoURL path]]]);
+
+        
         // we will convert it to mp4 format
         NSURL *mp4 = [self _videoConvert2Mp4:videoURL];
         NSFileManager *fileman = [NSFileManager defaultManager];
@@ -203,6 +353,10 @@ static const void *imagePickerKey = &imagePickerKey;
                     NSLog(@"cancelled.");
                 } break;
                 case AVAssetExportSessionStatusCompleted: {
+                    NSLog(@"%s convertCompSize",__func__);
+                    NSLog(@"%@",[NSString stringWithFormat:@"%f s", [EaseKitUtil getVideoLength:mp4Url]]);
+                     NSLog(@"%@", [NSString stringWithFormat:@"%.2f kb", [EaseKitUtil getFileSize:[mp4Url path]]]);
+                    
                     NSLog(@"completed.");
                 } break;
                 default: {
@@ -244,6 +398,7 @@ static const void *imagePickerKey = &imagePickerKey;
 //    body.compressionRatio = 1;
     [self sendMessageWithBody:body ext:nil];
 }
+
 - (void)_sendVideoAction:(NSURL *)aUrl
 {
     /*

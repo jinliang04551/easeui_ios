@@ -58,7 +58,7 @@ Pod::Spec.new do |s|
     
     s.static_framework = true
 #    s.resource = 'EaseIMKit/EaseIMKit/Resources/EaseIMKit.bundle'
-   s.resources  = ['EaseIMKit/EaseIMKit/Resources/EaseIMKit.bundle','EaseIMKit/EaseIMKit/EaseCall/EaseCall.bundle','EaseIMKit/EaseIMKit/Resources/*.{xib,mp3}']
+   s.resources  = ['EaseIMKit/EaseIMKit/Resources/EaseIMKit.bundle','EaseIMKit/EaseIMKit/EaseCall/EaseCall.bundle','EaseIMKit/EaseIMKit/Resources/*.{xib,mp3}','EaseIMKit/EaseIMKit/Classes/Common/3rdParty/MISImagePicker/MISImagePicker/Assets/MISImagePicker.bundle']
    
     #s.resources = ['Images/*.png', 'Sounds/*']
     
@@ -85,5 +85,6 @@ Pod::Spec.new do |s|
     s.dependency 'Bugly'
     s.dependency 'EMTranslate'
 #    s.dependency 'EBBannerView', '1.1.2'
-
+    s.dependency 'TZImagePickerController'
+    
 end
