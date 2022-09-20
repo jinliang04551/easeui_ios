@@ -38,6 +38,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (CGFloat)getVideoLength:(NSURL *)URL;
 
++ (void)appendAPNSAndUserInfoExtWithMessage:(EMChatMessage *)msg;
+
+
+
 @end
 
 NS_ASSUME_NONNULL_END

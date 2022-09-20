@@ -1118,7 +1118,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         
     [weakself refreshTableView:YES];
 
-    [self appendAPNSAndUserInfoExtWithMessage:message];
+    [EaseKitUtil appendAPNSAndUserInfoExtWithMessage:message];
     
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMChatMessage *message, EMError *error) {
         [weakself msgStatusDidChange:message error:error];
@@ -1128,65 +1128,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     }];
 }
 
-- (void)appendAPNSAndUserInfoExtWithMessage:(EMChatMessage *)msg {
-    //添加自定义离线推送
-    NSString *title = @"";
-    NSString *content = @"";
 
-    if (msg.chatType == EMChatTypeChat) {
-        title = [EaseKitUtil fetchUserDicWithUserId:msg.from][EaseUserNicknameKey];
-        content = [EaseKitUtil getContentWithMsg:msg];
-    }
-    
-    if (msg.chatType == EMChatTypeGroupChat) {
-        EMGroup *group = [EMGroup groupWithId:msg.conversationId];
-        title = group.groupName;
-        
-        NSString *nickname = [EaseKitUtil fetchUserDicWithUserId:msg.from][EaseUserNicknameKey];
-        content = [NSString stringWithFormat:@"%@: %@",nickname,[EaseKitUtil getContentWithMsg:msg]];
-    }
-    
-    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    NSMutableDictionary *pushDic = [NSMutableDictionary dictionary];
-    NSMutableDictionary *userInfoDic = [NSMutableDictionary dictionary];
-
-    if (msg.ext.count > 0) {
-        [dic setDictionary:msg.ext];
-    }
-    
-//    @"em_apns_ext":@{
-//            @"em_alert_title": @"customTitle",
-//            @"em_alert_subTitle": @"customSubTitle",
-//            @"em_alert_body": @"customBody"
-//        }};
-
-
-    //    extObject.put("em_push_title", "custom push title");
-    //       extObject.put("em_push_content", "custom push content");
-    //iOS
-    [pushDic setObject:title forKey:@"em_alert_title"];
-    [pushDic setObject:content forKey:@"em_alert_body"];
-    //andorid
-    [pushDic setObject:title forKey:@"em_push_title"];
-    [pushDic setObject:content forKey:@"em_push_content"];
-    
-    [dic setObject:pushDic forKey:@"em_apns_ext"];
-    
-    //添加个人信息
-//    {"ext": {"userInfo": { "im_username": "xxx", "nick":"xx", "avatar":"http://xxx.png"}}}
-    NSDictionary *userDic = [EaseKitUtil fetchUserDicWithUserId:[EMClient sharedClient].currentUsername];
-    
-    [userInfoDic setObject:[EMClient sharedClient].currentUsername forKey:@"im_username"];
-    [userInfoDic setObject:userDic[EaseUserNicknameKey] forKey:@"nick"];
-    [userInfoDic setObject:userDic[EaseUserAvatarUrlKey] forKey:@"avatar"];
-
-    [dic setObject:userInfoDic forKey:@"userInfo"];
-
-    msg.ext = [dic copy];
-    
-    NSLog(@"%s msg.txt:%@",__func__,msg.ext);
-    
-}
 
 #pragma mark - Public
 

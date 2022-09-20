@@ -112,7 +112,7 @@
 
 //callkit
 "voice" = "语音";
-"conferenece" = "多人视频";
+"conferenece" = "多人音视频";
 "video" = "视频";
 "inviteInfo" = "邀请您进行%@通话";
 "Huangup" = "挂断";

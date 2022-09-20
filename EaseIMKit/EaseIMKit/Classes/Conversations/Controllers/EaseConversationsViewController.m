@@ -494,7 +494,7 @@ EMSearchBarDelegate
                 if (!isExgroup) {
                     continue;
                 }else {
-                    NSLog(@"======isExgroup=========");
+//                    NSLog(@"======isExgroup=========");
                 }
             }
 

@@ -186,6 +186,7 @@ static EaseCallManager *easeCallManager = nil;
             
                 NSString *groupId = aExt[@"groupId"];
                 [self sendStartCallCMDMsgWithGroupId:groupId];
+//
                 
                 if(aCompletionBlock){
                     aCompletionBlock(weakself.modal.currentCall.callId,nil);
@@ -496,8 +497,9 @@ static EaseCallManager *easeCallManager = nil;
         strType = EaseLocalizableString(@"conferenece", nil);
     if(aType == EaseCallType1v1Video)
         strType = EaseLocalizableString(@"video", nil);
-//    EMTextMessageBody* msgBody = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat: EaseLocalizableString(@"inviteInfo", nil),strType]];
-    EMCmdMessageBody *cmdBody = [[EMCmdMessageBody alloc] initWithAction:@"callInvite"];
+    
+    EMTextMessageBody* msgBody = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat: EaseLocalizableString(@"inviteInfo", nil),strType]];
+//    EMCmdMessageBody *cmdBody = [[EMCmdMessageBody alloc] initWithAction:@"callInvite"];
     
     NSMutableDictionary* ext = [@{kMsgType:kMsgTypeValue,kAction:kInviteAction,kCallId:aCallId,kCallType:[NSNumber numberWithInt:(int)aType],kCallerDevId:self.modal.curDevId,kChannelName:aChannelName,kTs:[self getTs]} mutableCopy];
     if(aExt && aExt.count > 0) {
@@ -510,7 +512,10 @@ static EaseCallManager *easeCallManager = nil;
 //        [ext setObject:EMCOMMUNICATE_TYPE_VIDEO forKey:EMCOMMUNICATE_TYPE];
 //    }
     
-    EMChatMessage* msg = [[EMChatMessage alloc] initWithConversationID:aUid from:self.modal.curUserAccount to:aUid body:cmdBody ext:ext];
+    EMChatMessage* msg = [[EMChatMessage alloc] initWithConversationID:aUid from:self.modal.curUserAccount to:aUid body:msgBody ext:ext];
+    
+    [EaseKitUtil appendAPNSAndUserInfoExtWithMessage:msg];
+
     __weak typeof(self) weakself = self;
     [[[EMClient sharedClient] chatManager] sendMessage:msg progress:nil completion:^(EMChatMessage *message, EMError *error) {
         if(aCompletionBlock)
