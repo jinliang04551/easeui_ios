@@ -69,28 +69,16 @@ static const void *imagePickerKey = &imagePickerKey;
         dispatch_async(dispatch_get_main_queue(), ^{
             if (status == permissions) {
                 //limit权限
-//                self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-//                self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
-//                [self presentViewController:self.imagePicker animated:YES completion:nil];
-                
                 [self openMutiImageOrVideo];
 
             }
             if (status == PHAuthorizationStatusAuthorized) {
                 //已获取权限
-//                self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-//                self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
-//
-//                [self presentViewController:self.imagePicker animated:YES completion:^{
-//
-//                }];
-                
                 [self openMutiImageOrVideo];
                 
             }
             if (status == PHAuthorizationStatusDenied) {
                 //用户已经明确否认了这一照片数据的应用程序访问
-//                [EaseKitUtil showHint:EaseLocalizableString(@"photoPermissionDisabled", nil)];
                 [EaseKitUtil showHint:EaseLocalizableString(@"photoPermissionDisabled", nil)];
 
             }
@@ -113,12 +101,12 @@ static const void *imagePickerKey = &imagePickerKey;
 
 - (void)openMutiImageOrVideo {
     
-//    [self openImagePicker];
-//    return;
-
     TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:9 delegate:self];
     imagePickerVc.allowPickingMultipleVideo = YES;
     imagePickerVc.showSelectedIndex = YES;
+    imagePickerVc.isSelectOriginalPhoto = NO;
+    imagePickerVc.allowTakePicture = NO;
+    imagePickerVc.allowTakeVideo = NO;
     
     // You can get the photos by block, the same as by delegate.
     // 你可以通过block或者代理，来得到用户选择的照片.
