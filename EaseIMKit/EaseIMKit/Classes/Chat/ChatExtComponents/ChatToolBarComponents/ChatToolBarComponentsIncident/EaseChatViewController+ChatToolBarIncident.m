@@ -20,8 +20,6 @@
 #import "JHOrderViewModel.h"
 #import "EaseLocationViewController.h"
 #import "EaseHeaders.h"
-#import "EaseImagePickerViewController.h"
-#import "TZImageUploadOperation.h"
 
 /**
     媒体库
