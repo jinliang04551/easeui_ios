@@ -328,6 +328,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
             //通话邀请
             continue;
         }
+        
         if (i == aMessages.count - 1) {
             BOOL isShow = [self isShowbannerMessage:msg];
             if (!isShow) {

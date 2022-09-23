@@ -21,6 +21,8 @@
 #import "EaseLocationViewController.h"
 #import "EaseHeaders.h"
 
+
+#define kVideoSizeLimit 100 * 1024 * 1024
 /**
     媒体库
  */
@@ -155,10 +157,6 @@ static const void *imagePickerKey = &imagePickerKey;
             NSLog(@"======size is %fM",[size floatValue]/(1024.0*1024.0)); //size is 43.703005
 
             NSURL *videoURL = urlAsset.URL;
-            NSLog(@"%s parseVideoWithAsset",__func__);
-            NSLog(@"%@",[NSString stringWithFormat:@"%f s", [EaseKitUtil getVideoLength:videoURL]]);
-             NSLog(@"%@", [NSString stringWithFormat:@"%.2f kb", [EaseKitUtil getFileSize:[videoURL path]]]);
-
             
 //            NSURL *mp4 = [self _videoConvert2Mp4:videoURL];
 //            NSFileManager *fileman = [NSFileManager defaultManager];
@@ -195,9 +193,9 @@ static const void *imagePickerKey = &imagePickerKey;
                        NSNumber *size;
                        [urlAsset.URL getResourceValue:&size forKey:NSURLFileSizeKey error:nil];
                        
-                       if ([size floatValue] > 10 * 1024 * 1024) {
+                       if ([size floatValue] > kVideoSizeLimit) {
                            dispatch_async(dispatch_get_main_queue(), ^{
-                            [self showHint:@"视频文件不能超过10M"];
+                            [self showHint:@"视频文件不能超过100M"];
                            });
 
                            isCanSelected = NO;
@@ -558,3 +556,4 @@ static const void *imagePickerKey = &imagePickerKey;
 }
 
 @end
+#undef kVideoSizeLimit

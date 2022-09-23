@@ -319,11 +319,16 @@ static EaseCallManager *easeCallManager = nil;
                         }
                     }
                 }
+            }else {
+                return [UIApplication sharedApplication].keyWindow;
+
             }
+            
         }
     }else{
         return [UIApplication sharedApplication].keyWindow;
     }
+    
     return nil;
 }
 
@@ -380,6 +385,7 @@ static EaseCallManager *easeCallManager = nil;
             [self getMultiVC].inviterId = self.modal.currentCall.remoteUserAccount;
             self.callVC.modalPresentationStyle = UIModalPresentationFullScreen;
             UIWindow* keyWindow = [self getKeyWindow];
+        
             if(!keyWindow)
                 return;
             UIViewController* rootVC = keyWindow.rootViewController;
@@ -1035,6 +1041,8 @@ static EaseCallManager *easeCallManager = nil;
 
 - (AVAudioPlayer*)audioPlayer
 {
+    NSLog(@"%s ==========.ringFileUrl:%@",__func__,_config.ringFileUrl);
+    
     if(!_audioPlayer && _config.ringFileUrl) {
         _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:_config.ringFileUrl error:nil];
         _audioPlayer.numberOfLoops = -1;
@@ -1049,17 +1057,24 @@ static EaseCallManager *easeCallManager = nil;
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     
     AVAudioSession*session = [AVAudioSession sharedInstance];
-    [session setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];
+    NSError *error = nil;
+    BOOL success = [session setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:&error];
+
+    NSLog(@"%s success:%@ error:%@",__func__,@(success),error.debugDescription);
+
     [session setActive:YES error:nil];
     
     [self.audioPlayer play];
+    NSLog(@"%s self.audioPlayer:%@",__func__,self.audioPlayer);
+    
 }
 
 // 停止播放铃声
 - (void)stopSound
 {
-    if(self.audioPlayer.isPlaying)
+    if(self.audioPlayer.isPlaying){
         [self.audioPlayer stop];
+    }
 }
 
 #pragma mark - AgoraRtcEngineKitDelegate
