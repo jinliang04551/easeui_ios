@@ -1046,7 +1046,7 @@ static EaseCallManager *easeCallManager = nil;
     if(!_audioPlayer && _config.ringFileUrl) {
         _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:_config.ringFileUrl error:nil];
         _audioPlayer.numberOfLoops = -1;
-        [_audioPlayer prepareToPlay];
+//        [_audioPlayer prepareToPlay];
     }
     return _audioPlayer;
 }
@@ -1055,17 +1055,17 @@ static EaseCallManager *easeCallManager = nil;
 - (void)playSound
 {
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-    
+
+    [self stopSound];
+        
     AVAudioSession*session = [AVAudioSession sharedInstance];
     NSError *error = nil;
-    BOOL success = [session setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:&error];
-
-    NSLog(@"%s success:%@ error:%@",__func__,@(success),error.debugDescription);
+    [session setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:&error];
 
     [session setActive:YES error:nil];
     
+    [self.audioPlayer prepareToPlay];
     [self.audioPlayer play];
-    NSLog(@"%s self.audioPlayer:%@",__func__,self.audioPlayer);
     
 }
 
@@ -1075,6 +1075,7 @@ static EaseCallManager *easeCallManager = nil;
     if(self.audioPlayer.isPlaying){
         [self.audioPlayer stop];
     }
+    self.audioPlayer = nil;
 }
 
 #pragma mark - AgoraRtcEngineKitDelegate

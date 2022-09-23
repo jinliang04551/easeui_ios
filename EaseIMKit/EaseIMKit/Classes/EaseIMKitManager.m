@@ -720,7 +720,6 @@ static NSString *g_UIKitVersion = @"1.0.0";
 
     NSArray *conversationList = [EMClient.sharedClient.chatManager getAllConversations];
     for (EMConversation *conversation in conversationList) {
-        NSLog(@"%s convId:%@\n unread:%@\n",__func__,conversation.conversationId,[@(conversation.unreadMessagesCount) stringValue]);
         
         if ([conversation.conversationId isEqualToString:[EaseIMHelper shareHelper].currentConversationId]) {
             continue;
