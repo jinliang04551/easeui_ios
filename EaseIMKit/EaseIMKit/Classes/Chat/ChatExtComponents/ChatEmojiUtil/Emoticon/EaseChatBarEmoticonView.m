@@ -11,7 +11,6 @@
 #import "EaseHeaders.h"
 #import "EaseEmojiHelper.h"
 #import "EaseIMKitManager.h"
-#import "EasePageControl.h"
 
 @interface EaseChatBarEmoticonView()<EMEmoticonViewDelegate>
 
@@ -29,7 +28,6 @@
 @property (nonatomic, strong) UIButton *deleteBtn;
 @property (nonatomic, strong) UIButton *sendBtn;
 @property (nonatomic, strong) UIPageControl *pageControl;
-//@property (nonatomic, strong) EasePageControl *pageControl;
 
 
 @end
@@ -349,18 +347,6 @@
 
     return _pageControl;
 }
-
-//- (EasePageControl *)pageControl {
-//    if (_pageControl == nil) {
-//        _pageControl = [[EasePageControl alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
-//        _pageControl.numberOfPages = 2;
-//        _pageControl.userInteractionEnabled = NO;
-//        [_pageControl updateWithCurrentPage:0];
-//    }
-//    _pageControl.backgroundColor = UIColor.grayColor;
-//
-//    return _pageControl;
-//}
 
 
 @end
