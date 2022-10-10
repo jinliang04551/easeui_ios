@@ -14,10 +14,11 @@
 #import "EaseHeaders.h"
 #import "EaseHttpManager.h"
 #import "EaseIMKitManager.h"
+#import "EaseWebViewController.h"
 
 #define kTitleImageViewOffTop 96
 
-@interface EaseLoginViewController ()<UITextFieldDelegate>
+@interface EaseLoginViewController ()<UITextFieldDelegate,UITextViewDelegate>
 
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIButton *backImageBtn;
@@ -38,6 +39,14 @@
 @property (nonatomic, strong) UILabel* sdkVersionLable;
 @property (nonatomic, strong) UILabel* wellcomeLabel;
 @property (nonatomic, strong) UILabel* bottomMsgLabel;
+
+//yunguan
+@property (nonatomic, strong) UIButton *preLoginAccountButton;
+
+//jihu
+@property (nonatomic,strong) UIButton *checkedButton;
+@property (nonatomic,strong) UITextView *privacyTextView;
+@property (nonatomic,strong) UILabel *hintLabel;
 
 @end
 
@@ -155,10 +164,11 @@
     self.titleTextImageView = [[UIImageView alloc]init];
     [self.contentView addSubview:self.titleTextImageView];
     [self.titleTextImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleImageView.mas_bottom).offset(12);
+        make.top.equalTo(self.titleImageView.mas_bottom).offset(2);
         make.centerX.equalTo(self.contentView);
-        make.width.equalTo(@(184.0));
-        make.height.equalTo(@(34.0));
+        make.left.equalTo(self.contentView).offset(56.0);
+        make.right.equalTo(self.contentView).offset(-56.0);
+        make.height.equalTo(@(16.0));
     }];
     
     [self.contentView addSubview:self.wellcomeLabel];
@@ -202,22 +212,52 @@
 
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         imageView.image = [UIImage easeUIImageNamed:@"BootPage"];
-        self.titleTextImageView.image = [UIImage easeUIImageNamed:@"titleTextImage"];
-        self.titleImageView.image = [UIImage easeUIImageNamed:@"titleImage"];
+//        self.titleTextImageView.image = [UIImage easeUIImageNamed:@"titleTextImage"];
+//        self.titleImageView.image = [UIImage easeUIImageNamed:@"titleImage"];
 
+        self.titleTextImageView.image = [UIImage easeUIImageNamed:@"yg_titleTextImage"];
+        self.titleImageView.image = [UIImage easeUIImageNamed:@"yg_titleImage"];
+
+        
+        [self.contentView addSubview:self.checkedButton];
+        [self.contentView addSubview:self.privacyTextView];
+        
+        [self.checkedButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.loginButton.mas_bottom).offset(17.0);
+            make.left.equalTo(self.loginButton).offset(20.0);
+            make.size.equalTo(@(16.0));
+        }];
+
+        
+        [self.privacyTextView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.checkedButton).offset(-10.0);
+            make.left.equalTo(self.checkedButton.mas_right).offset(12.0);
+            make.right.equalTo(self.loginButton);
+        }];
+     
+        
     }else {
         imageView.image = [UIImage easeUIImageNamed:@"yg_BootPage"];
         self.titleTextImageView.image = [UIImage easeUIImageNamed:@"yg_titleTextImage"];
         self.titleImageView.image = [UIImage easeUIImageNamed:@"yg_titleImage"];
-
-        [self.contentView addSubview:self.bottomMsgLabel];
-        [self.bottomMsgLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView).offset(30);
-            make.right.equalTo(self.contentView).offset(-30);
-            make.bottom.equalTo(self.contentView.mas_bottom).offset(-74.0);
+       
+        [self.contentView addSubview:self.preLoginAccountButton];
+        
+        [self.preLoginAccountButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.loginButton.mas_bottom).offset(12.0);
+            make.left.equalTo(self.loginButton);
+            make.right.equalTo(self.loginButton);
         }];
+
+
     }
     
+    [self.contentView addSubview:self.bottomMsgLabel];
+    [self.bottomMsgLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.contentView).offset(30);
+        make.right.equalTo(self.contentView).offset(-30);
+        make.bottom.equalTo(self.contentView.mas_bottom).offset(-74.0);
+    }];
 }
 
 - (void)backAction {
@@ -308,6 +348,26 @@
     }
 }
 
+#pragma mark textview delegate
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL
+         inRange:(NSRange)characterRange
+     interaction:(UITextItemInteraction)interaction{
+    NSString *urlString = @"";
+    if ([URL.scheme isEqualToString:@"privacy"]) {
+        EaseWebViewController *webVC = [[EaseWebViewController alloc] initWithURLString:urlString];
+        [self.navigationController pushViewController:webVC animated:YES];
+        
+    }
+    
+    if ([URL.scheme isEqualToString:@"sevice"]) {
+        EaseWebViewController *webVC = [[EaseWebViewController alloc] initWithURLString:urlString];
+        [self.navigationController pushViewController:webVC animated:YES];
+    }
+    
+    return NO;
+}
+
+
 #pragma mark - Action
 
 //清除用户名
@@ -373,6 +433,18 @@
     [self.loginTypeButton setTitle:NSLocalizedString(@"loginWithToken", nil) forState:UIControlStateNormal];
 }
 
+- (void)checkedButtonAction {
+    self.checkedButton.selected = !self.checkedButton.selected;
+}
+
+- (void)preLoginAccountButtonAction {
+
+
+}
+
+
+
+#pragma mark getter and setter
 - (UILabel *)wellcomeLabel {
     if (_wellcomeLabel == nil) {
         _wellcomeLabel = [[UILabel alloc] init];
@@ -464,7 +536,7 @@
         _loginButton.titleLabel.font = EaseIMKit_NFont(16.0);
         
         [_loginButton addTarget:self action:@selector(agreeButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        _loginButton.backgroundColor = [UIColor colorWithHexString:@"#4390C0"];
+        _loginButton.backgroundColor = [UIColor colorWithHexString:@"#4461F2"];
         _loginButton.layer.cornerRadius = 4.0;
         
     }
@@ -492,11 +564,61 @@
         _bottomMsgLabel.textAlignment = NSTextAlignmentCenter;
         _bottomMsgLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
         _bottomMsgLabel.font = [UIFont systemFontOfSize:12.0];
-        _bottomMsgLabel.text = @"© 2022 极狐ARCFOX 运管端";
+        _bottomMsgLabel.text = @"© easemob 环信 私人订制";
     }
     return _bottomMsgLabel;
 }
 
+
+- (UIButton *)checkedButton {
+    if (_checkedButton == nil) {
+        _checkedButton = UIButton.new;
+        [_checkedButton setImage:[UIImage easeUIImageNamed:@"user_multiple_uncheck"] forState:UIControlStateNormal];
+        [_checkedButton setImage:[UIImage easeUIImageNamed:@"user_multiple_check"] forState:UIControlStateSelected];
+
+        [_checkedButton addTarget:self action:@selector(checkedButtonAction) forControlEvents:(UIControlEventTouchUpInside)];
+    }
+    return _checkedButton;
+}
+
+- (UITextView *)privacyTextView {
+    if (_privacyTextView == nil) {
+        _privacyTextView = UITextView.new;
+        _privacyTextView.editable = NO;
+        _privacyTextView.textAlignment = NSTextAlignmentLeft;
+        _privacyTextView.linkTextAttributes = @{NSForegroundColorAttributeName:EaseIMKit_COLOR_HEX(0x4461F2),
+                                   NSUnderlineColorAttributeName:EaseIMKit_COLOR_HEX(0x4461F2),
+                                   NSUnderlineStyleAttributeName:@(NO)
+                                   };
+        _privacyTextView.delegate = self;
+        _privacyTextView.scrollEnabled = NO;
+        _privacyTextView.font = EaseIMKit_NFont(12.0);
+        
+        
+        NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithString:@"同意《环信服务条款》与《环信隐私协议》，未注册手机号登陆成功后将自动注册。"];
+        [att addAttribute:NSLinkAttributeName value:@"privacy://" range:[att.string rangeOfString:@"《环信服务条款》"]];
+        [att addAttribute:NSLinkAttributeName value:@"sevice://" range:[att.string rangeOfString:@"《环信隐私协议》"]];
+        [att addAttribute:NSForegroundColorAttributeName value:EaseIMKit_COLOR_HEX(0xBCC2D8) range:NSMakeRange(0, att.string.length)];
+
+        _privacyTextView.attributedText = att;
+        _privacyTextView.backgroundColor = UIColor.clearColor;
+        
+    }
+    return _privacyTextView;
+}
+
+
+- (UIButton *)preLoginAccountButton {
+    if (_preLoginAccountButton == nil) {
+        _preLoginAccountButton = [[UIButton alloc] init];
+        _preLoginAccountButton.titleLabel.font = [UIFont systemFontOfSize:16.0];
+        [_preLoginAccountButton setTitle:@"获取登录账号" forState:UIControlStateNormal];
+        [_preLoginAccountButton setTitleColor:EaseIMKit_COLOR_HEX(0x4461F2) forState:UIControlStateNormal];
+        [_preLoginAccountButton addTarget:self action:@selector(preLoginAccountButtonAction) forControlEvents:UIControlEventTouchUpInside];
+
+    }
+    return _preLoginAccountButton;
+}
 
 @end
 #undef kTitleImageViewOffTop
