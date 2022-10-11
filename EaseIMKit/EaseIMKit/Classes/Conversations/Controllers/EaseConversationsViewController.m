@@ -194,7 +194,7 @@ EMSearchBarDelegate
     __weak typeof(self) weakself = self;
     [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataAry searchText:aString collationStringSelector:@selector(showName) resultBlock:^(NSArray *results) {
          dispatch_async(dispatch_get_main_queue(), ^{
-            [weakself.searchResultArray = results mutableCopy];
+            weakself.searchResultArray = [results mutableCopy];
             [weakself.tableView reloadData];
              self.noDataPromptView.hidden = weakself.searchResultArray.count >0 ? YES : NO;
         });

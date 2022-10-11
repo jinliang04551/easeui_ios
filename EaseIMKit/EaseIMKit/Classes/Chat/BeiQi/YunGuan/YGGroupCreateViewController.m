@@ -33,7 +33,6 @@
 @property (nonatomic, strong) UIView *titleView;
 
 
-
 @end
 
 @implementation YGGroupCreateViewController
