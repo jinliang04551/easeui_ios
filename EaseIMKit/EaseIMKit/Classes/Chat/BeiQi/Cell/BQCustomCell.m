@@ -141,7 +141,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0x252525);
         }else {
-//            self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0xF5F5F5);
             self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0xF2F3F5);
         }
         

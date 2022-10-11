@@ -273,6 +273,10 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 #define EaseUserNicknameKey @"EaseUserNickname"
 #define EaseUserAvatarUrlKey @"EaseUserAvatarUrl"
 
+//选择用户
+#define kPreAccountKey @"accountKey"
+#define kPreAccountPwdKey @"accountPwdKey"
+
 
 //通知notificatoin
 #define EaseNotificationRequestJoinGroupEvent @"EaseNotificationRequestJoinGroupEvent"

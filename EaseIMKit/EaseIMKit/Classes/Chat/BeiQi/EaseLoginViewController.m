@@ -15,6 +15,7 @@
 #import "EaseHttpManager.h"
 #import "EaseIMKitManager.h"
 #import "EaseWebViewController.h"
+#import "EasePreLoginAccountView.h"
 
 #define kTitleImageViewOffTop 96
 
@@ -439,7 +440,20 @@
 
 - (void)preLoginAccountButtonAction {
 
+    EasePreLoginAccountView* alert = [[EasePreLoginAccountView alloc] init];
+    
+    [alert showinViewController:self completion:^{
 
+    }];
+    
+    EaseIMKit_WS
+    alert.confirmBlock = ^(NSDictionary * _Nonnull selectedDic) {
+        NSString *account = selectedDic[kPreAccountKey];
+        NSString *accountPwd = selectedDic[kPreAccountPwdKey];
+        weakSelf.nameField.text = account;
+        weakSelf.pswdField.text = accountPwd;
+    };
+    
 }
 
 
