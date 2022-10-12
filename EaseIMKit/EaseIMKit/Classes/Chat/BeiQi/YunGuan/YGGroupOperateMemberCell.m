@@ -6,11 +6,11 @@
 //  Copyright © 2022 liu001. All rights reserved.
 //
 
-#import "YGGroupMuteMemberCell.h"
+#import "YGGroupOperateMemberCell.h"
 #import "UserInfoStore.h"
 #import "EaseHeaders.h"
 
-@interface YGGroupMuteMemberCell ()
+@interface YGGroupOperateMemberCell ()
 @property (nonatomic, strong) UIImageView* accessoryImageView;
 @property (nonatomic, strong) UIButton* unBanButton;
 @property (nonatomic, strong) NSString* userId;
@@ -18,7 +18,7 @@
 @end
 
 
-@implementation YGGroupMuteMemberCell
+@implementation YGGroupOperateMemberCell
 
 - (void)prepare {
     [self.contentView addSubview:self.iconImageView];
@@ -61,8 +61,8 @@
 
 
 - (void)unBanButtonAction {
-    if (self.unBanBlock) {
-        self.unBanBlock(self.userId);
+    if (self.removeMemberBlock) {
+        self.removeMemberBlock(self.userId);
     }
 }
 

@@ -30,6 +30,7 @@
 #import "EaseIMHelper.h"
 #import "UserInfoStore.h"
 #import "BQTitleContentAccessCell.h"
+#import "YGGroupManageViewController.h"
 
 
 
@@ -298,14 +299,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
                 return titleValueCell;
 
             }else if (indexPath.row == 2){
-                
-//                    titleValueAccessCell.nameLabel.text = @"群公告";
-//                    titleValueAccessCell.detailLabel.text = @"";
-//                    titleValueAccessCell.tapCellBlock = ^{
-//                        [self groupAnnouncementAction];
-//                    };
-//                    return titleValueAccessCell;
-                
+                            
                 if (self.groupAnnocement.length > 0) {
                     titleContentAccessCell.nameLabel.text = @"群公告";
                     titleContentAccessCell.contentLabel.text = self.groupAnnocement;
@@ -323,14 +317,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
                 }
                 
             }else  if (indexPath.row == 3){
-            
-//                    titleValueAccessCell.nameLabel.text = @"群介绍";
-//                    titleValueAccessCell.detailLabel.text = @"";
-//                    titleValueAccessCell.tapCellBlock = ^{
-//                        [self _updateGroupDetailAction];
-//                    };
-//                    return titleValueAccessCell;
-                
+                            
                 if (self.groupIntroduce.length > 0) {
                     titleContentAccessCell.nameLabel.text = @"群介绍";
                     titleContentAccessCell.contentLabel.text = self.groupIntroduce;
@@ -348,10 +335,10 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
                 }
                 
             }else if (indexPath.row == 4){
-                titleValueAccessCell.nameLabel.text = @"群禁言";
+                titleValueAccessCell.nameLabel.text = @"群管理";
                 titleValueAccessCell.detailLabel.text = @"";
                 titleValueAccessCell.tapCellBlock = ^{
-                    [self goSettingMutePage];
+                    [self goGroupManagePage];
                 };
                 return titleValueAccessCell;
             }else {
@@ -936,8 +923,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)goSettingMutePage {
-    YGGroupMuteSettingViewController *controller = [[YGGroupMuteSettingViewController alloc] initWithGroup:self.group];
+- (void)goGroupManagePage {
+    YGGroupManageViewController *controller = [[YGGroupManageViewController alloc] initWithGroup:self.group];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

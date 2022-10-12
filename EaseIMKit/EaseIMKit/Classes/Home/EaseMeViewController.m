@@ -202,7 +202,7 @@
         _logoutButton.titleLabel.font = [UIFont systemFontOfSize:14.0];
         [_logoutButton setTitle:@"退出登录" forState:UIControlStateNormal];
         [_logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_logoutButton addTarget:self action:@selector(logoutButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        [_logoutButton addTarget:self action:@selector(transferOwnerButtonAction) forControlEvents:UIControlEventTouchUpInside];
         _logoutButton.backgroundColor = EaseIMKit_COLOR_HEX(0x4461F2);
     }
     return _logoutButton;

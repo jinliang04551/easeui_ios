@@ -1,12 +1,11 @@
 //
-//  YGGroupBanSettingViewController.m
-//  EaseIM
+//  YGGroupManagerSettingViewController.m
+//  EaseIMKit
 //
-//  Created by liu001 on 2022/7/19.
-//  Copyright © 2022 liu001. All rights reserved.
+//  Created by liu001 on 2022/10/12.
 //
 
-#import "YGGroupMuteSettingViewController.h"
+#import "YGGroupManagerSettingViewController.h"
 #import "YGGroupOperateMemberCell.h"
 #import "YGGroupAddUserCell.h"
 #import "YGGroupAddMuteViewController.h"
@@ -14,7 +13,7 @@
 #import "EaseAlertController.h"
 
 
-@interface YGGroupMuteSettingViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface YGGroupManagerSettingViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) UITableView *tableView;
@@ -24,7 +23,7 @@
 
 @end
 
-@implementation YGGroupMuteSettingViewController
+@implementation YGGroupManagerSettingViewController
 
 - (instancetype)initWithGroup:(EMGroup *)aGroup {
     self = [super init];
@@ -48,7 +47,6 @@
     
     [self updateUI];
     
-    [self _fetchGroupMutesWithIsHeader:YES isShowHUD:YES];
 }
 
 
@@ -58,7 +56,7 @@
 
 
 - (void)placeAndLayoutSubviews {
-    self.titleView = [self customNavWithTitle:@"群禁言设置" rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
+    self.titleView = [self customNavWithTitle:@"群管理员设置" rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
 
     [self.view addSubview:self.titleView];
     [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -87,86 +85,41 @@
 }
 
 
-- (void)_fetchGroupMutesWithIsHeader:(BOOL)aIsHeader
-                           isShowHUD:(BOOL)aIsShowHUD
-{
-    if (aIsShowHUD) {
-        [self showHudInView:self.view hint:NSLocalizedString(@"fetchingMuteList...", nil)];
-    }
+- (void)goAddManagePage {
     
-    __weak typeof(self) weakself = self;
-    [[EMClient sharedClient].groupManager getGroupMuteListFromServerWithId:self.group.groupId pageNumber:0 pageSize:50 completion:^(NSArray *aList, EMError *aError) {
-        if (aIsShowHUD) {
-            [weakself hideHud];
-        }
-        
-        if (aError) {
-            [self showHint:aError.errorDescription];
-        } else {
-            if (aIsHeader) {
-                [weakself.dataArray removeAllObjects];
-            }
-            [weakself.dataArray addObjectsFromArray:aList];
-            
-//            if ([aList count] == 0) {
-//                weakself.showRefreshFooter = NO;
-//            } else {
-//                weakself.showRefreshFooter = YES;
-//            }
-            
-            [weakself.tableView reloadData];
-        }
-        
-//        [weakself tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
-    }];
-    
-}
-
-
-
-- (void)goAddMutePage {
-    YGGroupAddMuteViewController *vc = [[YGGroupAddMuteViewController alloc] init];
-    vc.navTitle = @"添加禁言人员";
-    vc.dataArray = self.unMuteArray;
-    EaseIMKit_WS
-    vc.doneCompletion = ^(NSArray * _Nonnull selectedArray) {
-        [weakSelf updateUIWithAddMutes:selectedArray];
-    };
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)updateUIWithAddMutes:(NSArray *)mutes {
-    [[EMClient sharedClient].groupManager muteMembers:mutes muteMilliseconds:-1 fromGroup:self.group.groupId completion:^(EMGroup * _Nullable aGroup, EMError * _Nullable aError) {
+    [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:self.group.groupId fetchMembers:YES completion:^(EMGroup * _Nullable aGroup, EMError * _Nullable aError) {
         if (aError == nil) {
-            [self.dataArray addObjectsFromArray:mutes];
-            [self.unMuteArray removeObjectsInArray:mutes];
-            [self.tableView reloadData];
-        }else {
-            [self showHint:@"禁言失败"];
+            
+            YGGroupAddMuteViewController *vc = [[YGGroupAddMuteViewController alloc] init];
+            vc.navTitle = @"添加管理人员";
+            vc.dataArray = [aGroup.memberList mutableCopy];
+            EaseIMKit_WS
+            vc.doneCompletion = ^(NSArray * _Nonnull selectedArray) {
+                [weakSelf updateUIWithAddManagers:selectedArray];
+            };
+            [self.navigationController pushViewController:vc animated:YES];
         }
     }];
+
+}
+
+
+- (void)updateUIWithAddManagers:(NSArray *)managers {
+    for (int i = 0; i < managers.count; ++i) {
+        NSString *manager = managers[i];
+        [[EMClient sharedClient].groupManager addAdmin:manager toGroup:self.group.groupId completion:^(EMGroup * _Nullable aGroup, EMError * _Nullable aError) {
+            if (aError == nil) {
+                self.dataArray = [aGroup.adminList mutableCopy];
+                [self.tableView reloadData];
+            }else {
+                [self showHint:@"添加管理员失败"];
+            }
+        }];
+    }
 }
 
 - (void)updateUI {
-    NSMutableArray *memberArray = [NSMutableArray array];
-    if (self.group.adminList.count > 0) {
-        [memberArray addObjectsFromArray:self.group.adminList];
-    }
-    if (self.group.memberList.count > 0) {
-        [memberArray addObjectsFromArray:self.group.memberList];
-    }
-
-    NSMutableSet *memberSet = [NSMutableSet setWithArray:memberArray];
-    
-    NSMutableSet *muteSet = [NSMutableSet setWithArray:self.group.muteList];
-    
-    [memberSet minusSet:muteSet];
-    
-    NSArray *sortDesc = @[[[NSSortDescriptor alloc] initWithKey:nil ascending:YES]];
-    NSArray *sortSetArray = [memberSet sortedArrayUsingDescriptors:sortDesc];
-
-    self.unMuteArray = [sortSetArray mutableCopy];
-    self.dataArray = [self.group.muteList mutableCopy];
+    self.dataArray = [self.group.adminList mutableCopy];
     
     [self.tableView reloadData];
 }
@@ -190,48 +143,66 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    YGGroupAddUserCell *addBanCell = [tableView dequeueReusableCellWithIdentifier:[YGGroupAddUserCell reuseIdentifier]];
+    YGGroupAddUserCell *addManagerCell = [tableView dequeueReusableCellWithIdentifier:[YGGroupAddUserCell reuseIdentifier]];
     
     YGGroupOperateMemberCell *banMemberCell = [tableView dequeueReusableCellWithIdentifier:[YGGroupOperateMemberCell reuseIdentifier]];
     
     EaseIMKit_WS
     if (indexPath.row == 0) {
-        addBanCell.tapCellBlock = ^{
-            [weakSelf goAddMutePage];
+        addManagerCell.iconImageView.image = [UIImage easeUIImageNamed:@"yg_add_manage"];
+        addManagerCell.nameLabel.text = @"添加管理人员";
+
+        addManagerCell.tapCellBlock = ^{
+            [weakSelf goAddManagePage];
         };
         
-        return addBanCell;
+        return addManagerCell;
     }
    
     id obj = self.dataArray[indexPath.row - 1];
     [banMemberCell updateWithObj:obj];
     banMemberCell.removeMemberBlock = ^(NSString * _Nonnull userId) {
-        [weakSelf updateUIWithUnBanUserId:userId];
+        [weakSelf updateUIWithRemoveAdminUserId:userId];
     };
     return banMemberCell;
 }
  
-- (void)updateUIWithUnBanUserId:(NSString *)userId {
+- (void)updateUIWithRemoveAdminUserId:(NSString *)userId {
     if (userId == nil) {
         return;
     }
     
-    [[EMClient sharedClient].groupManager unmuteMembers:@[userId] fromGroup:self.group.groupId completion:^(EMGroup * _Nullable aGroup, EMError * _Nullable aError) {
-
+//    [[EMClient sharedClient].groupManager unmuteMembers:@[userId] fromGroup:self.group.groupId completion:^(EMGroup * _Nullable aGroup, EMError * _Nullable aError) {
+//
+//        if (aError == nil) {
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                if ([self.dataArray containsObject:userId]) {
+//                    [self.dataArray removeObject:userId];
+//                }
+//
+//                [self.unMuteArray addObject:userId];
+//                [self.tableView reloadData];
+//            });
+//        }else {
+//            [EaseAlertController showErrorAlert:aError.debugDescription];
+//        }
+//
+//    }];
+    
+    [[EMClient sharedClient].groupManager removeAdmin:userId fromGroup:self.group.groupId completion:^(EMGroup * _Nullable aGroup, EMError * _Nullable aError) {
         if (aError == nil) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if ([self.dataArray containsObject:userId]) {
                     [self.dataArray removeObject:userId];
                 }
-                
-                [self.unMuteArray addObject:userId];
+
                 [self.tableView reloadData];
             });
         }else {
             [EaseAlertController showErrorAlert:aError.debugDescription];
         }
-        
     }];
+    
 }
 
 #pragma mark getter and setter

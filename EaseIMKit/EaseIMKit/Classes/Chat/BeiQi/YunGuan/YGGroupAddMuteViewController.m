@@ -49,7 +49,7 @@
 
 - (void)_setupSubviews{
     
-    self.titleView = [self customNavWithTitle:@"添加禁言人员" rightBarIconName:@"" rightBarTitle:@"确定" rightBarAction:@selector(doneAction)];
+    self.titleView = [self customNavWithTitle:self.navTitle rightBarIconName:@"" rightBarTitle:@"确定" rightBarAction:@selector(doneAction)];
 
     [self.view addSubview:self.titleView];
     [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -125,59 +125,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-//    NSString *username = self.isSearching ? [self.searchArray objectAtIndex:indexPath.row] : [self.dataArray objectAtIndex:indexPath.row];
-//    YGGroupMuteItemCell *cell = (YGGroupMuteItemCell *)[tableView cellForRowAtIndexPath:indexPath];
-//    BOOL isChecked = [self.selectedArray containsObject:username];
-//    if (isChecked) {
-//        [self.selectedArray removeObject:username];
-//    } else {
-//        [self.selectedArray addObject:username];
-//    }
-//    cell.isChecked = !isChecked;
-    
 }
 
 - (BOOL)userIsChecked:(NSString *)userId {
     return [self.selectedArray containsObject:userId];
 }
 
-
-//#pragma mark - EMSearchBarDelegate
-//- (void)searchBarWillBeginEditing:(UISearchBar *)searchBar
-//{
-//    self.isSearching = YES;
-//    [self.tableView reloadData];
-//}
-//
-//- (void)searchBarCancelButtonAction:(UISearchBar *)searchBar
-//{
-//    [[EMRealtimeSearch shared] realtimeSearchStop];
-//    self.isSearching = NO;
-//    [self.searchArray removeAllObjects];
-//    [self.tableView reloadData];
-//}
-//
-//- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-//{
-//
-//}
-//
-//- (void)searchTextDidChangeWithString:(NSString *)aString
-//{
-//    if (!self.isSearching) {
-//        return;
-//    }
-//
-//    __weak typeof(self) weakself = self;
-//    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:nil resultBlock:^(NSArray *results) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [weakself.searchArray removeAllObjects];
-//            [weakself.searchArray addObjectsFromArray:results];
-//            [weakself.tableView reloadData];
-//        });
-//    }];
-//}
 
 #pragma mark - EMSearchBarDelegate
 - (void)searchBarShouldBeginEditing:(EMSearchBar *)searchBar

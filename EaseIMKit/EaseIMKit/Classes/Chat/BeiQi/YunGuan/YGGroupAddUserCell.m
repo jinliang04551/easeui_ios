@@ -6,15 +6,15 @@
 //  Copyright © 2022 liu001. All rights reserved.
 //
 
-#import "YGGroupAddMuteCell.h"
+#import "YGGroupAddUserCell.h"
 #import "EaseHeaders.h"
 
-@interface YGGroupAddMuteCell ()
+@interface YGGroupAddUserCell ()
 @property (nonatomic, strong) UIImageView* accessoryImageView;
 @end
 
 
-@implementation YGGroupAddMuteCell
+@implementation YGGroupAddUserCell
 
 - (void)prepare {
     [self.contentView addSubview:self.iconImageView];
