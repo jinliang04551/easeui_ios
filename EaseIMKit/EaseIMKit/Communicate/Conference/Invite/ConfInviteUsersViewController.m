@@ -566,7 +566,8 @@
         [_confirmButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
         [_confirmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
         [_confirmButton addTarget:self action:@selector(confirmButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        _confirmButton.backgroundColor = [UIColor colorWithHexString:@"#4798CB"];
+//        _confirmButton.backgroundColor = [UIColor colorWithHexString:@"#4798CB"];
+        _confirmButton.backgroundColor = EaseIMKit_Default_BgBlue_Color;
     }
     return _confirmButton;
 }
