@@ -212,7 +212,7 @@
         _agreeButton.titleLabel.font = EaseIMKit_NFont(14.0);
         
         [_agreeButton addTarget:self action:@selector(agreeButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        _agreeButton.backgroundColor = [UIColor colorWithHexString:@"#4697CA"];
+        _agreeButton.backgroundColor = EaseIMKit_Default_BgBlue_Color;
         _agreeButton.layer.cornerRadius = 2.0;
     }
     return _agreeButton;
