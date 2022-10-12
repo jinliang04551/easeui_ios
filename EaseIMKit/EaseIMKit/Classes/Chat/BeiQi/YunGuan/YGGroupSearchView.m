@@ -24,9 +24,9 @@
 
 @implementation YGGroupSearchView
 
-- (instancetype)init
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super init];
+    self = [super initWithFrame:frame];
     if (self) {
         [self _setupSubviews];
         
@@ -45,28 +45,30 @@
 
 - (void)_setupSubviews {
 
-    self.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+//    self.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 
+    [self addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
+    
     [self addSubview:self.leftBackButton];
     [self addSubview:self.contentView];
     [self addSubview:self.searchButton];
     
 
     [self.leftBackButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self);
+        make.centerY.equalTo(self.contentView);
         make.left.equalTo(self).offset(16.0);
         make.size.equalTo(@(28.0));
     }];
     
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self);
+        make.top.equalTo(self).offset(EaseIMKit_StatusBarHeight);
         make.left.equalTo(self.leftBackButton.mas_right);
         make.right.equalTo(self.searchButton.mas_left).offset(-8.0);
         make.height.equalTo(@(32.0));
     }];
 
     [self.searchButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self);
+        make.centerY.equalTo(self.contentView);
         make.right.equalTo(self).offset(-16.0);
         make.width.equalTo(@(40.0));
         make.height.equalTo(@(16.0));

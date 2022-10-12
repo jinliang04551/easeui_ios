@@ -112,10 +112,10 @@
                             selectedImgName:(NSString *)aSelectedImgName
                                         tag:(NSInteger)aTag
 {
-    UITabBarItem *retItem = [[UITabBarItem alloc] initWithTitle:aTitle image:[UIImage imageNamed:aImgName] selectedImage:[UIImage imageNamed:aSelectedImgName]];
+    UITabBarItem *retItem = [[UITabBarItem alloc] initWithTitle:aTitle image:[UIImage easeUIImageNamed:aImgName] selectedImage:[UIImage imageNamed:aSelectedImgName]];
     retItem.tag = aTag;
     [retItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont systemFontOfSize:14], NSFontAttributeName, [UIColor lightGrayColor],NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
-    [retItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:13], NSFontAttributeName, UIColor.blueColor, NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
+    [retItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:13], NSFontAttributeName, EaseIMKit_COLOR_HEX(0x4461F2), NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
     return retItem;
 }
 

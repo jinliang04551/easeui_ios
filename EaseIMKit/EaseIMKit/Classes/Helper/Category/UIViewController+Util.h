@@ -40,4 +40,8 @@
               rightBarIconName:(NSString *)rightBarIconName
                 rightBarAction:(SEL)rightBarAction;
 
+- (UIView *)customRootNavWithTitle:(NSString *)title
+                  rightBarIconName:(NSString *)rightBarIconName
+                     rightBarTitle:(NSString *)rightBarTitle
+                    rightBarAction:(SEL)rightBarAction;
 @end

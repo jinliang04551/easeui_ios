@@ -148,10 +148,10 @@
     [self.view addSubview:self.tableView];
 
     [self.groupSearchView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(EaseIMKit_StatusBarHeight);
+        make.top.equalTo(self.view);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
-        make.height.equalTo(@(52.0));
+        make.height.equalTo(@(EaseIMKit_StatusBarHeight +52.0));
     }];
 
     [self.view addSubview:self.noDataPromptView];
@@ -293,7 +293,7 @@
 
 - (YGGroupSearchView *)groupSearchView {
     if (_groupSearchView == nil) {
-        _groupSearchView = [[YGGroupSearchView alloc] init];
+        _groupSearchView = [[YGGroupSearchView alloc] initWithFrame:CGRectMake(0, 0, EaseIMKit_ScreenWidth, EaseIMKit_StatusBarHeight + 52.0)];
         _groupSearchView.delegate = self;
         
         EaseIMKit_WS

@@ -79,9 +79,33 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
               rightBarIconName:(NSString *)rightBarIconName
                  rightBarTitle:(NSString *)rightBarTitle
                 rightBarAction:(SEL)rightBarAction {
+    
+    return [self customNavWithTitle:title isRootNav:NO rightBarIconName:rightBarIconName rightBarTitle:rightBarTitle rightBarAction:rightBarAction];
+    
+}
+
+
+- (UIView *)customRootNavWithTitle:(NSString *)title
+                  rightBarIconName:(NSString *)rightBarIconName
+                     rightBarTitle:(NSString *)rightBarTitle
+                    rightBarAction:(SEL)rightBarAction {
+    return [self customNavWithTitle:title isRootNav:YES rightBarIconName:rightBarIconName rightBarTitle:rightBarTitle rightBarAction:rightBarAction];
+}
+
+
+- (UIView *)customNavWithTitle:(NSString *)title
+                     isRootNav:(BOOL)isRootNav
+              rightBarIconName:(NSString *)rightBarIconName
+                 rightBarTitle:(NSString *)rightBarTitle
+                rightBarAction:(SEL)rightBarAction {
     //44.0
     
-    UIView *contentView = [[UIView alloc] init];
+    UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, EaseIMKit_ScreenWidth, EaseIMKit_NavBarAndStatusBarHeight)];
+//    [contentView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_COLOR_HEX(0xD9D9D9)];
+  
+    [contentView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
+
+    
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.text = title;
     titleLabel.font = [UIFont systemFontOfSize:16.0];
@@ -92,22 +116,25 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     UIButton *rightImageBtn = [[UIButton alloc]init];
     [rightImageBtn addTarget:self action:rightBarAction forControlEvents:UIControlEventTouchUpInside];
 
-    
     [contentView addSubview:titleLabel];
-    [contentView addSubview:backImageBtn];
+   
     
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(contentView).offset(EaseIMKit_StatusBarHeight);
         make.centerX.equalTo(contentView);
-        make.centerY.equalTo(contentView);
         make.height.equalTo(@25);
     }];
 
+    if (!isRootNav) {
+        [contentView addSubview:backImageBtn];
+        [backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@35);
+            make.centerY.equalTo(titleLabel);
+            make.left.equalTo(contentView).offset(16);
+        }];
+    }
     
-    [backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@35);
-        make.centerY.equalTo(titleLabel);
-        make.left.equalTo(contentView).offset(16);
-    }];
+   
     
     if (rightBarIconName.length > 0) {
         [contentView addSubview:rightImageBtn];
@@ -153,7 +180,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     return contentView;
 }
 
-
 //运管群聊nav
 - (UIView *)customNavWithTitle:(NSString *)title
                    isNoDisturb:(BOOL)isNoDisturb
@@ -162,7 +188,10 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
                 rightBarAction:(SEL)rightBarAction {
     //Height:52.0
     
-    UIView *contentView = [[UIView alloc] init];
+    UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, EaseIMKit_ScreenWidth, EaseIMKit_StatusBarHeight + 52.0)];
+
+    [contentView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
+    
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.text = title;
     titleLabel.font = [UIFont systemFontOfSize:14.0];
@@ -191,7 +220,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(contentView);
-        make.top.equalTo(contentView).offset(8.0);
+        make.top.equalTo(contentView).offset(EaseIMKit_StatusBarHeight+8.0);
         make.height.equalTo(@(16.0));
     }];
 
@@ -209,14 +238,14 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     
     [backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@35);
-        make.centerY.equalTo(contentView);
+        make.top.equalTo(contentView).offset(EaseIMKit_StatusBarHeight);
         make.left.equalTo(contentView).offset(16);
     }];
     
     
     [rightImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(backImageBtn);
-        make.centerY.equalTo(contentView);
+        make.centerY.equalTo(backImageBtn);
         make.right.equalTo(contentView).offset(-16);
     }];
     

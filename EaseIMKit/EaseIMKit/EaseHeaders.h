@@ -16,14 +16,17 @@
 #import "EaseAlertController.h"
 #import "EaseAlertView.h"
 #import "EaseEmojiHelper.h"
-#import "UIViewController+HUD.h"
-#import "UIColor+EaseUI.h"
-#import "UIImage+EaseUI.h"
-#import "UILabel+LinkUrl.h"
-#import "UIViewController+Util.h"
-#import "NSObject+Alert.h"
-#import "UIViewController+ComponentSize.h"
-#import "UIViewController+TopViewController.h"
+#import "EaseCategories.h"
+
+//#import "UIViewController+HUD.h"
+//#import "UIColor+EaseUI.h"
+//#import "UIImage+EaseUI.h"
+//#import "UILabel+LinkUrl.h"
+//#import "UIViewController+Util.h"
+//#import "NSObject+Alert.h"
+//#import "UIViewController+ComponentSize.h"
+//#import "UIViewController+TopViewController.h"
+
 
 
 #import <Masonry/Masonry.h>

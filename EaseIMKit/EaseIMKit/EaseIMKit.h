@@ -30,5 +30,5 @@
 #import "EaseLoginViewController.h"
 #import "EMConversationsViewController.h"
 #import "EMRefreshViewController.h"
-
+#import "EaseHomeViewController.h"
 

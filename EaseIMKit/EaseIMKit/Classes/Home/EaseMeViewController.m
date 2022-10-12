@@ -10,6 +10,7 @@
 #import "EaseIMKitManager.h"
 #import "BQTitleAvatarCell.h"
 #import "BQTitleValueAccessCell.h"
+#import "EaseChangePasswordViewController.h"
 
 @interface EaseMeViewController ()
 @property (nonatomic, strong) UIButton *logoutButton;
@@ -22,14 +23,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//
-//    [self.view addSubview:self.logoutButton];
-//    [self.logoutButton mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerY.equalTo(self.view);
-//        make.left.equalTo(self.view).offset(30.0);
-//        make.right.equalTo(self.view).offset(-30.0);
-//        make.height.equalTo(@(44.0));
-//    }];
     
     [self registeCell];
     [self placeAndLayoutSubviews];
@@ -45,13 +38,15 @@
 #pragma mark - Subviews
 - (void)placeAndLayoutSubviews
 {
-    self.titleView = [self customNavWithTitle:@"我的" rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
+//    self.titleView = [self customNavWithTitle:@"我的" rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
 
+    self.titleView = [self customRootNavWithTitle:@"我的" rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
+    
     [self.view addSubview:self.titleView];
     [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(EaseIMKit_StatusBarHeight);
+        make.top.equalTo(self.view);
         make.left.right.equalTo(self.view);
-        make.height.equalTo(@(44.0));
+        make.height.equalTo(@(EaseIMKit_NavBarAndStatusBarHeight));
     }];
     
     
@@ -113,8 +108,15 @@
     }
 }
 
-#pragma mark - Table view data source
+- (void)goChangePasswordPage {
+    EaseChangePasswordViewController *vc = [[EaseChangePasswordViewController alloc] init];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
+
+
+#pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
 }
@@ -133,7 +135,9 @@
     
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            titleAvatarCell.nameLabel.text = @"群头像";
+            NSString *nickName = [EaseKitUtil fetchUserDicWithUserId:EMClient.sharedClient.currentUsername][EaseUserNicknameKey];
+
+            titleAvatarCell.nameLabel.text = nickName;
             [titleAvatarCell.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_group_icon"]];
             return titleAvatarCell;
         }
@@ -143,9 +147,9 @@
         if (indexPath.row == 0) {
             titleValueAccessCell.nameLabel.text = @"账号与安全";
             titleValueAccessCell.tapCellBlock = ^{
-                
+                [self goChangePasswordPage];
             };
-            return titleAvatarCell;
+            return titleValueAccessCell;
         }
     }
     
@@ -164,16 +168,42 @@
     return 64.0;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0){
+        return 0.001;
+    }
+    return 12.0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *hView = [[UIView alloc] init];
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        hView.backgroundColor = [UIColor colorWithHexString:@"#171717"];
+    }else {
+        hView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+
+    }
+
+    return hView;
+}
+
+
 
 #pragma mark getter and setter
 - (UIButton *)logoutButton {
     if (_logoutButton == nil) {
         _logoutButton = [[UIButton alloc] init];
-        _logoutButton.titleLabel.font = [UIFont systemFontOfSize:16.0];
+        _logoutButton.titleLabel.font = [UIFont systemFontOfSize:14.0];
         [_logoutButton setTitle:@"退出登录" forState:UIControlStateNormal];
         [_logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_logoutButton addTarget:self action:@selector(logoutButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        _logoutButton.backgroundColor = UIColor.blueColor;
+        _logoutButton.backgroundColor = EaseIMKit_COLOR_HEX(0x4461F2);
     }
     return _logoutButton;
 }

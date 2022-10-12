@@ -133,10 +133,11 @@
 
     [self.view addSubview:self.titleView];
     [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(EaseIMKit_StatusBarHeight);
+        make.top.equalTo(self.view);
         make.left.right.equalTo(self.view);
-        make.height.equalTo(@(44.0));
+        make.height.equalTo(@(EaseIMKit_NavBarAndStatusBarHeight));
     }];
+    
     
     self.viewModel = [[EaseConversationViewModel alloc] init];
     self.viewModel.canRefresh = YES;
@@ -525,7 +526,9 @@
 
 - (UIView *)titleView {
     if (_titleView == nil) {
-        _titleView = [[UIView alloc] init];
+        _titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, EaseIMKit_ScreenWidth, EaseIMKit_NavBarAndStatusBarHeight)];
+        
+        [_titleView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
         
         UILabel *titleLabel = [[UILabel alloc] init];
 
@@ -548,15 +551,15 @@
                 make.height.equalTo(@25);
             }];
 
-            self.backImageBtn = [[UIButton alloc]init];
-            [self.backImageBtn setImage:[UIImage easeUIImageNamed:@"jh_backleft"] forState:UIControlStateNormal];
-            [self.backImageBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
-            [_titleView addSubview:self.backImageBtn];
-            [self.backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.height.equalTo(@35);
-                make.centerY.equalTo(titleLabel);
-                make.left.equalTo(_titleView).offset(16);
-            }];
+//            self.backImageBtn = [[UIButton alloc]init];
+//            [self.backImageBtn setImage:[UIImage easeUIImageNamed:@"jh_backleft"] forState:UIControlStateNormal];
+//            [self.backImageBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
+//            [_titleView addSubview:self.backImageBtn];
+//            [self.backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.width.height.equalTo(@35);
+//                make.centerY.equalTo(titleLabel);
+//                make.left.equalTo(_titleView).offset(16);
+//            }];
         }else {
 
             titleLabel.text = @"会话列表";
@@ -565,19 +568,19 @@
             [_titleView addSubview:titleLabel];
             [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerX.equalTo(_titleView);
-                make.centerY.equalTo(_titleView);
+                make.top.equalTo(_titleView).offset(EaseIMKit_StatusBarHeight);
                 make.height.equalTo(@25);
             }];
 
-            self.backImageBtn = [[UIButton alloc]init];
-            [self.backImageBtn setImage:[UIImage easeUIImageNamed:@"yg_backleft"] forState:UIControlStateNormal];
-            [self.backImageBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
-            [_titleView addSubview:self.backImageBtn];
-            [self.backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.height.equalTo(@35);
-                make.centerY.equalTo(titleLabel);
-                make.left.equalTo(_titleView).offset(16);
-            }];
+//            self.backImageBtn = [[UIButton alloc]init];
+//            [self.backImageBtn setImage:[UIImage easeUIImageNamed:@"yg_backleft"] forState:UIControlStateNormal];
+//            [self.backImageBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
+//            [_titleView addSubview:self.backImageBtn];
+//            [self.backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.width.height.equalTo(@35);
+//                make.centerY.equalTo(titleLabel);
+//                make.left.equalTo(_titleView).offset(16);
+//            }];
 
 
             [_titleView addSubview:self.rightNavBarBtn];

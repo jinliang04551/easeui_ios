@@ -356,7 +356,8 @@
         _sendLocationBtn = [[UIButton alloc]init];
         [_sendLocationBtn setTitle:EaseLocalizableString(@"send", nil) forState:UIControlStateNormal];
         _sendLocationBtn.layer.cornerRadius = 4;
-        _sendLocationBtn.backgroundColor = [UIColor colorWithHexString:@"#4798CB"];
+//        _sendLocationBtn.backgroundColor = [UIColor colorWithHexString:@"#4798CB"];
+        _sendLocationBtn.backgroundColor = EaseIMKit_Default_BgBlue_Color;
         [_sendLocationBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_sendLocationBtn.titleLabel setFont:[UIFont systemFontOfSize:12.0]];
         [_sendLocationBtn addTarget:self action:@selector(sendAction) forControlEvents:UIControlEventTouchUpInside];

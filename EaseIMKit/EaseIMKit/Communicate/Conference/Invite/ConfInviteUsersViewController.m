@@ -119,9 +119,9 @@
 
 
     [self.customNavBarView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(EaseIMKit_StatusBarHeight);
+        make.top.equalTo(self.view);
         make.left.right.equalTo(self.view);
-        make.height.equalTo(@(48.0));
+        make.height.equalTo(@(EaseIMKit_NavBarAndStatusBarHeight));
     }];
 
     
@@ -499,15 +499,16 @@
 
 - (UIView *)customNavBarView {
     if (_customNavBarView == nil) {
-        _customNavBarView = [[UIView alloc] init];
-        _customNavBarView.backgroundColor = UIColor.clearColor;
+        _customNavBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, EaseIMKit_ScreenWidth, EaseIMKit_NavBarAndStatusBarHeight)];
+//        _customNavBarView.backgroundColor = UIColor.clearColor;
+        [_customNavBarView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
         
         [_customNavBarView addSubview:self.titleLabel];
         [_customNavBarView addSubview:self.cancelButton];
         [_customNavBarView addSubview:self.confirmButton];
     
         [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(_customNavBarView);
+            make.top.equalTo(_customNavBarView).offset(EaseIMKit_StatusBarHeight);
             make.centerX.equalTo(_customNavBarView);
             make.width.equalTo(@(100.0));
         }];
