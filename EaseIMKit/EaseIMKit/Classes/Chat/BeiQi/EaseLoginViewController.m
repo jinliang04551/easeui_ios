@@ -16,6 +16,7 @@
 #import "EaseIMKitManager.h"
 #import "EaseWebViewController.h"
 #import "EasePreLoginAccountView.h"
+#import "EasePrivacyAlertView.h"
 
 #define kTitleImageViewOffTop 96
 
@@ -355,14 +356,11 @@
      interaction:(UITextItemInteraction)interaction{
     NSString *urlString = @"";
     if ([URL.scheme isEqualToString:@"privacy"]) {
-        EaseWebViewController *webVC = [[EaseWebViewController alloc] initWithURLString:urlString];
-        [self.navigationController pushViewController:webVC animated:YES];
-        
+        [self goWebViewWithURLString:urlString];
     }
     
     if ([URL.scheme isEqualToString:@"sevice"]) {
-        EaseWebViewController *webVC = [[EaseWebViewController alloc] initWithURLString:urlString];
-        [self.navigationController pushViewController:webVC animated:YES];
+        [self goWebViewWithURLString:urlString];
     }
     
     return NO;
@@ -391,6 +389,14 @@
         return;
     }
     [self.contentView endEditing:YES];
+    
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp){
+        if (!self.checkedButton.isSelected) {
+            [self showPrivacyAlertView];
+            return;
+        }
+    }
     
     NSString *name = self.nameField.text;
     NSString *pswd = self.pswdField.text;
@@ -439,7 +445,6 @@
 }
 
 - (void)preLoginAccountButtonAction {
-
     EasePreLoginAccountView* alert = [[EasePreLoginAccountView alloc] init];
     
     [alert showinViewController:self completion:^{
@@ -453,10 +458,30 @@
         weakSelf.nameField.text = account;
         weakSelf.pswdField.text = accountPwd;
     };
+}
+
+- (void)showPrivacyAlertView {
+    EasePrivacyAlertView* alert = [[EasePrivacyAlertView alloc] init];
+    
+    [alert showinViewController:self completion:^{
+
+    }];
+    
+    EaseIMKit_WS
+    alert.confirmBlock = ^{
+        weakSelf.checkedButton.selected = YES;
+    };
+    
+    alert.privacyURLBlock = ^(NSString * _Nonnull urlString) {
+        [weakSelf goWebViewWithURLString:urlString];
+    };
     
 }
 
-
+- (void)goWebViewWithURLString:(NSString *)urlString {
+    EaseWebViewController *webVC = [[EaseWebViewController alloc] initWithURLString:urlString];
+    [self.navigationController pushViewController:webVC animated:YES];
+}
 
 #pragma mark getter and setter
 - (UILabel *)wellcomeLabel {
@@ -550,9 +575,8 @@
         _loginButton.titleLabel.font = EaseIMKit_NFont(16.0);
         
         [_loginButton addTarget:self action:@selector(agreeButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        _loginButton.backgroundColor = [UIColor colorWithHexString:@"#4461F2"];
+        _loginButton.backgroundColor = EaseIMKit_RGBACOLOR(68, 97, 242, 0.2);
         _loginButton.layer.cornerRadius = 4.0;
-        
     }
     return _loginButton;
 
@@ -564,11 +588,10 @@
 
 - (void)updateLoginState:(BOOL)isEdit {
     if (isEdit) {
-        [self.loginButton setBackgroundColor:[UIColor colorWithHexString:@"#4798CB"]];
+        self.loginButton.backgroundColor = EaseIMKit_Default_BgBlue_Color;
     }else {
-        [self.loginButton setBackgroundColor:[UIColor colorWithHexString:@"#4390C0"]];
+        self.loginButton.backgroundColor = EaseIMKit_RGBACOLOR(68, 97, 242, 0.1);
     }
-
 }
 
 

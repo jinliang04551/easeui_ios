@@ -14,21 +14,16 @@
 
 @interface EasePrivacyAlertViewContentView : UIView<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,copy)void (^cancelBlock)(void);
-@property (nonatomic,copy)void (^confirmBlock)(NSDictionary *selectedDic);
+@property (nonatomic,copy)void (^confirmBlock)(void);
+@property (nonatomic,copy)void (^privacyURLBlock)(NSString *urlString);
 
 @property (nonatomic,strong) UIView *alphaView;
 @property (nonatomic,strong) UIView *contentView;
 @property (nonatomic,strong) UILabel *titleLabel;
-@property (nonatomic,strong) UIView  *lineView;
 @property (nonatomic,strong) UIButton *confirmButton;
-@property (nonatomic,strong) UITableView *table;
+@property (nonatomic,strong) UITextView *privacyTextView;
+@property (nonatomic,strong) UIButton *cancelButton;
 
-@property (nonatomic,strong) NSDictionary *selectedAccountDic;
-
-@property (nonatomic,copy) NSString *title;
-@property (nonatomic, strong) NSMutableArray* preAccountArray;
-@property (nonatomic, strong) UIView *contentFooterView;
-@property (nonatomic, strong) UIButton *hideButton;
 
 @end
 
@@ -39,8 +34,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self layoutAllSubviews];
-        [self.table reloadData];
-
     }
     return self;
 }
@@ -58,42 +51,36 @@
         make.left.equalTo(self).offset(22.0);
         make.right.equalTo(self).offset(-22.0);
         make.centerY.equalTo(self);
-//        make.height.equalTo(@500.0);
     }];
 
 }
   
-#pragma mark - tableview delegate and datasource
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.preAccountArray.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    EasePreLoginAccountCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(EasePreLoginAccountCell.class)];
-    
-    NSDictionary *accDic = self.preAccountArray[indexPath.row];
-    BOOL isChecked = [self accountIsSelected:accDic];
-    [cell updateWithObj:accDic isChecked:isChecked];
-    
-    EaseIMKit_WS
-    cell.checkBlcok = ^(NSDictionary * _Nonnull selectedDic, BOOL isChecked) {
-        weakSelf.selectedAccountDic = selectedDic;
-        [weakSelf.table reloadData];
-    };
-    return cell;
-}
 
 #pragma mark private method
-- (BOOL)accountIsSelected:(NSDictionary *)accountDic {
-    NSString *selectAcc = self.selectedAccountDic[kPreAccountKey];
-    NSString *currentAcc = accountDic[kPreAccountKey];
-    return [selectAcc isEqualToString:currentAcc];
-}
-
 - (void)hideButtonAction {
     if (self.cancelBlock) {
         self.cancelBlock();
     }
+}
+
+#pragma mark textview delegate
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL
+         inRange:(NSRange)characterRange
+     interaction:(UITextItemInteraction)interaction{
+    NSString *urlString = @"";
+    if ([URL.scheme isEqualToString:@"privacy"]) {
+        if (self.privacyURLBlock) {
+            self.privacyURLBlock(urlString);
+        }
+    }
+    
+    if ([URL.scheme isEqualToString:@"sevice"]) {
+        if (self.privacyURLBlock) {
+            self.privacyURLBlock(urlString);
+        }
+    }
+    
+    return NO;
 }
 
 #pragma mark getter and setter
@@ -114,44 +101,37 @@
         _contentView.clipsToBounds = YES;
         
         [_contentView addSubview:self.titleLabel];
-        [_contentView addSubview:self.hideButton];
-        [_contentView addSubview:self.lineView];
-        [_contentView addSubview:self.table];
-        [_contentView addSubview:self.contentFooterView];
+        [_contentView addSubview:self.privacyTextView];
+        [_contentView addSubview:self.cancelButton];
+        [_contentView addSubview:self.confirmButton];
 
         [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_contentView).offset(20.0);
-            make.left.equalTo(_contentView).offset(20.0);
-            make.height.equalTo(@16.0);
-        }];
-        
-        [self.hideButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.titleLabel);
-            make.right.equalTo(_contentView).offset(-20.0);
-            make.size.equalTo(@(20.0));
-        }];
-        
-        
-        [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.titleLabel.mas_bottom).offset(20.0);
-            make.left.equalTo(_contentView).offset(20.0);
-            make.right.equalTo(_contentView).offset(-20.0);
-            make.height.mas_equalTo(EaseIMKit_ONE_PX);
-        }];
-        
-        [self.table mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.lineView.mas_bottom).offset(0.0);
-            make.left.equalTo(_contentView);
+            make.top.equalTo(_contentView).offset(24.0);
+            make.left.equalTo(_contentView).offset(24.0);
             make.right.equalTo(_contentView);
-            make.height.equalTo(@(48.0 * 5));
         }];
         
-        [self.contentFooterView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.table.mas_bottom);
-            make.left.right.equalTo(_contentView);
-            make.height.mas_equalTo(58.0);
-            make.bottom.equalTo(_contentView);
+        [self.privacyTextView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.titleLabel.mas_bottom).offset(14.0);
+            make.left.equalTo(_contentView).offset(24.0);
+            make.right.equalTo(_contentView).offset(-24.0);
+            make.height.equalTo(@(48.0));
         }];
+        
+        [self.cancelButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.privacyTextView.mas_bottom).offset(28.0);
+            make.width.equalTo(@(46.0));
+            make.height.equalTo(@(16.0));
+            make.right.equalTo(self.confirmButton.mas_left).offset(-50.0);
+            make.bottom.equalTo(_contentView).offset(-18.0);
+        }];
+        
+        [self.confirmButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.cancelButton);
+            make.size.equalTo(self.cancelButton);
+            make.right.equalTo(_contentView).offset(-34.0);
+        }];
+        
     }
     return _contentView;;
 }
@@ -160,119 +140,34 @@
     if (_titleLabel == nil) {
         _titleLabel = UILabel.new;
         _titleLabel.font = [UIFont fontWithName:@"PingFangSC-Regular" size:16.0f];
-        _titleLabel.textAlignment = NSTextAlignmentCenter;
-        _titleLabel.textColor = EaseIMKit_COLOR_HEX(0x333333);
-        _titleLabel.text = @"账号信息";
+        _titleLabel.textAlignment = NSTextAlignmentLeft;
+        _titleLabel.textColor = UIColor.blackColor;
+        _titleLabel.text = @"服务协议及隐私保护";
     }
     return _titleLabel;
 }
 
-- (UIButton *)hideButton {
-    if (_hideButton == nil) {
-        _hideButton = [[UIButton alloc] init];
-        [_hideButton setImage:[UIImage easeUIImageNamed:@"ease_alert_hide"] forState:UIControlStateNormal];
-        
-        [_hideButton addTarget:self action:@selector(hideButtonAction) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _hideButton;
-}
+- (UIButton *)cancelButton {
+    if (_cancelButton == nil) {
+        _cancelButton = [[UIButton alloc] init];
+        [_cancelButton setTitle:@"不同意" forState:UIControlStateNormal];
+        _cancelButton.titleLabel.font = EaseIMKit_NFont(14.0);
 
-- (UIView *)lineView {
-    if (_lineView == nil) {
-        _lineView = UIView.new;
-        _lineView.backgroundColor = EaseIMKit_COLOR_HEX(0xCFCFCF);
+        [_cancelButton setTitleColor:EaseIMKit_COLOR_HEX(0x037BFD) forState:UIControlStateNormal];
+        [_cancelButton addTarget:self action:@selector(cancelButtonAction) forControlEvents:UIControlEventTouchUpInside];
     }
-    return _lineView;
+    return _cancelButton;
 }
-
 
 - (UIButton *)confirmButton {
     if (_confirmButton == nil) {
         _confirmButton = UIButton.new;
-//        UIImage *originImage = IMAGE_BUNDLE_NAME(@"MISUserModule", @"user_login");
-//        [_confirmButton setBackgroundImage:originImage forState:UIControlStateNormal];
-
-          NSMutableAttributedString * attributedText = [[NSMutableAttributedString alloc] initWithString:@"确认选择"];
-        [attributedText setAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"PingFangSC-Medium" size:15.0f], NSForegroundColorAttributeName:UIColor.whiteColor} range:NSMakeRange(0, attributedText.length)];
-        [_confirmButton setAttributedTitle:attributedText forState:UIControlStateNormal];
-        
-        [_confirmButton addTarget:self action:@selector(confirmButtonEvent) forControlEvents:(UIControlEventTouchUpInside)];
+        _confirmButton.titleLabel.font = EaseIMKit_NFont(14.0);
+        [_confirmButton setTitle:@"同意" forState:UIControlStateNormal];
+        [_confirmButton setTitleColor:EaseIMKit_COLOR_HEX(0x037BFD) forState:UIControlStateNormal];
+        [_confirmButton addTarget:self action:@selector(confirmButtonAction) forControlEvents:UIControlEventTouchUpInside];
     }
     return _confirmButton;
-}
-
-- (UITableView *)table {
-    if (!_table) {
-        _table = [[UITableView alloc] initWithFrame:CGRectZero style:(UITableViewStylePlain)];
-        _table.delegate = self;
-        _table.dataSource = self;
-        _table.estimatedRowHeight = 48.0f;
-        _table.rowHeight = UITableViewAutomaticDimension;
-        _table.separatorStyle = UITableViewCellSeparatorStyleNone;
-        [_table registerClass:EasePreLoginAccountCell.class forCellReuseIdentifier:NSStringFromClass(EasePreLoginAccountCell.class)];
-    }
-    
-    return _table;
-}
-
-- (UIView *)contentFooterView {
-    if (_contentFooterView == nil) {
-        _contentFooterView = [[UIView alloc] init];
-        
-        UIView *widthLine = [[UIView alloc] init];
-        widthLine.backgroundColor = EaseIMKit_COLOR_HEX(0xCFCFCF);
-        
-        UIView *vLine = [[UIView alloc] init];
-        vLine.backgroundColor = EaseIMKit_COLOR_HEX(0xCFCFCF);
-        
-        UIButton *cancelButton = [[UIButton alloc] init];
-        [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
-        [cancelButton setTitleColor:EaseIMKit_COLOR_HEX(0x333333) forState:UIControlStateNormal];
-
-        [cancelButton addTarget:self action:@selector(cancelButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIButton *confirmButton = [[UIButton alloc] init];
-        [confirmButton setTitle:@"确定" forState:UIControlStateNormal];
-        [confirmButton setTitleColor:EaseIMKit_COLOR_HEX(0x4461F2) forState:UIControlStateNormal];
-        [confirmButton addTarget:self action:@selector(confirmButtonAction) forControlEvents:UIControlEventTouchUpInside];
-
-        
-        [_contentFooterView addSubview:widthLine];
-        [_contentFooterView addSubview:vLine];
-        [_contentFooterView addSubview:cancelButton];
-        [_contentFooterView addSubview:confirmButton];
-
-        
-        [widthLine mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_contentFooterView);
-            make.left.right.equalTo(_contentFooterView);
-            make.height.equalTo(@(EaseIMKit_ONE_PX));
-        }];
-        
-        [vLine mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(widthLine.mas_bottom);
-            make.centerX.equalTo(_contentFooterView);
-            make.width.equalTo(@(EaseIMKit_ONE_PX));
-            make.bottom.equalTo(_contentFooterView);
-        }];
-    
-        [cancelButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(widthLine.mas_bottom);
-            make.left.equalTo(_contentFooterView);
-            make.right.equalTo(vLine.mas_left);
-            make.bottom.equalTo(_contentFooterView);
-        }];
-        
-        [confirmButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(widthLine.mas_bottom);
-            make.left.equalTo(vLine.mas_right);
-            make.right.equalTo(_contentFooterView);
-            make.bottom.equalTo(_contentFooterView);
-            
-        }];
-        
-    }
-    return _contentFooterView;
 }
 
 - (void)cancelButtonAction {
@@ -283,23 +178,36 @@
 
 - (void)confirmButtonAction {
     if (self.confirmBlock) {
-        self.confirmBlock(self.selectedAccountDic);
+        self.confirmBlock();
     }
 }
 
-- (NSMutableArray *)preAccountArray {
-    if (_preAccountArray == nil) {
-        _preAccountArray = [NSMutableArray array];
-        [_preAccountArray addObject:@{kPreAccountKey:@"kefu1",kPreAccountPwdKey:@"easemobkefu1"}];
-        [_preAccountArray addObject:@{kPreAccountKey:@"kefu2",kPreAccountPwdKey:@"easemobkefu2"}];
-        [_preAccountArray addObject:@{kPreAccountKey:@"kefu3",kPreAccountPwdKey:@"easemobkefu3"}];
-        [_preAccountArray addObject:@{kPreAccountKey:@"kefu4",kPreAccountPwdKey:@"easemobkefu4"}];
-        [_preAccountArray addObject:@{kPreAccountKey:@"kefu5",kPreAccountPwdKey:@"easemobkefu5"}];
+- (UITextView *)privacyTextView {
+    if (_privacyTextView == nil) {
+        _privacyTextView = UITextView.new;
+        _privacyTextView.editable = NO;
+        _privacyTextView.textAlignment = NSTextAlignmentLeft;
+        _privacyTextView.linkTextAttributes = @{NSForegroundColorAttributeName:EaseIMKit_COLOR_HEX(0x4461F2),
+                                   NSUnderlineColorAttributeName:EaseIMKit_COLOR_HEX(0x4461F2),
+                                   NSUnderlineStyleAttributeName:@(NO)
+                                   };
+        _privacyTextView.delegate = self;
+        _privacyTextView.scrollEnabled = NO;
+        _privacyTextView.font = EaseIMKit_NFont(14.0);
+        
+        
+        NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithString:@"同意《环信服务条款》与《环信隐私协议》，未注册手机号登陆成功后将自动注册。"];
+        [att addAttribute:NSLinkAttributeName value:@"privacy://" range:[att.string rangeOfString:@"《环信服务条款》"]];
+        [att addAttribute:NSLinkAttributeName value:@"sevice://" range:[att.string rangeOfString:@"《环信隐私协议》"]];
+        [att addAttribute:NSForegroundColorAttributeName value:EaseIMKit_COLOR_HEX(0x232F34) range:NSMakeRange(0, att.string.length)];
 
+        _privacyTextView.attributedText = att;
+        _privacyTextView.backgroundColor = UIColor.clearColor;
+        _privacyTextView.textContainerInset = UIEdgeInsetsZero;
+        _privacyTextView.textContainer.lineFragmentPadding = 0;
     }
-    return _preAccountArray;
+    return _privacyTextView;
 }
-
 
 @end
 
@@ -331,11 +239,17 @@ static id g_instance = nil;
         _chooseUserView.cancelBlock = ^{
             [weakSelf hide];
         };
-        _chooseUserView.confirmBlock = ^(NSDictionary *selectedDic) {
+        _chooseUserView.confirmBlock = ^{
             [weakSelf hide];
-//            if (weakSelf.confirmBlock) {
-//                weakSelf.confirmBlock(selectedDic);
-//            }
+            if (weakSelf.confirmBlock) {
+                weakSelf.confirmBlock();
+            }
+        };
+        
+        _chooseUserView.privacyURLBlock = ^(NSString *urlString) {
+            if (weakSelf.privacyURLBlock) {
+                weakSelf.privacyURLBlock(urlString);
+            }
         };
         
     }

@@ -10,7 +10,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EasePrivacyAlertView : UIView
-@property (nonatomic,copy)void (^confirmBlock)(NSDictionary *selectedDic);
+@property (nonatomic,copy)void (^confirmBlock)(void);
+@property (nonatomic,copy)void (^privacyURLBlock)(NSString *urlString);
 
 /*显示 在 window 上*/
 - (void)showWithCompletion:(void(^)(void))completion;
