@@ -37,6 +37,8 @@
 #import "UserInfoStore.h"
 #import "EaseCreateOrderAlertView.h"
 
+#define kEditingBottomViewHeight  52.0
+
 @interface EaseChatViewController ()<UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, EMChatManagerDelegate, EMChatBarDelegate, EaseMessageCellDelegate, EaseChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate, EMMoreFunctionViewDelegate>
 {
     EaseChatViewModel *_viewModel;
@@ -55,7 +57,7 @@
 //当前页面不可见时收到消息
 @property (nonatomic, assign) BOOL isReceiveMsgNotVisiable;
 
-@property (nonatomic, strong) UIView *edintingBottomView;
+@property (nonatomic, strong) UIView *editingBottomView;
 
 @end
 
@@ -254,6 +256,16 @@
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
     }];
+    
+    [self.view addSubview:self.editingBottomView];
+    [self.editingBottomView Ease_makeConstraints:^(EaseConstraintMaker *make) {
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+        make.bottom.equalTo(self.view);
+        make.height.equalTo(@(0));
+    }];
+    
+    
     //会话工具栏
     [self _setupChatBarMoreViews];
     
@@ -352,16 +364,24 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 
 - (void)showEditingBottomView {
     [UIView animateWithDuration:0.5 animations:^{
-        [self.view addSubview:self.edintingBottomView];
-        [self.edintingBottomView Ease_makeConstraints:^(EaseConstraintMaker *make) {
-            make.left.equalTo(self.view);
-            make.right.equalTo(self.view);
-            make.bottom.equalTo(self.view);
+        [self.view addSubview:self.editingBottomView];
+        [self.editingBottomView Ease_updateConstraints:^(EaseConstraintMaker *make) {
+            make.height.equalTo(@(kEditingBottomViewHeight+ EaseIMKit_BottomSafeHeight));
         }];
-        
         self.chatBar.hidden = YES;
     }];
 }
+
+- (void)hideEditingBottomView {
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.view addSubview:self.editingBottomView];
+        [self.editingBottomView Ease_updateConstraints:^(EaseConstraintMaker *make) {
+            make.height.equalTo(@(0));
+        }];
+        self.chatBar.hidden = NO;
+    }];
+}
+
 
 
 #pragma mark - Table view data source
@@ -1313,39 +1333,40 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     return _messageList;
 }
 
-- (UIView *)edintingBottomView {
-    if (_edintingBottomView == nil) {
-        _edintingBottomView = [[UIView alloc] init];
+- (UIView *)editingBottomView {
+    if (_editingBottomView == nil) {
+        _editingBottomView = [[UIView alloc] init];
         
         UIButton *cancelButton = [[UIButton alloc] init];
         [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
         [cancelButton setTitleColor:EaseIMKit_COLOR_HEX(0x333333) forState:UIControlStateNormal];
         [cancelButton addTarget:self action:@selector(cancelButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        cancelButton.backgroundColor = UIColor.yellowColor;
+
         
         UIButton *confirmButton = [[UIButton alloc] init];
         [confirmButton setTitle:@"创建工单" forState:UIControlStateNormal];
         [confirmButton setTitleColor:EaseIMKit_COLOR_HEX(0x4461F2) forState:UIControlStateNormal];
         [confirmButton addTarget:self action:@selector(confirmButtonAction) forControlEvents:UIControlEventTouchUpInside];
 
-        [_edintingBottomView addSubview:cancelButton];
-        [_edintingBottomView addSubview:confirmButton];
+        [_editingBottomView addSubview:cancelButton];
+        [_editingBottomView addSubview:confirmButton];
 
         [cancelButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_edintingBottomView);
-            make.left.equalTo(_edintingBottomView);
+            make.top.equalTo(_editingBottomView);
+            make.left.equalTo(_editingBottomView);
             make.width.equalTo(@(EaseIMKit_ScreenWidth * 0.5));
-            make.height.equalTo(@(52.0));
-            make.bottom.equalTo(_edintingBottomView).offset(-20.0);
+            make.height.equalTo(@(kEditingBottomViewHeight));
+            make.bottom.equalTo(_editingBottomView).offset(-EaseIMKit_BottomSafeHeight);
         }];
         
         [confirmButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(cancelButton);
             make.size.equalTo(cancelButton);
-            make.right.equalTo(_edintingBottomView);
+            make.right.equalTo(_editingBottomView);
         }];
+        
     }
-    return _edintingBottomView;
+    return _editingBottomView;
 }
 
 - (void)cancelButtonAction {
@@ -1353,6 +1374,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     _isReloadViewWithModel = YES;
     _viewModel.isEditing = NO;
     [self.tableView reloadData];
+    [self hideEditingBottomView];
 }
 
 - (void)confirmButtonAction {
@@ -1363,3 +1385,5 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 
 
 @end
+
+#undef kEditingBottomViewHeight
