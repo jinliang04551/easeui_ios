@@ -279,7 +279,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         _operateButton.contentMode = UIViewContentModeScaleAspectFit;
         [_operateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _operateButton.titleLabel.font = EaseIMKit_NFont(14.0);
-        _operateButton.backgroundColor = [UIColor colorWithHexString:@"#4798CB"];
+        _operateButton.backgroundColor = EaseIMKit_Default_BgBlue_Color;
         [_operateButton addTarget:self action:@selector(operateButtonAction) forControlEvents:UIControlEventTouchUpInside];
         _operateButton.layer.cornerRadius = 4.0;
     }
