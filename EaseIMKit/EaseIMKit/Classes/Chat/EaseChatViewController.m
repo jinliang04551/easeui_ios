@@ -33,9 +33,9 @@
 #import "EaseEnums.h"
 #import "EaseDefines.h"
 #import "EaseWebViewController.h"
-#import "EaseChatViewController+EaseCall.h"
 #import "EaseIMHelper.h"
 #import "UserInfoStore.h"
+#import "EaseCreateOrderAlertView.h"
 
 @interface EaseChatViewController ()<UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, EMChatManagerDelegate, EMChatBarDelegate, EaseMessageCellDelegate, EaseChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate, EMMoreFunctionViewDelegate>
 {
@@ -55,6 +55,7 @@
 //当前页面不可见时收到消息
 @property (nonatomic, assign) BOOL isReceiveMsgNotVisiable;
 
+@property (nonatomic, strong) UIView *edintingBottomView;
 
 @end
 
@@ -341,6 +342,28 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     self.chatBar.moreFunctionView = moreFunction;
 }
 
+#pragma mark - private method
+- (void)showMutipleSelectedMode {
+    _isReloadViewWithModel = YES;
+    _viewModel.isEditing = YES;
+    [self showEditingBottomView];
+    [self.tableView reloadData];
+}
+
+- (void)showEditingBottomView {
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.view addSubview:self.edintingBottomView];
+        [self.edintingBottomView Ease_makeConstraints:^(EaseConstraintMaker *make) {
+            make.left.equalTo(self.view);
+            make.right.equalTo(self.view);
+            make.bottom.equalTo(self.view);
+        }];
+        
+        self.chatBar.hidden = YES;
+    }];
+}
+
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -416,12 +439,21 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     
     NSString *identifier = [EaseMessageCell cellIdentifierWithDirection:model.direction type:model.type];
     EaseMessageCell *cell = (EaseMessageCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+   
     // Configure the cell...
     if (cell == nil || _isReloadViewWithModel == YES) {
         _isReloadViewWithModel = NO;
         cell = [[EaseMessageCell alloc] initWithDirection:model.direction chatType:model.message.chatType messageType:model.type viewModel:_viewModel];
         cell.delegate = self;
+        NSLog(@"=========_isReloadViewWithModel==============");
     }
+    
+    if (self.tableView.isEditing) {
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    }else {
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    
     cell.groupMemberCount = self.groupMemberCount;
     cell.model = model;
     if (cell.model.message.body.type == EMMessageTypeVoice) {
@@ -433,6 +465,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //NSLog(@"indexpath.row : %ld ", (long)indexPath.row);
+    
 }
 
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -445,6 +478,12 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
             model.weakMessageCell = nil;
         }
     }
+}
+
+-(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete | UITableViewCellEditingStyleInsert;
+        
 }
 
 
@@ -596,10 +635,19 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         [weakself recallLongPressAction];
     }];
     
+    //创建工单
+    EaseExtMenuModel *createOrderMenu = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"createOrder"] funcDesc:@"创建工单" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+        if (isExecuted) {
+            [weakself createOrderLongPressAction];
+        }
+    }];
+
+    
     NSMutableArray<EaseExtMenuModel*> *extMenuArray = [[NSMutableArray<EaseExtMenuModel*> alloc]init];
     BOOL isCustomCell = NO;
     [extMenuArray addObject:copyExtModel];
     [extMenuArray addObject:deleteExtModel];
+    [extMenuArray addObject:createOrderMenu];
     if (![aCell isKindOfClass:[EaseMessageCell class]]) {
         [extMenuArray addObject:recallExtModel];
         isCustomCell = YES;
@@ -1264,5 +1312,54 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     }
     return _messageList;
 }
+
+- (UIView *)edintingBottomView {
+    if (_edintingBottomView == nil) {
+        _edintingBottomView = [[UIView alloc] init];
+        
+        UIButton *cancelButton = [[UIButton alloc] init];
+        [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
+        [cancelButton setTitleColor:EaseIMKit_COLOR_HEX(0x333333) forState:UIControlStateNormal];
+        [cancelButton addTarget:self action:@selector(cancelButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        cancelButton.backgroundColor = UIColor.yellowColor;
+        
+        UIButton *confirmButton = [[UIButton alloc] init];
+        [confirmButton setTitle:@"创建工单" forState:UIControlStateNormal];
+        [confirmButton setTitleColor:EaseIMKit_COLOR_HEX(0x4461F2) forState:UIControlStateNormal];
+        [confirmButton addTarget:self action:@selector(confirmButtonAction) forControlEvents:UIControlEventTouchUpInside];
+
+        [_edintingBottomView addSubview:cancelButton];
+        [_edintingBottomView addSubview:confirmButton];
+
+        [cancelButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_edintingBottomView);
+            make.left.equalTo(_edintingBottomView);
+            make.width.equalTo(@(EaseIMKit_ScreenWidth * 0.5));
+            make.height.equalTo(@(52.0));
+            make.bottom.equalTo(_edintingBottomView).offset(-20.0);
+        }];
+        
+        [confirmButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(cancelButton);
+            make.size.equalTo(cancelButton);
+            make.right.equalTo(_edintingBottomView);
+        }];
+    }
+    return _edintingBottomView;
+}
+
+- (void)cancelButtonAction {
+    self.tableView.editing = NO;
+    _isReloadViewWithModel = YES;
+    _viewModel.isEditing = NO;
+    [self.tableView reloadData];
+}
+
+- (void)confirmButtonAction {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(showCreateOrderAlertView)]) {
+         [self.delegate showCreateOrderAlertView];
+    }
+}
+
 
 @end

@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)deleteLongPressAction:(void (^)(EMChatMessage *deleteMsg))aCompletionBlock;
 - (void)recallLongPressAction;
 - (void)copyLongPressAction;
+- (void)createOrderLongPressAction;
 
 - (void)resetCellLongPressStatus:(EaseMessageCell *)aCell;
 

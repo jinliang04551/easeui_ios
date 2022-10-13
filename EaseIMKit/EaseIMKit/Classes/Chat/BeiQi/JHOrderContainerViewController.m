@@ -157,7 +157,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         style.gradualChangeTitleColor = YES;
         style.normalTitleColor = EaseIMKit_COLOR_HEX(0x7E7E7E);
         style.selectedTitleColor = EaseIMKit_COLOR_HEX(0xB9B9B9);
-        style.scrollLineColor = EaseIMKit_COLOR_HEXA(0x000000, 0.5);
+//        style.scrollLineColor = EaseIMKit_COLOR_HEXA(0x000000, 0.5);
+        style.scrollLineColor = EaseIMKit_Default_BgBlue_Color;
         style.segmentViewBackgroundColor = EaseIMKit_ViewBgBlackColor;
 }else {
 
@@ -166,7 +167,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         style.gradualChangeTitleColor = YES;
         style.normalTitleColor = EaseIMKit_COLOR_HEX(0x999999);
         style.selectedTitleColor = EaseIMKit_COLOR_HEX(0x000000);
-        style.scrollLineColor = EaseIMKit_COLOR_HEXA(0x000000, 0.5);
+//        style.scrollLineColor = EaseIMKit_COLOR_HEXA(0x000000, 0.5);
+        style.scrollLineColor = EaseIMKit_Default_BgBlue_Color;
 }
 
         style.scaleTitle = YES;

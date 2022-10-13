@@ -20,8 +20,6 @@
 @property (nonatomic,strong) UIView *contentView;
 @property (nonatomic,strong) UILabel *titleLabel;
 @property (nonatomic,strong) UILabel *subTitleLabel;
-@property (nonatomic,strong) UIView  *lineView;
-@property (nonatomic,strong) UIButton *confirmButton;
 
 @property (nonatomic, strong) UIView *contentFooterView;
 @property (nonatomic, strong) UIButton *accessButton;
@@ -86,11 +84,12 @@
         [_contentView addSubview:self.titleLabel];
         [_contentView addSubview:self.subTitleLabel];
         [_contentView addSubview:self.accessButton];
+        [_contentView addSubview:self.textView];
         [_contentView addSubview:self.contentFooterView];
 
         [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_contentView).offset(20.0);
-            make.left.equalTo(_contentView).offset(20.0);
+            make.left.right.equalTo(_contentView);
             make.height.equalTo(@16.0);
         }];
         
@@ -101,20 +100,20 @@
         }];
                 
         [self.accessButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.titleLabel);
+            make.centerY.equalTo(self.subTitleLabel);
             make.right.equalTo(_contentView).offset(-20.0);
             make.size.equalTo(@(20.0));
         }];
         
         [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.lineView.mas_bottom).offset(0.0);
-            make.left.equalTo(_contentView);
-            make.right.equalTo(_contentView);
-            make.height.equalTo(@(48.0 * 5));
+            make.top.equalTo(self.subTitleLabel.mas_bottom).offset(20.0);
+            make.left.equalTo(_contentView).offset(20.0);
+            make.right.equalTo(_contentView).offset(-20.0);
+            make.height.equalTo(@(118.0));
         }];
         
         [self.contentFooterView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.textView.mas_bottom);
+            make.top.equalTo(self.textView.mas_bottom).offset(28.0);
             make.left.right.equalTo(_contentView);
             make.height.mas_equalTo(58.0);
             make.bottom.equalTo(_contentView);
@@ -138,7 +137,7 @@
     if (_subTitleLabel == nil) {
         _subTitleLabel = UILabel.new;
         _subTitleLabel.font = [UIFont fontWithName:@"PingFangSC-Regular" size:14.0];
-        _subTitleLabel.textAlignment = NSTextAlignmentCenter;
+        _subTitleLabel.textAlignment = NSTextAlignmentLeft;
         _subTitleLabel.textColor = EaseIMKit_COLOR_HEX(0x333333);
         _subTitleLabel.text = @"反馈消息记录";
     }
@@ -149,33 +148,11 @@
 - (UIButton *)accessButton {
     if (_accessButton == nil) {
         _accessButton = [[UIButton alloc] init];
-        [_accessButton setImage:[UIImage easeUIImageNamed:@"ease_alert_hide"] forState:UIControlStateNormal];
+        [_accessButton setImage:[UIImage easeUIImageNamed:@"jh_right_access"] forState:UIControlStateNormal];
         
         [_accessButton addTarget:self action:@selector(hideButtonAction) forControlEvents:UIControlEventTouchUpInside];
     }
     return _accessButton;
-}
-
-- (UIView *)lineView {
-    if (_lineView == nil) {
-        _lineView = UIView.new;
-        _lineView.backgroundColor = EaseIMKit_COLOR_HEX(0xCFCFCF);
-    }
-    return _lineView;
-}
-
-
-- (UIButton *)confirmButton {
-    if (_confirmButton == nil) {
-        _confirmButton = UIButton.new;
-
-          NSMutableAttributedString * attributedText = [[NSMutableAttributedString alloc] initWithString:@"确认选择"];
-        [attributedText setAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"PingFangSC-Medium" size:15.0f], NSForegroundColorAttributeName:UIColor.whiteColor} range:NSMakeRange(0, attributedText.length)];
-        [_confirmButton setAttributedTitle:attributedText forState:UIControlStateNormal];
-        
-        [_confirmButton addTarget:self action:@selector(confirmButtonEvent) forControlEvents:(UIControlEventTouchUpInside)];
-    }
-    return _confirmButton;
 }
 
 - (UIView *)contentFooterView {
@@ -259,6 +236,12 @@
         _textView.placeholder = @"添加留言";
         _textView.returnKeyType = UIReturnKeyDone;
         _textView.editable = YES;
+        
+        _textView.backgroundColor = EaseIMKit_COLOR_HEX(0xF5F5F5);
+        _textView.layer.cornerRadius = 4.0;
+        _textView.layer.borderColor = EaseIMKit_COLOR_HEX(0xDCDFE6).CGColor;
+        _textView.layer.borderWidth = EaseIMKit_ONE_PX;
+        
     }
     return _textView;
 }

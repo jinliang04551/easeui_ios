@@ -59,6 +59,8 @@ NS_ASSUME_NONNULL_BEGIN
 //群组@人后 清空textview placeholder
 - (void)clearTextViewPlaceHolder;
 
+- (void)showMutipleSelectedMode;
+
 @end
 
 NS_ASSUME_NONNULL_END

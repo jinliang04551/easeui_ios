@@ -240,7 +240,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         style.gradualChangeTitleColor = YES;
         style.normalTitleColor = EaseIMKit_COLOR_HEX(0x999999);
         style.selectedTitleColor = EaseIMKit_COLOR_HEX(0x000000);
-        style.scrollLineColor = EaseIMKit_COLOR_HEX(0x4798CB);
+//        style.scrollLineColor = EaseIMKit_COLOR_HEX(0x4798CB);
+        style.scrollLineColor = EaseIMKit_Default_BgBlue_Color;
         style.showLine = YES;
 }
         

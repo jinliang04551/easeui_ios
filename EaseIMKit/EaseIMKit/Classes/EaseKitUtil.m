@@ -145,8 +145,15 @@
 }
 
 + (NSDictionary *)fetchUserDicWithUserId:(NSString *)aUid {
-    NSString *nickname = aUid;
+    NSString *nickname = @"";
     NSString *avatarUrl = @"";
+    
+    if (aUid == nil) {
+        nickname = @"";
+    }else {
+        nickname = aUid;
+    }
+   
     
     EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:aUid];
     if(userInfo) {
@@ -156,7 +163,7 @@
         nickname = userInfo.nickname.length > 0 ? userInfo.nickname: userInfo.userId;
         
     }else{
-        [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[aUid]];
+        [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[nickname]];
     }
     
     return @{EaseUserNicknameKey:nickname,EaseUserAvatarUrlKey:avatarUrl};

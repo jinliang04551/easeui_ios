@@ -61,7 +61,7 @@
     if (_readCountLabel == nil) {
         _readCountLabel = [[UILabel alloc] init];
         _readCountLabel.font =  EaseIMKit_Font(@"PingFang SC", 8.0);
-        _readCountLabel.textColor = [UIColor colorWithHexString:@"#07CEA6"];
+        _readCountLabel.textColor = EaseIMKit_Default_BgBlue_Color;
         _readCountLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _readCountLabel;

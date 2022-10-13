@@ -25,6 +25,7 @@
 #import "EaseHeaders.h"
 #import "EMChatViewController+EMLoadMordMessage.h"
 #import "EaseIMHelper.h"
+#import "EaseCreateOrderAlertView.h"
 
 @interface EMChatViewController ()<EaseChatViewControllerDelegate, EMChatroomManagerDelegate, EMGroupManagerDelegate, EMMessageCellDelegate>
 @property (nonatomic, strong) EaseConversationModel *conversationModel;
@@ -384,6 +385,20 @@
 
 }
 
+- (void)showCreateOrderAlertView {
+    EaseCreateOrderAlertView *alert = [[EaseCreateOrderAlertView alloc] init];
+    
+    [alert showinViewController:self completion:^{
+
+    }];
+    
+    EaseIMKit_WS
+    alert.confirmBlock = ^(NSDictionary * _Nonnull selectedDic) {
+
+    };
+}
+
+
 //@群成员
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
@@ -400,17 +415,18 @@
     }
     [menuArray addObject:defaultLongPressItems[1]];
     
-    //更多消息
-    __weak typeof(self) weakself = self;
-    if (message.body.type == EMMessageBodyTypeText || message.body.type == EMMessageBodyTypeImage || message.body.type == EMMessageBodyTypeLocation || message.body.type == EMMessageBodyTypeVideo) {
-        EaseExtMenuModel *moreMenu = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"forward"] funcDesc:@"更多" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
-            if (isExecuted) {
-                [weakself loadMoreMessageWithMsgId:message.messageId];
-            }
-        }];
-        [menuArray addObject:moreMenu];
-    }
+//    //更多消息
+//    __weak typeof(self) weakself = self;
+//    if (message.body.type == EMMessageBodyTypeText || message.body.type == EMMessageBodyTypeImage || message.body.type == EMMessageBodyTypeLocation || message.body.type == EMMessageBodyTypeVideo) {
+//        EaseExtMenuModel *moreMenu = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"forward"] funcDesc:@"更多" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+//            if (isExecuted) {
+//                [weakself loadMoreMessageWithMsgId:message.messageId];
+//            }
+//        }];
+//        [menuArray addObject:moreMenu];
+//    }
 
+    
     
 //    //转发
 //    __weak typeof(self) weakself = self;
@@ -457,10 +473,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         //订单
         [menuArray addObject:[defaultInputBarItems objectAtIndex:4]];
 
-    }else  if (conversationType == EMConversationTypeChat) {
-       
-    }else {
-        
     }
 }else {
     if (conversationType == EMConversationTypeGroupChat) {

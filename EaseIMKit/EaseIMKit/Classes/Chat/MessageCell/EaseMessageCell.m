@@ -106,6 +106,7 @@
 - (void)_setupViewsWithType:(EMMessageType)aType chatType:(EMChatType)chatType
 {
     self.selectionStyle = UITableViewCellSelectionStyleNone;
+
     self.backgroundColor = [UIColor clearColor];
 
     _avatarView = [[UIImageView alloc] init];
@@ -264,12 +265,15 @@
         default:
             break;
     }
-    if (bubbleView) {
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bubbleViewTapAction:)];
-        [bubbleView addGestureRecognizer:tap];
-        
-        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(bubbleViewLongPressAction:)];
-        [bubbleView addGestureRecognizer:longPress];
+    
+    if (!self.viewModel.isEditing) {
+        if (bubbleView) {
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bubbleViewTapAction:)];
+            [bubbleView addGestureRecognizer:tap];
+            
+            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(bubbleViewLongPressAction:)];
+            [bubbleView addGestureRecognizer:longPress];
+        }
     }
     
     return bubbleView;

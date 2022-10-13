@@ -348,8 +348,8 @@
         _confirmButton.titleLabel.font = EaseIMKit_NFont(14.0);
         
         [_confirmButton addTarget:self action:@selector(confirmButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        _confirmButton.backgroundColor = [UIColor colorWithHexString:@"#4798CB"];
-        _confirmButton.layer.cornerRadius = 2.0;
+        _confirmButton.backgroundColor = EaseIMKit_Default_BgBlue_Color;
+        _confirmButton.layer.cornerRadius = 4.0;
     }
     return _confirmButton;
 

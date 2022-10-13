@@ -212,7 +212,7 @@
     }];
 
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        imageView.image = [UIImage easeUIImageNamed:@"BootPage"];
+        imageView.image = [UIImage easeUIImageNamed:@"jh_BootPage"];
 //        self.titleTextImageView.image = [UIImage easeUIImageNamed:@"titleTextImage"];
 //        self.titleImageView.image = [UIImage easeUIImageNamed:@"titleImage"];
 

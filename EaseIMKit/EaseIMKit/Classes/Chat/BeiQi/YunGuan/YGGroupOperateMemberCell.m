@@ -73,7 +73,7 @@
 
         [_unBanButton setImage:[UIImage easeUIImageNamed:@"yg_unMute"] forState:UIControlStateNormal];
         [_unBanButton addTarget:self action:@selector(unBanButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        _unBanButton.backgroundColor = [UIColor colorWithHexString:@"#4798CB"];
+        _unBanButton.backgroundColor = EaseIMKit_Default_BgBlue_Color;
         _unBanButton.layer.cornerRadius = 4.0;
     }
     return _unBanButton;

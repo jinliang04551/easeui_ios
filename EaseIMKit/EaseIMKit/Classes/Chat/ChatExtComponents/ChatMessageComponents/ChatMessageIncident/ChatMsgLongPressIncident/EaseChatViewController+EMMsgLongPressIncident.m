@@ -128,6 +128,12 @@ static const void *recallViewKey = &recallViewKey;
     self.longPressIndexPath = nil;
 }
 
+- (void)createOrderLongPressAction {
+    self.tableView.editing = YES;
+    [self showMutipleSelectedMode];
+}
+
+
 #pragma mark - Transpond Message
 
 - (void)_forwardMsgWithBody:(EMMessageBody *)aBody

@@ -49,6 +49,9 @@ NS_ASSUME_NONNULL_BEGIN
 //仅群聊可设置
 @property (nonatomic) EaseAlignmentStyle msgAlignmentStyle; //聊天区域消息排列方式
 
+//是否可编辑
+@property (nonatomic) BOOL isEditing;
+
 @end
 
 NS_ASSUME_NONNULL_END

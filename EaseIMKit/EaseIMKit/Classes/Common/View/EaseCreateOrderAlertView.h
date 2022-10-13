@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*指定 view controller 显示*/
 - (void)showinViewController:(UIViewController *)viewController
                   completion:(void(^)(void))completion;
-
+- (void)hide;
 
 @end
 
