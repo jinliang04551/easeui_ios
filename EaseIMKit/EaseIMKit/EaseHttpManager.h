@@ -10,6 +10,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EaseHttpManager : NSObject
 
+@property (nonatomic, strong,readonly) NSString *restSeverHost;
+
 + (instancetype)sharedManager;
 
 //- (void)registerToApperServer:(NSString *)uName

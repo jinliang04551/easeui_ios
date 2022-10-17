@@ -53,9 +53,14 @@
         make.centerY.equalTo(self);
     }];
 
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapAction:)];
+    [self addGestureRecognizer:tap];
+    
 }
   
-
+- (void)handleTapAction:(UITapGestureRecognizer *)aTap {
+    [self.textView resignFirstResponder];
+}
 
 #pragma mark private method
 - (void)hideButtonAction {
@@ -223,7 +228,7 @@
 
 - (void)confirmButtonAction {
     if (self.confirmBlock) {
-//        self.confirmBlock(self.selectedAccountDic);
+        self.confirmBlock();
     }
 }
 
@@ -275,9 +280,15 @@ static id g_instance = nil;
         EaseIMKit_WS
         _chooseUserView.cancelBlock = ^{
             [weakSelf hide];
+            if (weakSelf.confirmBlock) {
+                weakSelf.confirmBlock();
+            }
         };
         _chooseUserView.confirmBlock = ^{
             [weakSelf hide];
+            if (weakSelf.confirmBlock) {
+                weakSelf.confirmBlock();
+            }
         };
     }
     return _chooseUserView;
@@ -351,6 +362,9 @@ static id g_instance = nil;
     [UIView animateWithDuration:0.25 animations:^{
         self.chooseUserView.alpha = 1.0;
         self.bgView.alpha = 1.0;
+        
+//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapAction:)];
+//        [view addGestureRecognizer:tap];
     }];
 }
 
@@ -374,6 +388,7 @@ static id g_instance = nil;
     [UIView animateWithDuration:0.25 animations:^{
         self.chooseUserView.alpha = 1.0;
         self.bgView.alpha = 1.0;
+        
     }];
 }
 

@@ -393,8 +393,8 @@
     }];
     
     EaseIMKit_WS
-    alert.confirmBlock = ^(NSDictionary * _Nonnull selectedDic) {
-
+    alert.confirmBlock = ^{
+        [weakSelf.chatController cancelButtonAction];
     };
 }
 

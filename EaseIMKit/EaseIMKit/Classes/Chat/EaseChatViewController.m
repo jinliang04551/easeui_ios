@@ -59,6 +59,8 @@
 
 @property (nonatomic, strong) UIView *editingBottomView;
 
+@property (nonatomic, strong)UITapGestureRecognizer *tap;
+
 @end
 
 @implementation EaseChatViewController
@@ -147,8 +149,8 @@
     
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
  
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapTableViewAction:)];
-    [self.tableView addGestureRecognizer:tap];
+    
+    [self.tableView addGestureRecognizer:self.tap];
         
     [self fetchGroupAllMembers];
     
@@ -356,10 +358,13 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 
 #pragma mark - private method
 - (void)showMutipleSelectedMode {
+    [self.tableView removeGestureRecognizer:self.tap];
+
     _isReloadViewWithModel = YES;
     _viewModel.isEditing = YES;
-    [self showEditingBottomView];
+    self.tableView.editing = YES;
     [self.tableView reloadData];
+    [self showEditingBottomView];
 }
 
 - (void)showEditingBottomView {
@@ -373,6 +378,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 }
 
 - (void)hideEditingBottomView {
+    [self.tableView addGestureRecognizer:self.tap];
+
     [UIView animateWithDuration:0.5 animations:^{
         [self.view addSubview:self.editingBottomView];
         [self.editingBottomView Ease_updateConstraints:^(EaseConstraintMaker *make) {
@@ -465,7 +472,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         _isReloadViewWithModel = NO;
         cell = [[EaseMessageCell alloc] initWithDirection:model.direction chatType:model.message.chatType messageType:model.type viewModel:_viewModel];
         cell.delegate = self;
-        NSLog(@"=========_isReloadViewWithModel==============");
     }
     
     if (self.tableView.isEditing) {
@@ -485,7 +491,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //NSLog(@"indexpath.row : %ld ", (long)indexPath.row);
+    NSArray *selectedArray = [tableView indexPathsForSelectedRows];
     
+    NSLog(@"%s sel:%@",__func__,selectedArray);
 }
 
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -498,6 +506,55 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
             model.weakMessageCell = nil;
         }
     }
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    id obj = [self.dataArray objectAtIndex:indexPath.row];
+    
+    
+    NSString *cellString = nil;
+    EaseWeakRemind type = EaseWeakRemindMsgTime;
+    if ([obj isKindOfClass:[NSString class]]) {
+        cellString = (NSString *)obj;
+    }
+    if ([obj isKindOfClass:[EaseMessageModel class]]) {
+        EaseMessageModel *model = (EaseMessageModel *)obj;
+        if (model.type == EMMessageTypeExtRecall) {
+            NSString *recallBy = [model.message.ext objectForKey:MSG_EXT_RECALLBY];
+            if ([recallBy isEqualToString:EMClient.sharedClient.currentUsername]) {
+                cellString = EaseLocalizableString(@"meRecall", nil);
+            } else if ([recallBy isEqualToString:model.message.from]) {
+                if (model.message.chatType == EMChatTypeChat) {
+                    cellString = EaseLocalizableString(@"remoteRecall", nil);
+                } else {
+                    cellString = [NSString stringWithFormat:@"%@ %@", recallBy, EaseLocalizableString(@"recalledMessage", nil)];
+                }
+            } else {
+                cellString = [NSString stringWithFormat:@"%@ %@ %@", recallBy, EaseLocalizableString(@"admingRecall", nil), model.message.from];
+            }
+            
+            type = EaseWeakRemindSystemHint;
+        }
+        
+        if (model.type == EMMessageTypeExtCallState) {
+            cellString = ((EMTextMessageBody *)(model.message.body)).text;
+            type = EaseWeakRemindSystemHint;
+        }
+        
+        if (model.type == EMMessageTypeExtNewFriend || model.type == EMMessageTypeExtAddGroup) {
+            if ([model.message.body isKindOfClass:[EMTextMessageBody class]]) {
+                cellString = ((EMTextMessageBody *)(model.message.body)).text;
+                type = EaseWeakRemindSystemHint;
+            }
+        }
+    }
+    
+    if (cellString.length > 0) {
+        return NO;
+    }
+
+    return YES;
+
 }
 
 -(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -966,10 +1023,12 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 - (void)handleTapTableViewAction:(UITapGestureRecognizer *)aTap
 {
     if (aTap.state == UIGestureRecognizerStateEnded) {
-        [self.view endEditing:YES];
-        [self.chatBar clearMoreViewAndSelectedButton];
-        [self hideLongPressView];
-        [self scrollToBottomRow];
+        if (!self.tableView.isEditing) {
+            [self.view endEditing:YES];
+            [self.chatBar clearMoreViewAndSelectedButton];
+            [self hideLongPressView];
+            [self scrollToBottomRow];
+        }
     }
 }
 
@@ -1318,6 +1377,13 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     return _tableView;
 }
 
+- (UITapGestureRecognizer *)tap {
+    if (_tap == nil) {
+        _tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapTableViewAction:)];
+    }
+    return _tap;
+}
+
 - (NSMutableArray *)dataArray {
     if (!_dataArray) {
         _dataArray = [[NSMutableArray alloc] init];;
@@ -1356,7 +1422,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
             make.left.equalTo(_editingBottomView);
             make.width.equalTo(@(EaseIMKit_ScreenWidth * 0.5));
             make.height.equalTo(@(kEditingBottomViewHeight));
-            make.bottom.equalTo(_editingBottomView).offset(-EaseIMKit_BottomSafeHeight);
+//            make.bottom.equalTo(_editingBottomView).offset(-EaseIMKit_BottomSafeHeight);
         }];
         
         [confirmButton mas_makeConstraints:^(MASConstraintMaker *make) {

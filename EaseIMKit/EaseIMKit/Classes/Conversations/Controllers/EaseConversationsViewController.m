@@ -18,6 +18,8 @@
 #import "EMSearchBar.h"
 #import "EMRealtimeSearch.h"
 #import "EaseNoDataPlaceHolderView.h"
+#import "EaseNetworkErrorView.h"
+#import "Reachability.h"
 
 
 @interface EaseConversationsViewController ()
@@ -40,7 +42,7 @@ EMSearchBarDelegate
 @property (nonatomic) BOOL isSearching;
 @property (nonatomic, strong) NSMutableArray *searchResultArray;
 @property (nonatomic, strong) EaseNoDataPlaceHolderView *noDataPromptView;
-
+@property (nonatomic, strong) EaseNetworkErrorView *networkErrorView;
 @end
 
 @implementation EaseConversationsViewController
@@ -74,7 +76,10 @@ EMSearchBarDelegate
         make.centerX.left.right.equalTo(self.view);
     }];
 
+    [self addNetworkObserver];
 }
+
+
 
 - (void)addNotifacationObserver {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -90,6 +95,14 @@ EMSearchBarDelegate
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveCMDCreateGroupChat) name:EaseNotificationReceiveCMDCreateGroupChat object:nil];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChangedNotification:) name:kReachabilityChangedNotification object:nil];
+    
+}
+
+- (void)addNetworkObserver {
+    Reachability* reach = [Reachability reachabilityWithHostName:EaseHttpManager.sharedManager.restSeverHost];
+    [reach startNotifier];
+    NSLog(@"%s",__func__);
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -127,6 +140,19 @@ EMSearchBarDelegate
 
 - (void)receiveCMDCreateGroupChat {
     [self refreshTabView];
+}
+
+
+- (void)reachabilityChangedNotification:(NSNotification *)notify {
+    Reachability *reach = (Reachability *)notify.object;
+//    if (reach.currentReachabilityStatus == NotReachable) {
+//        self.networkErrorView
+//    }else {
+//
+//    }
+    NetworkStatus status =  reach.currentReachabilityStatus;
+    NSLog(@"%s status:%@",__func__,@(status));
+    
 }
 
 #pragma mark - EMClientDelegate
@@ -598,6 +624,14 @@ EMSearchBarDelegate
         _noDataPromptView.hidden = YES;
     }
     return _noDataPromptView;
+}
+
+- (EaseNetworkErrorView *)networkErrorView {
+    if (_networkErrorView == nil) {
+        _networkErrorView = [[EaseNetworkErrorView alloc] init];
+        
+    }
+    return _networkErrorView;
 }
 
 

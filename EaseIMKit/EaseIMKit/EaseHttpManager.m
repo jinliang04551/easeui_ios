@@ -8,6 +8,7 @@
 #import "EaseHeaders.h"
 #import "EaseIMKitOptions.h"
 #import "EaseIMKitManager.h"
+#import "Reachability.h"
 
 #define kServerHost @"http://182.92.236.214:12005"
 
@@ -89,10 +90,18 @@
         }else {
             self.restSeverHost = kServerHost;
         }
-        
+        [self addNetworkObserver];
     }
     return self;
 }
+
+
+- (void)addNetworkObserver {
+    Reachability* reach = [Reachability reachabilityWithHostName:self.restSeverHost];
+    [reach startNotifier];
+    NSLog(@"%s",__func__);
+}
+
 
 //- (void)registerToApperServer:(NSString *)uName
 //                          pwd:(NSString *)pwd

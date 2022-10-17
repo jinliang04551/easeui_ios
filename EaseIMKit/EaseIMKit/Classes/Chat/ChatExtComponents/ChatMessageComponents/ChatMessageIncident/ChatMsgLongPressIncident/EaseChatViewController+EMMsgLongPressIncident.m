@@ -129,7 +129,6 @@ static const void *recallViewKey = &recallViewKey;
 }
 
 - (void)createOrderLongPressAction {
-    self.tableView.editing = YES;
     [self showMutipleSelectedMode];
 }
 

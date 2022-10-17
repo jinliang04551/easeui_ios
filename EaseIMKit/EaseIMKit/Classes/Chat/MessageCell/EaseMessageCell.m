@@ -55,6 +55,9 @@
         }
         [self _setupViewsWithType:aMessageType chatType:aChatType];
     }
+    
+    self.multipleSelectionBackgroundView = [UIView new];
+
     [self.bubbleView setupBubbleBackgroundImage];
     return self;
 }
