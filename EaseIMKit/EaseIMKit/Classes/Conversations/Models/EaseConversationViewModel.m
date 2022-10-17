@@ -122,7 +122,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 - (UIView *)defaultBgView {
     UIView *defaultBgView = [[UIView alloc] initWithFrame:CGRectZero];
 //    UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
-//    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage easeUIImageNamed:@"ji_search_nodata"]];
+//    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage easeUIImageNamed:@"jihu_search_nodata"]];
 //    UILabel *txtLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 //    txtLabel.font = [UIFont systemFontOfSize:14];
 //    txtLabel.textColor = [UIColor colorWithHexString:@"#999999"];
@@ -156,7 +156,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 - (EaseNoDataPlaceHolderView *)noDataPromptView {
     if (_noDataPromptView == nil) {
         _noDataPromptView = EaseNoDataPlaceHolderView.new;
-        [_noDataPromptView.noDataImageView setImage:[UIImage easeUIImageNamed:@"ji_search_nodata"]];
+        [_noDataPromptView.noDataImageView setImage:[UIImage easeUIImageNamed:@"jihu_search_nodata"]];
         _noDataPromptView.prompt.text = @"暂无消息";
         _noDataPromptView.hidden = NO;
     }
