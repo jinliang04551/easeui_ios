@@ -202,7 +202,7 @@
         [_transferOwnerButton setTitle:@"转让群主" forState:UIControlStateNormal];
         [_transferOwnerButton setTitleColor:EaseIMKit_COLOR_HEX(0x4461F2) forState:UIControlStateNormal];
         [_transferOwnerButton addTarget:self action:@selector(transferOwnerButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        _transferOwnerButton.backgroundColor = EaseIMKit_RGBACOLOR(68, 97, 242, 0.1);
+        _transferOwnerButton.backgroundColor = EaseIMKit_RGBACOLOR(68, 97, 242, 0.2);
         _transferOwnerButton.layer.cornerRadius = 4.0;
         _transferOwnerButton.layer.borderColor = EaseIMKit_COLOR_HEX(0x4461F2).CGColor;
         _transferOwnerButton.layer.borderWidth = EaseIMKit_ONE_PX;

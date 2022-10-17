@@ -12,6 +12,7 @@
 
 @interface EaseIMKitOptions ()
 @property (nonatomic, strong) NSMutableDictionary *loginUserTokenDic;
+@property (nonatomic, strong) NSMutableArray* preAccountArray;
 
 @end
 
@@ -354,6 +355,19 @@ static EaseIMKitOptions *sharedOptions = nil;
     }
     
     [demoOptions archive];
+}
+
+- (NSMutableArray *)preAccountArray {
+    if (_preAccountArray == nil) {
+        _preAccountArray = [NSMutableArray array];
+        [_preAccountArray addObject:@{kPreAccountKey:@"kefu1",kPreAccountPwdKey:@"easemobkefu1"}];
+        [_preAccountArray addObject:@{kPreAccountKey:@"kefu2",kPreAccountPwdKey:@"easemobkefu2"}];
+        [_preAccountArray addObject:@{kPreAccountKey:@"kefu3",kPreAccountPwdKey:@"easemobkefu3"}];
+        [_preAccountArray addObject:@{kPreAccountKey:@"kefu4",kPreAccountPwdKey:@"easemobkefu4"}];
+        [_preAccountArray addObject:@{kPreAccountKey:@"kefu5",kPreAccountPwdKey:@"easemobkefu5"}];
+
+    }
+    return _preAccountArray;
 }
 
 

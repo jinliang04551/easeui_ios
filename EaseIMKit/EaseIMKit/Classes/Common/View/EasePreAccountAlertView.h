@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EasePreLoginAccountView : UIView
+@interface EasePreAccountAlertView : UIView
 @property (nonatomic,copy)void (^confirmBlock)(NSDictionary *selectedDic);
 
 /*显示 在 window 上*/

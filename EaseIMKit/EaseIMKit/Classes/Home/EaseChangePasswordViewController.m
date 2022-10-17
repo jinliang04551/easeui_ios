@@ -71,7 +71,42 @@
   
 - (void)handleTapAction:(UITapGestureRecognizer *)aTap {
     [self.view endEditing:YES];
+    [self updateLoginState];
 }
+
+
+- (void)updateLoginState {
+    BOOL isCanLogin = NO;
+    if (self.newPwdView.pswdField.text.length > 0 && self.confirmPwdView.pswdField.text > 0) {
+        isCanLogin = YES;
+    }
+    
+    if (isCanLogin) {
+        self.confirmButton.backgroundColor = EaseIMKit_Default_BgBlue_Color;
+    }else {
+        self.confirmButton.backgroundColor = EaseIMKit_RGBACOLOR(68, 97, 242, 0.2);
+    }
+    
+    if (self.newPwdView.pswdField.text.length > 0) {
+        BOOL isValidate = [self validatePassword:self.newPwdView.pswdField.text];
+        [self.newPwdView updateHintLabelState:!isValidate];
+    }
+    
+    if (self.confirmPwdView.pswdField.text.length > 0) {
+        BOOL isValidate = [self validatePassword:self.confirmPwdView.pswdField.text];
+        [self.confirmPwdView updateHintLabelState:!isValidate];
+    }
+    
+    
+}
+
+- (BOOL)validatePassword:(NSString *)password {
+    if (password.length >=6 && password.length <= 16) {
+        return YES;
+    }
+    return NO;
+}
+
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -86,10 +121,71 @@
 
 #pragma mark private method
 - (void)confirmButtonAction {
-    [self.newPwdView updateHintLabelState:YES];
-    [self.confirmPwdView updateHintLabelState:NO];
+//    [self.newPwdView updateHintLabelState:YES];
+//    [self.confirmPwdView updateHintLabelState:NO];
+        
+    if (![self.newPwdView.pswdField.text isEqualToString:self.confirmPwdView.pswdField.text]) {
+        [self showHint:@"新密码与确认密码不一致"];
+        return;
+    }
+    
+    [[EaseHttpManager sharedManager] modifyPassword:self.confirmPwdView.pswdField.text username:EMClient.sharedClient.currentUsername completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+        if (response && response.length > 0 && statusCode) {
+            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+            if (statusCode == 200) {
+                NSString *status = responsedict[@"status"];
+                if ([status isEqualToString:@"OK"]) {
+                    [self showHint:@"修改密码成功"];
+                    [self logout];
+                }
+
+            }else {
+                NSLog(@"%s errorDescription:%@",__func__,errorDescription);
+            }
+
+        }
+
+    }];
 
 }
+
+
+- (void)logout {
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        [[EMClient sharedClient] logout:YES completion:^(EMError * _Nullable aError) {
+            if (aError == nil) {
+                EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:nil message:@"退出登录成功"];
+                [alertView show];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
+
+            }else {
+                EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:nil message:aError.errorDescription];
+                [alertView show];
+                
+                NSLog(@"err:%@",aError.errorDescription);
+            }
+            
+        }];
+        
+    }else {
+        [EaseIMKitManager.shared logoutWithCompletion:^(BOOL success, NSString * _Nonnull errorMsg) {
+            if (success) {
+                EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:nil message:@"退出登录成功"];
+                [alertView show];
+            }else {
+                EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:nil message:errorMsg];
+                [alertView show];
+                
+                NSLog(@"err:%@",errorMsg);
+            }
+            
+        }];
+    }
+}
+
 
 #pragma mark getter and setter
 - (UIButton *)confirmButton {
@@ -99,7 +195,7 @@
         [_confirmButton setTitle:@"保存" forState:UIControlStateNormal];
         [_confirmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_confirmButton addTarget:self action:@selector(confirmButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        _confirmButton.backgroundColor = EaseIMKit_COLOR_HEX(0x4461F2);
+        _confirmButton.backgroundColor = EaseIMKit_RGBACOLOR(68, 97, 242, 0.2);
         _confirmButton.layer.cornerRadius = 4.0;
         _confirmButton.clipsToBounds = YES;
     }
@@ -110,19 +206,20 @@
     if (_contentView == nil) {
         _contentView = [[UIView alloc] init];
         _contentView.backgroundColor = UIColor.whiteColor;
-        [_contentView addSubview:self.oldPwdView];
         [_contentView addSubview:self.newPwdView];
         [_contentView addSubview:self.confirmPwdView];
 
-        [self.oldPwdView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_contentView).offset(24.0);
-            make.left.equalTo(_contentView);
-            make.right.equalTo(_contentView);
-        
-        }];
+        //        [_contentView addSubview:self.oldPwdView];
+
+//        [self.oldPwdView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(_contentView).offset(24.0);
+//            make.left.equalTo(_contentView);
+//            make.right.equalTo(_contentView);
+//
+//        }];
            
         [self.newPwdView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.oldPwdView.mas_bottom);
+            make.top.equalTo(_contentView).offset(24.0);
             make.left.equalTo(_contentView);
             make.right.equalTo(_contentView);
         }];

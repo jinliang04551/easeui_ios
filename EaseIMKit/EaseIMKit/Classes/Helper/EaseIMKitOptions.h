@@ -94,6 +94,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSMutableArray *locationAppkeyArray;
 @property (nonatomic, strong) NSString* language;
 
+@property (nonatomic, strong,readonly) NSMutableArray* preAccountArray;
+
 
 + (instancetype)sharedOptions;
 

@@ -5,7 +5,7 @@
 //  Created by liu001 on 2022/10/10.
 //
 
-#import "EasePreLoginAccountView.h"
+#import "EasePreAccountAlertView.h"
 #import <Masonry/Masonry.h>
 #import "EasePreLoginAccountCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
@@ -39,6 +39,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self layoutAllSubviews];
+        self.preAccountArray  = [EaseIMKitOptions sharedOptions].preAccountArray;
+        
         [self.table reloadData];
 
     }
@@ -290,12 +292,6 @@
 - (NSMutableArray *)preAccountArray {
     if (_preAccountArray == nil) {
         _preAccountArray = [NSMutableArray array];
-        [_preAccountArray addObject:@{kPreAccountKey:@"kefu1",kPreAccountPwdKey:@"easemobkefu1"}];
-        [_preAccountArray addObject:@{kPreAccountKey:@"kefu2",kPreAccountPwdKey:@"easemobkefu2"}];
-        [_preAccountArray addObject:@{kPreAccountKey:@"kefu3",kPreAccountPwdKey:@"easemobkefu3"}];
-        [_preAccountArray addObject:@{kPreAccountKey:@"kefu4",kPreAccountPwdKey:@"easemobkefu4"}];
-        [_preAccountArray addObject:@{kPreAccountKey:@"kefu5",kPreAccountPwdKey:@"easemobkefu5"}];
-
     }
     return _preAccountArray;
 }
@@ -305,7 +301,7 @@
 
 
 static id g_instance = nil;
-@interface EasePreLoginAccountView()
+@interface EasePreAccountAlertView()
 @property (nonatomic, strong) EasePreLoginAccountContentView* chooseUserView;
 @property (nonatomic, strong) UIView* bgView;
 @property (nonatomic, strong) UIWindow* currentWindow;
@@ -314,7 +310,7 @@ static id g_instance = nil;
 
 @end
 
-@implementation EasePreLoginAccountView
+@implementation EasePreAccountAlertView
 //- (instancetype)initWithViewModel:(MIS_USRLoginViewModel *_Nullable)viewModel {
 //    self = [super init];
 //    if (self) {

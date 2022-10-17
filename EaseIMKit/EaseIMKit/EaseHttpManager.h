@@ -84,6 +84,10 @@ NS_ASSUME_NONNULL_BEGIN
                          completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
 
 
+- (void)modifyPassword:(NSString *)newPassword
+              username:(NSString *)username
+            completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+
 @end
 
 NS_ASSUME_NONNULL_END

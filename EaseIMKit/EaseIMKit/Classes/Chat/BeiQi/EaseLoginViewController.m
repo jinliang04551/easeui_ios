@@ -15,7 +15,7 @@
 #import "EaseHttpManager.h"
 #import "EaseIMKitManager.h"
 #import "EaseWebViewController.h"
-#import "EasePreLoginAccountView.h"
+#import "EasePreAccountAlertView.h"
 #import "EasePrivacyAlertView.h"
 
 #define kTitleImageViewOffTop 96
@@ -445,7 +445,7 @@
 }
 
 - (void)preLoginAccountButtonAction {
-    EasePreLoginAccountView* alert = [[EasePreLoginAccountView alloc] init];
+    EasePreAccountAlertView* alert = [[EasePreAccountAlertView alloc] init];
     
     [alert showinViewController:self completion:^{
 
@@ -457,6 +457,7 @@
         NSString *accountPwd = selectedDic[kPreAccountPwdKey];
         weakSelf.nameField.text = account;
         weakSelf.pswdField.text = accountPwd;
+        [weakSelf updateLoginState:YES];
     };
 }
 
@@ -590,7 +591,7 @@
     if (isEdit) {
         self.loginButton.backgroundColor = EaseIMKit_Default_BgBlue_Color;
     }else {
-        self.loginButton.backgroundColor = EaseIMKit_RGBACOLOR(68, 97, 242, 0.1);
+        self.loginButton.backgroundColor = EaseIMKit_RGBACOLOR(68, 97, 242, 0.2);
     }
 }
 

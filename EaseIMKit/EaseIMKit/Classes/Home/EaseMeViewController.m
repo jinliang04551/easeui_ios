@@ -38,8 +38,6 @@
 #pragma mark - Subviews
 - (void)placeAndLayoutSubviews
 {
-//    self.titleView = [self customNavWithTitle:@"我的" rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
-
     self.titleView = [self customRootNavWithTitle:@"我的" rightBarIconName:@"" rightBarTitle:@"" rightBarAction:nil];
     
     [self.view addSubview:self.titleView];
@@ -72,6 +70,12 @@
     [super viewWillDisappear:animated];
     self.navigationController.navigationBarHidden = NO;
 }
+
+- (BOOL)isPreAccount {
+    BOOL preAccount = [[EaseIMKitOptions sharedOptions].preAccountArray containsObject:[EMClient sharedClient].currentUsername];
+    return preAccount;
+}
+
 
 #pragma mark private method
 - (void)logoutButtonAction {
@@ -118,6 +122,9 @@
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp){
+        return 1;
+    }
     return 2;
 }
 
@@ -132,7 +139,6 @@
     BQTitleValueAccessCell *titleValueAccessCell = [tableView dequeueReusableCellWithIdentifier:[BQTitleValueAccessCell reuseIdentifier]];
 
 
-    
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             NSString *nickName = [EaseKitUtil fetchUserDicWithUserId:EMClient.sharedClient.currentUsername][EaseUserNicknameKey];
@@ -146,9 +152,12 @@
     if (indexPath.section == 1) {
         if (indexPath.row == 0) {
             titleValueAccessCell.nameLabel.text = @"账号与安全";
-            titleValueAccessCell.tapCellBlock = ^{
-                [self goChangePasswordPage];
-            };
+            if (![self isPreAccount]) {
+                titleValueAccessCell.tapCellBlock = ^{
+                    [self goChangePasswordPage];
+                };
+            }
+            
             return titleValueAccessCell;
         }
     }
@@ -225,6 +234,7 @@
     }
     return _footerView;
 }
+
 
 
 @end

@@ -57,6 +57,8 @@
 //声网音视频获取一个channelName下有哪些uid接口
 #define kEaseCallGetChannalUidsYunGuanURL @"/v2/rtc/channle"
 
+#define kModifyPasswordURL   @"/v2/gov/arcfox/transport"
+
 
 @interface EaseHttpManager() <NSURLSessionDelegate>
 @property (nonatomic, strong) NSURLSession *session;
@@ -917,6 +919,38 @@
 
     NSLog(@"%s url:%@ headerDict:%@",__func__,url,headerDict);
 
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+        if (aCompletionBlock) {
+            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
+        }
+    }];
+    [task resume];
+}
+
+- (void)modifyPassword:(NSString *)newPassword
+              username:(NSString *)username
+            completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock {
+
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/updateUser",self.restSeverHost,kModifyPasswordURL,[EMClient sharedClient].currentUsername]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest
+                                                requestWithURL:url];
+    request.HTTPMethod = @"POST";
+    
+    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
+    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
+    NSString *token = [EaseKitUtil getLoginUserToken];
+    [headerDict setObject:token forKey:@"Authorization"];
+    [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
+    request.allHTTPHeaderFields = headerDict;
+
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+        
+    [dict setObject:newPassword forKey:@"password"];
+    [dict setObject:username forKey:@"username"];
+
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
         if (aCompletionBlock) {
