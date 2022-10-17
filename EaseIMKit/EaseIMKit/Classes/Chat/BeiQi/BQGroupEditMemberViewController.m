@@ -60,7 +60,8 @@
 
     
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//        self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+        self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     }else {
         self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     }
@@ -378,8 +379,11 @@
     titleLabel.text = @"搜索结果";
     
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    hView.backgroundColor = [UIColor colorWithHexString:@"#171717"];
-    titleLabel.textColor = [UIColor colorWithHexString:@"#7E7E7E"];
+//    hView.backgroundColor = [UIColor colorWithHexString:@"#171717"];
+//    titleLabel.textColor = [UIColor colorWithHexString:@"#7E7E7E"];
+    
+    hView.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
+    titleLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
 }else {
     hView.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
     titleLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
@@ -443,7 +447,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         
         [_searchResultTableView registerClass:[BQGroupSearchCell class] forCellReuseIdentifier:NSStringFromClass([BQGroupSearchCell class])];
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        _searchResultTableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//        _searchResultTableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+
+    _searchResultTableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 
 }else {
 

@@ -56,14 +56,17 @@
     if (highlighted) {
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0x252525);
+//            self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0x252525);
+            self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0xECF5FF);
         }else {
             self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0xECF5FF);
         }
         
     }else {
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-                self.contentView.backgroundColor = EaseIMKit_ViewCellBgBlackColor;
+//                self.contentView.backgroundColor = EaseIMKit_ViewCellBgBlackColor;
+            self.contentView.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
+
         }else {
                 self.contentView.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
         }

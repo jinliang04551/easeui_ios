@@ -56,8 +56,9 @@ static EMImageBrowser *browser = nil;
         _photoNavigationController = [[UINavigationController alloc] initWithRootViewController:self.photoBrowser];
 
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            _photoNavigationController.navigationBar.tintColor = EaseIMKit_ViewBgWhiteColor;
+//            _photoNavigationController.navigationBar.tintColor = EaseIMKit_ViewBgWhiteColor;
 
+            _photoNavigationController.navigationBar.tintColor = EaseIMKit_ViewBgBlackColor;
         }else {
             _photoNavigationController.navigationBar.tintColor = EaseIMKit_ViewBgBlackColor;
         }

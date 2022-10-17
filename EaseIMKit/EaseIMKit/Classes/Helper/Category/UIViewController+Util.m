@@ -16,7 +16,11 @@
 {
 
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage easeUIImageNamed:@"jh_backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(popBackLeftItemAction)];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage easeUIImageNamed:@"jh_backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(popBackLeftItemAction)];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage easeUIImageNamed:@"yg_backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(popBackLeftItemAction)];
+    
+    [self setRightNavBarItemTitleColor];
 }else {
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage easeUIImageNamed:@"yg_backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(popBackLeftItemAction)];
     
@@ -33,7 +37,11 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     
 
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage easeUIImageNamed:@"jh_backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:aTarget action:aAction];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage easeUIImageNamed:@"jh_backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:aTarget action:aAction];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage easeUIImageNamed:@"yg_backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:aTarget action:aAction];
+    
+    [self setRightNavBarItemTitleColor];
 }else {
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage easeUIImageNamed:@"yg_backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:aTarget action:aAction];
     
@@ -101,9 +109,14 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     //44.0
     
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, EaseIMKit_ScreenWidth, EaseIMKit_NavBarAndStatusBarHeight)];
-//    [contentView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_COLOR_HEX(0xD9D9D9)];
   
-    [contentView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        [contentView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_Nav_JiHuBgColor];
+
+    }else {
+        [contentView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
+    }
+    
 
     
     UILabel *titleLabel = [[UILabel alloc] init];
@@ -154,7 +167,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         [rightImageBtn setTitle:rightBarTitle forState:UIControlStateNormal];
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            [rightImageBtn setTitleColor:[UIColor colorWithHexString:@"#4798CB"] forState:UIControlStateNormal];
+//            [rightImageBtn setTitleColor:[UIColor colorWithHexString:@"#4798CB"] forState:UIControlStateNormal];
+            [rightImageBtn setTitleColor:EaseIMKit_TitleBlueColor forState:UIControlStateNormal];
         }else {
             [rightImageBtn setTitleColor:EaseIMKit_TitleBlueColor forState:UIControlStateNormal];
         }
@@ -170,8 +184,12 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     
 
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        titleLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
-        [backImageBtn setImage:[UIImage easeUIImageNamed:@"jh_backleft"] forState:UIControlStateNormal];
+//        titleLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
+//        [backImageBtn setImage:[UIImage easeUIImageNamed:@"jh_backleft"] forState:UIControlStateNormal];
+        
+        titleLabel.textColor = [UIColor colorWithHexString:@"#171717"];
+        
+        [backImageBtn setImage:[UIImage easeUIImageNamed:@"yg_backleft"] forState:UIControlStateNormal];
     }else {
         titleLabel.textColor = [UIColor colorWithHexString:@"#171717"];
         
@@ -189,8 +207,13 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     //Height:52.0
     
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, EaseIMKit_ScreenWidth, EaseIMKit_StatusBarHeight + 52.0)];
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        [contentView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_Nav_JiHuBgColor];
+    }else {
+        [contentView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
+    }
 
-    [contentView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
     
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.text = title;
@@ -251,10 +274,16 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     
     
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        [iconImageView setImage:[UIImage easeUIImageNamed:@"jh_undisturbRing"]];
+//        [iconImageView setImage:[UIImage easeUIImageNamed:@"jh_undisturbRing"]];
+//
+//        titleLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
+//        [backImageBtn setImage:[UIImage easeUIImageNamed:@"jh_backleft"] forState:UIControlStateNormal];
+        
+        [iconImageView setImage:[UIImage easeUIImageNamed:@"yg_undisturbRing"]];
 
-        titleLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
-        [backImageBtn setImage:[UIImage easeUIImageNamed:@"jh_backleft"] forState:UIControlStateNormal];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#171717"];
+        
+        [backImageBtn setImage:[UIImage easeUIImageNamed:@"yg_backleft"] forState:UIControlStateNormal];
     }else {
         [iconImageView setImage:[UIImage easeUIImageNamed:@"yg_undisturbRing"]];
 

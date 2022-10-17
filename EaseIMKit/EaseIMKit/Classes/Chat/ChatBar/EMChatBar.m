@@ -98,23 +98,32 @@
         make.size.equalTo(self.audioButton);
     }];
     
-//    self.textView = [[EaseTextView alloc] init];
-//    self.textView.delegate = self;
 
 if ([EaseIMKitOptions sharedOptions].isJiHuApp){
-    [self.audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"audio-unSelected"] forState:UIControlStateNormal];
-    [self.audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
+//    [self.audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"audio-unSelected"] forState:UIControlStateNormal];
+//    [self.audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
+//
+//    [self.conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"more-unselected"] forState:UIControlStateNormal];
+//    [self.conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"more-selected"] forState:UIControlStateSelected];
+//
+//    [self.emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"face"] forState:UIControlStateNormal];
+//    [self.emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
+//
+//
+//    [self.textView setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
+//    self.textView.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
+//    self.textView.backgroundColor = [UIColor colorWithHexString:@"#3D3D3D"];
     
-    [self.conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"more-unselected"] forState:UIControlStateNormal];
-    [self.conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"more-selected"] forState:UIControlStateSelected];
+    [self.audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_audio-unSelected"] forState:UIControlStateNormal];
+    [self.audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_character"] forState:UIControlStateSelected];
     
-    [self.emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"face"] forState:UIControlStateNormal];
-    [self.emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"character"] forState:UIControlStateSelected];
+    [self.conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"yg_more-unselected"] forState:UIControlStateNormal];
+    [self.conversationToolBarBtn setBackgroundImage:[UIImage easeUIImageNamed:@"yg_more-selected"] forState:UIControlStateSelected];
     
-    
-    [self.textView setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
-    self.textView.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
-    self.textView.backgroundColor = [UIColor colorWithHexString:@"#3D3D3D"];
+    [self.emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_face"] forState:UIControlStateNormal];
+    [self.emojiButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_character"] forState:UIControlStateSelected];
+
+    self.textView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
 
 }else {
     [self.audioButton setBackgroundImage:[UIImage easeUIImageNamed:@"yg_audio-unSelected"] forState:UIControlStateNormal];
@@ -129,18 +138,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     self.textView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
 }
 
-   
-//    self.textView.font = [UIFont systemFontOfSize:14.0];
-//    self.textView.textAlignment = NSTextAlignmentLeft;
-//    self.textView.textContainerInset = UIEdgeInsetsMake(8.0, 10, 10, 0);
-//    if (@available(iOS 11.1, *)) {
-//        self.textView.verticalScrollIndicatorInsets = UIEdgeInsetsMake(12, 20, 2, 0);
-//    } else {
-//        // Fallback on earlier versions
-//    }
-//    self.textView.returnKeyType = UIReturnKeySend;
-//    self.textView.placeHolder = @"说点啥";
-//    self.textView.layer.cornerRadius = kTextViewMinHeight * 0.5;
     
     [self.textView Ease_makeConstraints:^(EaseConstraintMaker *make) {
         make.top.equalTo(self).offset(12.0);

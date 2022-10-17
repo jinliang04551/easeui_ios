@@ -93,13 +93,20 @@
     [self _setupAnimationViews];
     
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        self.backgroundColor = [UIColor colorWithHexString:@"#252525"];
-        self.titleLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
-        self.countLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
-        [self.recordButton setBackgroundColor:[UIColor colorWithHexString:@"#3C3C3C"]];
-
-        [self.recordButton setImage:[UIImage easeUIImageNamed:@"yg_grayAudioBtn"] forState:UIControlStateNormal];
-        self.iconSurfix = @"green";
+//        self.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+//        self.titleLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+//        self.countLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+//        [self.recordButton setBackgroundColor:[UIColor colorWithHexString:@"#3C3C3C"]];
+//
+//        [self.recordButton setImage:[UIImage easeUIImageNamed:@"yg_grayAudioBtn"] forState:UIControlStateNormal];
+//        self.iconSurfix = @"green";
+        
+        self.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
+        self.titleLabel.textColor = [UIColor grayColor];
+        self.countLabel.textColor = [UIColor grayColor];
+        [self.recordButton setBackgroundColor:[UIColor whiteColor]];
+        [self.recordButton setImage:[UIImage easeUIImageNamed:@"grayAudioBtn"] forState:UIControlStateNormal];
+        self.iconSurfix = @"blue";
     }else {
         self.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
         self.titleLabel.textColor = [UIColor grayColor];
@@ -362,8 +369,9 @@
 
 - (void)resetRecordButton {
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        [self.recordButton setImage:[UIImage easeUIImageNamed:@"yg_grayAudioBtn"] forState:UIControlStateNormal];
+//        [self.recordButton setImage:[UIImage easeUIImageNamed:@"yg_grayAudioBtn"] forState:UIControlStateNormal];
         
+        [self.recordButton setImage:[UIImage easeUIImageNamed:@"grayAudioBtn"] forState:UIControlStateNormal];
     }else {
         [self.recordButton setImage:[UIImage easeUIImageNamed:@"grayAudioBtn"] forState:UIControlStateNormal];
 

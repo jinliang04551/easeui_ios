@@ -41,7 +41,8 @@
 - (void)placeAndLayoutSubViews {
     
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//    self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+    self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 }else {
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 }
@@ -248,7 +249,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         _nameLabel.numberOfLines = 0;
         
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        _nameLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
+//        _nameLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
+    _nameLabel.textColor = [UIColor colorWithHexString:@"#171717"];
 }else {
         _nameLabel.textColor = [UIColor colorWithHexString:@"#171717"];
 }
@@ -263,11 +265,13 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         _sizeLabel.font = EaseIMKit_NFont(10.0);
         _sizeLabel.textAlignment = NSTextAlignmentLeft;
         
-if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        _sizeLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
-}else {
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+    //        _sizeLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
         _sizeLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
-}
+
+    }else {
+            _sizeLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
+    }
         
     }
     return _sizeLabel;

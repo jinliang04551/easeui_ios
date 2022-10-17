@@ -86,9 +86,13 @@
     self.deleteBtn.backgroundColor = [UIColor clearColor];
         
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"jh_deleteEmoticon"] forState:UIControlStateNormal];
+//        [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"jh_deleteEmoticon"] forState:UIControlStateNormal];
+//
+//        [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"jh_deleteEmoticon"] forState:UIControlStateDisabled];
 
-        [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"jh_deleteEmoticon"] forState:UIControlStateDisabled];
+        [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"yg_deleteEmoticon"] forState:UIControlStateNormal];
+
+        [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"yg_deleteEmoticon"] forState:UIControlStateDisabled];
 
     }else {
         [self.deleteBtn setBackgroundImage:[UIImage easeUIImageNamed:@"yg_deleteEmoticon"] forState:UIControlStateNormal];
@@ -101,9 +105,11 @@
     self.bottomScrollView = [[UIScrollView alloc] init];
     self.bottomScrollView.scrollEnabled = NO;
     if ([EaseIMKitOptions sharedOptions].isJiHuApp){
-        self.bottomView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
-        self.bottomScrollView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+//        self.bottomView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+//        self.bottomScrollView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
 
+        self.bottomView.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
+        self.bottomScrollView.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
     }else {
         self.bottomView.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
         self.bottomScrollView.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
@@ -149,8 +155,9 @@
 {
     self.emotionBgView = [[UIView alloc] init];
     if ([EaseIMKitOptions sharedOptions].isJiHuApp){
-        self.emotionBgView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+//        self.emotionBgView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
 
+        self.emotionBgView.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
     }else {
         self.emotionBgView.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
     }
@@ -241,7 +248,8 @@
     aButton.selected = YES;
     
     if ([EaseIMKitOptions sharedOptions].isJiHuApp){
-        aButton.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+//        aButton.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+        aButton.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
     }else {
         aButton.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
 
@@ -337,8 +345,10 @@
 
 
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            _pageControl.pageIndicatorTintColor = [UIColor colorWithHexString:@"#818181"];
-            _pageControl.currentPageIndicatorTintColor = [UIColor colorWithHexString:@"#C4C4C4"];
+//            _pageControl.pageIndicatorTintColor = [UIColor colorWithHexString:@"#818181"];
+//            _pageControl.currentPageIndicatorTintColor = [UIColor colorWithHexString:@"#C4C4C4"];
+            _pageControl.pageIndicatorTintColor = [UIColor colorWithHexString:@"#C4C4C4"];
+            _pageControl.currentPageIndicatorTintColor = [UIColor colorWithHexString:@"#818181"];
         }else {
             _pageControl.pageIndicatorTintColor = [UIColor colorWithHexString:@"#C4C4C4"];
             _pageControl.currentPageIndicatorTintColor = [UIColor colorWithHexString:@"#818181"];

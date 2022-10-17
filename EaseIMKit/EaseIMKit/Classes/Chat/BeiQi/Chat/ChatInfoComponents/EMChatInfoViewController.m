@@ -210,7 +210,8 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *hView = [[UIView alloc] init];
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        hView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//        hView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+        hView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     }else {
         hView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     }

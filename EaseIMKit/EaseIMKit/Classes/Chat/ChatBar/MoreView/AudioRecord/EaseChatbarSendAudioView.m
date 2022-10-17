@@ -153,7 +153,9 @@
         _hintLabel.font = EaseIMKit_NFont(12.0);
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            _hintLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+//            _hintLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+            _hintLabel.textColor = [UIColor colorWithHexString:@"#171717"];
+
         }else {
             _hintLabel.textColor = [UIColor colorWithHexString:@"#171717"];
         }

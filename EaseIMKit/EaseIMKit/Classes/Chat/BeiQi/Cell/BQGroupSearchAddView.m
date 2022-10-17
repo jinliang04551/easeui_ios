@@ -111,7 +111,8 @@
         _bgView.clipsToBounds = YES;
         _bgView.layer.masksToBounds = YES;
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-                _bgView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+//                _bgView.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+            _bgView.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
         }else {
                 _bgView.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
         }
@@ -145,7 +146,8 @@
         _nameLabel.textAlignment = NSTextAlignmentCenter;
         
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        _nameLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
+//        _nameLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
+    _nameLabel.textColor = [UIColor colorWithHexString:@"#171717"];
 }else {
         _nameLabel.textColor = [UIColor colorWithHexString:@"#171717"];
 }
@@ -182,7 +184,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 - (void)placeAndLayoutSubViews {
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    self.backgroundColor = EaseIMKit_ViewCellBgBlackColor;
+//    self.backgroundColor = EaseIMKit_ViewCellBgBlackColor;
+    self.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
 }else {
     self.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
 }

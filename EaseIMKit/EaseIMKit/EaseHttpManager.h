@@ -88,6 +88,9 @@ NS_ASSUME_NONNULL_BEGIN
               username:(NSString *)username
             completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
 
+- (void)fetchGroupMemberRoleWithUserNameList:(NSArray *)userNameList
+                                  completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+
 @end
 
 NS_ASSUME_NONNULL_END

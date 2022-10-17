@@ -25,12 +25,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        self.view.backgroundColor = [UIColor colorWithHexString:@"#171717"];
-    }else {
-        self.view.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
-    }
+
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
     
     [self placeAndLayoutSubviews];
 }

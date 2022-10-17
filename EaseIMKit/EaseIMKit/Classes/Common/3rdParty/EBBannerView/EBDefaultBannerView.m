@@ -25,9 +25,13 @@
         [self placeAndLayoutSubViews];
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            self.contentView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//            self.contentView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//            self.timeLabel.textColor = [UIColor colorWithHexString:@"#141414"];
+//            self.nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+//            self.contentLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
+
             self.timeLabel.textColor = [UIColor colorWithHexString:@"#141414"];
-            self.nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+            self.nameLabel.textColor = [UIColor colorWithHexString:@"#141414"];
             self.contentLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
 
         }else {

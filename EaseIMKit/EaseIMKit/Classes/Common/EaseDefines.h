@@ -328,5 +328,9 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 
 #define DEF_APPKEY @"1100220704109048#arcfox-server"
 
+//场景化appkey
+//#define DEF_APPKEY @"1107211020094038#demo"
+
+
 
 #endif /* EMDefines_h */

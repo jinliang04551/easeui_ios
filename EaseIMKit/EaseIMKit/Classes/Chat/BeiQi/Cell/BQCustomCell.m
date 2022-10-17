@@ -23,7 +23,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            self.contentView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//            self.contentView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+        self.contentView.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
     }else {
             self.contentView.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
     }
@@ -103,7 +104,8 @@
         _nameLabel.font = EaseIMKit_NFont(14.0);
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            _nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+//            _nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+            _nameLabel.textColor = [UIColor colorWithHexString:@"#171717"];
         }else {
             _nameLabel.textColor = [UIColor colorWithHexString:@"#171717"];
         }
@@ -118,11 +120,13 @@
 - (UIView *)bottomLine {
     if (!_bottomLine) {
         _bottomLine = UIView.new;
-if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        _bottomLine.backgroundColor = [UIColor colorWithHexString:@"#1C1C1C"];
-}else {
-        _bottomLine.backgroundColor = [UIColor colorWithHexString:@"#DADADA"];
-}
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        //        _bottomLine.backgroundColor = [UIColor colorWithHexString:@"#1C1C1C"];
+            
+            _bottomLine.backgroundColor = [UIColor colorWithHexString:@"#DADADA"];
+        }else {
+                _bottomLine.backgroundColor = [UIColor colorWithHexString:@"#DADADA"];
+        }
     }
     return _bottomLine;
 }
@@ -139,14 +143,18 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     if (highlighted) {
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0x252525);
+//            self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0x252525);
+            
+            self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0xF2F3F5);
+
         }else {
             self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0xF2F3F5);
         }
         
     }else {
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-                self.contentView.backgroundColor = EaseIMKit_ViewCellBgBlackColor;
+//                self.contentView.backgroundColor = EaseIMKit_ViewCellBgBlackColor;
+            self.contentView.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
         }else {
                 self.contentView.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
         }

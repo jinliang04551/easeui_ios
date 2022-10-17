@@ -55,7 +55,11 @@
     self.detailLabel.numberOfLines = 0;
         
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        self.textLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+//        self.textLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+//
+//        self.detailLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
+        
+        self.textLabel.textColor = [UIColor colorWithHexString:@"#171717"];
         
         self.detailLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
     }else {

@@ -18,9 +18,13 @@
     if (self = [super init]) {
 
 if ([EaseIMKitOptions sharedOptions].isJiHuApp){
-        _iconBgColor = [UIColor clearColor];
-        _viewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
-        _fontColor = [UIColor colorWithHexString:@"#B9B9B9"];
+//        _iconBgColor = [UIColor clearColor];
+//        _viewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
+//        _fontColor = [UIColor colorWithHexString:@"#B9B9B9"];
+    
+    _iconBgColor = [UIColor whiteColor];
+    _viewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
+    _fontColor = [UIColor colorWithHexString:@"#999999"];
 }else {
         _iconBgColor = [UIColor whiteColor];
         _viewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];

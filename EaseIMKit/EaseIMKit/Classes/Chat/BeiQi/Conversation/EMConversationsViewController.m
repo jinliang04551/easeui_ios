@@ -528,7 +528,12 @@
     if (_titleView == nil) {
         _titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, EaseIMKit_ScreenWidth, EaseIMKit_NavBarAndStatusBarHeight)];
         
-        [_titleView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            [_titleView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_Nav_JiHuBgColor];
+
+        }else {
+            [_titleView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
+        }
         
         UILabel *titleLabel = [[UILabel alloc] init];
 

@@ -31,8 +31,11 @@
     _showRefreshFooter = NO;
     
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    self.view.backgroundColor = [UIColor colorWithHexString:@"#171717"];
-    self.tableView.backgroundColor = [UIColor colorWithHexString:@"#171717"];
+//    self.view.backgroundColor = [UIColor colorWithHexString:@"#171717"];
+//    self.tableView.backgroundColor = [UIColor colorWithHexString:@"#171717"];
+
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
+    self.tableView.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
 
 }else {
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];

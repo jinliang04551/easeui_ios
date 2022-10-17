@@ -97,7 +97,6 @@
         _checkedImageView = [[UIImageView alloc] init];
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             [_checkedImageView setImage:[UIImage easeUIImageNamed:@"jh_location_selected"]];
-
         }else {
             [_checkedImageView setImage:[UIImage easeUIImageNamed:@"jh_location_selected"]];
         }

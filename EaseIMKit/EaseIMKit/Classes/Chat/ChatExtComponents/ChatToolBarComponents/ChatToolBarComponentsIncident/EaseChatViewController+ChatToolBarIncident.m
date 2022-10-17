@@ -401,7 +401,9 @@ static const void *imagePickerKey = &imagePickerKey;
         self.imagePicker = [[UIImagePickerController alloc] init];
 
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            self.imagePicker.navigationController.navigationBar.tintColor = EaseIMKit_ViewBgWhiteColor;
+//            self.imagePicker.navigationController.navigationBar.tintColor = EaseIMKit_ViewBgWhiteColor;
+
+            self.imagePicker.navigationController.navigationBar.tintColor = EaseIMKit_ViewBgBlackColor;
 
         }else {
             self.imagePicker.navigationController.navigationBar.tintColor = EaseIMKit_ViewBgBlackColor;

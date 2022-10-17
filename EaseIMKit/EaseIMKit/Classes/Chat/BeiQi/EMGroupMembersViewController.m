@@ -293,6 +293,40 @@
     }];
 }
 
+//{
+//"code": "000000",
+//"msg": "success",
+//"transport": [
+//"kefu1",
+//"kefu2"
+//],
+//"imuser": [
+//"kefu7"
+//]
+//}
+
+- (void)fetchGroupMemberRole {
+    [[EaseHttpManager sharedManager] fetchGroupMemberRoleWithUserNameList:self.dataArray completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+
+        if (response && response.length > 0 && statusCode) {
+            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+            if (statusCode == 200) {
+                NSMutableArray *transportArray = responsedict[@"transport"];
+                NSMutableArray *imuserArray = responsedict[@"imuser"];
+
+                [self.tableView reloadData];
+
+            }else {
+                NSLog(@"%s errorDescription:%@",__func__,errorDescription);
+            }
+
+        }
+    }];
+}
+
+
 - (void)_fetchGroupMutes:(int)aPage
 {
     if (self.group.permissionType == EMGroupPermissionTypeMember || self.group.permissionType == EMGroupPermissionTypeNone) {

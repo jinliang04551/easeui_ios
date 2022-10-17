@@ -12,6 +12,11 @@
 
 #define kServerHost @"http://182.92.236.214:12005"
 
+
+//场景化环境
+//#define kServerHost @"http://221.204.13.10:12010"
+
+
 /*
  ======================
  极狐接口
@@ -58,6 +63,10 @@
 #define kEaseCallGetChannalUidsYunGuanURL @"/v2/rtc/channle"
 
 #define kModifyPasswordURL   @"/v2/gov/arcfox/transport"
+
+#define kFetchGroupMemberRoleURL   @"/v4/users/group/memberClasses"
+
+
 
 
 @interface EaseHttpManager() <NSURLSessionDelegate>
@@ -960,6 +969,35 @@
     [task resume];
 }
 
+- (void)fetchGroupMemberRoleWithUserNameList:(NSArray *)userNameList
+                                  completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock {
+
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",self.restSeverHost,kFetchGroupMemberRoleURL]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest
+                                                requestWithURL:url];
+    request.HTTPMethod = @"POST";
+    
+    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
+    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
+    NSString *token = [EaseKitUtil getLoginUserToken];
+    [headerDict setObject:token forKey:@"Authorization"];
+    [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
+    request.allHTTPHeaderFields = headerDict;
+
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+        
+    [dict setObject:userNameList forKey:@"userNameList"];
+
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+        if (aCompletionBlock) {
+            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
+        }
+    }];
+    [task resume];
+}
 
 
 

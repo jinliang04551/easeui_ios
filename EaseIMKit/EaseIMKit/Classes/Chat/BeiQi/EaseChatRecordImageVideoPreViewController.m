@@ -49,7 +49,8 @@
 
 - (void)placeAndLayoutSubViews {
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//        self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+        self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     }else {
         self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     }

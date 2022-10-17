@@ -76,8 +76,11 @@
     self.backgroundColor = _viewModel.cellBgColor;
         
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        self.redDot.image = [UIImage easeUIImageNamed:@"jh_undisturbDot"];
-        self.undisturbRing.image = [UIImage easeUIImageNamed:@"jh_undisturbRing"];
+//        self.redDot.image = [UIImage easeUIImageNamed:@"jh_undisturbDot"];
+//        self.undisturbRing.image = [UIImage easeUIImageNamed:@"jh_undisturbRing"];
+        
+        self.redDot.image = [UIImage easeUIImageNamed:@"yg_undisturbDot"];
+        self.undisturbRing.image = [UIImage easeUIImageNamed:@"yg_undisturbRing"];
     }else {
         self.redDot.image = [UIImage easeUIImageNamed:@"yg_undisturbDot"];
         self.undisturbRing.image = [UIImage easeUIImageNamed:@"yg_undisturbRing"];
@@ -306,14 +309,17 @@
     if (highlighted) {
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0x252525);
+//            self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0x252525);
+            
+            self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0xF2F3F5);
         }else {
             self.contentView.backgroundColor = EaseIMKit_COLOR_HEX(0xF2F3F5);
         }
         
     }else {
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-                self.contentView.backgroundColor = EaseIMKit_ViewCellBgBlackColor;
+//                self.contentView.backgroundColor = EaseIMKit_ViewCellBgBlackColor;
+            self.contentView.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
         }else {
                 self.contentView.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
         }

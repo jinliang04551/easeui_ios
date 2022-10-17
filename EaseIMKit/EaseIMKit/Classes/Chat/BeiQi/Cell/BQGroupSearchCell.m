@@ -181,7 +181,8 @@
 
 - (UIImage *)normalImage {
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    _normalImage = [UIImage easeUIImageNamed:@"jh_user_normal"];
+//    _normalImage = [UIImage easeUIImageNamed:@"jh_user_normal"];
+    _normalImage = [UIImage easeUIImageNamed:@"yg_user_normal"];
 }else {
     _normalImage = [UIImage easeUIImageNamed:@"yg_user_normal"];
 }

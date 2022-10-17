@@ -64,29 +64,33 @@ static EBBannerWindow *sharedWindow;
     
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
       
-        bannerView.dateLabel.textColor = [UIColor  colorWithHexString:@"#7F7F7F"];
-        bannerView.dateLabel.font = EaseIMKit_NFont(12.0);
+//        bannerView.dateLabel.textColor = [UIColor  colorWithHexString:@"#7F7F7F"];
+//
+//        bannerView.titleLabel.textColor = [UIColor  colorWithHexString:@"#B9B9B9"];
+//
+//        bannerView.contentLabel.textColor = [UIColor  colorWithHexString:@"#7F7F7F"];
+        
+        bannerView.dateLabel.textColor = [UIColor  colorWithHexString:@"#141414"];
 
-        bannerView.titleLabel.textColor = [UIColor  colorWithHexString:@"#B9B9B9"];
-        bannerView.titleLabel.font = EaseIMKit_BFont(14.0);
-        
+        bannerView.titleLabel.textColor = [UIColor  colorWithHexString:@"#141414"];
+                
         bannerView.contentLabel.textColor = [UIColor  colorWithHexString:@"#7F7F7F"];
-        bannerView.contentLabel.font = EaseIMKit_NFont(14.0);
-        
-//        self.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+        bannerView.backgroundColor = UIColor.whiteColor;
+
     }else {
         
         bannerView.dateLabel.textColor = [UIColor  colorWithHexString:@"#141414"];
-        bannerView.dateLabel.font = EaseIMKit_NFont(12.0);
 
         bannerView.titleLabel.textColor = [UIColor  colorWithHexString:@"#141414"];
-        bannerView.titleLabel.font = EaseIMKit_BFont(14.0);
-        
+                
         bannerView.contentLabel.textColor = [UIColor  colorWithHexString:@"#7F7F7F"];
-        bannerView.contentLabel.font = EaseIMKit_NFont(14.0);
         bannerView.backgroundColor = UIColor.whiteColor;
     }
     
+    bannerView.dateLabel.font = EaseIMKit_NFont(12.0);
+    bannerView.titleLabel.font = EaseIMKit_BFont(14.0);
+    bannerView.contentLabel.font = EaseIMKit_NFont(14.0);
+
 //    [EBBannerView reLayoutSuviewsWithBannerView:bannerView];
 
     return bannerView;

@@ -64,8 +64,13 @@
     [contentView addSubview:backImageBtn];
     
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        titleLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
-        [backImageBtn setImage:[UIImage easeUIImageNamed:@"jh_backleft"] forState:UIControlStateNormal];
+//        titleLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
+//        [backImageBtn setImage:[UIImage easeUIImageNamed:@"jh_backleft"] forState:UIControlStateNormal];
+        
+        titleLabel.textColor = [UIColor colorWithHexString:@"#171717"];
+        
+        [backImageBtn setImage:[UIImage easeUIImageNamed:@"yg_backleft"] forState:UIControlStateNormal];
+        
     }else {
         titleLabel.textColor = [UIColor colorWithHexString:@"#171717"];
         

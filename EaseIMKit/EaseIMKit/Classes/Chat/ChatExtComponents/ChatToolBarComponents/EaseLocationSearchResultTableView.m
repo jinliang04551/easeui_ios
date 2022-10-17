@@ -38,9 +38,11 @@
         [self placeAndLayoutSubviews];
         [self.tableView registerClass:[EaseLocationResultCell class] forCellReuseIdentifier:NSStringFromClass([EaseLocationResultCell class])];
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            self.tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
-            self.placeBlackView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//            self.tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//            self.placeBlackView.backgroundColor = EaseIMKit_ViewBgBlackColor;
             
+            self.tableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+            self.placeBlackView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
         }else {
             self.tableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
             self.placeBlackView.backgroundColor = EaseIMKit_ViewBgWhiteColor;

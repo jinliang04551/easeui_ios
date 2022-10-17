@@ -112,7 +112,8 @@
         }
         
     if ([EaseIMKitOptions sharedOptions].isJiHuApp){
-        _viewModel.extFuncModel.viewBgColor = [UIColor colorWithHexString:@"#252525"];
+//        _viewModel.extFuncModel.viewBgColor = [UIColor colorWithHexString:@"#252525"];
+        _viewModel.extFuncModel.viewBgColor = [UIColor colorWithHexString:@"#F5F5F5"];
     }else {
         _viewModel.extFuncModel.viewBgColor = [UIColor colorWithHexString:@"#F5F5F5"];
     }
@@ -303,11 +304,16 @@
     UIImage *orderImage = nil;
 
 if ([EaseIMKitOptions sharedOptions].isJiHuApp){
-    photoImage =  [UIImage easeUIImageNamed:@"photo-album"];
-    cameraImage =  [UIImage easeUIImageNamed:@"camera"];
-    locationImage =  [UIImage easeUIImageNamed:@"location"];
-    fileImage =  [UIImage easeUIImageNamed:@"icloudFile"];
-    orderImage =  [UIImage easeUIImageNamed:@"order"];
+//    photoImage =  [UIImage easeUIImageNamed:@"photo-album"];
+//    cameraImage =  [UIImage easeUIImageNamed:@"camera"];
+//    locationImage =  [UIImage easeUIImageNamed:@"location"];
+//    fileImage =  [UIImage easeUIImageNamed:@"icloudFile"];
+//    orderImage =  [UIImage easeUIImageNamed:@"order"];
+    photoImage =  [UIImage easeUIImageNamed:@"yg_photo-album"];
+    cameraImage =  [UIImage easeUIImageNamed:@"yg_camera"];
+    locationImage =  [UIImage easeUIImageNamed:@"yg_location"];
+    fileImage =  [UIImage easeUIImageNamed:@"yg_icloudFile"];
+    orderImage =  [UIImage easeUIImageNamed:@"yg_order"];
 }else {
     photoImage =  [UIImage easeUIImageNamed:@"yg_photo-album"];
     cameraImage =  [UIImage easeUIImageNamed:@"yg_camera"];

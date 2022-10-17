@@ -60,7 +60,8 @@ MISScrollPageControllerDelegate,EMChatRecordViewControllerDelegate,BQChatRecordF
     self.title = @"查找聊天记录";
 
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//    self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+    self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 }else {
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 }
@@ -184,13 +185,22 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         style.showSegmentViewSeparatorLine = NO;
         
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        style.showCover = NO;
-        style.coverBackgroundColor = EaseIMKit_COLOR_HEX(0xD8D8D8);
-        style.gradualChangeTitleColor = YES;
-        style.normalTitleColor = EaseIMKit_COLOR_HEX(0x7E7E7E);
-        style.selectedTitleColor = EaseIMKit_COLOR_HEX(0xB9B9B9);
-        style.scrollLineColor = EaseIMKit_COLOR_HEXA(0x000000, 0.5);
-        style.segmentViewBackgroundColor = EaseIMKit_ViewBgBlackColor;
+//        style.showCover = NO;
+//        style.coverBackgroundColor = EaseIMKit_COLOR_HEX(0xD8D8D8);
+//        style.gradualChangeTitleColor = YES;
+//        style.normalTitleColor = EaseIMKit_COLOR_HEX(0x7E7E7E);
+//        style.selectedTitleColor = EaseIMKit_COLOR_HEX(0xB9B9B9);
+//        style.scrollLineColor = EaseIMKit_COLOR_HEXA(0x000000, 0.5);
+//        style.segmentViewBackgroundColor = EaseIMKit_ViewBgBlackColor;
+    
+    
+    style.showCover = NO;
+    style.coverBackgroundColor = EaseIMKit_COLOR_HEX(0xD8D8D8);
+    style.gradualChangeTitleColor = YES;
+    style.normalTitleColor = EaseIMKit_COLOR_HEX(0x999999);
+    style.selectedTitleColor = EaseIMKit_COLOR_HEX(0x000000);
+    style.scrollLineColor = EaseIMKit_COLOR_HEXA(0x000000, 0.5);
+    
 }else {
 
         style.showCover = NO;

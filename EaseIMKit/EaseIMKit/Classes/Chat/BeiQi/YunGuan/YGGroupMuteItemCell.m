@@ -23,8 +23,11 @@
 - (void)prepare {
     
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        self.contentView.backgroundColor = EaseIMKit_ViewBgBlackColor;
-        self.nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+//        self.contentView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//        self.nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+        
+        self.contentView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+        self.nameLabel.textColor = [UIColor colorWithHexString:@"#171717"];
     }else {
         self.contentView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
         self.nameLabel.textColor = [UIColor colorWithHexString:@"#171717"];

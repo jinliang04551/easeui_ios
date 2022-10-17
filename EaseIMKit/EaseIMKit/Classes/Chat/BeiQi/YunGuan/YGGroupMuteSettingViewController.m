@@ -39,7 +39,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//        self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+        
+        self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+
     }else {
         self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     }
@@ -247,8 +250,9 @@
         [_tableView registerClass:[YGGroupOperateMemberCell class] forCellReuseIdentifier:NSStringFromClass([YGGroupOperateMemberCell class])];
 
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-              _tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//              _tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
 
+            _tableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
         }else {
                 _tableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
         }

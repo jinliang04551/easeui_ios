@@ -77,7 +77,12 @@
     
     
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    self.contentView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//    self.contentView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//    _nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+//    _timestampLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
+//    _detailLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
+    
+    self.contentView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     _nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
     _timestampLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
     _detailLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];

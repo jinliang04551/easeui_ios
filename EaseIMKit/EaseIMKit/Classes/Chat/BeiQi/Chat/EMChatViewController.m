@@ -125,7 +125,8 @@
 {
     [super viewWillAppear:animated];
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//        self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+        self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     }else {
         self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     }
@@ -201,7 +202,8 @@
     }else {
         NSString *rightBarImageName = @"";
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            rightBarImageName = @"jh_groupInfo";
+//            rightBarImageName = @"jh_groupInfo";
+            rightBarImageName = @"yg_groupInfo";
         }else {
             rightBarImageName = @"yg_groupInfo";
         }

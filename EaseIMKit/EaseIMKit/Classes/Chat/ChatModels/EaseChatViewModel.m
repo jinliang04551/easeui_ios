@@ -19,27 +19,38 @@
     if (self) {
   
     if ([EaseIMKitOptions sharedOptions].isJiHuApp){
-//        _chatViewBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
-//        _chatBarBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
+//        //jh_setting
+//        _chatViewBgColor = [UIColor colorWithHexString:@"#171717"];
+//        _chatBarBgColor = [UIColor colorWithHexString:@"#252525"];
+//
+//        _extFuncModel = [[EaseExtFuncModel alloc]init];
+////        _msgTimeItemBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
+////        _msgTimeItemFontColor = [UIColor colorWithHexString:@"#ADADAD"];
+//
+//        //jh_setting
+//        _msgTimeItemBgColor = [UIColor colorWithHexString:@"#171717"];
+//        _msgTimeItemFontColor = [UIColor colorWithHexString:@"#7F7F7F"];
+//
+//        _receiveBubbleBgPicture = [UIImage easeUIImageNamed:@"msg_bg_recv"];
+//        _sendBubbleBgPicture = [UIImage easeUIImageNamed:@"msg_bg_send"];
+//        _bubbleBgEdgeInset = UIEdgeInsetsMake(8, 8, 8, 8);
+//        //jh_setting
+//        _contentFontColor = [UIColor colorWithHexString:@"#B9B9B9"];
+        
+        
+        _chatViewBgColor = [UIColor colorWithHexString:@"#FFFFFF"];
+        _chatBarBgColor = [UIColor colorWithHexString:@"#F5F5F5"];
 
-        //jh_setting
-        _chatViewBgColor = [UIColor colorWithHexString:@"#171717"];
-        _chatBarBgColor = [UIColor colorWithHexString:@"#252525"];
 
         _extFuncModel = [[EaseExtFuncModel alloc]init];
-//        _msgTimeItemBgColor = [UIColor colorWithHexString:@"#F2F2F2"];
-//        _msgTimeItemFontColor = [UIColor colorWithHexString:@"#ADADAD"];
+        _msgTimeItemBgColor = [UIColor colorWithHexString:@"#FFFFFF"];
+        _msgTimeItemFontColor = [UIColor colorWithHexString:@"#A5A5A5"];
 
-        //jh_setting
-        _msgTimeItemBgColor = [UIColor colorWithHexString:@"#171717"];
-        _msgTimeItemFontColor = [UIColor colorWithHexString:@"#7F7F7F"];
-
-        _receiveBubbleBgPicture = [UIImage easeUIImageNamed:@"msg_bg_recv"];
-        _sendBubbleBgPicture = [UIImage easeUIImageNamed:@"msg_bg_send"];
+        _receiveBubbleBgPicture = [UIImage easeUIImageNamed:@"yg_msg_bg_recv"];
+        _sendBubbleBgPicture = [UIImage easeUIImageNamed:@"yg_msg_bg_send"];
         _bubbleBgEdgeInset = UIEdgeInsetsMake(8, 8, 8, 8);
-//        _contentFontColor = [UIColor colorWithHexString:@"#7F7F7F"];
-        //jh_setting
-        _contentFontColor = [UIColor colorWithHexString:@"#B9B9B9"];
+        _contentFontColor = [UIColor colorWithHexString:@"#171717"];
+
 }else {
         _chatViewBgColor = [UIColor colorWithHexString:@"#FFFFFF"];
         _chatBarBgColor = [UIColor colorWithHexString:@"#F5F5F5"];

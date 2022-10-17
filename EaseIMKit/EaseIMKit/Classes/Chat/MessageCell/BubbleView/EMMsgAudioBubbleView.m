@@ -56,7 +56,8 @@
     self.textLabel.numberOfLines = 0;
     
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        self.textLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+//        self.textLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+        self.textLabel.textColor = [UIColor colorWithHexString:@"#171717"];
     }else {
         self.textLabel.textColor = [UIColor colorWithHexString:@"#171717"];
     }
@@ -83,8 +84,11 @@
         self.textLabel.textAlignment = NSTextAlignmentRight;
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            self.imgView.image = [UIImage easeUIImageNamed:@"msg_send_audio"];
-            self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"msg_send_audio02"], [UIImage easeUIImageNamed:@"msg_send_audio01"], [UIImage easeUIImageNamed:@"msg_send_audio"]];
+//            self.imgView.image = [UIImage easeUIImageNamed:@"msg_send_audio"];
+//            self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"msg_send_audio02"], [UIImage easeUIImageNamed:@"msg_send_audio01"], [UIImage easeUIImageNamed:@"msg_send_audio"]];
+            
+            self.imgView.image = [UIImage easeUIImageNamed:@"yg_msg_send_audio"];
+            self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"yg_msg_send_audio02"], [UIImage easeUIImageNamed:@"yg_msg_send_audio01"], [UIImage easeUIImageNamed:@"yg_msg_send_audio"]];
         }else {
             self.imgView.image = [UIImage easeUIImageNamed:@"yg_msg_send_audio"];
             self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"yg_msg_send_audio02"], [UIImage easeUIImageNamed:@"yg_msg_send_audio01"], [UIImage easeUIImageNamed:@"yg_msg_send_audio"]];
@@ -102,8 +106,11 @@
         
         self.textLabel.textAlignment = NSTextAlignmentLeft;
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            self.imgView.image = [UIImage easeUIImageNamed:@"msg_recv_audio"];
-            self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"msg_recv_audio02"], [UIImage easeUIImageNamed:@"msg_recv_audio01"], [UIImage easeUIImageNamed:@"msg_recv_audio"]];
+//            self.imgView.image = [UIImage easeUIImageNamed:@"msg_recv_audio"];
+//            self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"msg_recv_audio02"], [UIImage easeUIImageNamed:@"msg_recv_audio01"], [UIImage easeUIImageNamed:@"msg_recv_audio"]];
+            
+            self.imgView.image = [UIImage easeUIImageNamed:@"yg_msg_recv_audio"];
+            self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"yg_msg_recv_audio02"], [UIImage easeUIImageNamed:@"yg_msg_recv_audio01"], [UIImage easeUIImageNamed:@"yg_msg_recv_audio"]];
         }else {
             self.imgView.image = [UIImage easeUIImageNamed:@"yg_msg_recv_audio"];
             self.imgView.animationImages = @[[UIImage easeUIImageNamed:@"yg_msg_recv_audio02"], [UIImage easeUIImageNamed:@"yg_msg_recv_audio01"], [UIImage easeUIImageNamed:@"yg_msg_recv_audio"]];

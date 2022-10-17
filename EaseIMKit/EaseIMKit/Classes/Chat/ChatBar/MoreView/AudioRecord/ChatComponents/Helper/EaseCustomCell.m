@@ -26,9 +26,11 @@
         [self prepare];
         [self placeSubViews];
 if ([EaseIMKitOptions sharedOptions].isJiHuApp){
-        self.contentView.backgroundColor = EaseIMKit_ViewCellBgBlackColor;
-        self.nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+//        self.contentView.backgroundColor = EaseIMKit_ViewCellBgBlackColor;
+//        self.nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
 
+    self.contentView.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
+    self.nameLabel.textColor = [UIColor colorWithHexString:@"#171717"];
 }else {
         self.contentView.backgroundColor = EaseIMKit_ViewCellBgWhiteColor;
         self.nameLabel.textColor = [UIColor colorWithHexString:@"#171717"];

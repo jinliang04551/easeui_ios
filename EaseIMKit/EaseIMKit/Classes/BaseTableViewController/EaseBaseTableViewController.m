@@ -105,7 +105,8 @@
         [_tableView.refreshControl addTarget:self action:@selector(refreshTabView) forControlEvents:UIControlEventValueChanged];
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp){
-            _tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//            _tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+            _tableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
         }else {
             _tableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
         }

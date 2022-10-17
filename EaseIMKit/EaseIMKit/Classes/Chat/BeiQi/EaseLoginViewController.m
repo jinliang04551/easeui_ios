@@ -214,8 +214,6 @@
 
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         imageView.image = [UIImage easeUIImageNamed:@"jh_BootPage"];
-//        self.titleTextImageView.image = [UIImage easeUIImageNamed:@"titleTextImage"];
-//        self.titleImageView.image = [UIImage easeUIImageNamed:@"titleImage"];
 
         self.titleTextImageView.image = [UIImage easeUIImageNamed:@"yg_titleTextImage"];
         self.titleImageView.image = [UIImage easeUIImageNamed:@"yg_titleImage"];

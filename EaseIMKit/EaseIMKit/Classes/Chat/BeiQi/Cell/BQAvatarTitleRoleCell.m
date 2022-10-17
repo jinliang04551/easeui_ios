@@ -61,8 +61,8 @@
     if (_roleImageView == nil) {
         _roleImageView = [[UIImageView alloc] init];
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    [_roleImageView setImage:[UIImage easeUIImageNamed:@"jh_group_owner"]];
-
+//    [_roleImageView setImage:[UIImage easeUIImageNamed:@"jh_group_owner"]];
+    [_roleImageView setImage:[UIImage easeUIImageNamed:@"yg_group_owner"]];
 }else {
     [_roleImageView setImage:[UIImage easeUIImageNamed:@"yg_group_owner"]];
 }

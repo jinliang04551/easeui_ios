@@ -57,10 +57,10 @@
         make.right.equalTo(self.view);
         make.height.equalTo(@36);
     }];
-//    [self.searchBar.textField becomeFirstResponder];
     
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    self.searchResultTableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//    self.searchResultTableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+    self.searchResultTableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 }else {
     self.searchResultTableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 }

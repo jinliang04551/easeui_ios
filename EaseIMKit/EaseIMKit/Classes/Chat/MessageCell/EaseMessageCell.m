@@ -142,7 +142,8 @@
         
         //jh_setting
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            _nameLabel.textColor = [UIColor colorWithHexString:@"#999999"];
+//            _nameLabel.textColor = [UIColor colorWithHexString:@"#999999"];
+            _nameLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
         } else {
             _nameLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
         }

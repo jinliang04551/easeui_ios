@@ -88,9 +88,13 @@
  
 
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-    self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
-    bgView.backgroundColor = EaseIMKit_ViewBgBlackColor;
-    self.textView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//    self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//    bgView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+//    self.textView.backgroundColor = EaseIMKit_ViewBgBlackColor;
+    
+    self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+    bgView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+    self.textView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 }else {
     self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     bgView.backgroundColor = EaseIMKit_ViewBgWhiteColor;

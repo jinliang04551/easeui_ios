@@ -195,11 +195,14 @@
         _textField.rightView = self.rightView;
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            _textField.backgroundColor = [UIColor colorWithHexString:@"#252525"];
-            [_textField setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
-            _textField.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
-            self.backgroundColor = EaseIMKit_ViewBgBlackColor;
-            
+//            _textField.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+//            [_textField setTextColor:[UIColor colorWithHexString:@"#F5F5F5"]];
+//            _textField.tintColor = [UIColor colorWithHexString:@"#04D0A4"];
+//            self.backgroundColor = EaseIMKit_ViewBgBlackColor;
+  
+            self.backgroundColor = EaseIMKit_ViewBgWhiteColor;
+            _textField.backgroundColor = [UIColor whiteColor];
+            [_textField setTextColor:UIColor.blackColor];
 
         }else {
             self.backgroundColor = EaseIMKit_ViewBgWhiteColor;
@@ -254,8 +257,10 @@
         _control.layer.cornerRadius = kTextFieldHeight * 0.5;
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            _control.backgroundColor = [UIColor colorWithHexString:@"#252525"];
+//            _control.backgroundColor = [UIColor colorWithHexString:@"#252525"];
 
+            _control.backgroundColor = [UIColor whiteColor];
+            [_textField setTextColor:UIColor.blackColor];
         }else {
             _control.backgroundColor = [UIColor whiteColor];
             [_textField setTextColor:UIColor.blackColor];

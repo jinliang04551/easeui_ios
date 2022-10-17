@@ -59,7 +59,8 @@
 
     }else {
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            [_operationImageView setImage:[UIImage easeUIImageNamed:@"jh_addMember"]];
+//            [_operationImageView setImage:[UIImage easeUIImageNamed:@"jh_addMember"]];
+            [_operationImageView setImage:[UIImage easeUIImageNamed:@"yg_addMember"]];
         }else {
             [_operationImageView setImage:[UIImage easeUIImageNamed:@"yg_addMember"]];
         }
@@ -78,7 +79,8 @@
         _operationImageView.layer.masksToBounds = YES;
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            [_operationImageView setImage:[UIImage easeUIImageNamed:@"jh_addMember"]];
+//            [_operationImageView setImage:[UIImage easeUIImageNamed:@"jh_addMember"]];
+            [_operationImageView setImage:[UIImage easeUIImageNamed:@"yg_operate_member"]];
         }else {
             [_operationImageView setImage:[UIImage easeUIImageNamed:@"yg_operate_member"]];
         }
@@ -354,8 +356,8 @@
         _nameLabel.font = EaseIMKit_NFont(14.0f);
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            _nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
-
+//            _nameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+            _nameLabel.textColor = [UIColor colorWithHexString:@"#171717"];
         }else {
             _nameLabel.textColor = [UIColor colorWithHexString:@"#171717"];
         }

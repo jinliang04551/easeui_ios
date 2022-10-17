@@ -510,7 +510,13 @@
     if (_customNavBarView == nil) {
         _customNavBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, EaseIMKit_ScreenWidth, EaseIMKit_NavBarAndStatusBarHeight)];
 //        _customNavBarView.backgroundColor = UIColor.clearColor;
-        [_customNavBarView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
+        
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            [_customNavBarView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_Nav_JiHuBgColor];
+
+        }else {
+            [_customNavBarView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
+        }
         
         [_customNavBarView addSubview:self.titleLabel];
         [_customNavBarView addSubview:self.cancelButton];
@@ -550,7 +556,9 @@
         tLabel.text = @"取消";
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            tLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+//            tLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+            
+            tLabel.textColor = [UIColor colorWithHexString:@"#252525"];
         }else {
             tLabel.textColor = [UIColor colorWithHexString:@"#252525"];
         }
@@ -593,10 +601,15 @@
 
 - (void)updateCustomNavView {
     if ([EaseIMKitOptions sharedOptions].isJiHuApp){
-        [self.cancelButton setTitleColor:[UIColor colorWithHexString:@"#B9B9B9"] forState:UIControlStateNormal];
-
-        [self.titleLabel setTextColor:[UIColor whiteColor]];
+//        [self.cancelButton setTitleColor:[UIColor colorWithHexString:@"#B9B9B9"] forState:UIControlStateNormal];
+//
+//        [self.titleLabel setTextColor:[UIColor whiteColor]];
         
+        
+        [self.cancelButton setTitleColor:[UIColor colorWithHexString:@"#171717"] forState:UIControlStateNormal];
+
+        [self.titleLabel setTextColor:[UIColor colorWithHexString:@"#171717"]];
+
     }else {
         [self.cancelButton setTitleColor:[UIColor colorWithHexString:@"#171717"] forState:UIControlStateNormal];
 
