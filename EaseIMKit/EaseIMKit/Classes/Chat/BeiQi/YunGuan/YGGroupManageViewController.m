@@ -13,6 +13,7 @@
 #import "EaseChangePasswordViewController.h"
 #import "YGGroupMuteSettingViewController.h"
 #import "YGGroupManagerSettingViewController.h"
+#import "YGTransferOwnerViewController.h"
 
 @interface YGGroupManageViewController ()
 @property (nonatomic, strong) UIButton *transferOwnerButton;
@@ -86,38 +87,7 @@
 
 #pragma mark private method
 - (void)transferOwnerButtonAction {
-//    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-//        [[EMClient sharedClient] logout:YES completion:^(EMError * _Nullable aError) {
-//            if (aError == nil) {
-//                EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:nil message:@"退出登录成功"];
-//                [alertView show];
-//
-//                [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
-//
-//            }else {
-//                EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:nil message:aError.errorDescription];
-//                [alertView show];
-//
-//                NSLog(@"err:%@",aError.errorDescription);
-//            }
-//
-//        }];
-//
-//    }else {
-//        [EaseIMKitManager.shared logoutWithCompletion:^(BOOL success, NSString * _Nonnull errorMsg) {
-//            if (success) {
-//                EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:nil message:@"退出登录成功"];
-//                [alertView show];
-//            }else {
-//                EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:nil message:errorMsg];
-//                [alertView show];
-//
-//                NSLog(@"err:%@",errorMsg);
-//            }
-//
-//        }];
-//    }
-    
+    [self goTransferOwnerPage];
 }
 
 //禁言
@@ -129,6 +99,23 @@
 //管理员
 - (void)goManagerPage {
     YGGroupManagerSettingViewController *controller = [[YGGroupManagerSettingViewController alloc] initWithGroup:self.group];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+//转让群主
+- (void)goTransferOwnerPage {
+    YGTransferOwnerViewController *controller = [[YGTransferOwnerViewController alloc] initWithGroup:self.group];
+    controller.navTitle = @"转让群主";
+    controller.dataArray = [self.group.memberList mutableCopy];
+    controller.transferOwnerBlock = ^(BOOL success) {
+        if (success) {
+            if (self.transferOwnerBlock) {
+                self.transferOwnerBlock(success);
+            }
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    };
+    
     [self.navigationController pushViewController:controller animated:YES];
 }
 

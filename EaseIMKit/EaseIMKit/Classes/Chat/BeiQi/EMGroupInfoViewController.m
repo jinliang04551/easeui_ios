@@ -925,6 +925,11 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 - (void)goGroupManagePage {
     YGGroupManageViewController *controller = [[YGGroupManageViewController alloc] initWithGroup:self.group];
+    controller.transferOwnerBlock = ^(BOOL success) {
+        if (success) {
+            [self _fetchGroupWithId:self.groupId isShowHUD:NO];
+        }
+    };
     [self.navigationController pushViewController:controller animated:YES];
 }
 
