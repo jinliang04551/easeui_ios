@@ -43,6 +43,10 @@ EMSearchBarDelegate
 @property (nonatomic, strong) NSMutableArray *searchResultArray;
 @property (nonatomic, strong) EaseNoDataPlaceHolderView *noDataPromptView;
 @property (nonatomic, strong) EaseNetworkErrorView *networkErrorView;
+@property (nonatomic, strong) UIView *headerView;
+
+@property (nonatomic, strong) Reachability *reach;
+
 @end
 
 @implementation EaseConversationsViewController
@@ -57,6 +61,8 @@ EMSearchBarDelegate
         [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
         [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
         [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+        
+        [self addNetworkObserver];
     }
     
     return self;
@@ -76,7 +82,17 @@ EMSearchBarDelegate
         make.centerX.left.right.equalTo(self.view);
     }];
 
-    [self addNetworkObserver];
+}
+
+- (void)addNetworkObserver {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChangedNotification:) name:kReachabilityChangedNotification object:nil];
+        
+    self.reach = [Reachability reachabilityForInternetConnection];
+    [self updateUIWithNetworkStatus:self.reach.currentReachabilityStatus];
+
+    [self.reach startNotifier];
+    
+    NSLog(@"%s",__func__);
 }
 
 
@@ -95,14 +111,7 @@ EMSearchBarDelegate
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveCMDCreateGroupChat) name:EaseNotificationReceiveCMDCreateGroupChat object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChangedNotification:) name:kReachabilityChangedNotification object:nil];
-    
-}
-
-- (void)addNetworkObserver {
-    Reachability* reach = [Reachability reachabilityWithHostName:EaseHttpManager.sharedManager.restSeverHost];
-    [reach startNotifier];
-    NSLog(@"%s",__func__);
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChangedNotification:) name:kReachabilityChangedNotification object:nil];    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -145,14 +154,20 @@ EMSearchBarDelegate
 
 - (void)reachabilityChangedNotification:(NSNotification *)notify {
     Reachability *reach = (Reachability *)notify.object;
-//    if (reach.currentReachabilityStatus == NotReachable) {
-//        self.networkErrorView
-//    }else {
-//
-//    }
     NetworkStatus status =  reach.currentReachabilityStatus;
     NSLog(@"%s status:%@",__func__,@(status));
     
+    [self updateUIWithNetworkStatus:status];
+}
+
+- (void)updateUIWithNetworkStatus:(NetworkStatus)status {
+    if (status == NotReachable) {
+        self.tableView.tableHeaderView = self.headerView;
+    }else {
+        self.tableView.tableHeaderView = nil;
+    }
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark - EMClientDelegate
@@ -634,5 +649,15 @@ EMSearchBarDelegate
     return _networkErrorView;
 }
 
+- (UIView *)headerView {
+    if (_headerView == nil) {
+        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, EaseIMKit_ScreenWidth, 40.0)];
+        [_headerView addSubview:self.networkErrorView];
+        [self.networkErrorView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(_headerView);
+        }];
+    }
+    return _headerView;
+}
 
 @end

@@ -61,6 +61,8 @@
 @interface EaseHttpManager() <NSURLSessionDelegate>
 @property (nonatomic, strong) NSURLSession *session;
 @property (nonatomic, strong) NSString *restSeverHost;
+@property (nonatomic, strong) Reachability *reach;
+
 
 @end
 
@@ -90,18 +92,27 @@
         }else {
             self.restSeverHost = kServerHost;
         }
-        [self addNetworkObserver];
+//        [self addNetworkObserver];
     }
     return self;
 }
 
 
-- (void)addNetworkObserver {
-    Reachability* reach = [Reachability reachabilityWithHostName:self.restSeverHost];
-    [reach startNotifier];
-    NSLog(@"%s",__func__);
-}
+//- (void)addNetworkObserver {
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+//
+//    self.reach = [Reachability reachabilityForInternetConnection];
+//    [self.reach startNotifier];
+//
+//    NSLog(@"%s",__func__);
+//}
+//
+- (void)reachabilityChanged:(NSNotification *)notify {
+    Reachability *reach = (Reachability *)notify.object;
+    NetworkStatus status =  reach.currentReachabilityStatus;
+    NSLog(@"%s status:%@",__func__,@(status));
 
+}
 
 //- (void)registerToApperServer:(NSString *)uName
 //                          pwd:(NSString *)pwd

@@ -50,14 +50,15 @@
         [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(_contentView);
             make.left.equalTo(_contentView).offset(24.0);
-            make.size.equalTo(@(20.0));
+            make.size.equalTo(@(28.0));
         }];
 
         [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.iconImageView);
-            make.left.equalTo(self.iconImageView).offset(18.0);
+            make.left.equalTo(self.iconImageView.mas_right).offset(14.0);
             make.right.equalTo(_contentView);
         }];
+        
     }
     return _contentView;;
 }
@@ -67,6 +68,7 @@
         _iconImageView = [[UIImageView alloc] init];
         _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
         _iconImageView.layer.masksToBounds = YES;
+        [_iconImageView setImage:[UIImage easeUIImageNamed:@"ease_network_disable"]];
     }
     return _iconImageView;
 }
