@@ -92,7 +92,6 @@ EMSearchBarDelegate
 
     [self.reach startNotifier];
     
-    NSLog(@"%s",__func__);
 }
 
 

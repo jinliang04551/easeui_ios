@@ -492,6 +492,14 @@
 - (BQConfInviteSelectedUsersView *)confInviteSelectedUsersView {
     if (_confInviteSelectedUsersView == nil) {
         _confInviteSelectedUsersView = [[BQConfInviteSelectedUsersView alloc] initWithFrame:CGRectMake(0, 0, EaseIMKit_ScreenWidth, 70.0)];
+        EaseIMKit_WS
+        _confInviteSelectedUsersView.deleteBlock = ^(NSString * _Nonnull userId) {
+            if ([weakSelf.inviteUsers containsObject:userId]) {
+                [weakSelf.inviteUsers removeObject:userId];
+            }
+            [weakSelf updateUI];
+
+        };
     }
     return _confInviteSelectedUsersView;
 }

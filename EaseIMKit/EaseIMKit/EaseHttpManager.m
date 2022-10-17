@@ -92,26 +92,8 @@
         }else {
             self.restSeverHost = kServerHost;
         }
-//        [self addNetworkObserver];
     }
     return self;
-}
-
-
-//- (void)addNetworkObserver {
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
-//
-//    self.reach = [Reachability reachabilityForInternetConnection];
-//    [self.reach startNotifier];
-//
-//    NSLog(@"%s",__func__);
-//}
-//
-- (void)reachabilityChanged:(NSNotification *)notify {
-    Reachability *reach = (Reachability *)notify.object;
-    NetworkStatus status =  reach.currentReachabilityStatus;
-    NSLog(@"%s status:%@",__func__,@(status));
-
 }
 
 //- (void)registerToApperServer:(NSString *)uName

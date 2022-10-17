@@ -17,6 +17,9 @@
 @interface BQConfInviteMemberCell : UICollectionViewCell
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) UILabel *nameLabel;
+@property (nonatomic, strong) UIButton *deleteButton;
+@property (nonatomic, copy) void (^deleteBlock)(NSString *userId);
+@property (nonatomic, strong) NSString *userId;
 
 @end
 
@@ -33,15 +36,24 @@
 
 - (void)placeAndLayoutSubViews {
     
+    
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.nameLabel];
+    [self.contentView addSubview:self.deleteButton];
+
     
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView);
+        make.top.equalTo(self.contentView).offset(5.0);
         make.centerX.equalTo(self.contentView);
         make.size.mas_equalTo(@(38.0));
     }];
 
+    [self.deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.iconImageView).offset(-2.0);
+        make.right.equalTo(self.iconImageView).offset(5.0);
+        make.size.mas_equalTo(@(14.0));
+    }];
+    
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.iconImageView.mas_bottom).offset(3.0);
         make.left.right.equalTo(self.contentView);
@@ -56,6 +68,7 @@
 
 - (void)updateWithObj:(id)obj {
     NSString *aUid = (NSString *)obj;
+    self.userId = aUid;
     
     EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:aUid];
     if(userInfo) {
@@ -103,6 +116,20 @@
     return _nameLabel;
 }
 
+- (UIButton *)deleteButton {
+    if (_deleteButton == nil) {
+        _deleteButton = [[UIButton alloc] init];
+        [_deleteButton setImage:[UIImage easeUIImageNamed:@"ease_user_delete"] forState:UIControlStateNormal];
+        [_deleteButton addTarget:self action:@selector(deleteButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _deleteButton;
+}
+
+- (void)deleteButtonAction {
+    if(self.deleteBlock){
+        self.deleteBlock(self.userId);
+    }
+}
 
 @end
 
@@ -127,12 +154,12 @@
 
 - (void)placeAndLayoutSubViews {
 //    self.backgroundColor = UIColor.redColor;
-//
 //    self.collectionView.backgroundColor = UIColor.yellowColor;
+
     [self addSubview:self.collectionView];
     
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self).insets(UIEdgeInsetsMake(0, 5, 0, 5));
+        make.edges.equalTo(self).insets(UIEdgeInsetsMake(5, 5, 0, 5));
     }];
 }
 
@@ -166,7 +193,14 @@
     NSLog(@"%s indexPath.row:%@ obj:%@",__func__,@(indexPath.row),obj);
 
     [cell updateWithObj:obj];
-    
+    EaseIMKit_WS
+    cell.deleteBlock = ^(NSString *userId) {
+        if ([weakSelf.dataArray containsObject:userId]) {
+            if (weakSelf.deleteBlock) {
+                weakSelf.deleteBlock(userId);
+            }
+        }
+    };
     return cell;
 }
 

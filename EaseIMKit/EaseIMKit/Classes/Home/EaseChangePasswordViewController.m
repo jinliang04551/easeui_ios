@@ -64,6 +64,13 @@
         make.height.equalTo(@(44.0));
     }];
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapAction:)];
+    [self.view addGestureRecognizer:tap];
+    
+}
+  
+- (void)handleTapAction:(UITapGestureRecognizer *)aTap {
+    [self.view endEditing:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -134,6 +141,7 @@
 - (EasePasswordView *)oldPwdView {
     if (_oldPwdView == nil) {
         _oldPwdView = [[EasePasswordView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        _oldPwdView.titleLabel.text = @"原密码";
     }
     return _oldPwdView;
 }
@@ -141,6 +149,8 @@
 - (EasePasswordView *)newPwdView {
     if (_newPwdView == nil) {
         _newPwdView = [[EasePasswordView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        _newPwdView.titleLabel.text = @"新密码";
+
     }
     return _newPwdView;
 }
@@ -148,6 +158,8 @@
 - (EasePasswordView *)confirmPwdView {
     if (_confirmPwdView == nil) {
         _confirmPwdView = [[EasePasswordView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        _confirmPwdView.titleLabel.text = @"确认密码";
+
     }
     return _confirmPwdView;
 }
