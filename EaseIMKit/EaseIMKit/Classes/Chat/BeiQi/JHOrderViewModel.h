@@ -16,13 +16,19 @@ NS_ASSUME_NONNULL_BEGIN
 //"orderDate": "2022-06-06 15:55:24"
 
 @interface JHOrderViewModel : NSObject
-@property (nonatomic, strong, readonly) NSString *aid;
-@property (nonatomic, strong, readonly) NSString *orderId;
-@property (nonatomic, strong, readonly) NSString *orderType;
-@property (nonatomic, strong, readonly) NSString *productName;
-@property (nonatomic, strong, readonly) NSString *orderDate;
-@property (nonatomic, strong, readonly) NSString *messageInfo;
+//@property (nonatomic, strong, readonly) NSString *aid;
+//@property (nonatomic, strong, readonly) NSString *orderId;
+//@property (nonatomic, strong, readonly) NSString *orderType;
+//@property (nonatomic, strong, readonly) NSString *productName;
+//@property (nonatomic, strong, readonly) NSString *orderDate;
+//@property (nonatomic, strong, readonly) NSString *messageInfo;
 
+@property (nonatomic, strong) NSString *aid;
+@property (nonatomic, strong) NSString *orderId;
+@property (nonatomic, strong) NSString *orderType;
+@property (nonatomic, strong) NSString *productName;
+@property (nonatomic, strong) NSString *orderDate;
+@property (nonatomic, strong) NSString *messageInfo;
 
 - (instancetype)initWithDic:(NSDictionary *)dic;
 

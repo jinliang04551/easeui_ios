@@ -463,7 +463,13 @@
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     if (conversationType == EMConversationTypeGroupChat) {
         //音视频
-        EaseExtMenuModel *rtcMenu = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"video_conf"] funcDesc:@"音视频" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+//        EaseExtMenuModel *rtcMenu = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"video_conf"] funcDesc:@"音视频" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+//            if (isExecuted) {
+//                [self chatSealRtcAction];
+//            }
+//        }];
+        
+        EaseExtMenuModel *rtcMenu = [[EaseExtMenuModel alloc]initWithData:[UIImage easeUIImageNamed:@"yg_video_conf"] funcDesc:@"音视频" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
             if (isExecuted) {
                 [self chatSealRtcAction];
             }

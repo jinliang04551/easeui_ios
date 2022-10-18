@@ -153,13 +153,20 @@ MISScrollPageControllerDelegate>
         style.showSegmentViewSeparatorLine = NO;
 
 if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        style.showCover = NO;
-        style.coverBackgroundColor = EaseIMKit_COLOR_HEX(0xD8D8D8);
-        style.gradualChangeTitleColor = YES;
-        style.normalTitleColor = EaseIMKit_COLOR_HEX(0x7E7E7E);
-        style.selectedTitleColor = EaseIMKit_COLOR_HEX(0xB9B9B9);
-        style.scrollLineColor = EaseIMKit_Default_BgBlue_Color;
-        style.segmentViewBackgroundColor = EaseIMKit_ViewBgBlackColor;
+//        style.showCover = NO;
+//        style.coverBackgroundColor = EaseIMKit_COLOR_HEX(0xD8D8D8);
+//        style.gradualChangeTitleColor = YES;
+//        style.normalTitleColor = EaseIMKit_COLOR_HEX(0x7E7E7E);
+//        style.selectedTitleColor = EaseIMKit_COLOR_HEX(0xB9B9B9);
+//        style.scrollLineColor = EaseIMKit_Default_BgBlue_Color;
+//        style.segmentViewBackgroundColor = EaseIMKit_ViewBgBlackColor;
+    
+    style.showCover = NO;
+    style.coverBackgroundColor = EaseIMKit_COLOR_HEX(0xD8D8D8);
+    style.gradualChangeTitleColor = YES;
+    style.normalTitleColor = EaseIMKit_COLOR_HEX(0x999999);
+    style.selectedTitleColor = EaseIMKit_COLOR_HEX(0x000000);
+    style.scrollLineColor = EaseIMKit_Default_BgBlue_Color;
 }else {
 
         style.showCover = NO;

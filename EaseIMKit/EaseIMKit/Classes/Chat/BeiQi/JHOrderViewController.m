@@ -37,14 +37,12 @@
     [self.tableView registerClass:[JHOrderInfoCell class] forCellReuseIdentifier:NSStringFromClass([JHOrderInfoCell class])];
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+  
+    self.view.backgroundColor = UIColor.whiteColor;
+    self.tableView.backgroundColor = UIColor.whiteColor;
 
-    self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
-    self.tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
-    
-    [self fetchOrderList];
-    
-    [self.tableView reloadData];
-
+//    [self fetchOrderList];
+    [self buildTestData];
 }
 
 - (void)getOrderTypeName {
@@ -94,9 +92,48 @@
     
 }
 
+
+//"aid": "222600",
+//"orderId": "AFVRMT20220606155524474a",
+//"orderType": "MAIN",
+//"productName": "维保订单",
+//"orderDate": "2022-06-06 15:55:24"
+
+- (void)buildTestData {
+    NSMutableArray *tArray = [NSMutableArray array];
+    for (int i = 0; i < 5; ++i) {
+        JHOrderViewModel *model = [[JHOrderViewModel alloc] init];
+        model.aid = [NSString stringWithFormat:@"2201%@",@(i)];
+        model.orderId = model.aid;
+        model.orderType = @"MAIN";
+
+        if (self.orderType == 1) {
+            model.productName = @"维保订单";
+        }
+        if (self.orderType == 2) {
+            model.productName = @"取送订单";
+        }
+        if (self.orderType == 3) {
+            model.productName = @"精品订单";
+        }
+        if (self.orderType == 4) {
+            model.productName = @"服务订单";
+        }
+        
+        model.orderDate = @"2022-06-06 15:55:24";
+
+        if (model) {
+            [tArray addObject:model];
+        }
+    }
+    self.dataArray = tArray;
+    [self.tableView reloadData];
+    
+}
+
 #pragma mark - Table view data source
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 190.0;
+    return 100.0;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

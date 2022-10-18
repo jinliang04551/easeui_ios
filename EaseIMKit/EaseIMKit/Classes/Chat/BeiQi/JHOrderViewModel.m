@@ -8,12 +8,12 @@
 #import "JHOrderViewModel.h"
 
 @interface JHOrderViewModel ()
-@property (nonatomic, strong) NSString *aid;
-@property (nonatomic, strong) NSString *orderId;
-@property (nonatomic, strong) NSString *orderType;
-@property (nonatomic, strong) NSString *productName;
-@property (nonatomic, strong) NSString *orderDate;
-@property (nonatomic, strong) NSString *messageInfo;
+//@property (nonatomic, strong) NSString *aid;
+//@property (nonatomic, strong) NSString *orderId;
+//@property (nonatomic, strong) NSString *orderType;
+//@property (nonatomic, strong) NSString *productName;
+//@property (nonatomic, strong) NSString *orderDate;
+//@property (nonatomic, strong) NSString *messageInfo;
 
 
 @end

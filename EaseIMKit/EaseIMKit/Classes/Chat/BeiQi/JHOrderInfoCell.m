@@ -27,6 +27,7 @@
 }
 
 - (void)placeSubViews {
+    
     [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.contentView).insets(UIEdgeInsetsMake(0, 16.0, 8.0, 16.0));
     }];
@@ -35,8 +36,8 @@
 - (void)updateWithObj:(id)obj {
     self.orderModel = (JHOrderViewModel *)obj;
     
-    self.nameLabel.text = [NSString stringWithFormat:@"%@订单",self.orderModel.orderId];
-    self.productNameLabel.text = [NSString stringWithFormat:@"商品名称: %@",self.orderModel.productName];
+    self.nameLabel.text = [NSString stringWithFormat:@"%@",self.orderModel.productName];
+    self.productNameLabel.text = [NSString stringWithFormat:@"订单号: %@",self.orderModel.orderId];
     self.timeLabel.text = [NSString stringWithFormat:@"下单日期：%@",self.orderModel.orderDate];
     
     NSMutableString *msgInfo = [NSMutableString string];
@@ -67,9 +68,9 @@
 - (UILabel *)productNameLabel {
     if (_productNameLabel == nil) {
         _productNameLabel = [[UILabel alloc] init];
-        _productNameLabel.font = EaseIMKit_NFont(14.0);
+        _productNameLabel.font = EaseIMKit_NFont(12.0);
         
-        _productNameLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+        _productNameLabel.textColor = [UIColor colorWithHexString:@"#667085"];
         _productNameLabel.textAlignment = NSTextAlignmentLeft;
         _productNameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 
@@ -81,8 +82,8 @@
 - (UILabel *)timeLabel {
     if (_timeLabel == nil) {
         _timeLabel = [[UILabel alloc] init];
-        _timeLabel.font = EaseIMKit_NFont(14.0);
-        _timeLabel.textColor = [UIColor colorWithHexString:@"#B9B9B9"];
+        _timeLabel.font = EaseIMKit_NFont(12.0);
+        _timeLabel.textColor = [UIColor colorWithHexString:@"#667085"];
         _timeLabel.textAlignment = NSTextAlignmentLeft;
         _timeLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 
@@ -100,62 +101,107 @@
         [_sendButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
         [_sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
         [_sendButton addTarget:self action:@selector(sendButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        _sendButton.backgroundColor = [UIColor colorWithHexString:@"#4798CB"];
+//        _sendButton.backgroundColor = [UIColor colorWithHexString:@"#4798CB"];
+        _sendButton.backgroundColor = EaseIMKit_Default_BgBlue_Color;
     }
     return _sendButton;
 }
 
 
+//- (UIView *)bgView {
+//    if (_bgView == nil) {
+//        _bgView = [[UIView alloc] init];
+//        _bgView.backgroundColor = [UIColor colorWithHexString:@"#1C1C1C"];
+//
+//        self.bottomLine.backgroundColor = [UIColor colorWithHexString:@"#2E2E2E"];
+//
+//        [_bgView addSubview:self.nameLabel];
+//        [_bgView addSubview:self.bottomLine];
+//        [_bgView addSubview:self.productNameLabel];
+//        [_bgView addSubview:self.timeLabel];
+//        [_bgView addSubview:self.sendButton];
+//
+//        [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(_bgView).offset(14.0);
+//            make.left.equalTo(_bgView).offset(16.0f);
+//            make.right.equalTo(_bgView).offset(-16.0);
+//        }];
+//
+//        [self.bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.nameLabel.mas_bottom).offset(14.0);
+//            make.left.equalTo(_bgView).offset(16.0f);
+//            make.right.equalTo(_bgView).offset(-16.0);
+//            make.height.equalTo(@(EaseIMKit_ONE_PX));
+//        }];
+//
+//
+//        [self.productNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.bottomLine.mas_bottom).offset(14.0);
+//            make.left.equalTo(_bgView).offset(16.0f);
+//            make.right.equalTo(_bgView).offset(-16.0);
+//
+//        }];
+//
+//        [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.productNameLabel.mas_bottom).offset(8.0);
+//            make.left.equalTo(_bgView).offset(16.0f);
+//            make.right.equalTo(_bgView).offset(-16.0);
+//
+//        }];
+//
+//        [self.sendButton mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.timeLabel.mas_bottom).offset(22.0);
+//            make.centerX.equalTo(_bgView);
+//            make.width.equalTo(@(116.0));
+//            make.height.equalTo(@(32.0));
+//        }];
+//
+//    }
+//    return _bgView;
+//}
+
 - (UIView *)bgView {
     if (_bgView == nil) {
         _bgView = [[UIView alloc] init];
-        _bgView.backgroundColor = [UIColor colorWithHexString:@"#1C1C1C"];
-
-        self.bottomLine.backgroundColor = [UIColor colorWithHexString:@"#2E2E2E"];
+        _bgView.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
         
         [_bgView addSubview:self.nameLabel];
-        [_bgView addSubview:self.bottomLine];
         [_bgView addSubview:self.productNameLabel];
         [_bgView addSubview:self.timeLabel];
         [_bgView addSubview:self.sendButton];
 
         [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_bgView).offset(14.0);
-            make.left.equalTo(_bgView).offset(16.0f);
-            make.right.equalTo(_bgView).offset(-16.0);
-        }];
-        
-        [self.bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(14.0);
-            make.left.equalTo(_bgView).offset(16.0f);
-            make.right.equalTo(_bgView).offset(-16.0);
-            make.height.equalTo(@(EaseIMKit_ONE_PX));
+            make.top.equalTo(_bgView).offset(16.0);
+            make.left.equalTo(_bgView).offset(18.0);
+            make.right.equalTo(self.sendButton.mas_right);
         }];
         
         
         [self.productNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.bottomLine.mas_bottom).offset(14.0);
-            make.left.equalTo(_bgView).offset(16.0f);
-            make.right.equalTo(_bgView).offset(-16.0);
-            
+            make.top.equalTo(self.nameLabel.mas_bottom).offset(9.0);
+            make.left.equalTo(_bgView).offset(18.0);
+            make.right.equalTo(self.nameLabel);
+
         }];
         
+        
         [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.productNameLabel.mas_bottom).offset(8.0);
-            make.left.equalTo(_bgView).offset(16.0f);
-            make.right.equalTo(_bgView).offset(-16.0);
-            
+            make.top.equalTo(self.productNameLabel.mas_bottom).offset(5.0);
+            make.left.equalTo(_bgView).offset(18.0);
+            make.right.equalTo(self.nameLabel);
+
         }];
         
         [self.sendButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.timeLabel.mas_bottom).offset(22.0);
-            make.centerX.equalTo(_bgView);
-            make.width.equalTo(@(116.0));
-            make.height.equalTo(@(32.0));
+            make.centerY.equalTo(_bgView);
+            make.right.equalTo(_bgView).offset(-16.0);
+            make.width.equalTo(@(100.0));
+            make.height.equalTo(@(28.0));
         }];
         
     }
     return _bgView;
 }
+
 
 @end

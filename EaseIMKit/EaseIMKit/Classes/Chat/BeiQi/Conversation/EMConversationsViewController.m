@@ -538,34 +538,24 @@
         UILabel *titleLabel = [[UILabel alloc] init];
 
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-            if (self.enterType == EMConversationEnterTypeExclusiveGroup) {
-                titleLabel.text = @"我的专属服务";
-            }
-            
-            if (self.enterType == EMConversationEnterTypeMyChat) {
-                titleLabel.text = @"我的会话";
-            }
-            
-            
-            titleLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
-            titleLabel.font = [UIFont systemFontOfSize:16.0];
-            [_titleView addSubview:titleLabel];
-            [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(_titleView);
-                make.centerY.equalTo(_titleView);
-                make.height.equalTo(@25);
-            }];
 
-//            self.backImageBtn = [[UIButton alloc]init];
-//            [self.backImageBtn setImage:[UIImage easeUIImageNamed:@"jh_backleft"] forState:UIControlStateNormal];
-//            [self.backImageBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
-//            [_titleView addSubview:self.backImageBtn];
-//            [self.backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//                make.width.height.equalTo(@35);
-//                make.centerY.equalTo(titleLabel);
-//                make.left.equalTo(_titleView).offset(16);
+//            if (self.enterType == EMConversationEnterTypeExclusiveGroup) {
+//                titleLabel.text = @"我的专属服务";
+//            }
+//
+//            if (self.enterType == EMConversationEnterTypeMyChat) {
+//                titleLabel.text = @"我的会话";
+//            }
+//
+//
+//            titleLabel.textColor = [UIColor colorWithHexString:@"#F5F5F5"];
+//            titleLabel.font = [UIFont systemFontOfSize:16.0];
+//            [_titleView addSubview:titleLabel];
+//            [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.centerX.equalTo(_titleView);
+//                make.centerY.equalTo(_titleView);
+//                make.height.equalTo(@25);
 //            }];
-        }else {
 
             titleLabel.text = @"会话列表";
             titleLabel.textColor = [UIColor colorWithHexString:@"#171717"];
@@ -577,16 +567,24 @@
                 make.height.equalTo(@25);
             }];
 
-//            self.backImageBtn = [[UIButton alloc]init];
-//            [self.backImageBtn setImage:[UIImage easeUIImageNamed:@"yg_backleft"] forState:UIControlStateNormal];
-//            [self.backImageBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
-//            [_titleView addSubview:self.backImageBtn];
-//            [self.backImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//                make.width.height.equalTo(@35);
-//                make.centerY.equalTo(titleLabel);
-//                make.left.equalTo(_titleView).offset(16);
-//            }];
+            [_titleView addSubview:self.rightNavBarBtn];
+            [self.rightNavBarBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.width.height.equalTo(@35);
+                make.centerY.equalTo(titleLabel);
+                make.right.equalTo(_titleView).offset(-16);
+            }];
 
+        }else {
+
+            titleLabel.text = @"会话列表";
+            titleLabel.textColor = [UIColor colorWithHexString:@"#171717"];
+            titleLabel.font = [UIFont systemFontOfSize:18];
+            [_titleView addSubview:titleLabel];
+            [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerX.equalTo(_titleView);
+                make.top.equalTo(_titleView).offset(EaseIMKit_StatusBarHeight);
+                make.height.equalTo(@25);
+            }];
 
             [_titleView addSubview:self.rightNavBarBtn];
             [self.rightNavBarBtn mas_makeConstraints:^(MASConstraintMaker *make) {
