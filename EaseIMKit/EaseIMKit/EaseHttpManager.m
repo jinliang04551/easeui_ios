@@ -10,11 +10,12 @@
 #import "EaseIMKitManager.h"
 #import "Reachability.h"
 
-#define kServerHost @"http://182.92.236.214:12005"
+//默认环境
+//#define kServerHost @"http://182.92.236.214:12005"
 
 
 //场景化环境
-//#define kServerHost @"http://221.204.13.10:12010"
+#define kServerHost @"http://221.204.13.10:12010"
 
 
 /*
@@ -33,6 +34,8 @@
 #define kEaseCallGenerateTokenJiHuURL @"/v1/rtc/token"
 //声网音视频获取一个channelName下有哪些uid接口
 #define kEaseCallGetChannalUidsJiHuURL @"/v1/rtc/channle"
+//用户端登录（后台没有账号则自动注册后返回）
+#define kEaseUserLoginAutoRegisterURL @"/v4/gov/arcfox/user/automaticLogon"
 
 
 /*
@@ -148,7 +151,6 @@
     [headerDict setObject:@"application/json" forKey:@"Content-Type"];
     request.allHTTPHeaderFields = headerDict;
 
-    
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
     [dict setObject:uName forKey:@"phone"];
     [dict setObject:pwd forKey:@"password"];
@@ -980,16 +982,29 @@
     
     NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
     [headerDict setObject:@"application/json" forKey:@"Content-Type"];
-    NSString *token = [EaseKitUtil getLoginUserToken];
-    [headerDict setObject:token forKey:@"Authorization"];
+    
+    NSString *imToken = [EMClient sharedClient].accessUserToken;
+    NSString *ygToken = [EaseKitUtil getLoginUserToken];
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        [headerDict setObject:imToken forKey:@"Authorization"];
+    }else {
+        [headerDict setObject:ygToken forKey:@"Authorization"];
+    }
     [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
+
     request.allHTTPHeaderFields = headerDict;
 
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
         
     [dict setObject:userNameList forKey:@"userNameList"];
 
-    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+    NSLog(@"\n%s url:%@\n headerDict:%@\n dict:%@\n",__func__,url,headerDict,dict);
+
+//    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+          
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:userNameList options:0 error:nil];
+
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
         if (aCompletionBlock) {
@@ -999,6 +1014,37 @@
     [task resume];
 }
 
+- (void)loginAutoRegisterWithUsername:(NSString *)username
+                             password:(NSString *)password
+                           completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock {
+
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",self.restSeverHost,kEaseUserLoginAutoRegisterURL]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest
+                                                requestWithURL:url];
+    request.HTTPMethod = @"POST";
+    
+    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
+    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
+    request.allHTTPHeaderFields = headerDict;
+
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+        
+    [dict setObject:username forKey:@"username"];
+    [dict setObject:password forKey:@"password"];
+    [dict setObject:username forKey:@"phone"];
+
+    NSLog(@"\n%s url:%@\n headerDict:%@\n dict:%@\n",__func__,url,headerDict,dict);
+    
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+        if (aCompletionBlock) {
+            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
+        }
+    }];
+    [task resume];
+}
 
 
 #pragma mark NSURLSessionDelegate

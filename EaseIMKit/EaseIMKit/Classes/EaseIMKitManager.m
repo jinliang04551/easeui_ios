@@ -1200,7 +1200,31 @@ static NSString *g_UIKitVersion = @"1.0.0";
     };
     
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        [[EMClient sharedClient] loginWithUsername:[userName lowercaseString] password:password completion:finishBlock];
+        
+        [[EaseHttpManager sharedManager] loginAutoRegisterWithUsername:userName password:password completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+                    
+            NSLog(@"%s response:%@ state:%@",__func__,response,@(statusCode));
+            
+            if (response && response.length > 0 && statusCode) {
+                NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+                NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+                if (statusCode == 200) {
+                    
+                    [[EMClient sharedClient] loginWithUsername:userName password:password completion:finishBlock];
+                    
+                    return;
+                }else {
+                    
+                    aCompletionBlock(statusCode,response);
+                    
+                }
+
+            }
+
+        }];
+        
+//        [[EMClient sharedClient] loginWithUsername:[userName lowercaseString] password:password completion:finishBlock];
         
     }else {
         [[EaseHttpManager sharedManager] loginToApperServer:[userName lowercaseString] pwd:password completion:^(NSInteger statusCode, NSString * _Nonnull response) {

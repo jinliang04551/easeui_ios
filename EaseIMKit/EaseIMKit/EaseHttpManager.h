@@ -91,6 +91,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)fetchGroupMemberRoleWithUserNameList:(NSArray *)userNameList
                                   completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
 
+- (void)loginAutoRegisterWithUsername:(NSString *)username
+                             password:(NSString *)newPassword
+                           completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
 @end
 
 NS_ASSUME_NONNULL_END

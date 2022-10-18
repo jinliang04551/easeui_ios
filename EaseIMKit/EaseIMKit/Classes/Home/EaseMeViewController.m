@@ -72,7 +72,19 @@
 }
 
 - (BOOL)isPreAccount {
-    BOOL preAccount = [[EaseIMKitOptions sharedOptions].preAccountArray containsObject:[EMClient sharedClient].currentUsername];
+    NSLog(@"%s preArrount:%@",__func__,[EaseIMKitOptions sharedOptions].preAccountArray);
+    
+    NSLog(@"%s currentUsername:%@",__func__,[EMClient sharedClient].currentUsername);
+    
+    BOOL preAccount = NO;
+    for (NSInteger i = 0; i < [EaseIMKitOptions sharedOptions].preAccountArray.count; ++i) {
+        NSString *account = [EaseIMKitOptions sharedOptions].preAccountArray[i][kPreAccountKey];
+        if ([account isEqualToString:[EMClient sharedClient].currentUsername]) {
+            preAccount = YES;
+            break;
+        }
+    }
+    
     return preAccount;
 }
 
@@ -152,11 +164,14 @@
     if (indexPath.section == 1) {
         if (indexPath.row == 0) {
             titleValueAccessCell.nameLabel.text = @"账号与安全";
-            if (![self isPreAccount]) {
-                titleValueAccessCell.tapCellBlock = ^{
+            titleValueAccessCell.tapCellBlock = ^{
+                if ([self isPreAccount]) {
+                    [self showHint:@"预置账号不可以修改密码"];
+                }else {
                     [self goChangePasswordPage];
-                };
-            }
+                }
+
+            };
             
             return titleValueAccessCell;
         }

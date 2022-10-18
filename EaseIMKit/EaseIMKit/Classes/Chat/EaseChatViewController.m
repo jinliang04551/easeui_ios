@@ -1225,7 +1225,11 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     message.chatType = (EMChatType)self.currentConversation.type;
     
     if (self.currentConversation.type == EMConversationTypeGroupChat) {
-        message.isNeedGroupAck = YES;
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            message.isNeedGroupAck = NO;
+        }else {
+            message.isNeedGroupAck = YES;
+        }
     }
     
     __weak typeof(self) weakself = self;

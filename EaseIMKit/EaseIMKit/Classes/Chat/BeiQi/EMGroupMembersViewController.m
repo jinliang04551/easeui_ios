@@ -8,9 +8,10 @@
 
 #import "EMGroupMembersViewController.h"
 #import "UserInfoStore.h"
-#import "BQAvatarTitleRoleCell.h"
+#import "BQMemberAvatarTitleRoleCell.h"
 #import "BQGroupEditMemberViewController.h"
 #import "EaseHeaders.h"
+#import "BQMemberAvatarTitleRoleCell.h"
 
 @interface EMGroupMembersViewController ()<EMSearchBarDelegate>
 
@@ -24,6 +25,8 @@
 @property (nonatomic, strong) NSMutableArray *searchDataArray;
 @property (nonatomic, strong) EaseNoDataPlaceHolderView *noDataPromptView;
 
+@property (nonatomic, strong) NSMutableArray *transportArray;
+@property (nonatomic, strong) NSMutableArray *imuserArray;
 
 @end
 
@@ -49,7 +52,7 @@
     self.cursor = nil;
     self.isUpdated = NO;
 
-    [self.tableView registerClass:[BQAvatarTitleRoleCell class] forCellReuseIdentifier:NSStringFromClass([BQAvatarTitleRoleCell class])];
+    [self.tableView registerClass:[BQMemberAvatarTitleRoleCell class] forCellReuseIdentifier:NSStringFromClass([BQMemberAvatarTitleRoleCell class])];
     
     [self _setupSubviews];
     [self _fetchGroupMembersWithIsHeader:YES isShowHUD:YES];
@@ -135,7 +138,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    BQAvatarTitleRoleCell *cell = (BQAvatarTitleRoleCell *)[tableView dequeueReusableCellWithIdentifier:NSStringFromClass([BQAvatarTitleRoleCell class])];
+    BQMemberAvatarTitleRoleCell *cell = (BQMemberAvatarTitleRoleCell *)[tableView dequeueReusableCellWithIdentifier:NSStringFromClass([BQMemberAvatarTitleRoleCell class])];
     
     NSString *userId = @"";
     if (self.isSearching) {
@@ -145,9 +148,22 @@
     }
     
     BOOL isOwner = [self.group.owner isEqualToString:userId];
-    [cell updateWithObj:userId isOwner:isOwner];
-    
+    NSString *role = [self roleWithUserId:userId];
+    [cell updateWithObj:userId isOwner:isOwner role:role];
     return cell;
+}
+
+
+- (NSString *)roleWithUserId:(NSString *)userId {
+    NSString *role = @"";
+    if ([self.transportArray containsObject:userId]) {
+        role = @"客服";
+    }
+    
+    if ([self.imuserArray containsObject:userId]) {
+        role = @"客户";
+    }
+    return role;
 }
 
 #pragma mark - Table view delegate
@@ -282,6 +298,7 @@
             
             if ([aResult.list count] == 0 || [aResult.cursor length] == 0) {
                 weakself.showRefreshFooter = NO;
+                [weakself fetchGroupMemberRole];
             } else {
                 weakself.showRefreshFooter = YES;
             }
@@ -316,6 +333,8 @@
                 NSMutableArray *transportArray = responsedict[@"transport"];
                 NSMutableArray *imuserArray = responsedict[@"imuser"];
 
+                self.transportArray = transportArray;
+                self.imuserArray = imuserArray;
                 [self.tableView reloadData];
 
             }else {
@@ -526,6 +545,20 @@
         _noDataPromptView.hidden = YES;
     }
     return _noDataPromptView;
+}
+
+- (NSMutableArray *)transportArray {
+    if (_transportArray == nil) {
+        _transportArray = [NSMutableArray array];
+    }
+    return _transportArray;
+}
+
+- (NSMutableArray *)imuserArray {
+    if (_imuserArray == nil) {
+        _imuserArray = [NSMutableArray array];
+    }
+    return _imuserArray;
 }
 
 @end
