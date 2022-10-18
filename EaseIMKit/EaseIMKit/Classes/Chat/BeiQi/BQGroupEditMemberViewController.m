@@ -217,24 +217,25 @@
 
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
             if (statusCode == 200) {
-                NSArray *tArray = responsedict[@"entities"];
+                NSDictionary *entity = responsedict[@"entity"];
 
-                if (tArray.count == 0) {
-                    [self showHint:@"搜索人员不存在"];
-                }
+//                if (tArray.count == 0) {
+//                    [self showHint:@"搜索人员不存在"];
+//                }
                 
                 NSMutableArray *dArray = [NSMutableArray array];
-                for (int i = 0 ; i < tArray.count; ++i) {
-                    BQEaseUserModel *model = [[BQEaseUserModel alloc] initWithDic:tArray[i]];
-                    [dArray addObject:model.displayName];
-                }
-                
+                BQEaseUserModel *model = [[BQEaseUserModel alloc] initWithDic:entity];
+                [dArray addObject:model.displayName];
                 self.searchResultArray = dArray;
                 [self.searchResultTableView reloadData];
                 
                 self.noDataPromptView.hidden = self.searchResultArray.count > 0 ? YES : NO;
             }else {
-                [EaseAlertController showErrorAlert:errorDescription];
+                
+                [self showHint:@"搜索人员不存在"];
+                self.searchResultArray = [NSMutableArray array];
+                [self.searchResultTableView reloadData];
+
             }
         }
         

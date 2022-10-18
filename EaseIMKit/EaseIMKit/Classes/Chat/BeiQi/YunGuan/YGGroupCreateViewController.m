@@ -262,8 +262,11 @@
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
             if (statusCode == 200) {
-                NSDictionary *dataDic = responsedict[@"data"];
-                NSString *groupId = dataDic[@"groupId"];
+//                NSDictionary *dataDic = responsedict[@"data"];
+//                NSString *groupId = dataDic[@"groupId"];
+
+                NSDictionary *dataDic = responsedict[@"entity"];
+                NSString *groupId = dataDic[@"groupid"];
 
                 if (groupId.length > 0) {
                     [self showHint:@"创建成功"];

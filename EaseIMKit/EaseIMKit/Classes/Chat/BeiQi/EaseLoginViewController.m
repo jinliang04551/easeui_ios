@@ -246,7 +246,8 @@
         [self.preLoginAccountButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.loginButton.mas_bottom).offset(12.0);
             make.left.equalTo(self.loginButton);
-            make.right.equalTo(self.loginButton);
+//            make.right.equalTo(self.loginButton);
+            
         }];
 
 
