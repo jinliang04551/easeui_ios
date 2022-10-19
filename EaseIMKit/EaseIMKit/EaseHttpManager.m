@@ -45,13 +45,14 @@
  */
 #define kLoginURL @"/v2/gov/arcfox/login"
 #define kLogoutURL @"/v2/gov/arcfox/transport"
-#define kCreateGroupURL @"/v2/group/createGroup"
-//#define kCreateGroupURL @"/v4/users"
+//#define kCreateGroupURL @"/v2/group/createGroup"
+#define kCreateGroupURL @"/v4/users"
 
 #define kGroupApplyListURL @"/v2/group/chatgroups/users/state"
 #define kGroupApplyApprovalURL @"/v2/group/chatgroups/users"
 #define kInviteGroupMemberURL @"/v4/users"
 #define kSearchGroupMemberURL @"/v2/gov/arcfox/user"
+
 
 
 #define kModifyGroupServeNoteURL @"/v2/group/chatgroups"
@@ -201,77 +202,14 @@
 
 
 
-- (void)createGroupWithGroupName:(NSString *)groupName
-                  groupInterduce:(NSString *)groupInterduce
-                 customerUserIds:(NSArray *)customerUserIds
-                   waiterUserIds:(NSArray *)waiterUserIds
-                      completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
-{
-
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",self.restSeverHost,kCreateGroupURL]];
-    NSMutableURLRequest *request = [NSMutableURLRequest
-                                                requestWithURL:url];
-    request.HTTPMethod = @"POST";
-
-    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
-    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
-    NSString *token = [EaseKitUtil getLoginUserToken];
-    [headerDict setObject:token forKey:@"Authorization"];
-    [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
-
-    request.allHTTPHeaderFields = headerDict;
-
-    //"isPublic": false,//写死
-    //"allowinvites": true,//写死
-    //"groupname": "1",//群名称
-    //"owner": "15811252011",//群主
-    //"customerAids": [
-    //"fox-016"
-    //],//客户
-    //"waiterAids": [
-    //"15901016489",
-    //"0718003"
-    //],//服务人员
-    //"action": true//写死
-
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-
-    [dict setObject:@(NO) forKey:@"isPublic"];
-    [dict setObject:@(YES) forKey:@"allowinvites"];
-    [dict setObject:groupName forKey:@"groupname"];
-    [dict setObject:[EMClient sharedClient].currentUsername forKey:@"owner"];
-    [dict setObject:customerUserIds forKey:@"customerAids"];
-    [dict setObject:waiterUserIds forKey:@"waiterAids"];
-    [dict setObject:@(YES) forKey:@"action"];
-
-    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
-    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
-        if (aCompletionBlock) {
-            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
-        }
-    }];
-    [task resume];
-}
-
-
-//"groupName":"这是调用北汽接口创的群",
-//   "desc":"这是群描述",
-//   "ownerAid":"15811252011",
-//   "customerAids":["ceshib","ceshid","1508549872"],
-//   "waiterAids":["ceshif"],
-//   "groupType":"MANUAL"
-
 //- (void)createGroupWithGroupName:(NSString *)groupName
 //                  groupInterduce:(NSString *)groupInterduce
 //                 customerUserIds:(NSArray *)customerUserIds
 //                   waiterUserIds:(NSArray *)waiterUserIds
-//                      completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock {
+//                      completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
+//{
 //
-//    //    /v4/users/{username}/group/createGroup
-//
-//    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/group/createGroup",self.restSeverHost,kCreateGroupURL,[EMClient sharedClient].currentUsername]];
-//
+//    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",self.restSeverHost,kCreateGroupURL]];
 //    NSMutableURLRequest *request = [NSMutableURLRequest
 //                                                requestWithURL:url];
 //    request.HTTPMethod = @"POST";
@@ -284,15 +222,27 @@
 //
 //    request.allHTTPHeaderFields = headerDict;
 //
+//    //"isPublic": false,//写死
+//    //"allowinvites": true,//写死
+//    //"groupname": "1",//群名称
+//    //"owner": "15811252011",//群主
+//    //"customerAids": [
+//    //"fox-016"
+//    //],//客户
+//    //"waiterAids": [
+//    //"15901016489",
+//    //"0718003"
+//    //],//服务人员
+//    //"action": true//写死
+//
 //    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
 //
-//    [dict setObject:groupName forKey:@"groupName"];
-//    [dict setObject:groupInterduce forKey:@"desc"];
-//
-//    [dict setObject:[EMClient sharedClient].currentUsername forKey:@"ownerAid"];
+//    [dict setObject:@(NO) forKey:@"isPublic"];
+//    [dict setObject:@(YES) forKey:@"allowinvites"];
+//    [dict setObject:groupName forKey:@"groupname"];
+//    [dict setObject:[EMClient sharedClient].currentUsername forKey:@"owner"];
 //    [dict setObject:customerUserIds forKey:@"customerAids"];
 //    [dict setObject:waiterUserIds forKey:@"waiterAids"];
-//    [dict setObject:@"MANUAL" forKey:@"groupType"];
 //    [dict setObject:@(YES) forKey:@"action"];
 //
 //    NSLog(@"%s url:%@\n headerDict:%@\n request dict:%@\n",__func__,url,headerDict,dict);
@@ -306,6 +256,67 @@
 //    }];
 //    [task resume];
 //}
+
+
+//"groupName":"这是调用北汽接口创的群",
+//   "desc":"这是群描述",
+//   "ownerAid":"15811252011",
+//   "customerAids":["ceshib","ceshid","1508549872"],
+//   "waiterAids":["ceshif"],
+//   "groupType":"MANUAL"
+
+- (void)createGroupWithGroupName:(NSString *)groupName
+                  groupInterduce:(NSString *)groupInterduce
+                 customerUserIds:(NSArray *)customerUserIds
+                   waiterUserIds:(NSArray *)waiterUserIds
+                      completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock {
+
+    //    /v4/users/{username}/group/createGroup
+
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/group/createGroup",self.restSeverHost,kCreateGroupURL,[EMClient sharedClient].currentUsername]];
+
+    NSMutableURLRequest *request = [NSMutableURLRequest
+                                                requestWithURL:url];
+    request.HTTPMethod = @"POST";
+
+    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
+    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
+    NSString *token = [EaseKitUtil getLoginUserToken];
+    [headerDict setObject:token forKey:@"Authorization"];
+    [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
+
+    request.allHTTPHeaderFields = headerDict;
+
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+
+//    [dict setObject:groupName forKey:@"groupName"];
+//    [dict setObject:groupInterduce forKey:@"desc"];
+//
+//    [dict setObject:[EMClient sharedClient].currentUsername forKey:@"ownerAid"];
+//    [dict setObject:customerUserIds forKey:@"customerAids"];
+//    [dict setObject:waiterUserIds forKey:@"waiterAids"];
+//    [dict setObject:@"MANUAL" forKey:@"groupType"];
+//    [dict setObject:@(YES) forKey:@"action"];
+
+        [dict setObject:@(NO) forKey:@"isPublic"];
+        [dict setObject:@(YES) forKey:@"allowinvites"];
+        [dict setObject:groupName forKey:@"groupname"];
+        [dict setObject:[EMClient sharedClient].currentUsername forKey:@"owner"];
+        [dict setObject:customerUserIds forKey:@"customerAids"];
+        [dict setObject:waiterUserIds forKey:@"waiterAids"];
+        [dict setObject:@(YES) forKey:@"action"];
+    
+    NSLog(@"%s url:%@\n headerDict:%@\n request dict:%@\n",__func__,url,headerDict,dict);
+
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+        if (aCompletionBlock) {
+            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
+        }
+    }];
+    [task resume];
+}
 
 
 //群申请列表
@@ -341,6 +352,8 @@
     [dict setObject:@(pageSize) forKey:@"size"];
     [dict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
     
+    NSLog(@"%s url:%@\n headerDict:%@\n request dict:%@\n",__func__,url,headerDict,dict);
+
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
@@ -690,8 +703,8 @@
 - (void)searchGroupListWithAid:(NSString *)aid
                         mobile:(NSString *)mobile
                        orderId:(NSString *)orderId
-                           vin:(NSString *)vin
-                     groupname:(NSString *)groupName
+                       groupId:(NSString *)groupId
+                     groupName:(NSString *)groupName
                     completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock {
 
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%@/group/listGroup",self.restSeverHost,kSearchGroupChatURL,[EMClient sharedClient].currentUsername]];
@@ -707,16 +720,35 @@
     [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
     request.allHTTPHeaderFields = headerDict;
 
+    //查询类型 groupId groupName orderId mobile
+//    {
+//        "groupName":"专属群",
+//        "queryType":"groupName"
+//    }
+    
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-    [dict setObject:aid forKey:@"aid"];
-    [dict setObject:mobile forKey:@"mobile"];
-    [dict setObject:orderId forKey:@"orderId"];
-    [dict setObject:vin forKey:@"vin"];
-    [dict setObject:groupName forKey:@"groupName"];
-//    [dict setObject:@"MANUAL" forKey:@"groupType"];
-    [dict setObject:@"MANAGE" forKey:@"source"];
+    NSString *keyString = @"";
+    if (groupId.length > 0) {
+        keyString = @"groupId";
+        [dict setObject:groupId forKey:@"groupId"];
+    }
+    
+    if (groupName.length > 0) {
+        keyString = @"groupName";
+        [dict setObject:groupName forKey:@"groupName"];
+    }
 
-    NSLog(@"%s url:%@ dict:%@",__func__,url,dict);
+    if (mobile.length > 0) {
+        keyString = @"mobile";
+        [dict setObject:mobile forKey:@"mobile"];
+    }
+    
+    if (orderId.length > 0) {
+        keyString = @"orderId";
+        [dict setObject:orderId forKey:@"orderId"];
+    }
+    
+    [dict setObject:keyString forKey:@"queryType"];
 
     NSLog(@"%s url:%@ headerDict:%@ dict:%@",__func__,url,headerDict,dict);
     

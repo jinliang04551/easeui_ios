@@ -876,14 +876,14 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         weakSelf.userArray = userArray;
         weakSelf.serverArray = serverArray;
         
-        [weakSelf updateUI];
+        [weakSelf inviteMembers];
     };
     
     
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)updateUI {
+- (void)inviteMembers {
     if (self.userArray.count == 0 && self.serverArray.count ==0) {
         return;
     }

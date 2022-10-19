@@ -36,7 +36,7 @@
 @property (nonatomic, strong) NSString *searchGroupName;
 @property (nonatomic, strong) NSString *searchMobile;
 @property (nonatomic, strong) NSString *searchOrderId;
-@property (nonatomic, strong) NSString *searchVin;
+@property (nonatomic, strong) NSString *searchGroupId;
 
 @end
 
@@ -70,7 +70,7 @@
     self.searchGroupName = @"";
     self.searchOrderId = @"";
     self.searchMobile = @"";
-    self.searchVin = @"";
+    self.searchGroupId = @"";
 
     if (self.searchGroupType == YGSearchGroupTypeGroupName) {
         self.searchGroupName = self.searchkeyword;
@@ -84,8 +84,8 @@
         self.searchMobile = self.searchkeyword;
     }
 
-    if (self.searchGroupType == YGSearchGroupTypeVINCode) {
-        self.searchVin = self.searchkeyword;
+    if (self.searchGroupType == YGSearchGroupTypeGroupId) {
+        self.searchGroupId = self.searchkeyword;
     }
     
 }
@@ -95,8 +95,8 @@
     
     NSString *aid = @"";
     
-    [[EaseHttpManager sharedManager] searchGroupListWithAid:aid mobile:self.searchMobile orderId:self.searchOrderId vin:self.searchVin groupname:self.searchGroupName completion:^(NSInteger statusCode, NSString * _Nonnull response) {
-    
+    [[EaseHttpManager sharedManager] searchGroupListWithAid:aid mobile:self.searchMobile orderId:self.searchOrderId groupId:self.searchGroupId groupName:self.searchGroupName completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+       
         NSLog(@"%s\n response:%@",__func__,response);
         
         if (response && response.length > 0) {
@@ -104,7 +104,7 @@
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
             if (statusCode == 200) {
-                NSArray *dataArray = responsedict[@"data"];
+                NSArray *dataArray = responsedict[@"chatGroup"];
 
                 NSMutableArray *tArray = [NSMutableArray array];
                 for (int i = 0; i < dataArray.count; ++i) {
@@ -126,8 +126,6 @@
 
             }
         }
-
-        
     }];
     
 }

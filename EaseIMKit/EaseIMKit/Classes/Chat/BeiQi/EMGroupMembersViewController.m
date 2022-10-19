@@ -25,8 +25,13 @@
 @property (nonatomic, strong) NSMutableArray *searchDataArray;
 @property (nonatomic, strong) EaseNoDataPlaceHolderView *noDataPromptView;
 
+@property (nonatomic, strong) NSMutableArray *userArray;
+@property (nonatomic, strong) NSMutableArray *serverArray;
+
 @property (nonatomic, strong) NSMutableArray *transportArray;
 @property (nonatomic, strong) NSMutableArray *imuserArray;
+
+@property (nonatomic, copy) void (^addedMemberBlock)(NSMutableArray *userArray,NSMutableArray *serverArray);
 
 @end
 
@@ -122,6 +127,12 @@
 
 - (void)inviteMemberAction {
     BQGroupEditMemberViewController *controller = [[BQGroupEditMemberViewController alloc] init];
+    EaseIMKit_WS
+    controller.addedMemberBlock = ^(NSMutableArray * _Nonnull userArray, NSMutableArray * _Nonnull serverArray) {
+        if (weakSelf.addedMemberBlock) {
+            weakSelf.addedMemberBlock(userArray, serverArray);
+        }
+    };
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -560,5 +571,20 @@
     }
     return _imuserArray;
 }
+
+- (NSMutableArray *)userArray {
+    if (_userArray == nil) {
+        _userArray = [[NSMutableArray alloc] init];
+    }
+    return _userArray;
+}
+
+- (NSMutableArray *)serverArray {
+    if (_serverArray == nil) {
+        _serverArray = [[NSMutableArray alloc] init];
+    }
+    return _serverArray;
+}
+
 
 @end

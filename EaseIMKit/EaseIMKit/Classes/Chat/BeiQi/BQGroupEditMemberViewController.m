@@ -235,8 +235,11 @@
                 [self showHint:@"搜索人员不存在"];
                 self.searchResultArray = [NSMutableArray array];
                 [self.searchResultTableView reloadData];
-
             }
+        }else {
+            [self showHint:@"搜索人员不存在"];
+            self.searchResultArray = [NSMutableArray array];
+            [self.searchResultTableView reloadData];
         }
         
     }];

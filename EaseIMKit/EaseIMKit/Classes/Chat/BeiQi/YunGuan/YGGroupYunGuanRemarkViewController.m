@@ -155,9 +155,9 @@
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
             if (statusCode == 200) {
-                NSDictionary *dataDic = responsedict[@"data"];
-                NSString *symNote = dataDic[@"sysDesc"];
-                NSString *ygNote = dataDic[@"businessRemark"];
+//                NSDictionary *dataDic = responsedict[@"data"];
+                NSString *symNote = responsedict[@"sysDesc"];
+                NSString *ygNote = responsedict[@"businessRemark"];
                 
                 if ([symNote isKindOfClass:[NSNull class]]) {
                     symNote = @"";

@@ -265,8 +265,7 @@
 //                NSDictionary *dataDic = responsedict[@"data"];
 //                NSString *groupId = dataDic[@"groupId"];
 
-                NSDictionary *dataDic = responsedict[@"entity"];
-                NSString *groupId = dataDic[@"groupid"];
+                NSString *groupId = responsedict[@"groupid"];
 
                 if (groupId.length > 0) {
                     [self showHint:@"创建成功"];

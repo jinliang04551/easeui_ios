@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, YGSearchGroupType) {
     YGSearchGroupTypeGroupName = 1,
+    YGSearchGroupTypeGroupId,
     YGSearchGroupTypeOrderId,
     YGSearchGroupTypePhone,
     YGSearchGroupTypeVINCode,
