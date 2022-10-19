@@ -133,9 +133,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
    
     
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(contentView).offset(EaseIMKit_StatusBarHeight);
+        make.top.equalTo(contentView).offset(EaseIMKit_StatusBarHeight + 14.0);
         make.centerX.equalTo(contentView);
-        make.height.equalTo(@25);
     }];
 
     if (!isRootNav) {

@@ -457,6 +457,7 @@
         weakSelf.nameField.text = account;
         weakSelf.pswdField.text = accountPwd;
         [weakSelf updateLoginState:YES];
+        weakSelf.isLogin = true;
     };
 }
 

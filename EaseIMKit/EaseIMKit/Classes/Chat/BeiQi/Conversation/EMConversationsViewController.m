@@ -559,31 +559,23 @@
 
             titleLabel.text = @"会话列表";
             titleLabel.textColor = [UIColor colorWithHexString:@"#171717"];
-            titleLabel.font = [UIFont systemFontOfSize:18];
+            titleLabel.font = [UIFont systemFontOfSize:16.0];
             [_titleView addSubview:titleLabel];
             [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerX.equalTo(_titleView);
-                make.top.equalTo(_titleView).offset(EaseIMKit_StatusBarHeight);
-                make.height.equalTo(@25);
-            }];
-
-            [_titleView addSubview:self.rightNavBarBtn];
-            [self.rightNavBarBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.height.equalTo(@35);
-                make.centerY.equalTo(titleLabel);
-                make.right.equalTo(_titleView).offset(-16);
+                make.top.equalTo(_titleView).offset(EaseIMKit_StatusBarHeight + 14.0);
+//                make.height.equalTo(@25);
             }];
 
         }else {
 
             titleLabel.text = @"会话列表";
             titleLabel.textColor = [UIColor colorWithHexString:@"#171717"];
-            titleLabel.font = [UIFont systemFontOfSize:18];
+            titleLabel.font = [UIFont systemFontOfSize:16.0];
             [_titleView addSubview:titleLabel];
             [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerX.equalTo(_titleView);
-                make.top.equalTo(_titleView).offset(EaseIMKit_StatusBarHeight);
-                make.height.equalTo(@25);
+                make.top.equalTo(_titleView).offset(EaseIMKit_StatusBarHeight + 14.0);
             }];
 
             [_titleView addSubview:self.rightNavBarBtn];

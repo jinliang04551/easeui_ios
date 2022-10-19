@@ -509,7 +509,6 @@
 - (UIView *)customNavBarView {
     if (_customNavBarView == nil) {
         _customNavBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, EaseIMKit_ScreenWidth, EaseIMKit_NavBarAndStatusBarHeight)];
-//        _customNavBarView.backgroundColor = UIColor.clearColor;
         
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
             [_customNavBarView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_Nav_JiHuBgColor];
@@ -523,7 +522,7 @@
         [_customNavBarView addSubview:self.confirmButton];
     
         [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_customNavBarView).offset(EaseIMKit_StatusBarHeight);
+            make.top.equalTo(_customNavBarView).offset(EaseIMKit_StatusBarHeight + 14.0);
             make.centerX.equalTo(_customNavBarView);
             make.width.equalTo(@(100.0));
         }];
@@ -532,6 +531,7 @@
             make.left.equalTo(_customNavBarView).offset(16.0);
             make.centerY.equalTo(self.titleLabel);
             make.width.equalTo(@(60.0));
+            make.height.equalTo(@(28.0));
         }];
 
         [self.confirmButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -569,7 +569,7 @@
             make.edges.equalTo(_cancelButton);
         }];
         
-        [_cancelButton addTarget:self action:@selector(cancelAction) forControlEvents:UIControlEventTouchUpInside];
+        [_cancelButton addTarget:self action:@selector(cancelAction) forControlEvents:UIControlEventTouchUpInside];     
     }
     return _cancelButton;
 }
