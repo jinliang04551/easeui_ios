@@ -129,13 +129,46 @@
     BQGroupEditMemberViewController *controller = [[BQGroupEditMemberViewController alloc] init];
     EaseIMKit_WS
     controller.addedMemberBlock = ^(NSMutableArray * _Nonnull userArray, NSMutableArray * _Nonnull serverArray) {
-        if (weakSelf.addedMemberBlock) {
-            weakSelf.addedMemberBlock(userArray, serverArray);
-        }
+        weakSelf.userArray = userArray;
+        weakSelf.serverArray = serverArray;
+        [weakSelf inviteMembers];
     };
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)inviteMembers {
+    if (self.userArray.count == 0 && self.serverArray.count ==0) {
+        return;
+    }
+    
+    [[EaseHttpManager sharedManager] inviteGroupMemberWithGroupId:self.group.groupId customerUserIds:self.userArray waiterUserIds:self.serverArray completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+       
+        if (response && response.length > 0 && statusCode) {
+            NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+            NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+            if (statusCode == 200) {
+                //group owner
+                NSString *status = responsedict[@"status"];
+                //member
+                NSString *groupId = responsedict[@"groupId"];
+
+                if (status.length > 0) {
+                    if (self.group.permissionType != EMGroupPermissionTypeOwner) {
+                        [self showHint:@"邀请成功，等待群管理员审核"];
+                    }else {
+                        [self showHint:@"邀请成员成功"];
+                    }
+                }else {
+                    [EaseAlertController showErrorAlert:@"邀请失败"];
+                }
+
+            }else {
+                [EaseAlertController showErrorAlert:@"邀请失败"];
+            }
+        }
+    }];
+}
 
 #pragma mark - Table view data source
 
@@ -286,7 +319,8 @@
                              isShowHUD:(BOOL)aIsShowHUD
 {
     if (aIsShowHUD) {
-        [self showHudInView:self.view hint:NSLocalizedString(@"fetchingGroupMembers...", nil)];
+//        [self showHudInView:self.view hint:NSLocalizedString(@"fetchingGroupMembers...", nil)];
+        
     }
     
     __weak typeof(self) weakself = self;

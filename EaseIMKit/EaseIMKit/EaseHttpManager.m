@@ -435,9 +435,9 @@
     NSString *urlString = @"";
 
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        urlString = [NSString stringWithFormat:@"%@%@/%@/group/%@/addUsers/inviter/%@/APP",self.restSeverHost,kInviteGroupMemberURL,[EMClient sharedClient].currentUsername,groupId,[EMClient sharedClient].currentUsername];
+        urlString = [NSString stringWithFormat:@"%@%@/group/%@/addUsers/inviter/%@/APP",self.restSeverHost,kInviteGroupMemberURL,groupId,[EMClient sharedClient].currentUsername];
     }else {
-        urlString = [NSString stringWithFormat:@"%@%@/%@/group/%@/addUsers/inviter/%@",self.restSeverHost,kInviteGroupMemberURL,[EMClient sharedClient].currentUsername,groupId,[EMClient sharedClient].currentUsername];
+        urlString = [NSString stringWithFormat:@"%@%@/group/%@/addUsers/inviter/%@",self.restSeverHost,kInviteGroupMemberURL,groupId,[EMClient sharedClient].currentUsername];
     }
     
     
@@ -466,8 +466,11 @@
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
         
     
-    [dict setObject:customerUserIds forKey:@"customerAids"];
-    [dict setObject:waiterUserIds forKey:@"waiterAids"];
+    [dict setObject:customerUserIds forKey:@"customerUser"];
+    [dict setObject:waiterUserIds forKey:@"waiterUser"];
+    
+//    [dict setObject:customerUserIds forKey:@"customerAids"];
+//    [dict setObject:waiterUserIds forKey:@"waiterAids"];
 
     NSLog(@"%s url:%@ headerDict:%@ dict:%@",__func__,url,headerDict,dict);
 
