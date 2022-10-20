@@ -336,10 +336,10 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 //#define DEF_APPKEY @"easemob-demo#chatdemoui"
 
 //默认appkey
-//#define DEF_APPKEY @"1100220704109048#arcfox-server"
+#define DEF_APPKEY @"1100220704109048#arcfox-server"
 
 ////场景化appkey
-#define DEF_APPKEY @"1107211020094038#demo"
+//#define DEF_APPKEY @"1107211020094038#demo"
 
 
 

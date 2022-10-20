@@ -60,6 +60,11 @@ NS_ASSUME_NONNULL_BEGIN
                             note:(NSString *)note
                       completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
 
+
+- (void)modifyGroupNameWithGroupId:(NSString *)groupId
+                         groupname:(NSString *)groupname
+                        completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+
 - (void)modifyGroupInfoWithGroupId:(NSString *)groupId
                        groupname:(NSString *)groupName
                  bussinessRemark:(NSString *)bussinessRemark

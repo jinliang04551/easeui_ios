@@ -787,29 +787,33 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         }
                 
         EaseIMKit_WS
-        [[EaseHttpManager sharedManager] modifyGroupInfoWithGroupId:weakSelf.group.groupId groupname:aString bussinessRemark:@"" completion:^(NSInteger statusCode, NSString * _Nonnull response) {
-            
-             if (response && response.length > 0 && statusCode) {
-                 NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
-                 NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-                 NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
-                 if (statusCode == 200) {
-                     NSString *status = responsedict[@"status"];
-                     
-                     if ([status isEqualToString:@"SUCCEED"]) {
-                         [weakController.navigationController popViewControllerAnimated:YES];
-                         [weakSelf showHint:@"修改群名称成功"];
-                         [weakSelf fetchGroupInfo];
-                     }
-                    
-                 }else {
-                     [EaseAlertController showErrorAlert:errorDescription];
-                 }
-             }
+        [[EaseHttpManager sharedManager] modifyGroupNameWithGroupId:weakSelf.group.groupId groupname:aString completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+        
+            if (response && response.length > 0 && statusCode) {
+                NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+                NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
+                if (statusCode == 200) {
+                    NSDictionary *data = responsedict[@"data"];
+                    BOOL status = data[@"groupname"];
+
+                    if (status) {
+                        [weakController.navigationController popViewControllerAnimated:YES];
+                        [weakSelf showHint:@"修改群名称成功"];
+                        [weakSelf fetchGroupInfo];
+                    }
+                   
+                }else {
+                    [EaseAlertController showErrorAlert:errorDescription];
+                }
+            }
             
         }];
+        
         return NO;
     }];
+
+    
 }
 
 

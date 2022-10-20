@@ -178,11 +178,12 @@
 - (void)conversationsUnreadCountUpdate:(NSInteger)unreadCount
 {
     
-//    NSInteger allUnread = EaseIMKitManager.shared.currentUnreadCount;
-//    NSInteger jhGroupUnread = EaseIMKitManager.shared.exclusivegroupUnReadCount;
-//
-//    NSLog(@"%s allUnread:%ld\n jhGroupUnread:%ld\n",__func__,allUnread,jhGroupUnread);
+    NSInteger allUnread = EaseIMKitManager.shared.currentUnreadCount;
+    NSInteger jhGroupUnread = EaseIMKitManager.shared.exclusivegroupUnReadCount;
+
+    NSLog(@"%s allUnread:%ld\n jhGroupUnread:%ld\n",__func__,allUnread,jhGroupUnread);
     
+    self.tabBarItem.badgeValue = [@(allUnread) stringValue];
 }
 
 
