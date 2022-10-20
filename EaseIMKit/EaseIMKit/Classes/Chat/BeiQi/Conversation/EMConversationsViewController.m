@@ -143,10 +143,10 @@
     self.viewModel.canRefresh = YES;
     self.viewModel.badgeLabelPosition = EMAvatarTopRight;
     
-    //极狐专属群提示无消息
-    if ([EaseIMKitOptions sharedOptions].isJiHuApp && self.enterType == EMConversationEnterTypeExclusiveGroup) {
-        self.viewModel.noDataPrompt = @"您当前未加入任何专属服务群";
-    }
+//    //极狐专属群提示无消息
+//    if ([EaseIMKitOptions sharedOptions].isJiHuApp && self.enterType == EMConversationEnterTypeExclusiveGroup) {
+//        self.viewModel.noDataPrompt = @"您当前未加入任何专属服务群";
+//    }
 
     
     self.easeConvsVC = [[EaseConversationsViewController alloc] initWithModel:self.viewModel];

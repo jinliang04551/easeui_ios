@@ -25,7 +25,8 @@ typedef NS_ENUM(NSInteger, EMMessageType) {
     EMMessageTypeExtNewFriend,
     EMMessageTypePictMixText,
     EMMessageTypeExtAddGroup,
-    EMMessageTypeExtCallState
+    EMMessageTypeExtCallState,
+    EMMessageTypeExtGroupInsertHint
 };
 
 

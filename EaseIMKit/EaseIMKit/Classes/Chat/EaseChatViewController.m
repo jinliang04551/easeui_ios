@@ -440,6 +440,12 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
             type = EaseWeakRemindSystemHint;
         }
         
+        if (model.type == EMMessageTypeExtGroupInsertHint) {
+            cellString = ((EMTextMessageBody *)(model.message.body)).text;
+            type = EaseWeakRemindSystemHint;
+        }
+        
+        
         if (model.type == EMMessageTypeExtNewFriend || model.type == EMMessageTypeExtAddGroup) {
             if ([model.message.body isKindOfClass:[EMTextMessageBody class]]) {
                 cellString = ((EMTextMessageBody *)(model.message.body)).text;
@@ -455,11 +461,21 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         if (cell == nil) {
             cell = [[EMMessageTimeCell alloc] initWithViewModel:_viewModel remindType:type];
         }
-        cell.timeLabel.text = cellString;
+        
+        NSString *userName = @"";
+        if (type == EaseWeakRemindSystemHint) {
+            EaseMessageModel *tModel = (EaseMessageModel *)obj;
+            userName = tModel.message.ext[InsertLocalMessageUserName] ?:@"";
+           
+        }
+        
+        [cell updateCellWithText:cellString userName:userName];
+
         return cell;
     }
     
     EaseMessageModel *model = (EaseMessageModel *)obj;
+    
     //add translate text
 //    if (self.delegate && [self.delegate respondsToSelector:@selector(cellForItem:messageModel:)]) {
 //        UITableViewCell *customCell = [self.delegate cellForItem:tableView messageModel:model];
@@ -493,6 +509,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     }
     return cell;
 }
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -543,6 +560,12 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         }
         
         if (model.type == EMMessageTypeExtCallState) {
+            cellString = ((EMTextMessageBody *)(model.message.body)).text;
+            type = EaseWeakRemindSystemHint;
+        }
+        
+        
+        if (model.type == EMMessageTypeExtGroupInsertHint) {
             cellString = ((EMTextMessageBody *)(model.message.body)).text;
             type = EaseWeakRemindSystemHint;
         }

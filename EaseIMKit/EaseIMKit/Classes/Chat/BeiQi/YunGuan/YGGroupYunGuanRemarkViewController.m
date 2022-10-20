@@ -277,15 +277,18 @@
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
             NSString *errorDescription = [responsedict objectForKey:@"errorDescription"];
             if (statusCode == 200) {
-                NSString *status = responsedict[@"status"];
+//                NSString *status = responsedict[@"status"];
+//
+//                if ([status isEqualToString:@"SUCCEED"]) {
+//                    [self showHint:@"修改运管备注成功"];
+//                    if(self.doneCompletion) {
+//                        self.doneCompletion(self.systemTextView.textView.text);
+//                    }
+//                    [self.navigationController popViewControllerAnimated:YES];
+//                }
                 
-                if ([status isEqualToString:@"SUCCEED"]) {
-                    [self showHint:@"修改运管备注成功"];
-                    if(self.doneCompletion) {
-                        self.doneCompletion(self.systemTextView.textView.text);
-                    }
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
+                [self showHint:@"修改运管备注成功"];
+                [self.navigationController popViewControllerAnimated:YES];
             }else {
                 [EaseAlertController showErrorAlert:errorDescription];
             }

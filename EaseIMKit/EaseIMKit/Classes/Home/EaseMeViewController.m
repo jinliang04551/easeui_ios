@@ -91,37 +91,18 @@
 
 #pragma mark private method
 - (void)logoutButtonAction {
-    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        [[EMClient sharedClient] logout:YES completion:^(EMError * _Nullable aError) {
-            if (aError == nil) {
-                EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:nil message:@"退出登录成功"];
-                [alertView show];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
-
-            }else {
-                EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:nil message:aError.errorDescription];
-                [alertView show];
-                
-                NSLog(@"err:%@",aError.errorDescription);
-            }
+    [EaseIMKitManager.shared logoutWithCompletion:^(BOOL success, NSString * _Nonnull errorMsg) {
+        if (success) {
+            EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:nil message:@"退出登录成功"];
+            [alertView show];
+        }else {
+            EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:nil message:errorMsg];
+            [alertView show];
             
-        }];
+            NSLog(@"err:%@",errorMsg);
+        }
         
-    }else {
-        [EaseIMKitManager.shared logoutWithCompletion:^(BOOL success, NSString * _Nonnull errorMsg) {
-            if (success) {
-                EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:nil message:@"退出登录成功"];
-                [alertView show];
-            }else {
-                EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:nil message:errorMsg];
-                [alertView show];
-                
-                NSLog(@"err:%@",errorMsg);
-            }
-            
-        }];
-    }
+    }];
 }
 
 - (void)goChangePasswordPage {

@@ -269,6 +269,10 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 #define MutiCallUserInfo @"userInfo"
 
 
+#define MsgExtEventType @"eventType"
+//插入本地消息的用户名
+#define InsertLocalMessageUserName @"InsertLocalMessageUserName"
+
 //用户昵称头像searchKey
 #define EaseUserNicknameKey @"EaseUserNickname"
 #define EaseUserAvatarUrlKey @"EaseUserAvatarUrl"
@@ -285,8 +289,8 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 #define EaseNotificationSendCallCreateCMDMessage @"EaseNotificationSendCallCreateCMDMessage"
 #define EaseNotificationSendCallEndCMDMessage @"EaseNotificationSendCallEndCMDMessage"
 
-//收到群组的音视频邀请或者结束通知
-#define EaseNotificationReceiveMutiCallStartOrEnd @"EaseNotificationReceiveMutiCallStartOrEnd"
+//根据收到的CMD消息插入一条本地消息
+#define EaseNotificationReceiveCMDInsertLocalTextMsg @"EaseNotificationReceiveCMDInsertLocalTextMsg"
 
 //收到群组的音视频邀请或者结束通知,更新本地数据库后刷新当前会话页面
 #define EaseNotificationReceiveMutiCallLoadConvsationDB @"EaseNotificationReceiveMutiCallLoadConvsationDB"
@@ -323,13 +327,18 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 //被服务器强制下线
 #define EaseNotificationReceiveEnforceKickOffByServer @"EaseNotificationReceiveEnforceKickOffByServer"
 
+//用户服务协议
+#define EaseUserServiceURL @"http://www.easemob.com/agreement"
+//用户隐私协议
+#define EaseUserPrivacyURL @"http://www.easemob.com/protocol"
+
 
 //#define DEF_APPKEY @"easemob-demo#chatdemoui"
 
 //默认appkey
 //#define DEF_APPKEY @"1100220704109048#arcfox-server"
 
-//场景化appkey
+////场景化appkey
 #define DEF_APPKEY @"1107211020094038#demo"
 
 

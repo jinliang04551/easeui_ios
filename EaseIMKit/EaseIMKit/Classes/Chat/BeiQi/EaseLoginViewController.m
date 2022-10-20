@@ -355,10 +355,12 @@
      interaction:(UITextItemInteraction)interaction{
     NSString *urlString = @"";
     if ([URL.scheme isEqualToString:@"privacy"]) {
+        urlString = EaseUserPrivacyURL;
         [self goWebViewWithURLString:urlString];
     }
     
     if ([URL.scheme isEqualToString:@"sevice"]) {
+        urlString = EaseUserServiceURL;
         [self goWebViewWithURLString:urlString];
     }
     
@@ -634,8 +636,8 @@
         
         
         NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithString:@"同意《环信服务条款》与《环信隐私协议》，未注册手机号登陆成功后将自动注册。"];
-        [att addAttribute:NSLinkAttributeName value:@"privacy://" range:[att.string rangeOfString:@"《环信服务条款》"]];
-        [att addAttribute:NSLinkAttributeName value:@"sevice://" range:[att.string rangeOfString:@"《环信隐私协议》"]];
+        [att addAttribute:NSLinkAttributeName value:@"sevice://" range:[att.string rangeOfString:@"《环信服务条款》"]];
+        [att addAttribute:NSLinkAttributeName value:@"privacy://" range:[att.string rangeOfString:@"《环信隐私协议》"]];
         [att addAttribute:NSForegroundColorAttributeName value:EaseIMKit_COLOR_HEX(0xBCC2D8) range:NSMakeRange(0, att.string.length)];
 
         _privacyTextView.attributedText = att;

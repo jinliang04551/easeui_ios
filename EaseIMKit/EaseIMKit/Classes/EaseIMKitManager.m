@@ -126,8 +126,11 @@ static NSString *g_UIKitVersion = @"1.0.0";
     [[UserInfoStore sharedInstance] loadInfosFromLocal];
           
     EaseCallConfig* config = [[EaseCallConfig alloc] init];
+    //IMDemo
 //    config.agoraAppId = @"15cb0d28b87b425ea613fc46f7c9f974";
-    config.agoraAppId = @"943bfefbbfb54b3cac36507a1b006a9f";
+//    config.agoraAppId = @"943bfefbbfb54b3cac36507a1b006a9f";
+    //场景化
+    config.agoraAppId = @"ef08027a58494df2acd7c740d20c7835";
 
     config.enableRTCTokenValidate = YES;
 
@@ -1265,7 +1268,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
 }
 
 - (void)logoutWithCompletion:(void (^)(BOOL success,NSString *errorMsg))completion {
-    
+        
     [self logoutWithIMSDKWithCompletion:completion];
     
 //    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
@@ -1285,7 +1288,6 @@ static NSString *g_UIKitVersion = @"1.0.0";
 //        }];
 //
 //    }
-    
     
 }
 

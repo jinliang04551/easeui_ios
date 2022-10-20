@@ -80,7 +80,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNavigationTitle) name:CHATROOM_INFO_UPDATED object:nil];
     
     //接收通话邀请或者结束时，在当前会话页面
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMutiCallStartOrEnd:) name:EaseNotificationReceiveMutiCallStartOrEnd object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMutiCallStartOrEnd:) name:EaseNotificationReceiveCMDInsertLocalTextMsg object:nil];
 
     
     

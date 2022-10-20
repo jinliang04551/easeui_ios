@@ -254,29 +254,19 @@ static EaseIMHelper *helper = nil;
     NSString *callUser = cmdMessage.ext[MutiCallCallUser];
 
     NSString *msgText = @"";
+    NSString *userName = @"";
+
     if ([callState isEqualToString:MutiCallCreateCall]) {
-        msgText = [NSString stringWithFormat:@"%@ 发起了语音通话",callUser];
+        msgText = @"发起了语音通话";
+        userName = callUser;
     }else {
         msgText = @"语音通话已经结束";
     }
     NSLog(@"%s msgText:%@",__func__,msgText);
-       
-    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:msgText];
-        
-    EMChatMessage *message = [[EMChatMessage alloc] initWithConversationID:cmdMessage.conversationId from:cmdMessage.from to:cmdMessage.to body:body ext:cmdMessage.ext];
     
-    message.chatType = cmdMessage.chatType;
-    message.isRead = YES;
-    message.timestamp = cmdMessage.timestamp;
-    message.localTime = cmdMessage.localTime;
-    message.messageId = cmdMessage.messageId;
-    
-    
-    EMConversation *groupChat =  [[EMClient sharedClient].chatManager getConversation:cmdMessage.conversationId type:EMConversationTypeGroupChat createIfNotExist:YES];
-    
-    [groupChat insertMessage:message error:nil];
-        
-    [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveMutiCallStartOrEnd object:message];
+
+    [self insertHintMsgWithCMDMsg:cmdMessage text:msgText userName:userName];
+
 }
 
 
@@ -301,9 +291,14 @@ static EaseIMHelper *helper = nil;
                 if (isExGroup) {
                     groupConv.ext = @{@"JiHuExGroupChat":@(YES)};
                 }
-
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveCMDCreateGroupChat object:nil];
+                NSString *groupName = ext[@"groupName"];
+                NSString *hintText = [NSString stringWithFormat:@"群[%@]创建成功",groupName];
+                NSLog(@"%s hintText:%@",__func__,hintText);
+                
+                [self insertHintMsgWithCMDMsg:msg text:hintText userName:@""];
+                
+//                [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveCMDCreateGroupChat object:nil];
             } else {
                 // do nothing
             }
@@ -322,15 +317,36 @@ static EaseIMHelper *helper = nil;
         NSString *userName = ext[@"userName"];
         NSString *groupName = [EMGroup groupWithId:msg.to].groupName;
 
+        NSString *hintText = @"加入了群聊";
         
-        
-//        NSString *message = [NSString stringWithFormat:@"%@加入%@",userName,groupName];
-//
-//        EaseAlertView *alertView = [[EaseAlertView alloc] initWithTitle:@"提示" message:message];
-//        [alertView show];
-
+        [self insertHintMsgWithCMDMsg:msg text:hintText userName:userName];
     }
+}
+
+- (void)insertHintMsgWithCMDMsg:(EMChatMessage *)cmdMessage
+                           text:(NSString *)hintText
+                       userName:(NSString *)userName {
+    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:hintText];
+        
+    NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:cmdMessage.ext];
+    ext[InsertLocalMessageUserName] = userName;
     
+    
+    EMChatMessage *message = [[EMChatMessage alloc] initWithConversationID:cmdMessage.conversationId from:cmdMessage.from to:cmdMessage.to body:body ext:ext];
+    
+    message.chatType = cmdMessage.chatType;
+    message.isRead = YES;
+    message.timestamp = cmdMessage.timestamp;
+    message.localTime = cmdMessage.localTime;
+    message.messageId = cmdMessage.messageId;
+    
+    
+    EMConversation *groupChat =  [[EMClient sharedClient].chatManager getConversation:cmdMessage.conversationId type:EMConversationTypeGroupChat createIfNotExist:YES];
+    
+    [groupChat insertMessage:message error:nil];
+        
+    [[NSNotificationCenter defaultCenter] postNotificationName:EaseNotificationReceiveCMDInsertLocalTextMsg object:message];
+
 }
 
 

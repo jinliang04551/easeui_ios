@@ -9,6 +9,7 @@
 #import "EMMessageTimeCell.h"
 #import "Easeonry.h"
 #import "UIColor+EaseUI.h"
+#import "EaseKitUtil.h"
 
 @implementation EMMessageTimeCell
 
@@ -37,6 +38,21 @@
     }
     
     return self;
+}
+
+- (void)updateCellWithText:(NSString *)text     
+                  userName:(NSString *)userName {
+    
+    NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] init];
+    
+    NSAttributedString *tString = [EaseKitUtil attributeContent:userName color:[UIColor colorWithHexString:@"#4798CB"] font:self.timeLabel.font];
+    
+    NSAttributedString *gString = [EaseKitUtil attributeContent:text color:[UIColor colorWithHexString:@"#ADADAD"] font:self.timeLabel.font];
+    
+    [mutableAttString appendAttributedString:tString];
+    [mutableAttString appendAttributedString:gString];
+
+    self.timeLabel.attributedText = mutableAttString;
 }
 
 - (void)awakeFromNib {

@@ -101,7 +101,7 @@ EMSearchBarDelegate
                                              selector:@selector(refreshTabView)
                                                  name:CONVERSATIONLIST_UPDATE object:nil];
     //接收通话邀请或者结束时
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMutiCallStartOrEnd:) name:EaseNotificationReceiveMutiCallStartOrEnd object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMutiCallStartOrEnd:) name:EaseNotificationReceiveCMDInsertLocalTextMsg object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMutiDeviceNoDisturb:) name:EaseNotificationReceiveMutiDeviceNoDisturb object:nil];
     
@@ -526,25 +526,25 @@ EMSearchBarDelegate
         
         for (EMConversation *conv in conversations) {
                         
-            if (self.enterType == EMConversationEnterTypeExclusiveGroup) {
-                BOOL isExgroup = conv.ext[@"JiHuExGroupChat"];
-                NSLog(@"conv:%@ isExgroup:%@",conv.conversationId,@(isExgroup));
-
-                //非极狐专属群过滤
-                if (!isExgroup) {
-                    continue;
-                }else {
-//                    NSLog(@"======isExgroup=========");
-                }
-            }
-
-            if (self.enterType == EMConversationEnterTypeMyChat) {
-                BOOL isExgroup = conv.ext[@"JiHuExGroupChat"];
-                //过滤极狐专属群
-                if (isExgroup) {
-                    continue;
-                }
-            }
+//            if (self.enterType == EMConversationEnterTypeExclusiveGroup) {
+//                BOOL isExgroup = conv.ext[@"JiHuExGroupChat"];
+//                NSLog(@"conv:%@ isExgroup:%@",conv.conversationId,@(isExgroup));
+//
+//                //非极狐专属群过滤
+//                if (!isExgroup) {
+//                    continue;
+//                }else {
+//                }
+//            }
+//
+//            if (self.enterType == EMConversationEnterTypeMyChat) {
+//                BOOL isExgroup = conv.ext[@"JiHuExGroupChat"];
+//                //过滤极狐专属群
+//                if (isExgroup) {
+//                    continue;
+//                }
+//            }
+            
             
 #warning  temp note for generate local null conv
 //            if (!conv.latestMessage) {

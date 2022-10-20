@@ -37,10 +37,21 @@
                 return self;
             }
             
+            //音视频开始，结束
             if ([[aMsg.ext objectForKey:MutiCallCallState] isEqualToString:MutiCallCreateCall] ||[[aMsg.ext objectForKey:MutiCallCallState] isEqualToString:MutiCallEndCall]) {
                 _type = EMMessageTypeExtCallState;
                 return self;
             }
+            
+            //群组创建，成员加入
+            //eventType = groupCreate;
+            //eventType = groupJoin;
+
+            if ([[aMsg.ext objectForKey:@"eventType"] isEqualToString:@"groupCreate"] ||[[aMsg.ext objectForKey:@"eventType"] isEqualToString:@"groupJoin"]) {
+                _type = EMMessageTypeExtGroupInsertHint;
+                return self;
+            }
+            
             
             NSString *conferenceId = [aMsg.ext objectForKey:@"conferenceId"];
             if ([conferenceId length] == 0)
