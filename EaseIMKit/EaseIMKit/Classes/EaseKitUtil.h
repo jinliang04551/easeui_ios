@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)appendAPNSAndUserInfoExtWithMessage:(EMChatMessage *)msg;
 
-
++ (BOOL)isValidateMobile:(NSString *)mobile;
 
 @end
 

@@ -50,6 +50,9 @@
 @property (nonatomic,strong) UITextView *privacyTextView;
 @property (nonatomic,strong) UILabel *hintLabel;
 
+//是否是预置账号
+@property (nonatomic,assign) BOOL isPreAccount;
+
 @end
 
 @implementation EaseLoginViewController
@@ -310,15 +313,20 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if ([string isEqualToString:@"\n"]) {
-        [textField resignFirstResponder];
-        return NO;
-    }
+//    if ([string isEqualToString:@"\n"]) {
+//        [textField resignFirstResponder];
+//        return NO;
+//    }
+    
     if (textField == self.nameField) {
         self.userIdRightView.hidden = NO;
-        if ([self.nameField.text length] <= 1 && [string isEqualToString:@""])
+        if ([self.nameField.text length] <= 1 && [string isEqualToString:@""]){
             self.userIdRightView.hidden = YES;
+            
+            [self updateUIWithIsPreAccount:NO];
+        }
     }
+    
     if (textField == self.pswdField) {
         NSString *updatedString = [textField.text stringByReplacingCharactersInRange:range withString:string];
         textField.text = updatedString;
@@ -375,6 +383,8 @@
 {
     self.nameField.text = @"";
     self.userIdRightView.hidden = YES;
+    
+    [self updateUIWithIsPreAccount:NO];
 }
 
 
@@ -391,18 +401,24 @@
     }
     [self.contentView endEditing:YES];
     
-    
+    NSString *name = self.nameField.text;
+    NSString *pswd = self.pswdField.text;
+
     if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         if (!self.checkedButton.isSelected) {
             [self showPrivacyAlertView];
             return;
         }
+    }else {
+        if (!self.isPreAccount) {
+            if (![EaseKitUtil isValidateMobile:name]) {
+                [self showHint:@"手机号格式不正确，请重新输入"];
+                return;
+            }
+        }
     }
     
-    NSString *name = self.nameField.text;
-    NSString *pswd = self.pswdField.text;
-
-
+    
     [self showHudInView:self.view hint:@"登录中"];
     
     [EaseIMKitManager.shared loginWithUserName:[name lowercaseString] password:pswd completion:^(NSInteger statusCode, NSString * _Nonnull response) {
@@ -460,8 +476,22 @@
         weakSelf.pswdField.text = accountPwd;
         [weakSelf updateLoginState:YES];
         weakSelf.isLogin = true;
+        [weakSelf updateUIWithIsPreAccount:YES];
     };
 }
+
+- (void)updateUIWithIsPreAccount:(BOOL)isPreAccount {
+    self.isPreAccount = isPreAccount;
+    if (self.isPreAccount) {
+        self.pswdField.rightView = nil;
+        self.pswdField.secureTextEntry = YES;
+    }else {
+        self.pswdField.text = @"";
+        self.pswdField.rightView = self.pswdRightView;
+    }
+}
+
+
 
 - (void)showPrivacyAlertView {
     EasePrivacyAlertView* alert = [[EasePrivacyAlertView alloc] init];
@@ -480,6 +510,7 @@
     };
     
 }
+
 
 - (void)goWebViewWithURLString:(NSString *)urlString {
     EaseWebViewController *webVC = [[EaseWebViewController alloc] initWithURLString:urlString];
@@ -504,7 +535,7 @@
         _nameField.backgroundColor = [UIColor whiteColor];
         _nameField.delegate = self;
         _nameField.borderStyle = UITextBorderStyleNone;
-        _nameField.placeholder = NSLocalizedString(@"userId", nil);
+        _nameField.placeholder = @"请输入手机号";
         _nameField.returnKeyType = UIReturnKeyGo;
         _nameField.font = [UIFont systemFontOfSize:17];
         _nameField.rightViewMode = UITextFieldViewModeWhileEditing;
@@ -537,7 +568,7 @@
         _pswdField.backgroundColor = [UIColor whiteColor];
         _pswdField.delegate = self;
         _pswdField.borderStyle = UITextBorderStyleNone;
-        _pswdField.placeholder = NSLocalizedString(@"password", nil);
+        _pswdField.placeholder = @"请输入密码";
         _pswdField.font = [UIFont systemFontOfSize:17];
         _pswdField.returnKeyType = UIReturnKeyGo;
         _pswdField.secureTextEntry = YES;
@@ -635,7 +666,7 @@
         _privacyTextView.font = EaseIMKit_NFont(12.0);
         
         
-        NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithString:@"同意《环信服务条款》与《环信隐私协议》，未注册手机号登陆成功后将自动注册。"];
+        NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithString:@"同意《环信服务条款》与《环信隐私协议》，未注册手机号登录成功后将自动注册。"];
         [att addAttribute:NSLinkAttributeName value:@"sevice://" range:[att.string rangeOfString:@"《环信服务条款》"]];
         [att addAttribute:NSLinkAttributeName value:@"privacy://" range:[att.string rangeOfString:@"《环信隐私协议》"]];
         [att addAttribute:NSForegroundColorAttributeName value:EaseIMKit_COLOR_HEX(0xBCC2D8) range:NSMakeRange(0, att.string.length)];

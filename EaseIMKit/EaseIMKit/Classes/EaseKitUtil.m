@@ -359,4 +359,10 @@
     
 }
 
++ (BOOL)isValidateMobile:(NSString *)mobile {
+    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",@"^(86)+1+[0-9]{10}$"];
+    BOOL result = [predicate evaluateWithObject:mobile];
+    return result;
+}
+
 @end

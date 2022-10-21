@@ -195,6 +195,7 @@
     }
     
     if ([_model respondsToSelector:@selector(showName)]) {
+        
         self.nameLabel.text = _model.showName;
     }
     

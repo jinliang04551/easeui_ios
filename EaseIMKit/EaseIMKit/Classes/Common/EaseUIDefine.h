@@ -105,4 +105,7 @@
 
 #define KEaseCallStreamViewWidth EaseIMKit_ScreenWidth * 0.5
 
+//手机号正则
+#define kMobilePhoneRegular @"/^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/"
+
 #endif /* EaseUIDefine_h */
