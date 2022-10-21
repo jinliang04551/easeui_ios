@@ -120,8 +120,8 @@ MISScrollPageControllerDelegate>
 - (void)setTitleAndContentVC {
     
     self.navTitleArray = [
-        @[@"维保订单",@"取送订单",@"精品订单",@"服务订单"] mutableCopy];
-    self.contentVCArray = [@[self.order1VC,self.order2VC,self.order3VC,self.order4VC] mutableCopy];
+        @[@"精品订单",@"服务套餐订单"] mutableCopy];
+    self.contentVCArray = [@[self.order1VC,self.order2VC] mutableCopy];
     
 }
 

@@ -162,6 +162,7 @@
    
     id obj = self.dataArray[indexPath.row - 1];
     [banMemberCell updateWithObj:obj];
+    [banMemberCell.operateButton setTitle:@"移除管理员" forState:UIControlStateNormal];
     banMemberCell.removeMemberBlock = ^(NSString * _Nonnull userId) {
         [weakSelf updateUIWithRemoveAdminUserId:userId];
     };

@@ -532,7 +532,7 @@
             [_titleView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_Nav_JiHuBgColor];
 
         }else {
-            [_titleView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
+            [_titleView addTransitionColorLeftToRight:EaseIMKit_NavBgColor endColor:EaseIMKit_NavBgColor];
         }
         
         UILabel *titleLabel = [[UILabel alloc] init];

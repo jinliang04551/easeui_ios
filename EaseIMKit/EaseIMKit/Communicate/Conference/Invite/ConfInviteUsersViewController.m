@@ -514,7 +514,7 @@
             [_customNavBarView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_Nav_JiHuBgColor];
 
         }else {
-            [_customNavBarView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
+            [_customNavBarView addTransitionColorLeftToRight:EaseIMKit_NavBgColor endColor:EaseIMKit_NavBgColor];
         }
         
         [_customNavBarView addSubview:self.titleLabel];

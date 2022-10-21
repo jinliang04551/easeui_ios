@@ -47,11 +47,7 @@
 
 //    self.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 
-    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        [self addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_Nav_JiHuBgColor];
-    }else {
-        [self addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
-    }
+    [self addTransitionColorLeftToRight:EaseIMKit_NavBgColor endColor:EaseIMKit_NavBgColor];
     
     
     [self addSubview:self.leftBackButton];

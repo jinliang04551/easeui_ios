@@ -114,7 +114,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         [contentView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_Nav_JiHuBgColor];
 
     }else {
-        [contentView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
+        [contentView addTransitionColorLeftToRight:EaseIMKit_NavBgColor endColor:EaseIMKit_NavBgColor];
     }
     
 
@@ -210,7 +210,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         [contentView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_Nav_JiHuBgColor];
     }else {
-        [contentView addTransitionColorLeftToRight:UIColor.whiteColor endColor:EaseIMKit_NavBgColor];
+        [contentView addTransitionColorLeftToRight:EaseIMKit_NavBgColor endColor:EaseIMKit_NavBgColor];
     }
 
     

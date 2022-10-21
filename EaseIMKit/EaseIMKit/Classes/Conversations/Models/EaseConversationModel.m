@@ -139,7 +139,12 @@
     NSString *nickname = [EaseKitUtil fetchUserDicWithUserId:msg.from][EaseUserNicknameKey];
     
     if (_conversation.type == EMConversationTypeGroupChat) {
-        _showInfo = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@: %@",nickname,msgStr]];
+        NSString *userName = msg.ext[InsertLocalMessageUserName];
+        if (userName.length > 0) {
+            _showInfo = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",userName,msgStr]];
+        }else {
+            _showInfo = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@: %@",nickname,msgStr]];
+        }
     }else {
         _showInfo = [[NSMutableAttributedString alloc] initWithString:msgStr];
     }

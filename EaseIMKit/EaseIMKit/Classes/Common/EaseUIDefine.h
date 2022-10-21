@@ -93,10 +93,12 @@
 
 #define EaseIMKit_Color_Blue [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0]
 
-#define EaseIMKit_NavBgColor EaseIMKit_COLOR_HEX(0x87CEEB)
+//#define EaseIMKit_NavBgColor EaseIMKit_COLOR_HEX(0xfedcbd)
 
-//#define EaseIMKit_Nav_JiHuBgColor EaseIMKit_COLOR_HEX(0x8f4b2e)
-#define EaseIMKit_Nav_JiHuBgColor EaseIMKit_COLOR_HEX(0xfedcbd)
+#define EaseIMKit_NavBgColor EaseIMKit_COLOR_HEX(0xF5F5F5)
+
+#define EaseIMKit_Nav_JiHuBgColor EaseIMKit_COLOR_HEX(0x87CEEB)
+
 
 #define EaseIMKit_Default_BgBlue_Color EaseIMKit_COLOR_HEX(0x4461F2)
 

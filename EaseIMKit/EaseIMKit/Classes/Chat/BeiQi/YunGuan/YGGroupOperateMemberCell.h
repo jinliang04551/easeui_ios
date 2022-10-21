@@ -12,6 +12,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface YGGroupOperateMemberCell : BQCustomCell
+@property (nonatomic, strong) UIButton* operateButton;
+
 @property (nonatomic, copy) void (^removeMemberBlock)(NSString *userId);
 
 @end

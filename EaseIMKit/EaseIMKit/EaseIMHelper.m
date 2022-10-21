@@ -185,7 +185,8 @@ static EaseIMHelper *helper = nil;
                                      ext:(id)aExt
 {
     NSString *message = [NSString stringWithFormat:@"%li-%@-%@", (long)aEvent, aGroupId, aExt];
-    [self showAlertWithTitle:NSLocalizedString(@"multiDevices[Group]", nil) message:message];
+//    [self showAlertWithTitle:NSLocalizedString(@"multiDevices[Group]", nil) message:message];
+    
 }
 
 #pragma mark - EMChatManagerDelegate

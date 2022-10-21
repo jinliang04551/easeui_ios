@@ -123,7 +123,7 @@
 {
     self.conversationsController = [[EMConversationsViewController alloc]init];
 
-    UITabBarItem *consItem = [self _setupTabBarItemWithTitle:@"会话" imgName:@"ease_tab_chat" selectedImgName:@"ease_tab_chat_hl" tag:kTabbarItemTag_Conversation];
+    UITabBarItem *consItem = [self _setupTabBarItemWithTitle:@"专属服务" imgName:@"ease_tab_chat" selectedImgName:@"ease_tab_chat_hl" tag:kTabbarItemTag_Conversation];
     self.conversationsController.tabBarItem = consItem;
     [self addChildViewController:self.conversationsController];
     

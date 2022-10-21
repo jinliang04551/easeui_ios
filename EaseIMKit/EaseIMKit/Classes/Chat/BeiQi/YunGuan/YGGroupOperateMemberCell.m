@@ -12,7 +12,6 @@
 
 @interface YGGroupOperateMemberCell ()
 @property (nonatomic, strong) UIImageView* accessoryImageView;
-@property (nonatomic, strong) UIButton* unBanButton;
 @property (nonatomic, strong) NSString* userId;
 
 @end
@@ -23,7 +22,7 @@
 - (void)prepare {
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.nameLabel];
-    [self.contentView addSubview:self.unBanButton];
+    [self.contentView addSubview:self.operateButton];
     
 }
 
@@ -39,13 +38,13 @@
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.iconImageView.mas_right).offset(8.0f);
-        make.right.equalTo(self.unBanButton.mas_left);
+        make.right.equalTo(self.operateButton.mas_left);
     }];
     
-    [self.unBanButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.operateButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.nameLabel);
         make.right.equalTo(self.contentView).offset(-16.0f);
-        make.width.equalTo(@(58.0));
+        make.width.equalTo(@(72.0));
         make.height.equalTo(@(28.0));
     }];
 
@@ -67,16 +66,20 @@
 }
 
 #pragma mark getter and setter
-- (UIButton *)unBanButton {
-    if (_unBanButton == nil) {
-        _unBanButton = [[UIButton alloc] init];
-
-        [_unBanButton setImage:[UIImage easeUIImageNamed:@"yg_unMute"] forState:UIControlStateNormal];
-        [_unBanButton addTarget:self action:@selector(unBanButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        _unBanButton.backgroundColor = EaseIMKit_Default_BgBlue_Color;
-        _unBanButton.layer.cornerRadius = 4.0;
+- (UIButton *)operateButton {
+    if (_operateButton == nil) {
+        _operateButton = [[UIButton alloc] init];
+        
+        [_operateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_operateButton setTitle:@"解禁" forState:UIControlStateNormal];
+        _operateButton.titleLabel.font = EaseIMKit_NFont(12.0);
+        
+        
+        [_operateButton addTarget:self action:@selector(unBanButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        _operateButton.backgroundColor = EaseIMKit_Default_BgBlue_Color;
+        _operateButton.layer.cornerRadius = 4.0;
     }
-    return _unBanButton;
+    return _operateButton;
 }
 
 

@@ -409,15 +409,14 @@
             [self showPrivacyAlertView];
             return;
         }
-    }else {
-        if (!self.isPreAccount) {
-            if (![EaseKitUtil isValidateMobile:name]) {
-                [self showHint:@"手机号格式不正确，请重新输入"];
-                return;
-            }
-        }
     }
     
+    if (!self.isPreAccount) {
+        if (![EaseKitUtil isValidateMobile:name]) {
+            [self showHint:@"手机号格式不正确，请重新输入"];
+            return;
+        }
+    }
     
     [self showHudInView:self.view hint:@"登录中"];
     
