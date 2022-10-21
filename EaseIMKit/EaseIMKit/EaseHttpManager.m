@@ -306,6 +306,8 @@
         [dict setObject:customerUserIds forKey:@"customerAids"];
         [dict setObject:waiterUserIds forKey:@"waiterAids"];
         [dict setObject:@(YES) forKey:@"action"];
+        [dict setObject:groupInterduce forKey:@"desc"];
+
     
     NSLog(@"%s url:%@\n headerDict:%@\n request dict:%@\n",__func__,url,headerDict,dict);
 
