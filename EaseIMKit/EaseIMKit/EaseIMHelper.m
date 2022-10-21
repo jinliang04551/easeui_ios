@@ -371,6 +371,9 @@ static EaseIMHelper *helper = nil;
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"agreeJoinGroup", nil),[NSString stringWithFormat:@"「%@」",aGroup.groupName]];
 //    EaseAlertView *alertView = [[EaseAlertView alloc]initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message];
 //    [alertView show];
+    
+    //刷新会话列表
+    [[NSNotificationCenter defaultCenter] postNotificationName:CONVERSATIONLIST_UPDATE object:nil];
 }
 
 - (void)didJoinedGroup:(EMGroup *)aGroup

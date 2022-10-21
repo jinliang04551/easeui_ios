@@ -589,7 +589,9 @@ static NSString *g_UIKitVersion = @"1.0.0";
 //加好友，加群 成功通知
 - (void)notificationMsg:(NSString *)itemId aUserName:(NSString *)aUserName conversationType:(EMConversationType)aType
 {
+    
     return;
+    
     EMConversationType conversationType = aType;
     EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:itemId type:conversationType createIfNotExist:YES];
     EMTextMessageBody *body;

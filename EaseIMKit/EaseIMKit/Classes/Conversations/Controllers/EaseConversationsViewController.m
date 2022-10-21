@@ -100,8 +100,8 @@ EMSearchBarDelegate
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshTabView)
                                                  name:CONVERSATIONLIST_UPDATE object:nil];
-    //接收通话邀请或者结束时
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMutiCallStartOrEnd:) name:EaseNotificationReceiveCMDInsertLocalTextMsg object:nil];
+    //本地插入提示消息
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveCMDInsertLocalTextMsg:) name:EaseNotificationReceiveCMDInsertLocalTextMsg object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMutiDeviceNoDisturb:) name:EaseNotificationReceiveMutiDeviceNoDisturb object:nil];
     
@@ -131,7 +131,7 @@ EMSearchBarDelegate
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)receiveMutiCallStartOrEnd:(NSNotification *)notify {
+- (void)receiveCMDInsertLocalTextMsg:(NSNotification *)notify {
     EMChatMessage *msg = notify.object;
     self.mutiCallMsgId = msg.messageId;
     [self refreshTabView];

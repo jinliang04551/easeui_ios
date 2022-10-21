@@ -504,8 +504,9 @@ static EaseCallManager *easeCallManager = nil;
     if(aType == EaseCallType1v1Video)
         strType = EaseLocalizableString(@"video", nil);
     
-    EMTextMessageBody* msgBody = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat: EaseLocalizableString(@"inviteInfo", nil),strType]];
-//    EMCmdMessageBody *msgBody = [[EMCmdMessageBody alloc] initWithAction:@"callInvite"];
+//    EMTextMessageBody* msgBody = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat: EaseLocalizableString(@"inviteInfo", nil),strType]];
+
+    EMCmdMessageBody *msgBody = [[EMCmdMessageBody alloc] initWithAction:@"callInvite"];
     
     NSMutableDictionary* ext = [@{kMsgType:kMsgTypeValue,kAction:kInviteAction,kCallId:aCallId,kCallType:[NSNumber numberWithInt:(int)aType],kCallerDevId:self.modal.curDevId,kChannelName:aChannelName,kTs:[self getTs]} mutableCopy];
     if(aExt && aExt.count > 0) {

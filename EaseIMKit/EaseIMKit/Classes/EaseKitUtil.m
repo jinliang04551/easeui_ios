@@ -176,7 +176,7 @@
 
 
 + (NSString *)getContentWithMsg:(EMChatMessage *)msg {
-    NSString *msgStr = nil;
+    NSString *msgStr = @"";
     switch (msg.body.type) {
         case EMMessageBodyTypeText:
         {

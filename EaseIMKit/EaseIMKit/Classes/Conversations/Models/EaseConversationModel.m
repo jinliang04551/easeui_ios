@@ -222,9 +222,12 @@
 }
 
 - (NSString *)showName {
-    if (_userDelegate && [_userDelegate respondsToSelector:@selector(showName)]) {
-        return _userDelegate.showName;
+    if (self.type == EMConversationTypeChat) {
+        if (_userDelegate && [_userDelegate respondsToSelector:@selector(showName)]) {
+            return _userDelegate.showName;
+        }
     }
+    
     
     if (self.type == EMConversationTypeGroupChat) {
         NSString *str = [EMGroup groupWithId:_conversation.conversationId].groupName;
