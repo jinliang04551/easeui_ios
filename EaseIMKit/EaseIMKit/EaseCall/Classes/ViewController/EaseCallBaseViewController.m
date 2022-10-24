@@ -19,6 +19,7 @@
 #define kButtonItemSize 64.0
 
 @interface EaseCallBaseViewController ()
+@property (nonatomic, assign) BOOL isMoving;
 
 @end
 
@@ -299,6 +300,47 @@
         self.floatingView.nameLabel.text = [NSString stringWithFormat:@"%02d:%02d", m, s];
     }
 }
+
+
+//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+//    [super touchesBegan:touches withEvent:event];
+//
+//    UITouch *touch = [touches anyObject];
+//
+//    CGPoint point = [touch locationInView:self.view];
+//
+//    CALayer *touchedLayer = [self.view.layer hitTest:point];
+//
+//    if(touchedLayer == self.floatingView.layer){
+//        self.isMoving = YES;
+//    }
+//}
+//
+//- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+//    [super touchesMoved:touches withEvent:event];
+//
+//    if(!self.isMoving){
+//        return;
+//    }
+//
+//    UITouch *touch = [touches anyObject];
+//
+//    CGPoint current = [touch locationInView:self.view];
+//    CGPoint previous = [touch previousLocationInView:self.view];
+//
+//    CGPoint center = self.floatingView.center;
+//
+//    CGPoint offset = CGPointMake(current.x - previous.x, current.y - previous.y);
+//
+//    self.floatingView.center = CGPointMake(center.x + offset.x, center.y + offset.y);
+//}
+//
+//
+//- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+//    [super touchesEnded:touches withEvent:event];
+//
+//    self.isMoving = NO;
+//}
 
 /*
 #pragma mark - Navigation

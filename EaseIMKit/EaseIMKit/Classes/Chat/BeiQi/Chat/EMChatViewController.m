@@ -417,6 +417,8 @@
     }
     [menuArray addObject:defaultLongPressItems[1]];
     
+    [menuArray addObject:defaultLongPressItems[2]];
+    
 //    //更多消息
 //    __weak typeof(self) weakself = self;
 //    if (message.body.type == EMMessageBodyTypeText || message.body.type == EMMessageBodyTypeImage || message.body.type == EMMessageBodyTypeLocation || message.body.type == EMMessageBodyTypeVideo) {
@@ -442,9 +444,17 @@
 //    }
     
     
-    if ([defaultLongPressItems count] >= 3 && [message.from isEqualToString:EMClient.sharedClient.currentUsername]) {
-        [menuArray addObject:defaultLongPressItems[2]];
+    if ([defaultLongPressItems count] >= 4 && [message.from isEqualToString:EMClient.sharedClient.currentUsername]) {
+        [menuArray insertObject:defaultLongPressItems[3] atIndex:2];
     }
+    
+//    if ([defaultLongPressItems count] >= 4) {
+//        [menuArray addObject:defaultLongPressItems[3]];
+//    }else {
+//        [menuArray addObject:defaultLongPressItems[2]];
+//    }
+    
+
     return menuArray;
 }
 

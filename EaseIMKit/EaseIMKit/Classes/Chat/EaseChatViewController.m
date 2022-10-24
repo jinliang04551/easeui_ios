@@ -753,7 +753,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     BOOL isCustomCell = NO;
     [extMenuArray addObject:copyExtModel];
     [extMenuArray addObject:deleteExtModel];
+    //创建工单
     [extMenuArray addObject:createOrderMenu];
+    
     if (![aCell isKindOfClass:[EaseMessageCell class]]) {
         [extMenuArray addObject:recallExtModel];
         isCustomCell = YES;
@@ -765,6 +767,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
             [extMenuArray addObject:recallExtModel];
         }
     }
+ 
+
     if (isCustomCell) {
         if (self.delegate && [self.delegate respondsToSelector:@selector(customCellLongPressExtMenuItemArray:customCell:)]) {
             //自定义cell长按
