@@ -355,7 +355,7 @@
 
     msg.ext = [dic copy];
     
-    NSLog(@"%s msg.txt:%@",__func__,msg.ext);
+    NSLog(@"%s msg.ext:%@",__func__,msg.ext);
     
 }
 

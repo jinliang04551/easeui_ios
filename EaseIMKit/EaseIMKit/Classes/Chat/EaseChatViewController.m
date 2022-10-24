@@ -215,6 +215,7 @@
     
     [self updateConvastionDraft];
 
+    [self hideLongPressView];
 }
 
 - (void)dealloc
@@ -364,6 +365,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 
 #pragma mark - private method
 - (void)showMutipleSelectedMode {
+    [self.chatBar.textView resignFirstResponder];
     [self.tableView removeGestureRecognizer:self.tap];
 
     _isReloadViewWithModel = YES;
@@ -1243,6 +1245,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     NSString *from = [[EMClient sharedClient] currentUsername];
     NSString *to = self.currentConversation.conversationId;
     EMChatMessage *message = [[EMChatMessage alloc] initWithConversationID:to from:from to:to body:aBody ext:aExt];
+    
+    NSLog(@"%s aExt:%@",__func__,aExt);
+    
 //    //是否需要发送阅读回执
 //    if([aExt objectForKey:MSG_EXT_READ_RECEIPT]) {
 //        message.isNeedGroupAck = YES;
@@ -1459,7 +1464,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
             make.left.equalTo(_editingBottomView);
             make.width.equalTo(@(EaseIMKit_ScreenWidth * 0.5));
             make.height.equalTo(@(kEditingBottomViewHeight));
-//            make.bottom.equalTo(_editingBottomView).offset(-EaseIMKit_BottomSafeHeight);
         }];
         
         [confirmButton mas_makeConstraints:^(MASConstraintMaker *make) {

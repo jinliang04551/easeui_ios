@@ -31,6 +31,7 @@
 #import "EMConversationsViewController.h"
 #import "EMConversation+EaseUI.h"
 #import "EMConversationsViewController.h"
+#import "EaseHomeViewController.h"
 
 
 bool gInit;
@@ -364,17 +365,18 @@ static NSString *g_UIKitVersion = @"1.0.0";
         UIViewController *currentVC =  [EaseKitUtil currentViewController];
         NSLog(@"%s currentVC:%@",__func__,currentVC);
         
-        //当前在SDK的所有页面,不提示横幅消息
-    //    if ([currentVC isKindOfClass:[EMChatViewController class]] || [currentVC isKindOfClass:[EMConversationsViewController class]]) {
-    //        return NO;
-    //    }
         
-        NSString *currentVCString = NSStringFromClass([currentVC class]);
-        NSLog(@"%s currentVCString:%@",__func__,currentVCString);
-
-        if ([currentVCString hasPrefix:@"EM"] ||[currentVCString hasPrefix:@"Ease"]||[currentVCString hasPrefix:@"JH"]||[currentVCString hasPrefix:@"YG"]) {
+        if ([currentVC isKindOfClass:[EMChatViewController class]] || [currentVC isKindOfClass:[EaseHomeViewController class]]) {
             return NO;
         }
+        
+        //当前在SDK的所有页面,不提示横幅消息
+//        NSString *currentVCString = NSStringFromClass([currentVC class]);
+//        NSLog(@"%s currentVCString:%@",__func__,currentVCString);
+//
+//        if ([currentVCString hasPrefix:@"EM"] ||[currentVCString hasPrefix:@"Ease"]||[currentVCString hasPrefix:@"JH"]||[currentVCString hasPrefix:@"YG"]) {
+//            return NO;
+//        }
         
         //判断是否有人@自己
         if ([self isRemindMeMessage:msg]) {

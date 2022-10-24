@@ -59,6 +59,9 @@
     
     BOOL ret = NO;
     NSMutableArray *msgIdArray = [self remindMeArray];
+    
+    NSLog(@"%s msgIdArray:%@",__func__,msgIdArray);
+    
     //*
 //    for (NSString *msgId in msgIdArray) {
 //        EMChatMessage *msg = [self loadMessageWithId:msgId error:nil];
@@ -89,8 +92,6 @@
     if (!dict) {
         dict = [[NSMutableArray alloc]init];
     }
-    
-    
     
     return dict;
 }
