@@ -182,8 +182,16 @@
     NSInteger jhGroupUnread = EaseIMKitManager.shared.exclusivegroupUnReadCount;
 
     NSLog(@"%s allUnread:%ld\n jhGroupUnread:%ld\n",__func__,allUnread,jhGroupUnread);
+        
+    UITabBarItem *convItem =  self.tabBar.items[0];
+    if (allUnread > 0) {
+        convItem.badgeValue = [@(allUnread) stringValue];
+        [UIApplication sharedApplication].applicationIconBadgeNumber = allUnread;
+    }else {
+        convItem.badgeValue = nil;
+        [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    }
     
-    self.tabBarItem.badgeValue = [@(allUnread) stringValue];
 }
 
 
@@ -199,7 +207,7 @@
 #pragma mark - Private
 - (void)_loadConversationTabBarItemBadge
 {
-
+    
 }
 
 
