@@ -56,6 +56,42 @@
 //群组介绍
 @property (nonatomic, strong) NSString *groupIntroduce;
 
+//群头像
+@property (nonatomic, strong) BQTitleAvatarCell *titleAvatarCell;
+//群名称
+@property (nonatomic, strong) BQTitleValueCell *groupNameCell;
+//群主
+@property (nonatomic, strong) BQTitleValueCell *groupOwnerCell;
+
+//群介绍
+@property (nonatomic, strong) BQTitleValueAccessCell *groupInterduceAccessCell;
+
+//群公告
+@property (nonatomic, strong) BQTitleValueAccessCell *groupAnnocementAccessCell;
+
+
+//群介绍（有内容）
+@property (nonatomic, strong) BQTitleContentAccessCell *groupInterduceContentAccessCell;
+
+//群公告（有内容）
+@property (nonatomic, strong) BQTitleContentAccessCell *groupAnnocementContentAccessCell;
+
+
+//群管理
+@property (nonatomic, strong) BQTitleValueAccessCell *groupManageAccessCell;
+
+//运营备注
+@property (nonatomic, strong) BQTitleValueAccessCell *ygMarkAccessCell;
+
+//查找聊天记录
+@property (nonatomic, strong) BQTitleValueAccessCell *searchChatRecordAccessCell;
+
+//消息免打扰
+@property (nonatomic, strong) BQTitleSwitchCell *titleSwitchCell;
+
+
+@property (nonatomic, strong) NSMutableArray<NSMutableArray *>  *sections;
+
 @end
 
 @implementation EMGroupInfoViewController
@@ -112,9 +148,58 @@
     
     [self.tableView registerClass:[BQTitleContentAccessCell class] forCellReuseIdentifier:NSStringFromClass([BQTitleContentAccessCell class])];
 
-    
 }
 
+
+- (void)buildCells {
+    NSMutableArray *sections = [NSMutableArray array];
+    
+    NSMutableArray *section1 = [NSMutableArray array];
+    NSMutableArray *section2 = [NSMutableArray array];
+    NSMutableArray *section3 = [NSMutableArray array];
+
+    //section1
+    [section1 addObject:self.titleAvatarCell];
+    [section1 addObject:self.groupMemberCell];
+    
+    //section2
+    [section2 addObject:self.groupNameCell];
+    [section2 addObject:self.groupOwnerCell];
+    if (self.groupAnnocement.length > 0) {
+        [section2 addObject:self.groupAnnocementContentAccessCell];
+    }else {
+        [section2 addObject:self.groupAnnocementAccessCell];
+    }
+    
+    if (self.groupIntroduce.length > 0) {
+        [section2 addObject:self.groupInterduceContentAccessCell];
+    }else {
+        [section2 addObject:self.groupInterduceAccessCell];
+    }
+        
+    if (self.group.permissionType == EMGroupPermissionTypeOwner ||self.group.permissionType == EMGroupPermissionTypeAdmin) {
+        [section2 addObject:self.groupManageAccessCell];
+    }
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        //
+    }else {
+        [section2 addObject:self.ygMarkAccessCell];
+    }
+
+    //section3
+    [section3 addObject:self.searchChatRecordAccessCell];
+    [section3 addObject:self.titleSwitchCell];
+
+    [sections addObject:section1];
+    [sections addObject:section2];
+    [sections addObject:section3];
+
+    [self.groupMemberCell updateWithObj:self.memberArray];
+    
+    self.sections = sections;
+    [self.tableView reloadData];
+}
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -178,269 +263,277 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return self.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    if (section == 0) {
-        return 2;
-    }else if (section == 1){
-        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-                return 4;
-        }else {
-            if (self.group.permissionType == EMGroupPermissionTypeOwner) {
-                    return 6;
-                } else {
-                    return 5;
-                }
-        }
-        return 4;
-    }else {
-        return 2;
-    }
+    return self.sections[section].count;
+    
+//    if (section == 0) {
+//        return 2;
+//    }else if (section == 1){
+//        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+//                return 4;
+//        }else {
+//            if (self.group.permissionType == EMGroupPermissionTypeOwner) {
+//                    return 6;
+//                } else {
+//                    return 5;
+//                }
+//        }
+//        return 4;
+//    }else {
+//        return 2;
+//    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    BQTitleAvatarCell *titleAvatarCell = [tableView dequeueReusableCellWithIdentifier:[BQTitleAvatarCell reuseIdentifier]];
-    
-    BQTitleValueAccessCell *titleValueAccessCell = [tableView dequeueReusableCellWithIdentifier:[BQTitleValueAccessCell reuseIdentifier]];
+    UITableViewCell *cell = self.sections[indexPath.section][indexPath.row];
+    return cell;
+}
 
-    BQTitleValueCell *titleValueCell = [tableView dequeueReusableCellWithIdentifier:[BQTitleValueCell reuseIdentifier]];
-
-    BQTitleSwitchCell *titleSwitchCell = [tableView dequeueReusableCellWithIdentifier:[BQTitleSwitchCell reuseIdentifier]];
-    
-    BQTitleContentAccessCell *titleContentAccessCell = [tableView dequeueReusableCellWithIdentifier:[BQTitleContentAccessCell reuseIdentifier]];
-
-    
-    if (indexPath.section == 0) {
-        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-                if (indexPath.row == 0) {
-                    titleAvatarCell.nameLabel.text = @"群头像";
-                    [titleAvatarCell.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_group_icon"]];
-                    return titleAvatarCell;
-                }else {
-                    [self.groupMemberCell updateWithObj:self.memberArray];
-                    return self.groupMemberCell;
-                }
-        }else {
-                if (indexPath.row == 0) {
-                    titleAvatarCell.nameLabel.text = @"群头像";
-                    [titleAvatarCell.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_group_icon"]];
-                    return titleAvatarCell;
-                    
-                }else {
-                    [self.groupMemberCell updateWithObj:self.memberArray];
-                    return self.groupMemberCell;
-                }
-        }
-               
-    }else if (indexPath.section == 1){
-if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        if (indexPath.row == 0) {
-            titleValueCell.nameLabel.text = @"群名称";
-            titleValueCell.detailLabel.text = self.group.groupName;
-            return titleValueCell;
-        }else if (indexPath.row == 1){
-            titleValueCell.nameLabel.text = @"群主";
-            
-            titleValueCell.detailLabel.text = self.groupOwnerNickname;
-            return titleValueCell;
-
-        }else if (indexPath.row == 2){
-            if (self.groupAnnocement.length > 0) {
-                titleContentAccessCell.nameLabel.text = @"群公告";
-                titleContentAccessCell.contentLabel.text = self.groupAnnocement;
-                titleContentAccessCell.tapCellBlock = ^{
-                    [self groupAnnouncementAction];
-                };
-                return titleContentAccessCell;
-            }else {
-                titleValueAccessCell.nameLabel.text = @"群公告";
-                titleValueAccessCell.detailLabel.text = @"未设置";
-                titleValueAccessCell.tapCellBlock = ^{
-                    [self groupAnnouncementAction];
-                };
-                return titleValueAccessCell;
-            }
-        }else {
-            
-            if (self.groupIntroduce.length > 0) {
-                titleContentAccessCell.nameLabel.text = @"群介绍";
-                titleContentAccessCell.contentLabel.text = self.groupIntroduce;
-                titleContentAccessCell.tapCellBlock = ^{
-                    [self _updateGroupDetailAction];
-                };
-                return titleContentAccessCell;
-            }else {
-                titleValueAccessCell.nameLabel.text = @"群介绍";
-                titleValueAccessCell.detailLabel.text = @"未设置";
-                titleValueAccessCell.tapCellBlock = ^{
-                    [self _updateGroupDetailAction];
-                };
-                return titleValueAccessCell;
-            }
-
-            
-        }
-}else {
-    if (self.group.permissionType == EMGroupPermissionTypeOwner) {
-            if (indexPath.row == 0) {
-                titleValueAccessCell.nameLabel.text = @"群名称";
-                titleValueAccessCell.detailLabel.text = self.group.groupName;
-                titleValueAccessCell.tapCellBlock = ^{
-                    [self _updateGroupNameAction];
-                };
-                return titleValueAccessCell;
-            }else if (indexPath.row == 1){
-                titleValueCell.nameLabel.text = @"群主";
-                titleValueCell.detailLabel.text = self.groupOwnerNickname;
-                return titleValueCell;
-
-            }else if (indexPath.row == 2){
-                            
-                if (self.groupAnnocement.length > 0) {
-                    titleContentAccessCell.nameLabel.text = @"群公告";
-                    titleContentAccessCell.contentLabel.text = self.groupAnnocement;
-                    titleContentAccessCell.tapCellBlock = ^{
-                        [self groupAnnouncementAction];
-                    };
-                    return titleContentAccessCell;
-                }else {
-                    titleValueAccessCell.nameLabel.text = @"群公告";
-                    titleValueAccessCell.detailLabel.text = @"未设置";
-                    titleValueAccessCell.tapCellBlock = ^{
-                        [self groupAnnouncementAction];
-                    };
-                    return titleValueAccessCell;
-                }
-                
-            }else  if (indexPath.row == 3){
-                            
-                if (self.groupIntroduce.length > 0) {
-                    titleContentAccessCell.nameLabel.text = @"群介绍";
-                    titleContentAccessCell.contentLabel.text = self.groupIntroduce;
-                    titleContentAccessCell.tapCellBlock = ^{
-                        [self _updateGroupDetailAction];
-                    };
-                    return titleContentAccessCell;
-                }else {
-                    titleValueAccessCell.nameLabel.text = @"群介绍";
-                    titleValueAccessCell.detailLabel.text = @"未设置";
-                    titleValueAccessCell.tapCellBlock = ^{
-                        [self _updateGroupDetailAction];
-                    };
-                    return titleValueAccessCell;
-                }
-                
-            }else if (indexPath.row == 4){
-                titleValueAccessCell.nameLabel.text = @"群管理";
-                titleValueAccessCell.detailLabel.text = @"";
-                titleValueAccessCell.tapCellBlock = ^{
-                    [self goGroupManagePage];
-                };
-                return titleValueAccessCell;
-            }else {
-                titleValueAccessCell.nameLabel.text = @"运营备注";
-                titleValueAccessCell.detailLabel.text = @"";
-                titleValueAccessCell.tapCellBlock = ^{
-                    [self _updateGroupYunGuanRemark];
-                };
-                return titleValueAccessCell;
-            }
-
-        } else {
-            if (indexPath.row == 0) {
-                titleValueCell.nameLabel.text = @"群名称";
-                titleValueCell.detailLabel.text = self.group.groupName;
-                return titleValueCell;
-            }else if (indexPath.row == 1){
-                titleValueCell.nameLabel.text = @"群主";
-                titleValueCell.detailLabel.text = self.groupOwnerNickname;
-                return titleValueCell;
-
-            }else if (indexPath.row == 2){
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+//
+//    BQTitleAvatarCell *titleAvatarCell = [tableView dequeueReusableCellWithIdentifier:[BQTitleAvatarCell reuseIdentifier]];
+//
+//    BQTitleValueAccessCell *titleValueAccessCell = [tableView dequeueReusableCellWithIdentifier:[BQTitleValueAccessCell reuseIdentifier]];
+//
+//    BQTitleValueCell *titleValueCell = [tableView dequeueReusableCellWithIdentifier:[BQTitleValueCell reuseIdentifier]];
+//
+//    BQTitleSwitchCell *titleSwitchCell = [tableView dequeueReusableCellWithIdentifier:[BQTitleSwitchCell reuseIdentifier]];
+//
+//    BQTitleContentAccessCell *titleContentAccessCell = [tableView dequeueReusableCellWithIdentifier:[BQTitleContentAccessCell reuseIdentifier]];
+//
+//
+//    if (indexPath.section == 0) {
+//        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+//                if (indexPath.row == 0) {
+//                    titleAvatarCell.nameLabel.text = @"群头像";
+//                    [titleAvatarCell.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_group_icon"]];
+//                    return titleAvatarCell;
+//                }else {
+//                    [self.groupMemberCell updateWithObj:self.memberArray];
+//                    return self.groupMemberCell;
+//                }
+//        }else {
+//                if (indexPath.row == 0) {
+//                    titleAvatarCell.nameLabel.text = @"群头像";
+//                    [titleAvatarCell.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_group_icon"]];
+//                    return titleAvatarCell;
+//
+//                }else {
+//                    [self.groupMemberCell updateWithObj:self.memberArray];
+//                    return self.groupMemberCell;
+//                }
+//        }
+//
+//    }else if (indexPath.section == 1){
+//if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+//        if (indexPath.row == 0) {
+//            titleValueCell.nameLabel.text = @"群名称";
+//            titleValueCell.detailLabel.text = self.group.groupName;
+//            return titleValueCell;
+//        }else if (indexPath.row == 1){
+//            titleValueCell.nameLabel.text = @"群主";
+//
+//            titleValueCell.detailLabel.text = self.groupOwnerNickname;
+//            return titleValueCell;
+//
+//        }else if (indexPath.row == 2){
+//            if (self.groupAnnocement.length > 0) {
+//                titleContentAccessCell.nameLabel.text = @"群公告";
+//                titleContentAccessCell.contentLabel.text = self.groupAnnocement;
+//                titleContentAccessCell.tapCellBlock = ^{
+//                    [self groupAnnouncementAction];
+//                };
+//                return titleContentAccessCell;
+//            }else {
 //                titleValueAccessCell.nameLabel.text = @"群公告";
-//                titleValueAccessCell.detailLabel.text = @"";
+//                titleValueAccessCell.detailLabel.text = @"未设置";
 //                titleValueAccessCell.tapCellBlock = ^{
 //                    [self groupAnnouncementAction];
 //                };
 //                return titleValueAccessCell;
-  
-                if (self.groupAnnocement.length > 0) {
-                    titleContentAccessCell.nameLabel.text = @"群公告";
-                    titleContentAccessCell.contentLabel.text = self.groupAnnocement;
-                    titleContentAccessCell.tapCellBlock = ^{
-                        [self groupAnnouncementAction];
-                    };
-                    return titleContentAccessCell;
-                }else {
-                    titleValueAccessCell.nameLabel.text = @"群公告";
-                    titleValueAccessCell.detailLabel.text = @"未设置";
-                    titleValueAccessCell.tapCellBlock = ^{
-                        [self groupAnnouncementAction];
-                    };
-                    return titleValueAccessCell;
-                }
-                
-            }else  if (indexPath.row == 3){
+//            }
+//        }else {
+//
+//            if (self.groupIntroduce.length > 0) {
+//                titleContentAccessCell.nameLabel.text = @"群介绍";
+//                titleContentAccessCell.contentLabel.text = self.groupIntroduce;
+//                titleContentAccessCell.tapCellBlock = ^{
+//                    [self _updateGroupDetailAction];
+//                };
+//                return titleContentAccessCell;
+//            }else {
 //                titleValueAccessCell.nameLabel.text = @"群介绍";
-//                titleValueAccessCell.detailLabel.text = @"";
+//                titleValueAccessCell.detailLabel.text = @"未设置";
 //                titleValueAccessCell.tapCellBlock = ^{
 //                    [self _updateGroupDetailAction];
 //                };
 //                return titleValueAccessCell;
-                
-                if (self.groupIntroduce.length > 0) {
-                    titleContentAccessCell.nameLabel.text = @"群介绍";
-                    titleContentAccessCell.contentLabel.text = self.groupIntroduce;
-                    titleContentAccessCell.tapCellBlock = ^{
-                        [self _updateGroupDetailAction];
-                    };
-                    return titleContentAccessCell;
-                }else {
-                    titleValueAccessCell.nameLabel.text = @"群介绍";
-                    titleValueAccessCell.detailLabel.text = @"未设置";
-                    titleValueAccessCell.tapCellBlock = ^{
-                        [self _updateGroupDetailAction];
-                    };
-                    return titleValueAccessCell;
-                }
-
-                
-            }else {
-                titleValueAccessCell.nameLabel.text = @"运营备注";
-                titleValueAccessCell.detailLabel.text = @"";
-                titleValueAccessCell.tapCellBlock = ^{
-                    [self _updateGroupYunGuanRemark];
-                };
-                return titleValueAccessCell;
-            }
-        }
-}
-        
-    }else {
-        if (indexPath.row == 0) {
-            titleValueAccessCell.nameLabel.text = @"查找聊天内容";
-            titleValueAccessCell.detailLabel.text = @"";
-            titleValueAccessCell.tapCellBlock = ^{
-                [self goSearchChatRecord];
-            };
-            return titleValueAccessCell;
-        }else {
-            titleSwitchCell.nameLabel.text = @"消息免打扰";
-            [titleSwitchCell.aSwitch setOn:!self.group.isPushNotificationEnabled];
-            EaseIMKit_WS
-            titleSwitchCell.switchActionBlock = ^(UISwitch * _Nonnull aSwitch) {
-                [weakSelf noDisturbEnableWithSwitch:aSwitch];
-            };
-            
-            return titleSwitchCell;
-        }
-    }
-    return nil;
-}
+//            }
+//
+//
+//        }
+//}else {
+//    if (self.group.permissionType == EMGroupPermissionTypeOwner) {
+//            if (indexPath.row == 0) {
+//                titleValueAccessCell.nameLabel.text = @"群名称";
+//                titleValueAccessCell.detailLabel.text = self.group.groupName;
+//                titleValueAccessCell.tapCellBlock = ^{
+//                    [self _updateGroupNameAction];
+//                };
+//                return titleValueAccessCell;
+//            }else if (indexPath.row == 1){
+//                titleValueCell.nameLabel.text = @"群主";
+//                titleValueCell.detailLabel.text = self.groupOwnerNickname;
+//                return titleValueCell;
+//
+//            }else if (indexPath.row == 2){
+//
+//                if (self.groupAnnocement.length > 0) {
+//                    titleContentAccessCell.nameLabel.text = @"群公告";
+//                    titleContentAccessCell.contentLabel.text = self.groupAnnocement;
+//                    titleContentAccessCell.tapCellBlock = ^{
+//                        [self groupAnnouncementAction];
+//                    };
+//                    return titleContentAccessCell;
+//                }else {
+//                    titleValueAccessCell.nameLabel.text = @"群公告";
+//                    titleValueAccessCell.detailLabel.text = @"未设置";
+//                    titleValueAccessCell.tapCellBlock = ^{
+//                        [self groupAnnouncementAction];
+//                    };
+//                    return titleValueAccessCell;
+//                }
+//
+//            }else  if (indexPath.row == 3){
+//
+//                if (self.groupIntroduce.length > 0) {
+//                    titleContentAccessCell.nameLabel.text = @"群介绍";
+//                    titleContentAccessCell.contentLabel.text = self.groupIntroduce;
+//                    titleContentAccessCell.tapCellBlock = ^{
+//                        [self _updateGroupDetailAction];
+//                    };
+//                    return titleContentAccessCell;
+//                }else {
+//                    titleValueAccessCell.nameLabel.text = @"群介绍";
+//                    titleValueAccessCell.detailLabel.text = @"未设置";
+//                    titleValueAccessCell.tapCellBlock = ^{
+//                        [self _updateGroupDetailAction];
+//                    };
+//                    return titleValueAccessCell;
+//                }
+//
+//            }else if (indexPath.row == 4){
+//                titleValueAccessCell.nameLabel.text = @"群管理";
+//                titleValueAccessCell.detailLabel.text = @"";
+//                titleValueAccessCell.tapCellBlock = ^{
+//                    [self goGroupManagePage];
+//                };
+//                return titleValueAccessCell;
+//            }else {
+//                titleValueAccessCell.nameLabel.text = @"运营备注";
+//                titleValueAccessCell.detailLabel.text = @"";
+//                titleValueAccessCell.tapCellBlock = ^{
+//                    [self _updateGroupYunGuanRemark];
+//                };
+//                return titleValueAccessCell;
+//            }
+//
+//        } else {
+//            if (indexPath.row == 0) {
+//                titleValueCell.nameLabel.text = @"群名称";
+//                titleValueCell.detailLabel.text = self.group.groupName;
+//                return titleValueCell;
+//            }else if (indexPath.row == 1){
+//                titleValueCell.nameLabel.text = @"群主";
+//                titleValueCell.detailLabel.text = self.groupOwnerNickname;
+//                return titleValueCell;
+//
+//            }else if (indexPath.row == 2){
+////                titleValueAccessCell.nameLabel.text = @"群公告";
+////                titleValueAccessCell.detailLabel.text = @"";
+////                titleValueAccessCell.tapCellBlock = ^{
+////                    [self groupAnnouncementAction];
+////                };
+////                return titleValueAccessCell;
+//
+//                if (self.groupAnnocement.length > 0) {
+//                    titleContentAccessCell.nameLabel.text = @"群公告";
+//                    titleContentAccessCell.contentLabel.text = self.groupAnnocement;
+//                    titleContentAccessCell.tapCellBlock = ^{
+//                        [self groupAnnouncementAction];
+//                    };
+//                    return titleContentAccessCell;
+//                }else {
+//                    titleValueAccessCell.nameLabel.text = @"群公告";
+//                    titleValueAccessCell.detailLabel.text = @"未设置";
+//                    titleValueAccessCell.tapCellBlock = ^{
+//                        [self groupAnnouncementAction];
+//                    };
+//                    return titleValueAccessCell;
+//                }
+//
+//            }else  if (indexPath.row == 3){
+////                titleValueAccessCell.nameLabel.text = @"群介绍";
+////                titleValueAccessCell.detailLabel.text = @"";
+////                titleValueAccessCell.tapCellBlock = ^{
+////                    [self _updateGroupDetailAction];
+////                };
+////                return titleValueAccessCell;
+//
+//                if (self.groupIntroduce.length > 0) {
+//                    titleContentAccessCell.nameLabel.text = @"群介绍";
+//                    titleContentAccessCell.contentLabel.text = self.groupIntroduce;
+//                    titleContentAccessCell.tapCellBlock = ^{
+//                        [self _updateGroupDetailAction];
+//                    };
+//                    return titleContentAccessCell;
+//                }else {
+//                    titleValueAccessCell.nameLabel.text = @"群介绍";
+//                    titleValueAccessCell.detailLabel.text = @"未设置";
+//                    titleValueAccessCell.tapCellBlock = ^{
+//                        [self _updateGroupDetailAction];
+//                    };
+//                    return titleValueAccessCell;
+//                }
+//
+//
+//            }else {
+//                titleValueAccessCell.nameLabel.text = @"运营备注";
+//                titleValueAccessCell.detailLabel.text = @"";
+//                titleValueAccessCell.tapCellBlock = ^{
+//                    [self _updateGroupYunGuanRemark];
+//                };
+//                return titleValueAccessCell;
+//            }
+//        }
+//}
+//
+//    }else {
+//        if (indexPath.row == 0) {
+//            titleValueAccessCell.nameLabel.text = @"查找聊天内容";
+//            titleValueAccessCell.detailLabel.text = @"";
+//            titleValueAccessCell.tapCellBlock = ^{
+//                [self goSearchChatRecord];
+//            };
+//            return titleValueAccessCell;
+//        }else {
+//            titleSwitchCell.nameLabel.text = @"消息免打扰";
+//            [titleSwitchCell.aSwitch setOn:!self.group.isPushNotificationEnabled];
+//            EaseIMKit_WS
+//            titleSwitchCell.switchActionBlock = ^(UISwitch * _Nonnull aSwitch) {
+//                [weakSelf noDisturbEnableWithSwitch:aSwitch];
+//            };
+//
+//            return titleSwitchCell;
+//        }
+//    }
+//    return nil;
+//}
  
 
 #pragma mark - Table view delegate
@@ -547,7 +640,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
     self.groupIntroduce = self.group.description;
     [self getGroupMembers];
-    [self.tableView reloadData];
+    
+    [self buildCells];
 }
 
 - (void)fetchGroupAnnocement {
@@ -1014,6 +1108,168 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     return _serverArray;
 }
 
+- (BQTitleAvatarCell *)titleAvatarCell {
+    if (_titleAvatarCell == nil) {
+        _titleAvatarCell = [[BQTitleAvatarCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BQTitleAvatarCell class])];
+        _titleAvatarCell.nameLabel.text = @"群头像";
+        [_titleAvatarCell.iconImageView setImage:[UIImage easeUIImageNamed:@"jh_group_icon"]];
 
+    }
+    return _titleAvatarCell;
+}
+
+
+- (BQTitleValueCell *)groupNameCell {
+    if (_groupNameCell == nil) {
+        _groupNameCell = [[BQTitleValueCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BQTitleValueCell class])];
+        _groupNameCell.nameLabel.text = @"群名称";
+        _groupNameCell.detailLabel.text = self.group.groupName;
+    }
+    return _groupNameCell;
+}
+
+- (BQTitleValueCell *)groupOwnerCell {
+    if (_groupOwnerCell == nil) {
+        _groupOwnerCell = [[BQTitleValueCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BQTitleValueCell class])];
+        _groupOwnerCell.nameLabel.text = @"群主";
+        _groupOwnerCell.detailLabel.text = self.groupOwnerNickname;
+      
+    }
+    return _groupOwnerCell;
+    
+}
+
+
+
+- (BQTitleValueAccessCell *)groupAnnocementAccessCell {
+    if (_groupAnnocementAccessCell == nil) {
+        _groupAnnocementAccessCell = [[BQTitleValueAccessCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BQTitleValueAccessCell class])];
+        
+        EaseIMKit_WS
+        _groupAnnocementAccessCell.nameLabel.text = @"群公告";
+        _groupAnnocementAccessCell.detailLabel.text = @"未设置";
+        _groupAnnocementAccessCell.tapCellBlock = ^{
+            [weakSelf groupAnnouncementAction];
+        };
+        
+    }
+    return _groupAnnocementAccessCell;
+    
+}
+
+- (BQTitleValueAccessCell *)groupInterduceAccessCell {
+    if (_groupInterduceAccessCell == nil) {
+        _groupInterduceAccessCell = [[BQTitleValueAccessCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BQTitleValueAccessCell class])];
+        
+        EaseIMKit_WS
+        _groupInterduceAccessCell.nameLabel.text = @"群介绍";
+        _groupInterduceAccessCell.detailLabel.text = @"未设置";
+        _groupInterduceAccessCell.tapCellBlock = ^{
+            [weakSelf _updateGroupDetailAction];
+        };
+    }
+    return _groupInterduceAccessCell;
+    
+}
+
+- (BQTitleContentAccessCell *)groupAnnocementContentAccessCell {
+    if (_groupAnnocementContentAccessCell == nil) {
+        _groupAnnocementContentAccessCell = [[BQTitleContentAccessCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BQTitleContentAccessCell class])];
+        
+        EaseIMKit_WS
+        _groupAnnocementContentAccessCell.nameLabel.text = @"群公告";
+        _groupAnnocementContentAccessCell.contentLabel.text = self.groupAnnocement;
+        _groupAnnocementContentAccessCell.tapCellBlock = ^{
+            [weakSelf groupAnnouncementAction];
+        };
+        
+    }
+    return _groupAnnocementContentAccessCell;
+
+}
+
+
+- (BQTitleContentAccessCell *)groupInterduceContentAccessCell {
+    if (_groupInterduceContentAccessCell == nil) {
+        _groupInterduceContentAccessCell = [[BQTitleContentAccessCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BQTitleContentAccessCell class])];
+        
+        EaseIMKit_WS
+        _groupInterduceContentAccessCell.nameLabel.text = @"群介绍";
+        _groupInterduceContentAccessCell.contentLabel.text = weakSelf.groupIntroduce;
+        _groupInterduceContentAccessCell.tapCellBlock = ^{
+            [weakSelf _updateGroupDetailAction];
+        };
+    }
+    return _groupInterduceContentAccessCell;
+
+}
+
+
+- (BQTitleValueAccessCell *)groupManageAccessCell {
+    if (_groupManageAccessCell == nil) {
+        _groupManageAccessCell = [[BQTitleValueAccessCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BQTitleValueAccessCell class])];
+        
+        EaseIMKit_WS
+        _groupManageAccessCell.nameLabel.text = @"群管理";
+        _groupManageAccessCell.detailLabel.text = @"";
+        _groupManageAccessCell.tapCellBlock = ^{
+            [weakSelf goGroupManagePage];
+        };
+    }
+    return _groupManageAccessCell;
+}
+
+
+- (BQTitleValueAccessCell *)ygMarkAccessCell {
+    if (_ygMarkAccessCell == nil) {
+        _ygMarkAccessCell = [[BQTitleValueAccessCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BQTitleValueAccessCell class])];
+        
+        EaseIMKit_WS
+        _ygMarkAccessCell.nameLabel.text = @"运营备注";
+        _ygMarkAccessCell.detailLabel.text = @"";
+        _ygMarkAccessCell.tapCellBlock = ^{
+            [weakSelf _updateGroupYunGuanRemark];
+        };
+        
+    }
+    return _ygMarkAccessCell;
+}
+
+- (BQTitleValueAccessCell *)searchChatRecordAccessCell {
+    if (_searchChatRecordAccessCell == nil) {
+        _searchChatRecordAccessCell = [[BQTitleValueAccessCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BQTitleValueAccessCell class])];
+        
+        EaseIMKit_WS
+        
+        _searchChatRecordAccessCell.nameLabel.text = @"查找聊天内容";
+        _searchChatRecordAccessCell.detailLabel.text = @"";
+        _searchChatRecordAccessCell.tapCellBlock = ^{
+            [weakSelf goSearchChatRecord];
+        };
+    }
+    return _searchChatRecordAccessCell;
+}
+
+- (BQTitleSwitchCell *)titleSwitchCell {
+    if (_titleSwitchCell == nil) {
+        _titleSwitchCell = [[BQTitleSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BQTitleSwitchCell class])];
+        
+        EaseIMKit_WS
+        _titleSwitchCell.nameLabel.text = @"消息免打扰";
+        [_titleSwitchCell.aSwitch setOn:!weakSelf.group.isPushNotificationEnabled];
+        _titleSwitchCell.switchActionBlock = ^(UISwitch * _Nonnull aSwitch) {
+            [weakSelf noDisturbEnableWithSwitch:aSwitch];
+        };
+    }
+    return _titleSwitchCell;
+
+}
+
+- (NSMutableArray<NSMutableArray *> *)sections {
+    if (_sections == nil) {
+        _sections = [NSMutableArray array];
+    }
+    return _sections;
+}
 
 @end
