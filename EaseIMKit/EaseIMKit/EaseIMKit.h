@@ -31,4 +31,8 @@
 #import "EMConversationsViewController.h"
 #import "EMRefreshViewController.h"
 #import "EaseHomeViewController.h"
+#import "EaseSwitchRoleViewController.h"
+
+
+
 

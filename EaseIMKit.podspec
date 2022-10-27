@@ -52,7 +52,8 @@ Pod::Spec.new do |s|
         'EaseIMKit/EaseIMKit/Classes/Helper/ViewController/RefreshController/EMRefreshViewController.h',
         'EaseIMKit/EaseIMKit/Classes/Helper/EaseIMKitOptions.h',
         'EaseIMKit/EaseIMKit/Classes/Chat/BeiQi/EaseLoginViewController.h',
-        'EaseIMKit/EaseIMKit/Classes/Home/EaseHomeViewController.h'
+        'EaseIMKit/EaseIMKit/Classes/Home/EaseHomeViewController.h',
+        'EaseIMKit/EaseIMKit/Classes/Chat/BeiQi/EaseSwitchRoleViewController.h'
         
     ]
     
