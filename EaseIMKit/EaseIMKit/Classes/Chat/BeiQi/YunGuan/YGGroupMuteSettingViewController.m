@@ -38,14 +38,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-//        self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;
-        
-        self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
-
-    }else {
-        self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
-    }
+    
+    self.view.backgroundColor = EaseIMKit_ViewBgWhiteColor;
 
     [self placeAndLayoutSubviews];
     
@@ -169,6 +163,14 @@
     NSArray *sortSetArray = [memberSet sortedArrayUsingDescriptors:sortDesc];
 
     self.unMuteArray = [sortSetArray mutableCopy];
+    
+    for (NSString *userId in self.unMuteArray) {
+        if ([userId isEqualToString:[EMClient sharedClient].currentUsername]) {
+            [self.unMuteArray removeObject:userId];
+            break;
+        }
+    }
+    
     self.dataArray = [self.group.muteList mutableCopy];
     
     [self.tableView reloadData];
@@ -250,8 +252,6 @@
         [_tableView registerClass:[YGGroupOperateMemberCell class] forCellReuseIdentifier:NSStringFromClass([YGGroupOperateMemberCell class])];
 
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-//              _tableView.backgroundColor = EaseIMKit_ViewBgBlackColor;
-
             _tableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
         }else {
                 _tableView.backgroundColor = EaseIMKit_ViewBgWhiteColor;

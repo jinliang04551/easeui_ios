@@ -50,7 +50,7 @@ MISScrollPageControllerDelegate>
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"订单信息";
+    self.title = @"订单列表";
 
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 //        self.view.backgroundColor = EaseIMKit_ViewBgBlackColor;

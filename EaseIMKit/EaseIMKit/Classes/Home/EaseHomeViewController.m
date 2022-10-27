@@ -200,7 +200,11 @@
         
     UITabBarItem *convItem =  self.tabBar.items[0];
     if (allUnread > 0) {
-        convItem.badgeValue = [@(allUnread) stringValue];
+        if (allUnread > 99) {
+            convItem.badgeValue = @"99+";
+        }else {
+            convItem.badgeValue = [@(allUnread) stringValue];
+        }
         [UIApplication sharedApplication].applicationIconBadgeNumber = allUnread;
     }else {
         convItem.badgeValue = nil;

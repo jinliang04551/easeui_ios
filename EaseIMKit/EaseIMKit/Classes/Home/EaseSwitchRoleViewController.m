@@ -76,6 +76,7 @@
 }
 
 
+
 - (void)serverButtonAction {
     [EaseIMKitOptions sharedOptions].isJiHuApp = NO;
 

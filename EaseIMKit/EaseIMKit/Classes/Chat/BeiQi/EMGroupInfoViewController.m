@@ -50,6 +50,10 @@
 @property (nonatomic, strong) UIView *titleView;
 @property (nonatomic, strong) NSString *groupOwnerNickname;
 
+//是否可编辑（群主或者管理员）
+@property (nonatomic, assign) BOOL isEditable;
+
+
 //群组公告
 @property (nonatomic, strong) NSString *groupAnnocement;
 
@@ -60,6 +64,10 @@
 @property (nonatomic, strong) BQTitleAvatarCell *titleAvatarCell;
 //群名称
 @property (nonatomic, strong) BQTitleValueCell *groupNameCell;
+
+//群名称(可修改)
+@property (nonatomic, strong) BQTitleValueAccessCell *groupNameAccessCell;
+
 //群主
 @property (nonatomic, strong) BQTitleValueCell *groupOwnerCell;
 
@@ -132,9 +140,12 @@
     [self _setupSubviews];
 
     self.showRefreshHeader = NO;
-
+    
+    [self buildCells];
+    
     [self _fetchGroupWithId:self.groupId isShowHUD:YES];
   
+    
 }
 
 - (void)registeCell {
@@ -152,6 +163,8 @@
 
 
 - (void)buildCells {
+    [self updateCellInfos];
+    
     NSMutableArray *sections = [NSMutableArray array];
     
     NSMutableArray *section1 = [NSMutableArray array];
@@ -163,7 +176,12 @@
     [section1 addObject:self.groupMemberCell];
     
     //section2
-    [section2 addObject:self.groupNameCell];
+    if (self.group.permissionType == EMGroupPermissionTypeOwner ||self.group.permissionType == EMGroupPermissionTypeAdmin){
+        [section2 addObject:self.groupNameAccessCell];
+    }else {
+        [section2 addObject:self.groupNameCell];
+    }
+    
     [section2 addObject:self.groupOwnerCell];
     if (self.groupAnnocement.length > 0) {
         [section2 addObject:self.groupAnnocementContentAccessCell];
@@ -195,10 +213,19 @@
     [sections addObject:section2];
     [sections addObject:section3];
 
-    [self.groupMemberCell updateWithObj:self.memberArray];
-    
     self.sections = sections;
     [self.tableView reloadData];
+}
+
+
+- (void)updateCellInfos {
+    [self.groupMemberCell updateWithObj:self.memberArray];
+    self.groupNameCell.detailLabel.text = self.group.groupName;
+    self.groupNameAccessCell.detailLabel.text = self.group.groupName;
+    
+    self.groupAnnocementContentAccessCell.contentLabel.text = self.groupAnnocement;
+    self.groupInterduceContentAccessCell.contentLabel.text = self.groupIntroduce;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -576,13 +603,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *hView = [[UIView alloc] init];
-    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-//        hView.backgroundColor = EaseIMKit_ViewBgBlackColor;
-        hView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
-    }else {
-        hView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
-    }
-
+    hView.backgroundColor = EaseIMKit_ViewBgWhiteColor;
     return hView;
 }
 
@@ -636,8 +657,12 @@
     }
     
     self.group = aGroup;
+    
+    if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin) {
+        self.isEditable = YES;
+    }
+    
     [self fetchGroupAnnocement];
-
     self.groupIntroduce = self.group.description;
     [self getGroupMembers];
     
@@ -648,8 +673,8 @@
     [[EMClient sharedClient].groupManager getGroupAnnouncementWithId:self.group.groupId completion:^(NSString *aAnnouncement, EMError * _Nullable aError) {
         if (aError == nil) {
             self.groupAnnocement = aAnnouncement;
+            [self buildCells];
             [self.tableView reloadData];
-
         }
     }];
 }
@@ -697,6 +722,7 @@
         [self tableViewDidTriggerHeaderRefresh];
     }
 }
+
 - (void)groupAdminListDidUpdate:(EMGroup *)aGroup
                    removedAdmin:(NSString *)aAdmin
 {
@@ -824,17 +850,13 @@
     [[EMClient sharedClient].groupManager getGroupAnnouncementWithId:self.groupId completion:^(NSString *aAnnouncement, EMError *aError) {
         [weakself hideHud];
         if (!aError) {
-            BOOL isEditable = NO;
-            if (weakself.group.permissionType == EMGroupPermissionTypeOwner || weakself.group.permissionType == EMGroupPermissionTypeAdmin) {
-                isEditable = YES;
-            }
             NSString *hint;
-            if (isEditable) {
+            if (self.isEditable) {
                 hint = NSLocalizedString(@"inputGroupAnn", nil);
             } else {
                 hint = @"暂无新公告";
             }
-            EaseTextViewController *controller = [[EaseTextViewController alloc] initWithString:aAnnouncement placeholder:hint isEditable:isEditable];
+            EaseTextViewController *controller = [[EaseTextViewController alloc] initWithString:aAnnouncement placeholder:hint isEditable:self.isEditable];
             controller.title = @"群公告";
             
             __weak typeof(controller) weakController = controller;
@@ -865,11 +887,11 @@
 
 - (void)_updateGroupNameAction
 {
-    BOOL isEditable = self.group.permissionType == EMGroupPermissionTypeOwner ? YES : NO;
-    if (!isEditable) {
+    if (!self.isEditable) {
         return;
     }
-    EaseTextFieldViewController *controller = [[EaseTextFieldViewController alloc] initWithString:self.group.groupName placeholder:NSLocalizedString(@"inputGroupSubject", nil) isEditable:isEditable];
+    
+    EaseTextFieldViewController *controller = [[EaseTextFieldViewController alloc] initWithString:self.group.groupName placeholder:NSLocalizedString(@"inputGroupSubject", nil) isEditable:self.isEditable];
     controller.title = NSLocalizedString(@"editGroupSubject", nil);
     [self.navigationController pushViewController:controller animated:YES];
     
@@ -926,9 +948,8 @@
 
 - (void)_updateGroupDetailAction
 {
-    BOOL isEditable = self.group.permissionType == EMGroupPermissionTypeOwner ? YES : NO;
-    EaseTextViewController *controller = [[EaseTextViewController alloc] initWithString:self.group.description placeholder:NSLocalizedString(@"inputGroupDescription", nil) isEditable:isEditable];
-    if (isEditable) {
+    EaseTextViewController *controller = [[EaseTextViewController alloc] initWithString:self.group.description placeholder:NSLocalizedString(@"inputGroupDescription", nil) isEditable:self.isEditable];
+    if (self.isEditable) {
          controller.title = NSLocalizedString(@"editGroupDescription", nil);
     } else {
         controller.title = NSLocalizedString(@"groupDescription", nil);
@@ -1123,9 +1144,21 @@
     if (_groupNameCell == nil) {
         _groupNameCell = [[BQTitleValueCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BQTitleValueCell class])];
         _groupNameCell.nameLabel.text = @"群名称";
-        _groupNameCell.detailLabel.text = self.group.groupName;
     }
     return _groupNameCell;
+}
+
+- (BQTitleValueAccessCell *)groupNameAccessCell {
+    if (_groupNameAccessCell == nil) {
+        _groupNameAccessCell = [[BQTitleValueAccessCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BQTitleValueAccessCell class])];
+        EaseIMKit_WS
+        _groupNameAccessCell.nameLabel.text = @"群名称";
+        _groupNameAccessCell.tapCellBlock = ^{
+            [weakSelf _updateGroupNameAction];
+        };
+    }
+    return _groupNameAccessCell;
+
 }
 
 - (BQTitleValueCell *)groupOwnerCell {
@@ -1178,7 +1211,6 @@
         
         EaseIMKit_WS
         _groupAnnocementContentAccessCell.nameLabel.text = @"群公告";
-        _groupAnnocementContentAccessCell.contentLabel.text = self.groupAnnocement;
         _groupAnnocementContentAccessCell.tapCellBlock = ^{
             [weakSelf groupAnnouncementAction];
         };
@@ -1195,7 +1227,6 @@
         
         EaseIMKit_WS
         _groupInterduceContentAccessCell.nameLabel.text = @"群介绍";
-        _groupInterduceContentAccessCell.contentLabel.text = weakSelf.groupIntroduce;
         _groupInterduceContentAccessCell.tapCellBlock = ^{
             [weakSelf _updateGroupDetailAction];
         };

@@ -12,6 +12,7 @@
 
 @interface BQRecordImageVideoCell ()
 @property (nonatomic, strong) UIImageView *iconImageView;
+@property (nonatomic, strong) UIImageView *playImgView;
 
 @end
 
@@ -29,10 +30,17 @@
 
 
 - (void)placeAndLayoutSubViews {
-    
+
     [self.contentView addSubview:self.iconImageView];
+    [self.contentView addSubview:self.playImgView];
+
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.contentView);
+    }];
+
+    [self.playImgView Ease_makeConstraints:^(EaseConstraintMaker *make) {
+        make.center.equalTo(self.contentView);
+        make.width.height.equalTo(@40);
     }];
 
 }
@@ -44,6 +52,8 @@
     NSString *imgPath = @"";
     
     if(msg.body.type == EMMessageBodyTypeImage) {
+        self.playImgView.hidden = YES;
+
         EMImageMessageBody* imageBody = (EMImageMessageBody*)msg.body;
         imgPath = imageBody.thumbnailLocalPath;
         if ([imgPath length] == 0 && msg.direction == EMMessageDirectionSend) {
@@ -55,6 +65,8 @@
     }
     
     if(msg.body.type == EMMessageBodyTypeVideo) {
+        self.playImgView.hidden = NO;
+
         EMVideoMessageBody* videoBody = (EMVideoMessageBody*)msg.body;
         imgPath = videoBody.thumbnailLocalPath;
         if ([imgPath length] == 0 && msg.direction == EMMessageDirectionSend) {
@@ -113,6 +125,17 @@
     
     return _iconImageView;
 }
+
+- (UIImageView *)playImgView {
+    if (_playImgView == nil) {
+        _playImgView = [[UIImageView alloc] init];
+        _playImgView.image = [UIImage easeUIImageNamed:@"msg_video_white"];
+        _playImgView.contentMode = UIViewContentModeScaleAspectFill;
+        _playImgView.hidden = YES;
+    }
+    return _playImgView;
+}
+
 
 @end
 

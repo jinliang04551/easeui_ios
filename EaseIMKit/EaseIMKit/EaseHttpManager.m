@@ -637,8 +637,16 @@
 
     NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
     [headerDict setObject:@"application/json" forKey:@"Content-Type"];
-    NSString *token = [EaseKitUtil getLoginUserToken];
-    [headerDict setObject:token forKey:@"Authorization"];
+    NSString *imToken = [EMClient sharedClient].accessUserToken;
+    NSString *ygToken = [EaseKitUtil getLoginUserToken];
+    
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        [headerDict setObject:imToken forKey:@"Authorization"];
+    }else {
+        [headerDict setObject:ygToken forKey:@"Authorization"];
+    }
+    
+
     [headerDict setObject:[EMClient sharedClient].currentUsername forKey:@"username"];
     request.allHTTPHeaderFields = headerDict;
 
@@ -1021,7 +1029,6 @@
     
     NSString *imToken = [EMClient sharedClient].accessUserToken;
     NSString *ygToken = [EaseKitUtil getLoginUserToken];
-    
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
         [headerDict setObject:imToken forKey:@"Authorization"];
     }else {

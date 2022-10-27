@@ -62,9 +62,6 @@
     }];
     
     
-    self.tableView.rowHeight = 64;
-    self.tableView.tableFooterView = nil;
-
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleView.mas_bottom);
         make.left.equalTo(self.view);
