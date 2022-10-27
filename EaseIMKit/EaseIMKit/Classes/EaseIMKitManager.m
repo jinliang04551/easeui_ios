@@ -360,6 +360,11 @@ static NSString *g_UIKitVersion = @"1.0.0";
         return NO;
     }
     
+    
+    //判断是否有人@自己
+    BOOL isAtMe = [self isRemindMeMessage:msg];
+    
+    
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
         
         UIViewController *currentVC =  [EaseKitUtil currentViewController];
@@ -379,7 +384,7 @@ static NSString *g_UIKitVersion = @"1.0.0";
 //        }
         
         //判断是否有人@自己
-        if ([self isRemindMeMessage:msg]) {
+        if (isAtMe) {
             isShow = YES;
             return isShow;
         }

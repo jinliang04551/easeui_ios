@@ -175,35 +175,56 @@
     [section1 addObject:self.titleAvatarCell];
     [section1 addObject:self.groupMemberCell];
     
-    //section2
-    if (self.group.permissionType == EMGroupPermissionTypeOwner ||self.group.permissionType == EMGroupPermissionTypeAdmin){
-        [section2 addObject:self.groupNameAccessCell];
-    }else {
-        [section2 addObject:self.groupNameCell];
-    }
-    
-    [section2 addObject:self.groupOwnerCell];
-    if (self.groupAnnocement.length > 0) {
-        [section2 addObject:self.groupAnnocementContentAccessCell];
-    }else {
-        [section2 addObject:self.groupAnnocementAccessCell];
-    }
-    
-    if (self.groupIntroduce.length > 0) {
-        [section2 addObject:self.groupInterduceContentAccessCell];
-    }else {
-        [section2 addObject:self.groupInterduceAccessCell];
-    }
-        
-    if (self.group.permissionType == EMGroupPermissionTypeOwner ||self.group.permissionType == EMGroupPermissionTypeAdmin) {
-        [section2 addObject:self.groupManageAccessCell];
-    }
     
     if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-        //
+                
+        [section2 addObject:self.groupNameCell];
+        [section2 addObject:self.groupOwnerCell];
+        
+        if (self.groupAnnocement.length > 0) {
+            [section2 addObject:self.groupAnnocementContentAccessCell];
+        }else {
+            [section2 addObject:self.groupAnnocementAccessCell];
+        }
+        
+        if (self.groupIntroduce.length > 0) {
+            [section2 addObject:self.groupInterduceContentAccessCell];
+        }else {
+            [section2 addObject:self.groupInterduceAccessCell];
+        }
     }else {
-        [section2 addObject:self.ygMarkAccessCell];
+        //section2
+        if (self.group.permissionType == EMGroupPermissionTypeOwner ||self.group.permissionType == EMGroupPermissionTypeAdmin){
+            [section2 addObject:self.groupNameAccessCell];
+        }else {
+            [section2 addObject:self.groupNameCell];
+        }
+        
+        [section2 addObject:self.groupOwnerCell];
+        if (self.groupAnnocement.length > 0) {
+            [section2 addObject:self.groupAnnocementContentAccessCell];
+        }else {
+            [section2 addObject:self.groupAnnocementAccessCell];
+        }
+        
+        if (self.groupIntroduce.length > 0) {
+            [section2 addObject:self.groupInterduceContentAccessCell];
+        }else {
+            [section2 addObject:self.groupInterduceAccessCell];
+        }
+            
+        if (self.group.permissionType == EMGroupPermissionTypeOwner ||self.group.permissionType == EMGroupPermissionTypeAdmin) {
+            [section2 addObject:self.groupManageAccessCell];
+        }
+        
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            //
+        }else {
+            [section2 addObject:self.ygMarkAccessCell];
+        }
+
     }
+    
 
     //section3
     [section3 addObject:self.searchChatRecordAccessCell];
@@ -658,10 +679,15 @@
     
     self.group = aGroup;
     
-    if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin) {
-        self.isEditable = YES;
+    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+        // do nothing
+    }else {
+        if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin) {
+                self.isEditable = YES;
+            }
     }
     
+        
     [self fetchGroupAnnocement];
     self.groupIntroduce = self.group.description;
     [self getGroupMembers];

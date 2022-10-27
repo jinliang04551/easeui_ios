@@ -97,7 +97,7 @@
 
 #define EaseIMKit_NavBgColor EaseIMKit_COLOR_HEX(0xF5F5F5)
 
-#define EaseIMKit_Nav_JiHuBgColor EaseIMKit_COLOR_HEX(0x87CEEB)
+#define EaseIMKit_Nav_JiHuBgColor EaseIMKit_COLOR_HEX(0xDEE2F4)
 
 
 #define EaseIMKit_Default_BgBlue_Color EaseIMKit_COLOR_HEX(0x4461F2)

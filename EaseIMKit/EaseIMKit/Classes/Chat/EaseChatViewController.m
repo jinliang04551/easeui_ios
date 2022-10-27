@@ -634,22 +634,30 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 - (void)checkSendTextATMember:(NSString *)text {
     NSMutableDictionary *ext = [NSMutableDictionary dictionary];
     
-    if ([EaseIMHelper shareHelper].isAtAll) {
+    BOOL hasAtAll = [text containsString:@"@所有人"];
+    
+    if (hasAtAll) {
         [ext setObject:@"ALL" forKey:MSG_EXT_AT];
         [ext setObject:@(YES) forKey:EM_force_notification];
-
-    }else if([EaseIMHelper shareHelper].grpupAtArray.count > 0){
-        [ext setObject:[[EaseIMHelper shareHelper].grpupAtArray mutableCopy] forKey:MSG_EXT_AT];
-        [ext setObject:@(YES) forKey:EM_force_notification];
-
     }else {
+        NSMutableArray *atIdArray = [NSMutableArray array];
         
+        for (NSString *userId in [EaseIMHelper shareHelper].grpupAtArray) {
+            NSString *nickName = [EaseKitUtil fetchUserDicWithUserId:userId][EaseUserNicknameKey];
+            if ([text containsString:nickName]) {
+                [atIdArray addObject:userId];
+            }
+        }
+        
+        if (atIdArray.count > 0) {
+            [ext setObject:atIdArray forKey:MSG_EXT_AT];
+            [ext setObject:@(YES) forKey:EM_force_notification];
+        }
     }
     
+    
     [self sendTextAction:text ext:ext];
-
 }
-
 
 
 - (void)chatBarDidShowMoreViewAction

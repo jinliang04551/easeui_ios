@@ -87,7 +87,8 @@
 
 - (NSMutableArray *)remindMeArray {
   
-
+    NSLog(@"%s self.ext[MSG_EXT_AT]:%@",__func__,self.ext[MSG_EXT_AT]);
+    
     NSMutableArray *dict = [(NSMutableArray *)self.ext[MSG_EXT_AT] mutableCopy];
     if (!dict) {
         dict = [[NSMutableArray alloc]init];
