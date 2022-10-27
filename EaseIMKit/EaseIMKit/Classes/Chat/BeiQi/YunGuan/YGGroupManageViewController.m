@@ -127,30 +127,43 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
+    if (self.group.permissionType == EMGroupPermissionTypeOwner) {
+        return 2;
+    }
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
         
     BQTitleValueAccessCell *titleValueAccessCell = [tableView dequeueReusableCellWithIdentifier:[BQTitleValueAccessCell reuseIdentifier]];
 
-    if (indexPath.section == 0) {
-        if (indexPath.row == 0) {
-            titleValueAccessCell.nameLabel.text = @"设置管理员";
-            titleValueAccessCell.tapCellBlock = ^{
-                [self goManagerPage];
-            };
-            return titleValueAccessCell;
+    if (self.group.permissionType == EMGroupPermissionTypeOwner) {
+        if (indexPath.section == 0) {
+            if (indexPath.row == 0) {
+                titleValueAccessCell.nameLabel.text = @"设置管理员";
+                titleValueAccessCell.tapCellBlock = ^{
+                    [self goManagerPage];
+                };
+                return titleValueAccessCell;
+            }
+            
+            if (indexPath.row == 1) {
+                titleValueAccessCell.nameLabel.text = @"群内禁言";
+                titleValueAccessCell.tapCellBlock = ^{
+                    [self goManageMutePage];
+                };
+                return titleValueAccessCell;
+            }
         }
-        
-        if (indexPath.row == 1) {
-            titleValueAccessCell.nameLabel.text = @"群内禁言";
-            titleValueAccessCell.tapCellBlock = ^{
-                [self goManageMutePage];
-            };
-            return titleValueAccessCell;
-        }
+
+    }else {
+        titleValueAccessCell.nameLabel.text = @"群内禁言";
+        titleValueAccessCell.tapCellBlock = ^{
+            [self goManageMutePage];
+        };
+        return titleValueAccessCell;
     }
+    
     
     return nil;
 }

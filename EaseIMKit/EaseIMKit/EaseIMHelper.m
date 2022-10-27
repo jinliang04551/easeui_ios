@@ -137,8 +137,9 @@ static EaseIMHelper *helper = nil;
 
 - (void)userAccountDidLoginFromOtherDevice
 {
-    [self kickedOffByServer];
-
+    [self showAlertWithTitle:@"下线通知" message:@"该账号已在其他设备登录" okCompletion:^{
+        [self kickedOffByServer];
+    }];
 }
 
 - (void)userAccountDidRemoveFromServer
@@ -156,6 +157,28 @@ static EaseIMHelper *helper = nil;
     [self kickedOffByServer];
     
 }
+
+- (void)showAlertWithTitle:(NSString *)aTitle
+                   message:(NSString *)aMsg
+              okCompletion:(void (^)(void))okCompletion {
+        
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:aTitle message:aMsg preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        if (okCompletion) {
+            okCompletion();
+        }
+    }];
+    
+    [alertController addAction:okAction];
+    
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    UIViewController *rootViewController = window.rootViewController;
+    alertController.modalPresentationStyle = 0;
+    [rootViewController presentViewController:alertController animated:YES completion:nil];
+    
+}
+
 
 //被服务器强制踢下线
 - (void)kickedOffByServer {
