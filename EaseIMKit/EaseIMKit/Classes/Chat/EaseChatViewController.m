@@ -365,12 +365,17 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 
 #pragma mark - private method
 - (void)showMutipleSelectedMode {
-    [self.chatBar.textView resignFirstResponder];
+    if (self.chatBar.textView.isFirstResponder) {
+        [self.chatBar.textView resignFirstResponder];
+        [self scrollToBottomRow];
+    }
+    
     [self.tableView removeGestureRecognizer:self.tap];
 
     _isReloadViewWithModel = YES;
     _viewModel.isEditing = YES;
     self.tableView.editing = YES;
+        
     [self.tableView reloadData];
     [self showEditingBottomView];
 }
@@ -384,6 +389,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         self.chatBar.hidden = YES;
     }];
 }
+
 
 - (void)hideEditingBottomView {
     [self.tableView addGestureRecognizer:self.tap];
@@ -605,15 +611,14 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 }
 
 #pragma mark - EMChatBarDelegate
-
-- (BOOL)textView:(UITextView *)textView shouldngeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    if (self.delegate && [self.delegate respondsToSelector:@selector(textView:shouldChangeTextInRange:replacementText:)]) {
-        BOOL isValid = [self.delegate textView:textView shouldChangeTextInRange:range replacementText:text];
-        return isValid;
-    }
-    return YES;
-}
+//- (BOOL)textView:(UITextView *)textView shouldngeTextInRange:(NSRange)range replacementText:(NSString *)text
+//{
+//    if (self.delegate && [self.delegate respondsToSelector:@selector(textView:shouldChangeTextInRange:replacementText:)]) {
+//        BOOL isValid = [self.delegate textView:textView shouldChangeTextInRange:range replacementText:text];
+//        return isValid;
+//    }
+//    return YES;
+//}
 
 - (void)chatBarSendMsgAction:(NSString *)text
 {
@@ -1020,8 +1025,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 
 #pragma mark - KeyBoard
 
-- (void)keyBoardWillShow:(NSNotification *)note
-{
+- (void)keyBoardWillShow:(NSNotification *)note {
+    
     // 获取用户信息
     NSDictionary *userInfo = [NSDictionary dictionaryWithDictionary:note.userInfo];
     // 获取键盘高度

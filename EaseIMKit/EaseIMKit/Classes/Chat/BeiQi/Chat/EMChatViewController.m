@@ -401,13 +401,7 @@
 }
 
 
-//@群成员
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    if ([text isEqualToString:@"@"] && self.conversation.type == EMConversationTypeGroupChat) {
-    }
-    return YES;
-}
+
 //添加转发消息
 - (NSMutableArray<EaseExtMenuModel *> *)messageLongPressExtMenuItemArray:(NSMutableArray<EaseExtMenuModel *> *)defaultLongPressItems message:(EMChatMessage *)message
 {
