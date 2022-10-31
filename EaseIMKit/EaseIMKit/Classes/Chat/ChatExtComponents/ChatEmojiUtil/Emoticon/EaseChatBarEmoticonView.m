@@ -341,7 +341,7 @@
 - (UIPageControl *)pageControl {
     if (_pageControl ==  nil) {
         _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
-        _pageControl.numberOfPages = 2;
+        _pageControl.numberOfPages = 3;
         _pageControl.currentPage = 0;
         _pageControl.userInteractionEnabled = NO;
 

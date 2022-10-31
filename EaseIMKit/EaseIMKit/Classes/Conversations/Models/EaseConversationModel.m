@@ -141,19 +141,25 @@
     if (_conversation.type == EMConversationTypeGroupChat) {
         NSString *userName = msg.ext[InsertLocalMessageUserName];
         if (userName.length > 0) {
-            _showInfo = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",userName,msgStr]];
+            
+        NSString *content = [NSString stringWithFormat:@"%@ %@",userName,msgStr];
+        _showInfo = [EaseKitUtil attachPictureWithText:content];
+
+//            _showInfo = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",userName,msgStr]];
         }else {
-            _showInfo = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@: %@",nickname,msgStr]];
+            NSString *content = [NSString stringWithFormat:@"%@ %@",nickname,msgStr];
+            _showInfo = [EaseKitUtil attachPictureWithText:content];
         }
     }else {
-        _showInfo = [[NSMutableAttributedString alloc] initWithString:msgStr];
+        _showInfo = [EaseKitUtil attachPictureWithText:msgStr];
     }
     
     
     //*
     if ([_conversation draft] && ![[_conversation draft] isEqualToString:@""]) {
         msgStr = [NSString stringWithFormat:@"%@ %@", @"[草稿]", [_conversation draft]];
-        _showInfo = [[NSMutableAttributedString alloc] initWithString:msgStr];
+        
+        _showInfo = [EaseKitUtil attachPictureWithText:msgStr];
         [_showInfo setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:255/255.0 green:43/255.0 blue:43/255.0 alpha:1.0]} range:NSMakeRange(0, msgStr.length)];
     }
     
@@ -161,7 +167,7 @@
     if ([_conversation remindMe]) {
         NSString *atStr = EaseLocalizableString(@"[someone@me]", nil);
         msgStr = [NSString stringWithFormat:@"%@ %@:%@", atStr,nickname,msgStr];
-        _showInfo = [[NSMutableAttributedString alloc] initWithString:msgStr];
+        _showInfo = [EaseKitUtil attachPictureWithText:msgStr];
         [_showInfo setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:255/255.0 green:43/255.0 blue:43/255.0 alpha:1.0]} range:NSMakeRange(0, atStr.length)];
     }
     return _showInfo;
