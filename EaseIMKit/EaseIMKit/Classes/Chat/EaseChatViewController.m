@@ -706,7 +706,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 
 - (void)didChatBarEmoticonViewSendAction
 {
-    [self sendTextAction:self.chatBar.textView.text ext:nil];
+    [self sendTextAction:self.chatBar.textView.content ext:nil];
 }
 
 #pragma mark - EaseMessageCellDelegate

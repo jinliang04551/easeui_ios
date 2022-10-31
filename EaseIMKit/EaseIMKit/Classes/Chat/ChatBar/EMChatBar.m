@@ -32,6 +32,9 @@
 //@property (nonatomic, strong) UIButton *audioDescBtn;
 @property (nonatomic, strong) EaseChatViewModel *viewModel;
 
+@property (nonatomic, strong) NSString *textViewInsertText;
+@property (nonatomic, assign) NSRange textViewInsertRange;
+
 @end
 
 @implementation EMChatBar
@@ -199,18 +202,26 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
+    BOOL result = YES;
+    
     if ([text isEqualToString:@"\n"]) {
         if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarSendMsgAction:)]) {
-            [self.delegate chatBarSendMsgAction:self.textView.text];
+            [self.delegate chatBarSendMsgAction:self.textView.content];
         }
-        return NO;
+        result = NO;
+        return result;
     }
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(textView:shouldChangeTextInRange:replacementText:)]) {
-        return [self.delegate textView:textView shouldChangeTextInRange:range replacementText:text];
+        result = [self.delegate textView:textView shouldChangeTextInRange:range replacementText:text];
     }
 
-    return YES;
+    if (result) {
+        self.textViewInsertText = text;
+        self.textViewInsertRange = range;
+    }
+    
+    return result;
 }
 
 - (void)textViewDidChange:(UITextView *)textView
@@ -222,6 +233,13 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     if (self.delegate && [self.delegate respondsToSelector:@selector(inputViewDidChange:)]) {
         [self.delegate inputViewDidChange:self.textView];
     }
+    
+//    if (self.textViewInsertText.length > 0) {
+//        [self.textView insertText:self.textViewInsertText range:self.textViewInsertRange];
+//        self.textViewInsertText = @"";
+//        self.textViewInsertRange = NSMakeRange(0, 0);
+//    }
+
 }
 
 #pragma mark - Private
@@ -305,15 +323,15 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 - (void)inputViewAppendText:(NSString *)aText
 {
     if ([aText length] > 0) {
-        self.textView.text = [NSString stringWithFormat:@"%@%@", self.textView.text, aText];
-        self.textView.placeHolderLabel.hidden = self.textView.text.length > 0 > 0 ? YES : NO;
-
+        [self.textView appendEmojiText:aText];
+        
         [self _updatetextViewHeight];
     }
     if (self.moreEmoticonView) {
         [self emoticonChangeWithText];
     }
 }
+
 
 - (BOOL)deleteTailText
 {

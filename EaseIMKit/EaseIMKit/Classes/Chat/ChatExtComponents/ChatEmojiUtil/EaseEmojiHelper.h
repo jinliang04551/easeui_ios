@@ -12,11 +12,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EaseEmojiHelper : NSObject
 
-@property (nonatomic, strong) NSDictionary *convertEmojiDic;
+@property (nonatomic, strong) NSMutableDictionary *convertEmojiDic;
+
+@property (nonatomic, strong) NSMutableArray *convertEmojiArray;
+
+@property (nonatomic, strong) NSMutableDictionary *emojiAttachDic;
 
 + (instancetype)sharedHelper;
 
-+ (NSArray<NSString *> *)getAllEmojis;
+//+ (NSArray<NSString *> *)getAllEmojis;
 
 + (BOOL)isStringContainsEmoji:(NSString *)aString;
 
