@@ -67,8 +67,13 @@
 - (void)setModel:(EaseMessageModel *)model
 {
     EMTextMessageBody *body = (EMTextMessageBody *)model.message.body;
-    NSString *text = [EaseEmojiHelper convertEmoji:body.text];
-    NSMutableAttributedString *attaStr = [[NSMutableAttributedString alloc] initWithString:text];
+    
+//    NSString *text = [EaseEmojiHelper convertEmoji:body.text];
+  
+    NSString *text = body.text;
+
+    
+//    NSMutableAttributedString *attaStr = [[NSMutableAttributedString alloc] initWithString:body.text];
     /*
     //下滑线
     NSMutableAttributedString *underlineStr = [[NSMutableAttributedString alloc] initWithString:@"下滑线"];
@@ -120,6 +125,9 @@
     
     [self.textLabel setTextWithLinkAttribute:text];
 
+    self.textLabel.attributedText = [EaseKitUtil attachPictureWithText:text];
+    
 }
+
 
 @end

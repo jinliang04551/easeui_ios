@@ -17,5 +17,9 @@
 @property(strong, nonatomic) NSString *placeHolder;
 @property(strong, nonatomic) UIColor *placeHolderColor;
 @property (nonatomic ,strong, readonly) UILabel *placeHolderLabel;
+//内容
+@property (nonatomic ,strong) NSMutableString *content;
+
+- (void)appendEmojiText:(NSString *)emojiText;
 
 @end

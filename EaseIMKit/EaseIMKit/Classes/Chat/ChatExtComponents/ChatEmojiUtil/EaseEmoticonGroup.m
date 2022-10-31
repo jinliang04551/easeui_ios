@@ -122,10 +122,13 @@ EaseEmoticonGroup *gGifGroup = nil;
     if (model.type == EMEmotionTypeEmoji) {
         self.label.font = [UIFont fontWithName:@"AppleColorEmoji" size:29.0];
     }
-    self.label.text = model.name;
+//    self.label.text = model.name;
     
     if ([model.imgName length] > 0) {
-        self.imgView.image = [UIImage easeUIImageNamed:model.imgName];
+        
+        NSString *imageName = [EaseEmojiHelper sharedHelper].convertEmojiDic[model.imgName];
+        self.imgView.image = [UIImage emojiImageWithName:imageName];
+
     }
 }
 

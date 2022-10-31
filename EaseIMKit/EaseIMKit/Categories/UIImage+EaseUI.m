@@ -21,15 +21,17 @@
     NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",bundle.bundlePath,name]];
     
-    
-//    NSBundle* bundle = [NSBundle bundleForClass:[EMChatBar class]];
-//    NSString* path = [NSString stringWithFormat:@"EaseIMKit.bundle/%@",name];
-//    NSString *file = [bundle pathForResource:path ofType:@"png"];
-//    UIImage *image = [UIImage imageWithContentsOfFile:file];
-//
     return image;
-     
-    
+}
+
++ (UIImage*)emojiImageWithName:(NSString*)imageName
+{
+    NSBundle* bundle = [NSBundle bundleForClass:[EMChatBar class]];
+    NSString* path = [NSString stringWithFormat:@"EaseKitEmoji.bundle/%@",imageName];
+    NSString *file1 = [bundle pathForResource:path ofType:@"png"];
+    UIImage *image1 = [UIImage imageWithContentsOfFile:file1];
+
+    return image1;
 }
 
 @end

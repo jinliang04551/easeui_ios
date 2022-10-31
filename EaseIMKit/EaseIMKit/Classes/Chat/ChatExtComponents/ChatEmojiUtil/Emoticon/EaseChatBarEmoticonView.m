@@ -189,15 +189,17 @@
     self.emotionViews = [[NSMutableArray alloc] init];
     self.emotionButtons = [[NSMutableArray alloc] init];
     
-    NSArray *emojis = [EaseEmojiHelper getAllEmojis];
+    NSArray *emojis = [EaseEmojiHelper sharedHelper].convertEmojiDic.allKeys;
     NSMutableArray *models1 = [[NSMutableArray alloc] init];
     for (NSString *emoji in emojis) {
         EaseEmoticonModel *model = [[EaseEmoticonModel alloc] initWithType:EMEmotionTypeEmoji];
         model.eId = emoji;
         model.name = emoji;
+        model.imgName = emoji;
         model.original = emoji;
         [models1 addObject:model];
     }
+    
     NSString *tagImgName = [models1[0] name];
     EaseEmoticonGroup *group1 = [[EaseEmoticonGroup alloc] initWithType:EMEmotionTypeEmoji dataArray:models1 icon:tagImgName rowCount:3 colCount:7];
     [self.groups addObject:group1];

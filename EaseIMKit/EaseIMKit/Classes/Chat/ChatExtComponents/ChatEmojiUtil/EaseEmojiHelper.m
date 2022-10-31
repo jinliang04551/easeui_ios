@@ -17,7 +17,20 @@ static EaseEmojiHelper *helper = nil;
 {
     self = [super init];
     if (self) {
-        _convertEmojiDic = @{@"[):]":@"😊", @"[:D]":@"😃", @"[;)]":@"😉", @"[:-o]":@"😮", @"[:p]":@"😋", @"[(H)]":@"😎", @"[:@]":@"😡", @"[:s]":@"😖", @"[:$]":@"😳", @"[:(]":@"😞", @"[:'(]":@"😭", @"[:|]":@"😐", @"[(a)]":@"😇", @"[8o|]":@"😬", @"[8-|]":@"😆", @"[+o(]":@"😱", @"[<o)]":@"🎅", @"[|-)]":@"😴", @"[*-)]":@"😕", @"[:-#]":@"😷", @"[:-*]":@"😯", @"[^o)]":@"😏", @"[8-)]":@"😑", @"[(|)]":@"💖", @"[(u)]":@"💔", @"[(S)]":@"🌙", @"[(*)]":@"🌟", @"[(#)]":@"🌞", @"[(R)]":@"🌈", @"[(})]":@"😚", @"[({)]":@"😍", @"[(k)]":@"💋", @"[(F)]":@"🌹", @"[(W)]":@"🍂", @"[(D)]":@"👍"};
+//        _convertEmojiDic = @{@"[):]":@"😊", @"[:D]":@"😃", @"[;)]":@"😉", @"[:-o]":@"😮", @"[:p]":@"😋", @"[(H)]":@"😎", @"[:@]":@"😡", @"[:s]":@"😖", @"[:$]":@"😳", @"[:(]":@"😞", @"[:'(]":@"😭", @"[:|]":@"😐", @"[(a)]":@"😇", @"[8o|]":@"😬", @"[8-|]":@"😆", @"[+o(]":@"😱", @"[<o)]":@"🎅", @"[|-)]":@"😴", @"[*-)]":@"😕", @"[:-#]":@"😷", @"[:-*]":@"😯", @"[^o)]":@"😏", @"[8-)]":@"😑", @"[(|)]":@"💖", @"[(u)]":@"💔", @"[(S)]":@"🌙", @"[(*)]":@"🌟", @"[(#)]":@"🌞", @"[(R)]":@"🌈", @"[(})]":@"😚", @"[({)]":@"😍", @"[(k)]":@"💋", @"[(F)]":@"🌹", @"[(W)]":@"🍂", @"[(D)]":@"👍"};
+        _convertEmojiArray = [NSMutableArray array];
+        _convertEmojiDic = [NSMutableDictionary dictionary];
+
+        for (int i = 1; i <= 52; ++i) {
+            NSString *key = [NSString stringWithFormat:@"[emoji_%@]",[@(i) stringValue]];
+            NSString *value = [NSString stringWithFormat:@"ee_%@",[@(i) stringValue]];
+            
+            [_convertEmojiArray addObject:key];
+            [_convertEmojiDic setObject:value forKey:key];
+        }
+        
+        NSLog(@"%s _convertEmojiArray:%@ _convertEmojiDic:%@",__func__,_convertEmojiArray,_convertEmojiDic);
+                
     }
     
     return self;
@@ -39,46 +52,124 @@ static EaseEmojiHelper *helper = nil;
     return [[NSString alloc] initWithBytes:&sym length:sizeof(sym) encoding:NSUTF8StringEncoding];
 }
 
-+ (NSArray<NSString *> *)getAllEmojis
-{
-    NSArray *emojis = @[[EaseEmojiHelper emojiWithCode:0x1F60a],
-                        [EaseEmojiHelper emojiWithCode:0x1F603],
-                        [EaseEmojiHelper emojiWithCode:0x1F609],
-                        [EaseEmojiHelper emojiWithCode:0x1F62e],
-                        [EaseEmojiHelper emojiWithCode:0x1F60b],
-                        [EaseEmojiHelper emojiWithCode:0x1F60e],
-                        [EaseEmojiHelper emojiWithCode:0x1F621],
-                        [EaseEmojiHelper emojiWithCode:0x1F616],
-                        [EaseEmojiHelper emojiWithCode:0x1F633],
-                        [EaseEmojiHelper emojiWithCode:0x1F61e],
-                        [EaseEmojiHelper emojiWithCode:0x1F62d],
-                        [EaseEmojiHelper emojiWithCode:0x1F610],
-                        [EaseEmojiHelper emojiWithCode:0x1F607],
-                        [EaseEmojiHelper emojiWithCode:0x1F62c],
-                        [EaseEmojiHelper emojiWithCode:0x1F606],
-                        [EaseEmojiHelper emojiWithCode:0x1F631],
-                        [EaseEmojiHelper emojiWithCode:0x1F385],
-                        [EaseEmojiHelper emojiWithCode:0x1F634],
-                        [EaseEmojiHelper emojiWithCode:0x1F615],
-                        [EaseEmojiHelper emojiWithCode:0x1F637],
-                        [EaseEmojiHelper emojiWithCode:0x1F62f],
-                        [EaseEmojiHelper emojiWithCode:0x1F60f],
-                        [EaseEmojiHelper emojiWithCode:0x1F611],
-                        [EaseEmojiHelper emojiWithCode:0x1F496],
-                        [EaseEmojiHelper emojiWithCode:0x1F494],
-                        [EaseEmojiHelper emojiWithCode:0x1F319],
-                        [EaseEmojiHelper emojiWithCode:0x1f31f],
-                        [EaseEmojiHelper emojiWithCode:0x1f31e],
-                        [EaseEmojiHelper emojiWithCode:0x1F308],
-                        [EaseEmojiHelper emojiWithCode:0x1F60d],
-                        [EaseEmojiHelper emojiWithCode:0x1F61a],
-                        [EaseEmojiHelper emojiWithCode:0x1F48b],
-                        [EaseEmojiHelper emojiWithCode:0x1F339],
-                        [EaseEmojiHelper emojiWithCode:0x1F342],
-                        [EaseEmojiHelper emojiWithCode:0x1F44d]];
+//+ (NSArray<NSString *> *)getAllEmojis
+//{
+//    NSArray *emojis = @[[EaseEmojiHelper emojiWithCode:0x1F60a],
+//                        [EaseEmojiHelper emojiWithCode:0x1F603],
+//                        [EaseEmojiHelper emojiWithCode:0x1F609],
+//                        [EaseEmojiHelper emojiWithCode:0x1F62e],
+//                        [EaseEmojiHelper emojiWithCode:0x1F60b],
+//                        [EaseEmojiHelper emojiWithCode:0x1F60e],
+//                        [EaseEmojiHelper emojiWithCode:0x1F621],
+//                        [EaseEmojiHelper emojiWithCode:0x1F616],
+//                        [EaseEmojiHelper emojiWithCode:0x1F633],
+//                        [EaseEmojiHelper emojiWithCode:0x1F61e],
+//                        [EaseEmojiHelper emojiWithCode:0x1F62d],
+//                        [EaseEmojiHelper emojiWithCode:0x1F610],
+//                        [EaseEmojiHelper emojiWithCode:0x1F607],
+//                        [EaseEmojiHelper emojiWithCode:0x1F62c],
+//                        [EaseEmojiHelper emojiWithCode:0x1F606],
+//                        [EaseEmojiHelper emojiWithCode:0x1F631],
+//                        [EaseEmojiHelper emojiWithCode:0x1F385],
+//                        [EaseEmojiHelper emojiWithCode:0x1F634],
+//                        [EaseEmojiHelper emojiWithCode:0x1F615],
+//                        [EaseEmojiHelper emojiWithCode:0x1F637],
+//                        [EaseEmojiHelper emojiWithCode:0x1F62f],
+//                        [EaseEmojiHelper emojiWithCode:0x1F60f],
+//                        [EaseEmojiHelper emojiWithCode:0x1F611],
+//                        [EaseEmojiHelper emojiWithCode:0x1F496],
+//                        [EaseEmojiHelper emojiWithCode:0x1F494],
+//                        [EaseEmojiHelper emojiWithCode:0x1F319],
+//                        [EaseEmojiHelper emojiWithCode:0x1f31f],
+//                        [EaseEmojiHelper emojiWithCode:0x1f31e],
+//                        [EaseEmojiHelper emojiWithCode:0x1F308],
+//                        [EaseEmojiHelper emojiWithCode:0x1F60d],
+//                        [EaseEmojiHelper emojiWithCode:0x1F61a],
+//                        [EaseEmojiHelper emojiWithCode:0x1F48b],
+//                        [EaseEmojiHelper emojiWithCode:0x1F339],
+//                        [EaseEmojiHelper emojiWithCode:0x1F342],
+//                        [EaseEmojiHelper emojiWithCode:0x1F44d]];
+//
+//    return emojis;
+//}
 
-    return emojis;
-}
+
+
+
+
+
+
+//+ (NSArray<NSString *> *)getAllEmojis
+//{
+//    NSArray *emojis = @[[EaseEmojiHelper emojiWithCode:0x1F600],
+//                        [EaseEmojiHelper emojiWithCode:0x1F604],
+//                        [EaseEmojiHelper emojiWithCode:0x1F609],
+//                        [EaseEmojiHelper emojiWithCode:0x1F62E],
+//                        [EaseEmojiHelper emojiWithCode:0x1F92A],
+//                        [EaseEmojiHelper emojiWithCode:0x1F60E],
+//                        [EaseEmojiHelper emojiWithCode:0x1F971],
+//                        [EaseEmojiHelper emojiWithCode:0x1F974],
+//                        [EaseEmojiHelper emojiWithCode:0x263A],
+//                        [EaseEmojiHelper emojiWithCode:0x1F641],//9
+//                        [EaseEmojiHelper emojiWithCode:0x1F62D],
+//                        [EaseEmojiHelper emojiWithCode:0x1F610],
+//                        [EaseEmojiHelper emojiWithCode:0x1F607],
+//                        [EaseEmojiHelper emojiWithCode:0x1F62C],
+//                        [EaseEmojiHelper emojiWithCode:0x1F913],
+//                        [EaseEmojiHelper emojiWithCode:0x1F633],
+//                        [EaseEmojiHelper emojiWithCode:0x1F973],
+//                        [EaseEmojiHelper emojiWithCode:0x1F620],
+//                        [EaseEmojiHelper emojiWithCode:0x1F644],//19
+//                        [EaseEmojiHelper emojiWithCode:0x1F910],
+//                        [EaseEmojiHelper emojiWithCode:0x1F97A],
+//                        [EaseEmojiHelper emojiWithCode:0x1F928],
+//                        [EaseEmojiHelper emojiWithCode:0x1F62B],
+//                        [EaseEmojiHelper emojiWithCode:0x1F637],
+//                        [EaseEmojiHelper emojiWithCode:0x1F912],
+//                        [EaseEmojiHelper emojiWithCode:0x1F631],
+//                        [EaseEmojiHelper emojiWithCode:0x1F618],
+//                        [EaseEmojiHelper emojiWithCode:0x1F60D],
+//                        [EaseEmojiHelper emojiWithCode:0x1F922],//29
+//                        [EaseEmojiHelper emojiWithCode:0x1F47F],
+//                        [EaseEmojiHelper emojiWithCode:0x1F92C],
+//                        [EaseEmojiHelper emojiWithCode:0x1F621],
+//                        [EaseEmojiHelper emojiWithCode:0x1F44D],
+//                        [EaseEmojiHelper emojiWithCode:0x1F44E],
+//                        [EaseEmojiHelper emojiWithCode:0x1F44F],
+//                        [EaseEmojiHelper emojiWithCode:0x1F64C],
+//                        [EaseEmojiHelper emojiWithCode:0x1F91D],
+//                        [EaseEmojiHelper emojiWithCode:0x1F64F],
+//                        [EaseEmojiHelper emojiWithCode:0x2764],//39
+//                        [EaseEmojiHelper emojiWithCode:0x1F494],
+//                        [EaseEmojiHelper emojiWithCode:0x1F495],
+//                        [EaseEmojiHelper emojiWithCode:0x1F4A9],
+//                        [EaseEmojiHelper emojiWithCode:0x1F48B],
+//                        [EaseEmojiHelper emojiWithCode:0x2600],
+//                        [EaseEmojiHelper emojiWithCode:0x1F31C],
+//                        [EaseEmojiHelper emojiWithCode:0x1F308],
+//                        [EaseEmojiHelper emojiWithCode:0x2B50],
+//                        [EaseEmojiHelper emojiWithCode:0x1F31F],
+//                        [EaseEmojiHelper emojiWithCode:0x1F389],//49
+//                        [EaseEmojiHelper emojiWithCode:0x1F490],
+//                        [EaseEmojiHelper emojiWithCode:0x1F382],
+//                        [EaseEmojiHelper emojiWithCode:0x1F381]];
+//
+//    return emojis;
+//}
+
+
+//+ (NSArray<NSString *> *)getAllEmojis
+//{
+//    NSMutableArray *emojis = [NSMutableArray array];
+//    for (int i = 0; i < 50; ++i) {
+//        NSString *emoji = [EaseEmojiHelper emojiWithCode:0x1F60a];
+//        [emojis addObject:emoji];
+//    }
+//    return emojis;
+//
+//}
+
+
 
 + (BOOL)isStringContainsEmoji:(NSString *)aString
 {
@@ -130,6 +221,13 @@ static EaseEmojiHelper *helper = nil;
     }
     
     return retStr;
+}
+
+- (NSMutableDictionary *)emojiAttachDic {
+    if (_emojiAttachDic == nil) {
+        _emojiAttachDic = [NSMutableDictionary dictionary];
+    }
+    return _emojiAttachDic;
 }
 
 @end

@@ -22,6 +22,8 @@
 #import "EaseHeaders.h"
 
 
+#define kVideoMaxDuration 30
+
 #define kVideoSizeLimit 100 * 1024 * 1024
 /**
     媒体库
@@ -51,7 +53,7 @@ static const void *imagePickerKey = &imagePickerKey;
                     dispatch_async(dispatch_get_main_queue(), ^{
                         weakself.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
                         weakself.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
-                        [weakself.imagePicker setVideoMaximumDuration:30];
+                        [weakself.imagePicker setVideoMaximumDuration:kVideoMaxDuration];
 
                         [weakself presentViewController:self.imagePicker animated:YES completion:nil];
                     });
@@ -559,3 +561,5 @@ static const void *imagePickerKey = &imagePickerKey;
 
 @end
 #undef kVideoSizeLimit
+#undef kVideoMaxDuration
+
