@@ -141,8 +141,9 @@
     
     //草稿
     if (![[self.currentConversation draft] isEqualToString:@""]) {
-        self.chatBar.textView.text = [self.currentConversation draft];
 
+        [self.chatBar.textView appendEmojiText:[self.currentConversation draft]];
+        
         [self clearTextViewPlaceHolder];
 
         [self.currentConversation setDraft:@""];
@@ -1112,9 +1113,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     //clearAtCache
     [[EaseIMHelper shareHelper] clearGroupAtInfo];
     
-    //clear emojiText dic cache
-    [[EaseEmojiHelper sharedHelper].emojiAttachDic removeAllObjects];
-
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:aText];
     [self sendMessageWithBody:body ext:aExt];
 }

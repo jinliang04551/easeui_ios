@@ -439,8 +439,6 @@
                     
                     [attri replaceCharactersInRange:replaceRange withAttributedString:attachString];
                     
-                    [[EaseEmojiHelper sharedHelper].emojiAttachDic setObject:attch forKey:emojiText];
-
                     NSDictionary *dic = @{EaseEmojiTextKey:emojiText};
                     [attri addAttributes:dic range:NSMakeRange(replaceRange.location, 1)];
                 }

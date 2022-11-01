@@ -328,10 +328,11 @@ static EaseIMKitOptions *sharedOptions = nil;
     }
     if ([apns length] == 0) {
 #if DEBUG
-        apns = @"EaseIM_APNS_Developer";
+        apns = @"Scene_APNS_Developer";
 #else
-        apns = @"EaseIM_APNS_Product";
+        apns = @"Scene_APNS_Product";
 #endif
+
     }
     
     EaseIMKitOptions *demoOptions = [EaseIMKitOptions sharedOptions];

@@ -109,28 +109,6 @@
 - (NSString *)getTextViewText {
     __block NSMutableString *result = [NSMutableString string];
     
-//    [self.attributedText enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, self.attributedText.length) options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
-//
-//        NSLog(@"range:%@ Emojivalue:%@",[NSValue valueWithRange:range],value);
-//
-//        if (value == nil) {
-//           NSString *noEmojiText = [self.text substringWithRange:range];
-//            [result appendString:noEmojiText];
-//        }else {
-//
-//            NSTextAttachment *attach = (NSTextAttachment *)value;
-//
-//            for (NSString *key in [EaseEmojiHelper sharedHelper].emojiAttachDic) {
-//                NSTextAttachment *tAttach = [EaseEmojiHelper sharedHelper].emojiAttachDic[key];
-//                if (tAttach == attach) {
-//                    [result appendString:key];
-//                }
-//            }
-//
-//        }
-//    }];
-    
-    
     [self.attributedText enumerateAttributesInRange:NSMakeRange(0, self.attributedText.length) options:0 usingBlock:^(NSDictionary<NSAttributedStringKey,id> * _Nonnull attrs, NSRange range, BOOL * _Nonnull stop) {
             
         NSLog(@"attrs:%@ range:%@",attrs,[NSValue valueWithRange:range]);
