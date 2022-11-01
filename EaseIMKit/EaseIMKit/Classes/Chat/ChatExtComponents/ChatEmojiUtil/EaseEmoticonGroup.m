@@ -209,10 +209,11 @@ EaseEmoticonGroup *gGifGroup = nil;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if ([self.emotionGroup.dataArray count] < 19) {
-        return [self.emotionGroup.dataArray count];
+    if (section == 0 || section == 1) {
+        return 19;
     }
-    return 19;
+    
+    return self.emotionGroup.dataArray.count - 19 * 2;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath

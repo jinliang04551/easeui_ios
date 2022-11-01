@@ -315,6 +315,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 {
     self.textView.attributedText = [[NSMutableAttributedString alloc] initWithString:@""];
     
+    self.textView.content = @"";
+    
     if (self.moreEmoticonView) {
         [self emoticonChangeWithText];
     }
