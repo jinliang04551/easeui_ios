@@ -223,6 +223,7 @@ static EaseEmojiHelper *helper = nil;
     return retStr;
 }
 
+
 - (NSMutableDictionary *)emojiAttachDic {
     if (_emojiAttachDic == nil) {
         _emojiAttachDic = [NSMutableDictionary dictionary];

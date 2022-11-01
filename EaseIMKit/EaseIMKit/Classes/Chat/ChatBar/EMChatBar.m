@@ -302,7 +302,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 
 - (void)emoticonChangeWithText
 {
-    if (self.textView.text.length > 0) {
+    if (self.textView.content.length > 0) {
         [self.moreEmoticonView textDidChange:YES];
     } else {
         [self.moreEmoticonView textDidChange:NO];
@@ -313,7 +313,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 
 - (void)clearInputViewText
 {
-    self.textView.text = @"";
+    self.textView.attributedText = [[NSMutableAttributedString alloc] initWithString:@""];
+    
     if (self.moreEmoticonView) {
         [self emoticonChangeWithText];
     }
@@ -335,11 +336,13 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 
 - (BOOL)deleteTailText
 {
-    if ([self.textView.text length] > 0) {
-        NSRange range = [self.textView.text rangeOfComposedCharacterSequenceAtIndex:self.textView.text.length-1];
-        self.textView.text = [self.textView.text substringToIndex:range.location];
+    if ([self.textView.attributedText length] > 0) {
+        NSMutableAttributedString *attString = [self.textView.attributedText mutableCopy];
+        [attString deleteCharactersInRange:NSMakeRange(self.textView.attributedText.length - 1, 1)];
+        
+        self.textView.attributedText = attString;
     }
-    if ([self.textView.text length] > 0) {
+    if ([self.textView.attributedText length] > 0) {
         return YES;
     }
     return NO;

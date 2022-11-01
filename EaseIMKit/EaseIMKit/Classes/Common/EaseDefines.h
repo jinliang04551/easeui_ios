@@ -332,6 +332,9 @@ NSBundle *bundle = [NSBundle bundleWithPath:absolutePath];\
 //用户隐私协议
 #define EaseUserPrivacyURL @"http://www.easemob.com/protocol"
 
+#define EaseEmojiTextKey @"EaseEmojiText"
+
+
 
 //#define DEF_APPKEY @"easemob-demo#chatdemoui"
 

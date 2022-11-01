@@ -239,8 +239,8 @@
 
 - (void)updateConvastionDraft {
     //草稿
-    if (self.chatBar.textView.text.length > 0) {
-        [self.currentConversation setDraft:self.chatBar.textView.text];
+    if (self.chatBar.textView.content.length > 0) {
+        [self.currentConversation setDraft:self.chatBar.textView.content];
     }
 }
 
@@ -706,7 +706,8 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 
 - (void)didChatBarEmoticonViewSendAction
 {
-    [self sendTextAction:self.chatBar.textView.content ext:nil];
+    [self checkSendTextATMember:self.chatBar.textView.content];
+
 }
 
 #pragma mark - EaseMessageCellDelegate
@@ -1111,6 +1112,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     //clearAtCache
     [[EaseIMHelper shareHelper] clearGroupAtInfo];
     
+    //clear emojiText dic cache
+    [[EaseEmojiHelper sharedHelper].emojiAttachDic removeAllObjects];
+
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:aText];
     [self sendMessageWithBody:body ext:aExt];
 }

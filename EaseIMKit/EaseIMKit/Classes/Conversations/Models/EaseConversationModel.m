@@ -158,9 +158,16 @@
     //*
     if ([_conversation draft] && ![[_conversation draft] isEqualToString:@""]) {
         msgStr = [NSString stringWithFormat:@"%@ %@", @"[草稿]", [_conversation draft]];
-        
         _showInfo = [EaseKitUtil attachPictureWithText:msgStr];
-        [_showInfo setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:255/255.0 green:43/255.0 blue:43/255.0 alpha:1.0]} range:NSMakeRange(0, msgStr.length)];
+        
+//        msgStr = [NSString stringWithFormat:@"%@", [_conversation draft]];
+//
+//        [_showInfo appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"[草稿] "]];
+//        NSMutableAttributedString *emojiAttText = [EaseKitUtil attachPictureWithText:msgStr];
+//
+//        [_showInfo appendAttributedString:emojiAttText];
+        
+        [_showInfo setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:255/255.0 green:43/255.0 blue:43/255.0 alpha:1.0]} range:NSMakeRange(0, _showInfo.length)];
     }
     
     

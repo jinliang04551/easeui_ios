@@ -398,16 +398,12 @@
     NSLog(@"\n==============%s text:%@",__func__,text);
 
     NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] init];
-            
-    [[EaseEmojiHelper sharedHelper].emojiAttachDic removeAllObjects];
-        
+                    
     __block NSInteger emojiIndex = -1;
     
     NSString *emojiStart = @"[";
     NSString *emojiEnd = @"]";
     
-    __block NSInteger emojiMinusLength = 0;
-
     [text enumerateSubstringsInRange:NSMakeRange(0, text.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop) {
         
         NSLog(@"subSting:%@ range:%@ range:%@",substring,[NSValue valueWithRange:substringRange],[NSValue valueWithRange:enclosingRange]);
@@ -428,27 +424,27 @@
                 NSString *emojiText = [text substringWithRange:emojiRange];
 
                 NSString *imageName = [EaseEmojiHelper sharedHelper].convertEmojiDic[emojiText];
-                attch.image = [UIImage emojiImageWithName:imageName];
-                attch.bounds = CGRectMake(0,0,20,20);
+                
+                if (imageName == nil) {
+                    //do not exist imageName,do nothing
+                }else {
+                    attch.image = [UIImage emojiImageWithName:imageName];
+                    attch.bounds = CGRectMake(0,0,20,20);
 
-                NSAttributedString *attachString = [NSAttributedString attributedStringWithAttachment:attch];
-//                [attri appendAttributedString:string];
-                
-//                [attri replaceCharactersInRange:emojiRange withString:attachString];
-                
-                NSInteger replaceIndex = attri.length - emojiText.length;
-                
-                NSRange replaceRange = NSMakeRange(replaceIndex, emojiText.length);
-                
-                [attri replaceCharactersInRange:replaceRange withAttributedString:attachString];
-                
-                [[EaseEmojiHelper sharedHelper].emojiAttachDic setObject:attch forKey:emojiText];
+                    NSAttributedString *attachString = [NSAttributedString attributedStringWithAttachment:attch];
+                    
+                    NSInteger replaceIndex = attri.length - emojiText.length;
+                    
+                    NSRange replaceRange = NSMakeRange(replaceIndex, emojiText.length);
+                    
+                    [attri replaceCharactersInRange:replaceRange withAttributedString:attachString];
+                    
+                    [[EaseEmojiHelper sharedHelper].emojiAttachDic setObject:attch forKey:emojiText];
 
-                [attri addAttribute:NSAttachmentAttributeName value:attch range:NSMakeRange(replaceRange.location, 1)];
-                
-                //update emojiIndex
-                emojiMinusLength = emojiIndex + 1;
-                
+                    NSDictionary *dic = @{EaseEmojiTextKey:emojiText};
+                    [attri addAttributes:dic range:NSMakeRange(replaceRange.location, 1)];
+                }
+                                
             }
 
         }
