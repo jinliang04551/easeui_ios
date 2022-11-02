@@ -110,7 +110,7 @@
     if (_serverButton == nil) {
         _serverButton = [[UIButton alloc] init];
         [_serverButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_serverButton setTitle:@"运管端" forState:UIControlStateNormal];
+        [_serverButton setTitle:@"客服端" forState:UIControlStateNormal];
         _serverButton.titleLabel.font = EaseIMKit_NFont(16.0);
         
         [_serverButton addTarget:self action:@selector(serverButtonAction) forControlEvents:UIControlEventTouchUpInside];

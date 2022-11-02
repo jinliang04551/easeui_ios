@@ -142,12 +142,12 @@
         NSString *userName = msg.ext[InsertLocalMessageUserName];
         if (userName.length > 0) {
             
-        NSString *content = [NSString stringWithFormat:@"%@ %@",userName,msgStr];
+        NSString *content = [NSString stringWithFormat:@"%@:%@",userName,msgStr];
         _showInfo = [EaseKitUtil attachPictureWithText:content];
 
 //            _showInfo = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",userName,msgStr]];
         }else {
-            NSString *content = [NSString stringWithFormat:@"%@ %@",nickname,msgStr];
+            NSString *content = [NSString stringWithFormat:@"%@:%@",nickname,msgStr];
             _showInfo = [EaseKitUtil attachPictureWithText:content];
         }
     }else {

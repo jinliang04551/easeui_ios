@@ -120,7 +120,7 @@ MISScrollPageControllerDelegate>
 - (void)setTitleAndContentVC {
     
     self.navTitleArray = [
-        @[@"精品订单",@"服务套餐订单"] mutableCopy];
+        @[@"商品订单",@"服务套餐订单"] mutableCopy];
     self.contentVCArray = [@[self.order1VC,self.order2VC] mutableCopy];
     
 }
@@ -165,7 +165,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     style.coverBackgroundColor = EaseIMKit_COLOR_HEX(0xD8D8D8);
     style.gradualChangeTitleColor = YES;
     style.normalTitleColor = EaseIMKit_COLOR_HEX(0x999999);
-    style.selectedTitleColor = EaseIMKit_COLOR_HEX(0x000000);
+    style.selectedTitleColor = EaseIMKit_Default_BgBlue_Color;
     style.scrollLineColor = EaseIMKit_Default_BgBlue_Color;
 }else {
 

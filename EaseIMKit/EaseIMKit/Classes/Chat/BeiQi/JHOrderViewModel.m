@@ -46,7 +46,7 @@
     }
     
     if ([string isEqualToString:@"FINE"]) {
-        name = @"精品订单";
+        name = @"商品订单";
     }
     
     if ([string isEqualToString:@"PACKAGE"]) {

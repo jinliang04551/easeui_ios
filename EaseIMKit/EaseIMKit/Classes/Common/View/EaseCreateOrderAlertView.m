@@ -156,6 +156,7 @@
         [_accessButton setImage:[UIImage easeUIImageNamed:@"jh_right_access"] forState:UIControlStateNormal];
         
         [_accessButton addTarget:self action:@selector(hideButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        _accessButton.hidden = YES;
     }
     return _accessButton;
 }

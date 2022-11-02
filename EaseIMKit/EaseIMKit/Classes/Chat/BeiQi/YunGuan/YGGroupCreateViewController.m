@@ -255,8 +255,12 @@
         return;
     }
 
+    self.confirmButton.enabled = NO;
+    
     [[EaseHttpManager sharedManager] createGroupWithGroupName:self.groupName groupInterduce:self.groupInterduce customerUserIds:self.userArray waiterUserIds:self.serverArray completion:^(NSInteger statusCode, NSString * _Nonnull response) {
           
+        self.confirmButton.enabled = YES;
+
         if (response && response.length > 0 && statusCode) {
             NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
             NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];

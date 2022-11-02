@@ -404,6 +404,8 @@
     NSString *emojiStart = @"[";
     NSString *emojiEnd = @"]";
     
+    NSLog(@"%s time:%@",__func__,[NSDate date]);
+    
     [text enumerateSubstringsInRange:NSMakeRange(0, text.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop) {
         
         NSLog(@"subSting:%@ range:%@ range:%@",substring,[NSValue valueWithRange:substringRange],[NSValue valueWithRange:enclosingRange]);
@@ -448,6 +450,8 @@
         }
     }];
     
+    NSLog(@"%s time after:%@",__func__,[NSDate date]);
+
     return attri;
 }
 

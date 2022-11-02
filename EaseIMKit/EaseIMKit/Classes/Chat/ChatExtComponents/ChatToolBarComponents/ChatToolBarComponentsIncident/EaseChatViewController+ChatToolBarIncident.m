@@ -556,6 +556,9 @@ static const void *imagePickerKey = &imagePickerKey;
         
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:orderModel.messageInfo];
     [self sendMessageWithBody:body ext:nil];
+    
+    [self performSelector:@selector(scrollToBottomRow) withObject:nil afterDelay:0.1];
+
 
 }
 

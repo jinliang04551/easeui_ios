@@ -1064,7 +1064,11 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
             make.bottom.equalTo(self.view);
         }];
     };
-    [self keyBoardWillHide:note animations:animation completion:nil];
+    [self keyBoardWillHide:note animations:animation completion:^(BOOL finished) {
+        if (finished) {
+            [self performSelector:@selector(scrollToBottomRow) withObject:nil afterDelay:0.1];
+        }
+    }];
 }
 
 #pragma mark - Gesture Recognizer
@@ -1092,7 +1096,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
             
             NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:toRow inSection:0];
             
-            [self.tableView scrollToRowAtIndexPath:toIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+            [self.tableView scrollToRowAtIndexPath:toIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
         }
     }
 }

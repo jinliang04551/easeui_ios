@@ -48,7 +48,6 @@
     [msgInfo appendString:self.productNameLabel.text];
     [msgInfo appendString:@"\n"];
     [msgInfo appendString:self.timeLabel.text];
-    [msgInfo appendString:@"\n"];
     [self.orderModel displayOrderMessage:msgInfo];
     
 }

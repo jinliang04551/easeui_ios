@@ -244,8 +244,11 @@
     self.groupNameCell.detailLabel.text = self.group.groupName;
     self.groupNameAccessCell.detailLabel.text = self.group.groupName;
     
+    self.groupOwnerCell.detailLabel.text = self.groupOwnerNickname;
     self.groupAnnocementContentAccessCell.contentLabel.text = self.groupAnnocement;
     self.groupInterduceContentAccessCell.contentLabel.text = self.groupIntroduce;
+
+    [self.titleSwitchCell.aSwitch setOn:!self.group.isPushNotificationEnabled];
 
 }
 
@@ -1191,8 +1194,6 @@
     if (_groupOwnerCell == nil) {
         _groupOwnerCell = [[BQTitleValueCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BQTitleValueCell class])];
         _groupOwnerCell.nameLabel.text = @"群主";
-        _groupOwnerCell.detailLabel.text = self.groupOwnerNickname;
-      
     }
     return _groupOwnerCell;
     
@@ -1313,7 +1314,6 @@
         
         EaseIMKit_WS
         _titleSwitchCell.nameLabel.text = @"消息免打扰";
-        [_titleSwitchCell.aSwitch setOn:!weakSelf.group.isPushNotificationEnabled];
         _titleSwitchCell.switchActionBlock = ^(UISwitch * _Nonnull aSwitch) {
             [weakSelf noDisturbEnableWithSwitch:aSwitch];
         };

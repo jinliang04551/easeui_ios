@@ -108,19 +108,12 @@
         model.orderType = @"MAIN";
 
         if (self.orderType == 1) {
-            model.productName = @"精品订单";
+            model.productName = @"商品订单";
         }
         if (self.orderType == 2) {
             model.productName = @"服务套餐订单";
         }
-        
-//        if (self.orderType == 3) {
-//            model.productName = @"精品订单";
-//        }
-//        if (self.orderType == 4) {
-//            model.productName = @"服务订单";
-//        }
-        
+                
         model.orderDate = @"2022-06-06 15:55:24";
 
         if (model) {

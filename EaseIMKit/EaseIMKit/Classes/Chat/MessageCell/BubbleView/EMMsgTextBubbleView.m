@@ -72,7 +72,6 @@
   
     NSString *text = body.text;
 
-    
 //    NSMutableAttributedString *attaStr = [[NSMutableAttributedString alloc] initWithString:body.text];
     /*
     //下滑线
@@ -125,7 +124,7 @@
     
     [self.textLabel setTextWithLinkAttribute:text];
 
-    self.textLabel.attributedText = [EaseKitUtil attachPictureWithText:text];
+    self.textLabel.attributedText = [EaseKitUtil attachPictureWithText:self.textLabel.attributedText.string];
     
 }
 
