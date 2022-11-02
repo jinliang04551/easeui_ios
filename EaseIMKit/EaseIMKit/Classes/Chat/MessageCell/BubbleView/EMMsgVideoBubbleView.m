@@ -7,6 +7,13 @@
 //
 
 #import "EMMsgVideoBubbleView.h"
+#import "UIImageView+EaseWebCache.h"
+
+#define kEMMsgImageDefaultSize 120
+#define kEMMsgImageMinWidth 50
+#define kEMMsgImageMaxWidth 120
+#define kEMMsgImageMaxHeight 260
+
 
 @implementation EMMsgVideoBubbleView
 
@@ -76,5 +83,68 @@
     }
 }
 
+#pragma mark - Private
+
+- (CGSize)_getImageSize:(CGSize)aSize
+{
+    CGSize retSize = CGSizeZero;
+    do {
+        if (aSize.width == 0 || aSize.height == 0) {
+            break;
+        }
+        CGFloat maxWidth = [UIScreen mainScreen].bounds.size.width / 2 - 60.0;
+        NSInteger tmpWidth = aSize.width;
+        if (aSize.width < kEMMsgImageMinWidth) {
+            tmpWidth = kEMMsgImageMinWidth;
+        }
+        if (aSize.width > kEMMsgImageMaxWidth) {
+            tmpWidth = kEMMsgImageMaxWidth;
+        }
+        
+        NSInteger tmpHeight = tmpWidth / aSize.width * aSize.height;
+        if (tmpHeight > kEMMsgImageMaxHeight) {
+            tmpHeight = kEMMsgImageMaxHeight;
+        }
+        retSize = CGSizeMake(tmpWidth, tmpHeight);
+        
+    } while (0);
+    
+    return retSize;
+}
+
+- (void)setThumbnailImageWithLocalPath:(NSString *)aLocalPath
+                            remotePath:(NSString *)aRemotePath
+                          thumbImgSize:(CGSize)aThumbSize
+                               imgSize:(CGSize)aSize
+{
+    UIImage *img = nil;
+    if ([aLocalPath length] > 0) {
+        img = [UIImage imageWithContentsOfFile:aLocalPath];
+    }
+    
+    __weak typeof(self) weakself = self;
+    void (^block)(CGSize aSize) = ^(CGSize aSize) {
+        CGSize layoutSize = [weakself _getImageSize:aSize];
+        [weakself Ease_updateConstraints:^(EaseConstraintMaker *make) {
+            make.width.Ease_equalTo(layoutSize.width);
+            make.height.Ease_equalTo(layoutSize.height);
+        }];
+    };
+    
+    CGSize size = CGSizeMake(100, 150);
+    
+    if (img) {
+        self.image = img;
+        block(size);
+    } else {
+        block(size);
+        BOOL isAutoDownloadThumbnail = ([EMClient sharedClient].options.isAutoDownloadThumbnail);
+        if (isAutoDownloadThumbnail) {
+            [self Ease_setImageWithURL:[NSURL URLWithString:aRemotePath] placeholderImage:[UIImage easeUIImageNamed:@"msg_img_broken"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, EaseImageCacheType cacheType, NSURL * _Nullable imageURL) {}];
+        } else {
+            self.image = [UIImage easeUIImageNamed:@"msg_img_broken"];
+        }
+    }
+}
 
 @end

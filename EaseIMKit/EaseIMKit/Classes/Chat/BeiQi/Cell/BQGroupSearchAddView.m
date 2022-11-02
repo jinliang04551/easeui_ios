@@ -327,7 +327,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
 
 
 + (CGFloat)itemSpacing {
-    return 10.0;
+    return 8.0;
 }
 
 + (CGFloat)collectionLeftRightPadding {

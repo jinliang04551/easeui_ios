@@ -28,9 +28,7 @@ static EaseEmojiHelper *helper = nil;
             [_convertEmojiArray addObject:key];
             [_convertEmojiDic setObject:value forKey:key];
         }
-        
-        NSLog(@"%s _convertEmojiArray:%@ _convertEmojiDic:%@",__func__,_convertEmojiArray,_convertEmojiDic);
-                
+                        
     }
     
     return self;
