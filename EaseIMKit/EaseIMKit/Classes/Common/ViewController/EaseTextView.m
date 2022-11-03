@@ -91,11 +91,7 @@
     NSMutableString *reString = [[NSMutableString alloc] initWithString:plainText];
     [reString appendString:emojiText];
         
-    NSLog(@"%s reString:%@",__func__,reString);
-
     NSMutableAttributedString *emojiAttributeString = [EaseKitUtil attachPictureWithText:reString];
-
-    NSLog(@"%s emojiAttributeString:%@",__func__,emojiAttributeString);
 
     self.attributedText = emojiAttributeString;
     

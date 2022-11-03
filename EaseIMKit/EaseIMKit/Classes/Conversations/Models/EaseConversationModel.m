@@ -145,7 +145,6 @@
         NSString *content = [NSString stringWithFormat:@"%@:%@",userName,msgStr];
         _showInfo = [EaseKitUtil attachPictureWithText:content];
 
-//            _showInfo = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",userName,msgStr]];
         }else {
             NSString *content = [NSString stringWithFormat:@"%@:%@",nickname,msgStr];
             _showInfo = [EaseKitUtil attachPictureWithText:content];

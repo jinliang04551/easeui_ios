@@ -224,9 +224,7 @@
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].chatManager getConversationsFromServer:^(NSArray *aCoversations, EMError *aError) {
         if (!aError && [aCoversations count] > 0) {
-            [weakself.easeConvsVC.dataAry removeAllObjects];
-            [weakself.easeConvsVC.dataAry addObjectsFromArray:aCoversations];
-            [weakself.easeConvsVC refreshTable];
+            [self.easeConvsVC refreshTabView];
         }
     }];
     
@@ -272,85 +270,6 @@
 
 }
 
-
-//#pragma mark - EMSearchControllerDelegate
-//
-//- (void)searchBarWillBeginEditing:(UISearchBar *)searchBar
-//{
-//    self.resultController.searchKeyword = nil;
-//}
-//
-//- (void)searchBarCancelButtonAction:(UISearchBar *)searchBar
-//{
-//    [[EMRealtimeSearch shared] realtimeSearchStop];
-//
-//    if ([self.resultController.dataArray count] > 0) {
-//        [self.resultController.dataArray removeAllObjects];
-//    }
-//    [self.resultController.tableView reloadData];
-//    [self.easeConvsVC refreshTabView];
-//}
-//
-//- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-//{
-//    [self.view endEditing:YES];
-//}
-//
-//- (void)searchTextDidChangeWithString:(NSString *)aString
-//{
-//    self.resultController.searchKeyword = aString;
-//
-//    __weak typeof(self) weakself = self;
-//    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.easeConvsVC.dataAry searchText:aString collationStringSelector:@selector(showName) resultBlock:^(NSArray *results) {
-//         dispatch_async(dispatch_get_main_queue(), ^{
-//             if ([weakself.resultController.dataArray count] > 0) {
-//                 [weakself.resultController.dataArray removeAllObjects];
-//             }
-//            [weakself.resultController.dataArray addObjectsFromArray:results];
-//            [weakself.resultController.tableView reloadData];
-//        });
-//    }];
-//}
-   
-//#pragma mark - EMSearchBarDelegate
-//
-//- (void)searchBarShouldBeginEditing:(EMSearchBar *)searchBar
-//{
-//    self.isSearching = YES;
-//
-//}
-//
-//- (void)searchBarCancelButtonAction:(EMSearchBar *)searchBar
-//{
-//    [[EMRealtimeSearch shared] realtimeSearchStop];
-//    
-//    self.isSearching = NO;
-//    
-//    [self.searchResultArray removeAllObjects];
-//    [self.easeConvsVC.tableView reloadData];
-//    self.noDataPromptView.hidden = YES;
-//}
-//
-//
-//- (void)searchBarSearchButtonClicked:(EMSearchBar *)searchBar
-//{
-//    
-//}
-//
-//- (void)searchTextDidChangeWithString:(NSString *)aString {
-//    __weak typeof(self) weakself = self;
-//    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.easeConvsVC.dataAry searchText:aString collationStringSelector:@selector(showName) resultBlock:^(NSArray *results) {
-//         dispatch_async(dispatch_get_main_queue(), ^{
-//             if ([weakself.searchResultArray count] > 0) {
-//                 [weakself.searchResultArray removeAllObjects];
-//             }
-//            [weakself.easeConvsVC.dataAry addObjectsFromArray:results];
-//            [weakself.easeConvsVC.tableView reloadData];
-//             self.noDataPromptView.hidden = weakself.searchResultArray.count >0 ? YES : NO;
-//        });
-//    }];
-//    
-//}
 
 #pragma mark - EaseConversationsViewControllerDelegate
 

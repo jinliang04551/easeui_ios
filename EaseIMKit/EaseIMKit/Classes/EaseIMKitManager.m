@@ -276,6 +276,8 @@ static NSString *g_UIKitVersion = @"1.0.0";
     [[EMClient sharedClient] removeMultiDevicesDelegate:self];
     [[EMClient sharedClient].contactManager removeDelegate:self];
     [[EMClient sharedClient].groupManager removeDelegate:self];
+    [[EMClient sharedClient].chatManager removeDelegate:self];
+
 }
 
 #pragma mark NSNotification
@@ -371,9 +373,14 @@ static NSString *g_UIKitVersion = @"1.0.0";
         NSLog(@"%s currentVC:%@",__func__,currentVC);
         
         
-        if ([currentVC isKindOfClass:[EMChatViewController class]] || [currentVC isKindOfClass:[EaseHomeViewController class]]) {
+        if ([currentVC isKindOfClass:[EMChatViewController class]]) {
             return NO;
         }
+
+        
+//        if ([currentVC isKindOfClass:[EMChatViewController class]] || [currentVC isKindOfClass:[EaseHomeViewController class]]) {
+//            return NO;
+//        }
         
         //当前在SDK的所有页面,不提示横幅消息
 //        NSString *currentVCString = NSStringFromClass([currentVC class]);

@@ -487,6 +487,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         return cell;
     }
     
+    
     EaseMessageModel *model = (EaseMessageModel *)obj;
     
     //add translate text

@@ -865,7 +865,11 @@ static EaseIMHelper *helper = nil;
     if (msg.chatType == EMChatTypeGroupChat) {
         EMGroup *group = [EMGroup groupWithId:msg.conversationId];
         title = group.groupName;
+        if (group == nil || [group.groupName isEqualToString:@""]) {
+            title = msg.conversationId;
+        }
     }
+    
     
     if (msg.chatType == EMChatTypeChat) {
         title = [self getUserNameFromBannerMsgFromId:msg.from];

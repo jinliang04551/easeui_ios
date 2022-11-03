@@ -282,8 +282,7 @@ EMSearchBarDelegate
     }else {
         model = self.dataAry[indexPath.row];
     }
-    
-    
+            
     cell.model = model;
     
     return cell;
@@ -658,5 +657,6 @@ EMSearchBarDelegate
     }
     return _headerView;
 }
+
 
 @end

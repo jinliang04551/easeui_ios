@@ -43,8 +43,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)isValidateMobile:(NSString *)mobile;
 
 
-//+ (NSMutableAttributedString *)attachPictureWithText:(NSString *)text sourceAttributeString:(NSMutableAttributedString *)sourceAttribute;
-
 + (NSMutableAttributedString *)attachPictureWithText:(NSString *)text;
 
 @end
