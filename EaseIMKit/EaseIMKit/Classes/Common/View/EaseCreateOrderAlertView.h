@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EaseCreateOrderAlertView : UIView
 @property (nonatomic,copy)void (^confirmBlock)(void);
+@property (nonatomic,copy)void (^accessBlock)(void);
 
 /*显示 在 window 上*/
 - (void)showWithCompletion:(void(^)(void))completion;

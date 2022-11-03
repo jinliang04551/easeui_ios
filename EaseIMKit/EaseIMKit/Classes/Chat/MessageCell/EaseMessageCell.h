@@ -30,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) NSInteger groupMemberCount;
 
+@property (nonatomic, assign) BOOL isCreateOrderSelectedMode;
+
 + (NSString *)cellIdentifierWithDirection:(EMMessageDirection)aDirection
                                      type:(EMMessageType)aType;
 

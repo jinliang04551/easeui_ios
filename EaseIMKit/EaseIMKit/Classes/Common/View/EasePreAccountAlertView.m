@@ -174,7 +174,7 @@
         _hideButton = [[UIButton alloc] init];
         [_hideButton setImage:[UIImage easeUIImageNamed:@"ease_alert_hide"] forState:UIControlStateNormal];
         
-        [_hideButton addTarget:self action:@selector(hideButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        [_hideButton addTarget:self action:@selector(accessButtonAction) forControlEvents:UIControlEventTouchUpInside];
     }
     return _hideButton;
 }

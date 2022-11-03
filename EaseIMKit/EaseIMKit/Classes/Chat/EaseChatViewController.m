@@ -36,6 +36,7 @@
 #import "EaseIMHelper.h"
 #import "UserInfoStore.h"
 #import "EaseCreateOrderAlertView.h"
+#import "EaseCreateOrderChatMessageViewController.h"
 
 #define kEditingBottomViewHeight  52.0
 
@@ -60,6 +61,9 @@
 @property (nonatomic, strong) UIView *editingBottomView;
 
 @property (nonatomic, strong)UITapGestureRecognizer *tap;
+
+@property (nonatomic, strong)NSMutableArray *selectIndexPaths;
+
 
 @end
 
@@ -525,6 +529,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     //NSLog(@"indexpath.row : %ld ", (long)indexPath.row);
     NSArray *selectedArray = [tableView indexPathsForSelectedRows];
     
+    self.selectIndexPaths = [selectedArray mutableCopy];
     NSLog(@"%s sel:%@",__func__,selectedArray);
 }
 
@@ -1504,11 +1509,46 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 }
 
 - (void)confirmButtonAction {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(showCreateOrderAlertView)]) {
-         [self.delegate showCreateOrderAlertView];
+    if (self.selectIndexPaths.count == 0) {
+        [self showHint:@"请选择创建订单的消息"];
+        return;
+    }
+    
+    NSMutableArray *dataArray = [NSMutableArray array];
+    for (int i = 0; i < self.selectIndexPaths.count; ++i) {
+        NSIndexPath *inPath = self.selectIndexPaths[i];
+        [dataArray addObject:self.dataArray[inPath.row]];
+    }
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(showCreateOrderAlertViewWithSelectedArray:viewModel:)]) {
+         [self.delegate showCreateOrderAlertViewWithSelectedArray:dataArray viewModel:_viewModel];
     }
 }
 
+
+//- (void)showCreateOrderAlertView {
+//    EaseCreateOrderAlertView *alert = [[EaseCreateOrderAlertView alloc] init];
+//
+//    [alert showinViewController:self completion:^{
+//
+//    }];
+//
+//    EaseIMKit_WS
+//    alert.confirmBlock = ^{
+//        [weakSelf showHint:@"提交成功"];
+//        [weakSelf cancelButtonAction];
+//        [weakSelf goCreateOrderPage];
+//    };
+//}
+
+
+
+- (NSMutableArray *)selectIndexPaths {
+    if (_selectIndexPaths == nil) {
+        _selectIndexPaths = [NSMutableArray array];
+    }
+    return _selectIndexPaths;
+}
 
 @end
 

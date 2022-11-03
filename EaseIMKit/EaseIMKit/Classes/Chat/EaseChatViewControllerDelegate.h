@@ -143,7 +143,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)loadMoreMessageData:(NSString *)firstMessageId currentMessageList:(NSArray<EMChatMessage *> *)messageList;
 
 
-- (void)showCreateOrderAlertView;
+- (void)showCreateOrderAlertViewWithSelectedArray:(NSMutableArray *)selectedArray viewModel:(EaseChatViewModel *)viewModel;
 
 @end
 

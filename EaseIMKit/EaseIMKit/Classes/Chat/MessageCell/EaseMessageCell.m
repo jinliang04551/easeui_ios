@@ -295,27 +295,25 @@
     _model = model;
     self.bubbleView.model = model;
     
-    if (model.direction == EMMessageDirectionSend) {
-        [self.statusView setSenderStatus:model.message.status isReadAcked:model.message.chatType == EMChatTypeChat ? model.message.isReadAcked : NO];
-    } else {
-        if (model.type == EMMessageBodyTypeVoice) {
-            self.statusView.hidden = model.message.isListened;
+    if (self.isCreateOrderSelectedMode) {
+        self.statusView.hidden = YES;
+    }else {
+        if (model.direction == EMMessageDirectionSend) {
+            [self.statusView setSenderStatus:model.message.status isReadAcked:model.message.chatType == EMChatTypeChat ? model.message.isReadAcked : NO];
+        } else {
+            if (model.type == EMMessageBodyTypeVoice) {
+                self.statusView.hidden = model.message.isListened;
+            }
         }
+
     }
     
     if (model.type != EMChatTypeChat) {
-//        if (model.userDataDelegate && [model.userDataDelegate respondsToSelector:@selector(showName)]) {
-//            self.nameLabel.text = model.userDataDelegate.showName;
-//        } else {
-//            NSString *nickname = [EaseKitUtil fetchUserDicWithUserId:model.message.from][EaseUserNicknameKey];
-//
-//            self.nameLabel.text = nickname;
-//        }
-    
-        
         //    {"ext": {"userInfo": { "im_username": "xxx", "nick":"xx", "avatar":"http://xxx.png"}}}
         NSString *nickname = @"";
         if (model.message.direction == EMMessageDirectionReceive) {
+            
+        
             NSDictionary *msgUserExt = model.message.ext[@"userInfo"];
             if (msgUserExt.count > 0) {
                 nickname = msgUserExt[@"nick"];
@@ -326,9 +324,14 @@
                 nickname = [EaseKitUtil fetchUserDicWithUserId:model.message.from][EaseUserNicknameKey];
             }
 
-            self.nameLabel.text = nickname;
             
+        }else {
+            nickname = [EaseKitUtil fetchUserDicWithUserId:EMClient.sharedClient.currentUsername][EaseUserNicknameKey];
+
         }
+        
+        self.nameLabel.text = nickname;
+
     }
     
     
@@ -350,28 +353,33 @@
         _avatarView.image = [UIImage easeUIImageNamed:@"jh_user_icon"];
     }
     
-    
-    if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+    if (self.isCreateOrderSelectedMode) {
         self.readReceiptBtn.hidden = YES;
     }else {
-        if (model.message.direction == EMMessageDirectionSend) {
-            if (model.message.isNeedGroupAck && model.message.status == EMMessageStatusSucceed) {
-                self.readReceiptBtn.hidden = NO;
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            self.readReceiptBtn.hidden = YES;
+        }else {
+            if (model.message.direction == EMMessageDirectionSend) {
+                if (model.message.isNeedGroupAck && model.message.status == EMMessageStatusSucceed) {
+                    self.readReceiptBtn.hidden = NO;
 
-                if (self.groupMemberCount > 0 &&_model.message.groupAckCount == self.groupMemberCount) {
+                    if (self.groupMemberCount > 0 &&_model.message.groupAckCount == self.groupMemberCount) {
 
-                    [self.readReceiptBtn updateStateWithCount:_model.message.groupAckCount isReadAll:YES];
-                }else {
+                        [self.readReceiptBtn updateStateWithCount:_model.message.groupAckCount isReadAll:YES];
+                    }else {
 
-                    [self.readReceiptBtn updateStateWithCount:_model.message.groupAckCount isReadAll:NO];
+                        [self.readReceiptBtn updateStateWithCount:_model.message.groupAckCount isReadAll:NO];
+                    }
+                } else {
+                    self.readReceiptBtn.hidden = YES;
                 }
-            } else {
+
+            }else {
                 self.readReceiptBtn.hidden = YES;
             }
-
-        }else {
-            self.readReceiptBtn.hidden = YES;
         }
+
+        
     }
 }
 

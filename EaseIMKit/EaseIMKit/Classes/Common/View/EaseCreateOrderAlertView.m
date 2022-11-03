@@ -15,6 +15,7 @@
 @interface EaseCreateOrderAlertContentView : UIView<UITextViewDelegate>
 @property (nonatomic,copy)void (^cancelBlock)(void);
 @property (nonatomic,copy)void (^confirmBlock)(void);
+@property (nonatomic,copy)void (^accessBlock)(void);
 
 @property (nonatomic,strong) UIView *alphaView;
 @property (nonatomic,strong) UIView *contentView;
@@ -63,9 +64,9 @@
 }
 
 #pragma mark private method
-- (void)hideButtonAction {
-    if (self.cancelBlock) {
-        self.cancelBlock();
+- (void)accessButtonAction {
+    if (self.accessBlock) {
+        self.accessBlock();
     }
 }
 
@@ -155,8 +156,7 @@
         _accessButton = [[UIButton alloc] init];
         [_accessButton setImage:[UIImage easeUIImageNamed:@"jh_right_access"] forState:UIControlStateNormal];
         
-        [_accessButton addTarget:self action:@selector(hideButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        _accessButton.hidden = YES;
+        [_accessButton addTarget:self action:@selector(accessButtonAction) forControlEvents:UIControlEventTouchUpInside];
     }
     return _accessButton;
 }
@@ -281,14 +281,18 @@ static id g_instance = nil;
         EaseIMKit_WS
         _chooseUserView.cancelBlock = ^{
             [weakSelf hide];
-            if (weakSelf.confirmBlock) {
-                weakSelf.confirmBlock();
-            }
         };
+        
         _chooseUserView.confirmBlock = ^{
             [weakSelf hide];
             if (weakSelf.confirmBlock) {
                 weakSelf.confirmBlock();
+            }
+        };
+        
+        _chooseUserView.accessBlock = ^{
+            if (weakSelf.accessBlock) {
+                weakSelf.accessBlock();
             }
         };
     }

@@ -26,6 +26,7 @@
 #import "EMChatViewController+EMLoadMordMessage.h"
 #import "EaseIMHelper.h"
 #import "EaseCreateOrderAlertView.h"
+#import "EaseCreateOrderChatMessageViewController.h"
 
 @interface EMChatViewController ()<EaseChatViewControllerDelegate, EMChatroomManagerDelegate, EMGroupManagerDelegate, EMMessageCellDelegate>
 @property (nonatomic, strong) EaseConversationModel *conversationModel;
@@ -35,6 +36,9 @@
 @property (nonatomic, strong) UIView* fullScreenView;
 
 @property (nonatomic, strong) UIView *titleView;
+
+@property (nonatomic, strong) NSString *chatTitle;
+
 
 @end
 
@@ -179,13 +183,12 @@
 
 
 - (void)settingNavgationView {
-    NSString *chatTitle = @"";
     
-    chatTitle = _conversationModel.showName;
+    self.chatTitle = _conversationModel.showName;
     if (self.conversation.type == EMConversationTypeChat) {
         EMUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:self.conversation.conversationId];
         if(userInfo && userInfo.nickName.length > 0){
-            chatTitle = userInfo.nickName;
+            self.chatTitle = userInfo.nickName;
         }else {
             
             [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[self.conversation.conversationId]];
@@ -198,21 +201,20 @@
     if (![EaseIMKitOptions sharedOptions].isJiHuApp && self.conversation.type == EMConversationTypeGroupChat) {
         
         BOOL isNoDisturb = NO;
-        self.titleView = [self customNavWithTitle:chatTitle isNoDisturb:isNoDisturb groupIdInfo:groupIdInfo rightBarIconName:@"yg_groupInfo" rightBarAction:@selector(groupInfoAction)];
+        self.titleView = [self customNavWithTitle:self.chatTitle isNoDisturb:isNoDisturb groupIdInfo:groupIdInfo rightBarIconName:@"yg_groupInfo" rightBarAction:@selector(groupInfoAction)];
     }else {
         NSString *rightBarImageName = @"";
         if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-//            rightBarImageName = @"jh_groupInfo";
             rightBarImageName = @"yg_groupInfo";
         }else {
             rightBarImageName = @"yg_groupInfo";
         }
         if (self.conversation.type == EMConversationTypeGroupChat) {
-            self.titleView = [self customNavWithTitle:chatTitle rightBarIconName:rightBarImageName rightBarTitle:@"" rightBarAction:@selector(groupInfoAction)];
+            self.titleView = [self customNavWithTitle:self.chatTitle rightBarIconName:rightBarImageName rightBarTitle:@"" rightBarAction:@selector(groupInfoAction)];
         }
         
         if (self.conversation.type == EMConversationTypeChat) {
-            self.titleView = [self customNavWithTitle:chatTitle rightBarIconName:rightBarImageName rightBarTitle:@"" rightBarAction:@selector(chatInfoAction)];
+            self.titleView = [self customNavWithTitle:self.chatTitle rightBarIconName:rightBarImageName rightBarTitle:@"" rightBarAction:@selector(chatInfoAction)];
         }
     
     }
@@ -387,7 +389,7 @@
 
 }
 
-- (void)showCreateOrderAlertView {
+- (void)showCreateOrderAlertViewWithSelectedArray:(NSMutableArray *)selectedArray viewModel:(EaseChatViewModel *)viewModel {
     EaseCreateOrderAlertView *alert = [[EaseCreateOrderAlertView alloc] init];
     
     [alert showinViewController:self completion:^{
@@ -399,6 +401,19 @@
         [weakSelf showHint:@"提交成功"];
         [weakSelf.chatController cancelButtonAction];
     };
+    
+    alert.accessBlock = ^{
+        [weakSelf goCreateOrderPageWithDataArray:selectedArray viewModel:viewModel];
+    };
+    
+}
+
+
+- (void)goCreateOrderPageWithDataArray:(NSMutableArray *)dataArray viewModel:(EaseChatViewModel *)viewModel {
+    
+    EaseCreateOrderChatMessageViewController *vc = [[EaseCreateOrderChatMessageViewController alloc] initWithDataArray:dataArray withViewModel:viewModel];
+    vc.navTitle = self.chatTitle;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

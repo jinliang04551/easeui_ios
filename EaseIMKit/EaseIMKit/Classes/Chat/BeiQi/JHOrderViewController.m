@@ -101,20 +101,48 @@
 
 - (void)buildTestData {
     NSMutableArray *tArray = [NSMutableArray array];
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < 3; ++i) {
         JHOrderViewModel *model = [[JHOrderViewModel alloc] init];
-        model.aid = [NSString stringWithFormat:@"2201%@",@(i)];
+        model.aid = @"1113543768458";
         model.orderId = model.aid;
         model.orderType = @"MAIN";
 
+        NSArray *titleArray = [self getOrderTitleArray];
         if (self.orderType == 1) {
-            model.productName = @"商品订单";
+            
+            switch (i) {
+                case 0:
+                    model.productName = titleArray[0];
+                    break;
+                case 1:
+                    model.productName = titleArray[1];;
+                    break;
+                case 2:
+                    model.productName = titleArray[2];;
+                    break;
+                default:
+                    break;
+            }
+            
         }
         if (self.orderType == 2) {
-            model.productName = @"服务套餐订单";
+            switch (i) {
+                case 0:
+                    model.productName = titleArray[3];
+                    break;
+                case 1:
+                    model.productName = titleArray[4];;
+                    break;
+                case 2:
+                    model.productName = titleArray[5];;
+                    break;
+                default:
+                    break;
+            }
+
         }
                 
-        model.orderDate = @"2022-06-06 15:55:24";
+        model.orderDate = @"2022-09-21 18:30:23";
 
         if (model) {
             [tArray addObject:model];
@@ -125,6 +153,13 @@
     
 }
 
+
+- (NSArray *)getOrderTitleArray {
+    NSArray *titles = @[@"即时通讯尊享版",@"即时推送",@"内容审核",@"新客户专享套餐",@"维保延长套餐",@"服务升级套餐"];
+    return titles;
+}
+
+    
 #pragma mark - Table view data source
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 100.0;
