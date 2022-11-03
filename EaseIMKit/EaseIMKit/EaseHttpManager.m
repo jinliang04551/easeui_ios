@@ -15,7 +15,11 @@
 
 
 //场景化环境
-#define kServerHost @"http://221.204.13.10:12010"
+//#define kServerHost @"http://221.204.13.10:12010"
+
+
+#define kServerHost @"http://39.105.11.55/api"
+
 
 
 /*

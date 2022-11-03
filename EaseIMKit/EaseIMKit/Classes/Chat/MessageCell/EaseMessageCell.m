@@ -35,6 +35,8 @@
 
 @property (nonatomic, strong) EaseChatViewModel *viewModel;
 
+@property (nonatomic, strong) UIImageView *selectedImageView;
+
 @end
 
 @implementation EaseMessageCell
@@ -109,55 +111,54 @@
 - (void)_setupViewsWithType:(EMMessageType)aType chatType:(EMChatType)chatType
 {
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-
     self.backgroundColor = [UIColor clearColor];
 
-    _avatarView = [[UIImageView alloc] init];
-    _avatarView.contentMode = UIViewContentModeScaleAspectFit;
-    _avatarView.backgroundColor = [UIColor clearColor];
-    _avatarView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(avatarDidSelect:)];
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(avatarLongPressAction:)];
-    [_avatarView addGestureRecognizer:tap];
-    [_avatarView addGestureRecognizer:longPress];
+//    [self.contentView addSubview:self.selectedImageView];
+        
     if (_viewModel.avatarStyle == RoundedCorner) {
-        _avatarView.layer.cornerRadius = _viewModel.avatarCornerRadius;
+        self.avatarView.layer.cornerRadius = _viewModel.avatarCornerRadius;
     }
     if (_viewModel.avatarStyle == Circular) {
-        _avatarView.layer.cornerRadius = avatarLonger / 2;
+        self.avatarView.layer.cornerRadius = avatarLonger / 2;
     }
     if (_viewModel.avatarStyle != Rectangular) {
-        _avatarView.clipsToBounds = _avatarView.clipsToBounds = YES;;
+        self.avatarView.clipsToBounds = YES;;
     }
-    [self.contentView addSubview:_avatarView];
+    
+    [self.contentView addSubview:self.avatarView];
     if (self.direction == EMMessageDirectionReceive) {
-        [_avatarView Ease_makeConstraints:^(EaseConstraintMaker *make) {
+//        [self.selectedImageView Ease_updateConstraints:^(EaseConstraintMaker *make) {
+//            make.top.equalTo(self.contentView).offset(15);
+//            make.left.equalTo(self.contentView).offset(16.0);
+//            make.width.height.equalTo(@(20.0));
+//        }];
+        
+        [self.avatarView Ease_makeConstraints:^(EaseConstraintMaker *make) {
             make.top.equalTo(self.contentView).offset(15);
             make.left.equalTo(self.contentView).offset(16.0);
             make.width.height.equalTo(@(avatarLonger));
         }];
         
-        _nameLabel = [[UILabel alloc] init];
-        _nameLabel.font = [UIFont systemFontOfSize:13];
-        
-        //jh_setting
-        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-//            _nameLabel.textColor = [UIColor colorWithHexString:@"#999999"];
-            _nameLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
-        } else {
-            _nameLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
-        }
+//        _nameLabel = [[UILabel alloc] init];
+//        _nameLabel.font = [UIFont systemFontOfSize:13];
+//
+//        //jh_setting
+//        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+//            _nameLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
+//        } else {
+//            _nameLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
+//        }
 
         if (chatType != EMChatTypeChat) {
-            [self.contentView addSubview:_nameLabel];
-            [_nameLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
+            [self.contentView addSubview:self.nameLabel];
+            [self.nameLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
                 make.top.equalTo(self.avatarView);
                 make.left.equalTo(self.avatarView.ease_right).offset(8);
                 make.right.equalTo(self.contentView).offset(-componentSpacing);
             }];
         }
     } else {
-        [_avatarView Ease_makeConstraints:^(EaseConstraintMaker *make) {
+        [self.avatarView Ease_makeConstraints:^(EaseConstraintMaker *make) {
             make.top.equalTo(self.contentView).offset(15);
             make.right.equalTo(self.contentView).offset(-16.0);
             make.width.height.equalTo(@(avatarLonger));
@@ -434,7 +435,44 @@
 
 }
 
+- (UIImageView *)selectedImageView {
+    if (_selectedImageView == nil) {
+        _selectedImageView = [[UIImageView alloc] init];
+        _selectedImageView.contentMode = UIViewContentModeScaleAspectFit;
+    }
+    return _selectedImageView;
+}
 
+
+- (UIImageView *)avatarView {
+    if (_avatarView == nil) {
+        _avatarView = [[UIImageView alloc] init];
+        _avatarView.contentMode = UIViewContentModeScaleAspectFit;
+        _avatarView.backgroundColor = [UIColor clearColor];
+        _avatarView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(avatarDidSelect:)];
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(avatarLongPressAction:)];
+        [_avatarView addGestureRecognizer:tap];
+        [_avatarView addGestureRecognizer:longPress];
+    }
+    return _avatarView;
+}
+
+- (UILabel *)nameLabel {
+    if(_nameLabel == nil){
+        _nameLabel = [[UILabel alloc] init];
+        _nameLabel.font = [UIFont systemFontOfSize:13];
+        
+        //jh_setting
+        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
+            _nameLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
+        } else {
+            _nameLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
+        }
+
+    }
+    return _nameLabel;
+}
 
 @end
 

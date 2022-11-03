@@ -1260,11 +1260,22 @@ static NSString *g_UIKitVersion = @"1.0.0";
                     NSDictionary *imDic = [entityDic objectForKey:@"imUserToken"];
 
                     NSString *yg_username = [imDic objectForKey:@"username"];
+                    NSString *yg_password = [imDic objectForKey:@"password"];
+                    
+                    if ([token isKindOfClass:[NSNull class]]) {
+                        token = @"";
+                    }
+                    
+                    if ([yg_username isKindOfClass:[NSNull class]]) {
+                        yg_username = @"";
+                    }
+                    
+                    if ([yg_password isKindOfClass:[NSNull class]]) {
+                        yg_password = @"";
+                    }
                     
                     NSLog(@"%s,yg_username:%@",__func__,yg_username);
                     
-                    NSString *yg_password = [imDic objectForKey:@"password"];
-
                     [EaseKitUtil saveLoginUserToken:token userId:yg_username];
                     
                     [[EMClient sharedClient] loginWithUsername:yg_username password:yg_password completion:finishBlock];
