@@ -305,7 +305,6 @@
     //被群主解除禁言
     EMGroup *group = (EMGroup *)notify.object;
     if ([group.groupId isEqualToString:self.conversation.conversationId]) {
-//        [EaseAlertController showErrorAlert:@"你的禁言已解除"];
         [self showHint:@"你的禁言已解除"];
     }
     
@@ -605,12 +604,7 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     __weak typeof(self) weakself = self;
     void (^block)(NSArray *aMessages, EMError *aError) = ^(NSArray *aMessages, EMError *aError) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            for (EMChatMessage *msg in aMessages) {
-                if ([msg.messageId isEqualToString:self.moreMsgId]) {
-                    NSLog(@"==========self.moreMsgId:%@",self.moreMsgId);
-                }
-            }
-            
+        
             [weakself.chatController refreshTableViewWithData:aMessages isInsertBottom:NO isScrollBottom:isScrollBottom];
         });
     };
@@ -681,11 +675,12 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
     }
 }
 
+
 - (void)refreshTableView
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         if(self.view.window)
-            [self.chatController triggerUserInfoCallBack:YES];
+            [self.chatController refreshTableView:YES];
     });
 }
 

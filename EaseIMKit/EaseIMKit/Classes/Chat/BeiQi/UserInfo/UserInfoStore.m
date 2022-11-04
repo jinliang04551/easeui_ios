@@ -164,8 +164,9 @@ static UserInfoStore *userInfoStoreInstance = nil;
                         }
                     }
                     [self addUserInfos:arrayUserInfo];
-                    if(arrayUserInfo.count > 0)
+                    if(arrayUserInfo.count > 0){
                         [[NSNotificationCenter defaultCenter] postNotificationName:USERINFO_UPDATE  object:nil];
+                    }
                 }
             }];
             [weakself.userIds removeAllObjects];

@@ -375,13 +375,13 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         [self scrollToBottomRow];
     }
     
+    
     [self.tableView removeGestureRecognizer:self.tap];
-
     _isReloadViewWithModel = YES;
     _viewModel.isEditing = YES;
     self.tableView.editing = YES;
-        
     [self.tableView reloadData];
+    
     [self showEditingBottomView];
 }
 
@@ -392,6 +392,12 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
             make.height.equalTo(@(kEditingBottomViewHeight+ EaseIMKit_BottomSafeHeight));
         }];
         self.chatBar.hidden = YES;
+        
+        if (self.chatBar.currentMoreView) {
+            [self.chatBar clearMoreViewAndSelectedButton];
+            [self performSelector:@selector(scrollToBottomRow) withObject:nil afterDelay:0.1];
+        }
+
     }];
 }
 
@@ -1085,9 +1091,10 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     if (aTap.state == UIGestureRecognizerStateEnded) {
         if (!self.tableView.isEditing) {
             [self.view endEditing:YES];
-            [self.chatBar clearMoreViewAndSelectedButton];
             [self hideLongPressView];
-            [self scrollToBottomRow];
+            [self.chatBar clearMoreViewAndSelectedButton];
+            [self performSelector:@selector(scrollToBottomRow) withObject:nil afterDelay:0.1];
+
         }
     }
 }
@@ -1349,9 +1356,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 - (void)refreshTableView:(BOOL)isScrollBottom
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
-        [self.tableView setNeedsLayout];
-        [self.tableView layoutIfNeeded];
+//        [self.tableView reloadData];
+//        [self.tableView setNeedsLayout];
+//        [self.tableView layoutIfNeeded];
         if (self.chatRecordKeyMessage) {
             [self scrollToAssignMessage:self.chatRecordKeyMessage];
         }else {
@@ -1361,14 +1368,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         }
     });
     
-    
-//    [self.tableView reloadData];
-//    [self.tableView setNeedsLayout];
-//    [self.tableView layoutIfNeeded];
-//    if (isScrollBottom) {
-//        [self scrollToBottomRow];
-//    }
-
 }
 
 - (void)openWebPageWithURLString:(NSString *)urlString {

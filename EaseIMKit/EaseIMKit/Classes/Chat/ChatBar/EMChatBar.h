@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<EMChatBarDelegate> delegate;
 
+@property (nonatomic, strong,readonly) UIView *currentMoreView;
+
 @property (nonatomic, strong) EaseTextView *textView;
 
 @property (nonatomic, strong) EMChatBarRecordAudioView *recordAudioView;
