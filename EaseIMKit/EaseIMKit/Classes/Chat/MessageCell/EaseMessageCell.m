@@ -28,14 +28,11 @@
 
 @property (nonatomic, strong) EaseMessageStatusView *statusView;
 
-//@property (nonatomic, strong) UIButton *readReceiptBtn;//阅读回执按钮
-
 @property (nonatomic, strong) YGReadReceiptButton *readReceiptBtn;//阅读回执按钮
-
 
 @property (nonatomic, strong) EaseChatViewModel *viewModel;
 
-@property (nonatomic, strong) UIImageView *selectedImageView;
+@property (nonatomic, strong) UIButton *selectedButton;
 
 @end
 
@@ -113,42 +110,23 @@
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.backgroundColor = [UIColor clearColor];
 
-//    [self.contentView addSubview:self.selectedImageView];
-        
-    if (_viewModel.avatarStyle == RoundedCorner) {
-        self.avatarView.layer.cornerRadius = _viewModel.avatarCornerRadius;
-    }
-    if (_viewModel.avatarStyle == Circular) {
-        self.avatarView.layer.cornerRadius = avatarLonger / 2;
-    }
-    if (_viewModel.avatarStyle != Rectangular) {
-        self.avatarView.clipsToBounds = YES;;
-    }
-    
+    [self.contentView addSubview:self.selectedButton];
     [self.contentView addSubview:self.avatarView];
+    
+    [self.selectedButton Ease_makeConstraints:^(EaseConstraintMaker *make) {
+        make.centerY.equalTo(self.avatarView);
+        make.left.equalTo(self.contentView).offset(16.0);
+        make.width.height.equalTo(@(20.0));
+    }];
+    
     if (self.direction == EMMessageDirectionReceive) {
-//        [self.selectedImageView Ease_updateConstraints:^(EaseConstraintMaker *make) {
-//            make.top.equalTo(self.contentView).offset(15);
-//            make.left.equalTo(self.contentView).offset(16.0);
-//            make.width.height.equalTo(@(20.0));
-//        }];
-        
+                
         [self.avatarView Ease_makeConstraints:^(EaseConstraintMaker *make) {
             make.top.equalTo(self.contentView).offset(15);
-            make.left.equalTo(self.contentView).offset(16.0);
+            make.left.equalTo(self.selectedButton.ease_right).offset(10.0);
             make.width.height.equalTo(@(avatarLonger));
         }];
         
-//        _nameLabel = [[UILabel alloc] init];
-//        _nameLabel.font = [UIFont systemFontOfSize:13];
-//
-//        //jh_setting
-//        if ([EaseIMKitOptions sharedOptions].isJiHuApp) {
-//            _nameLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
-//        } else {
-//            _nameLabel.textColor = [UIColor colorWithHexString:@"#7F7F7F"];
-//        }
-
         if (chatType != EMChatTypeChat) {
             [self.contentView addSubview:self.nameLabel];
             [self.nameLabel Ease_makeConstraints:^(EaseConstraintMaker *make) {
@@ -158,6 +136,7 @@
             }];
         }
     } else {
+        
         [self.avatarView Ease_makeConstraints:^(EaseConstraintMaker *make) {
             make.top.equalTo(self.contentView).offset(15);
             make.right.equalTo(self.contentView).offset(-16.0);
@@ -296,6 +275,33 @@
     _model = model;
     self.bubbleView.model = model;
     
+    if (self.viewModel.isEditing) {
+        self.selectedButton.hidden = NO;
+        
+        if (model.direction == EMMessageDirectionReceive) {
+            [self.avatarView Ease_updateConstraints:^(EaseConstraintMaker *make) {
+                make.left.equalTo(self.selectedButton.ease_right).offset(10.0);
+            }];
+        }
+        
+    }else {
+        self.selectedButton.hidden = YES;
+        
+        if (model.direction == EMMessageDirectionReceive) {
+            [self.avatarView Ease_updateConstraints:^(EaseConstraintMaker *make) {
+                make.left.equalTo(self.contentView).offset(16.0);
+            }];
+        }
+    }
+    
+    
+    if (self.model.isSelected) {
+        [self.selectedButton setImage:[UIImage easeUIImageNamed:@"ease_msg_selected"] forState:UIControlStateNormal];
+    }else {
+        [self.selectedButton setImage:[UIImage easeUIImageNamed:@"ease_msg_unSelected"] forState:UIControlStateNormal];
+    }
+
+    
     if (self.isCreateOrderSelectedMode) {
         self.statusView.hidden = YES;
     }else {
@@ -308,13 +314,12 @@
         }
 
     }
+
     
     if (model.type != EMChatTypeChat) {
         //    {"ext": {"userInfo": { "im_username": "xxx", "nick":"xx", "avatar":"http://xxx.png"}}}
         NSString *nickname = @"";
         if (model.message.direction == EMMessageDirectionReceive) {
-            
-        
             NSDictionary *msgUserExt = model.message.ext[@"userInfo"];
             if (msgUserExt.count > 0) {
                 nickname = msgUserExt[@"nick"];
@@ -324,18 +329,13 @@
             }else {
                 nickname = [EaseKitUtil fetchUserDicWithUserId:model.message.from][EaseUserNicknameKey];
             }
-
-            
         }else {
             nickname = [EaseKitUtil fetchUserDicWithUserId:EMClient.sharedClient.currentUsername][EaseUserNicknameKey];
-
         }
-        
         self.nameLabel.text = nickname;
-
     }
-    
-    
+
+
     BOOL isCustomAvatar = NO;
     if (model.userDataDelegate && [model.userDataDelegate respondsToSelector:@selector(defaultAvatar)]) {
         if (model.userDataDelegate.defaultAvatar) {
@@ -343,6 +343,7 @@
             isCustomAvatar = YES;
         }
     }
+    
     if (_model.userDataDelegate && [_model.userDataDelegate respondsToSelector:@selector(avatarURL)]) {
         if ([_model.userDataDelegate.avatarURL length] > 0) {
             [_avatarView Ease_setImageWithURL:[NSURL URLWithString:_model.userDataDelegate.avatarURL]
@@ -350,10 +351,11 @@
             isCustomAvatar = YES;
         }
     }
+    
     if (!isCustomAvatar) {
         _avatarView.image = [UIImage easeUIImageNamed:@"jh_user_icon"];
     }
-    
+
     if (self.isCreateOrderSelectedMode) {
         self.readReceiptBtn.hidden = YES;
     }else {
@@ -374,14 +376,15 @@
                 } else {
                     self.readReceiptBtn.hidden = YES;
                 }
-
             }else {
                 self.readReceiptBtn.hidden = YES;
             }
         }
 
-        
+
     }
+    
+    
 }
 
 #pragma mark - Action
@@ -432,16 +435,8 @@
         }
     }
     //[aLongPress release];
-
 }
 
-- (UIImageView *)selectedImageView {
-    if (_selectedImageView == nil) {
-        _selectedImageView = [[UIImageView alloc] init];
-        _selectedImageView.contentMode = UIViewContentModeScaleAspectFit;
-    }
-    return _selectedImageView;
-}
 
 
 - (UIImageView *)avatarView {
@@ -454,6 +449,17 @@
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(avatarLongPressAction:)];
         [_avatarView addGestureRecognizer:tap];
         [_avatarView addGestureRecognizer:longPress];
+        
+        if (self.viewModel.avatarStyle == RoundedCorner) {
+            _avatarView.layer.cornerRadius = _viewModel.avatarCornerRadius;
+        }
+        if (self.viewModel.avatarStyle == Circular) {
+            _avatarView.layer.cornerRadius = avatarLonger / 2;
+        }
+        if (self.viewModel.avatarStyle != Rectangular) {
+            _avatarView.clipsToBounds = YES;;
+        }
+
     }
     return _avatarView;
 }
@@ -473,6 +479,27 @@
     }
     return _nameLabel;
 }
+
+- (UIButton *)selectedButton {
+    if (_selectedButton == nil) {
+        _selectedButton = [[UIButton alloc] init];
+        [_selectedButton setImage:[UIImage easeUIImageNamed:@"ease_msg_unSelected"] forState:UIControlStateNormal];
+        [_selectedButton setImage:[UIImage easeUIImageNamed:@"ease_msg_selected"] forState:UIControlStateHighlighted];
+        
+        [_selectedButton addTarget:self action:@selector(selectedButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        _selectedButton.hidden = YES;
+        
+    }
+    return _selectedButton;
+}
+
+- (void)selectedButtonAction {
+    self.model.isSelected = !self.model.isSelected;
+    if (self.selectedBlock) {
+        self.selectedBlock(self.model);
+    }
+}
+
 
 @end
 

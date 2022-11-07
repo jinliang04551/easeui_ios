@@ -62,8 +62,7 @@
 
 @property (nonatomic, strong)UITapGestureRecognizer *tap;
 
-@property (nonatomic, strong)NSMutableArray *selectIndexPaths;
-
+@property (nonatomic, strong)NSMutableArray *selectedArray;
 
 @end
 
@@ -375,13 +374,10 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
         [self scrollToBottomRow];
     }
     
-    
     [self.tableView removeGestureRecognizer:self.tap];
-    _isReloadViewWithModel = YES;
     _viewModel.isEditing = YES;
-    self.tableView.editing = YES;
-    [self.tableView reloadData];
     
+    [self.tableView reloadData];
     [self showEditingBottomView];
 }
 
@@ -510,35 +506,40 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     EaseMessageCell *cell = (EaseMessageCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
    
     // Configure the cell...
-    if (cell == nil || _isReloadViewWithModel == YES) {
+    if (cell == nil || _isReloadViewWithModel == YES||_viewModel.isEditing) {
         _isReloadViewWithModel = NO;
         cell = [[EaseMessageCell alloc] initWithDirection:model.direction chatType:model.message.chatType messageType:model.type viewModel:_viewModel];
         cell.delegate = self;
     }
-    
-    if (self.tableView.isEditing) {
-        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-    }else {
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
-    
+        
     cell.groupMemberCount = self.groupMemberCount;
     cell.model = model;
     if (cell.model.message.body.type == EMMessageTypeVoice) {
         cell.model.weakMessageCell = cell;
     }
+    
+    EaseIMKit_WS
+    cell.selectedBlock = ^(EaseMessageModel * _Nonnull model) {
+    
+        NSInteger index = [self.dataArray indexOfObject:model];
+        
+        NSIndexPath *indexP = [NSIndexPath indexPathForRow:index inSection:0];
+        
+        [weakSelf.tableView reloadRowsAtIndexPaths:@[indexP] withRowAnimation:UITableViewRowAnimationNone];
+    };
+    
     return cell;
 }
+
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //NSLog(@"indexpath.row : %ld ", (long)indexPath.row);
     NSArray *selectedArray = [tableView indexPathsForSelectedRows];
-    
-    self.selectIndexPaths = [selectedArray mutableCopy];
     NSLog(@"%s sel:%@",__func__,selectedArray);
 }
+
 
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -553,8 +554,11 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    id obj = [self.dataArray objectAtIndex:indexPath.row];
     
+    return NO;
+    
+    
+    id obj = [self.dataArray objectAtIndex:indexPath.row];
     
     NSString *cellString = nil;
     EaseWeakRemind type = EaseWeakRemindMsgTime;
@@ -1356,9 +1360,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 - (void)refreshTableView:(BOOL)isScrollBottom
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-//        [self.tableView reloadData];
-//        [self.tableView setNeedsLayout];
-//        [self.tableView layoutIfNeeded];
+        [self.tableView reloadData];
+        [self.tableView setNeedsLayout];
+        [self.tableView layoutIfNeeded];
         if (self.chatRecordKeyMessage) {
             [self scrollToAssignMessage:self.chatRecordKeyMessage];
         }else {
@@ -1501,54 +1505,44 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 }
 
 - (void)cancelButtonAction {
-    self.tableView.editing = NO;
-    _isReloadViewWithModel = YES;
     _viewModel.isEditing = NO;
     [self.tableView reloadData];
     [self hideEditingBottomView];
 }
 
+
 - (void)confirmButtonAction {
-    if (self.selectIndexPaths.count == 0) {
+    NSMutableArray *selectedArray = [NSMutableArray array];
+    for (id obj in self.dataArray) {
+        if ([obj isKindOfClass:[EaseMessageModel class]]) {
+            EaseMessageModel *model = (EaseMessageModel *)obj;
+            if (model.isSelected) {
+                [selectedArray addObject:model];
+            }
+        }
+    }
+    self.selectedArray = selectedArray;
+    
+    
+    if (self.selectedArray.count == 0) {
         [self showHint:@"请选择创建订单的消息"];
         return;
     }
     
-    NSMutableArray *dataArray = [NSMutableArray array];
-    for (int i = 0; i < self.selectIndexPaths.count; ++i) {
-        NSIndexPath *inPath = self.selectIndexPaths[i];
-        [dataArray addObject:self.dataArray[inPath.row]];
-    }
-    
     if (self.delegate && [self.delegate respondsToSelector:@selector(showCreateOrderAlertViewWithSelectedArray:viewModel:)]) {
-         [self.delegate showCreateOrderAlertViewWithSelectedArray:dataArray viewModel:_viewModel];
+         [self.delegate showCreateOrderAlertViewWithSelectedArray:self.selectedArray viewModel:_viewModel];
     }
+        
 }
 
 
-//- (void)showCreateOrderAlertView {
-//    EaseCreateOrderAlertView *alert = [[EaseCreateOrderAlertView alloc] init];
-//
-//    [alert showinViewController:self completion:^{
-//
-//    }];
-//
-//    EaseIMKit_WS
-//    alert.confirmBlock = ^{
-//        [weakSelf showHint:@"提交成功"];
-//        [weakSelf cancelButtonAction];
-//        [weakSelf goCreateOrderPage];
-//    };
-//}
-
-
-
-- (NSMutableArray *)selectIndexPaths {
-    if (_selectIndexPaths == nil) {
-        _selectIndexPaths = [NSMutableArray array];
+- (NSMutableArray *)selectedArray {
+    if (_selectedArray == nil) {
+        _selectedArray = [NSMutableArray array];
     }
-    return _selectIndexPaths;
+    return _selectedArray;
 }
+
 
 @end
 

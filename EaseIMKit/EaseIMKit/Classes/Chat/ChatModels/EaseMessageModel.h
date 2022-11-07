@@ -46,6 +46,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) BOOL isPlaying;
 
+//是否选中
+@property (nonatomic) BOOL isSelected;
+
+
 - (instancetype)initWithEMMessage:(EMChatMessage *)aMsg;
 
 @end

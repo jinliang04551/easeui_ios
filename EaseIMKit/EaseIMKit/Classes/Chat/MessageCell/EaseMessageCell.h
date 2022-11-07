@@ -32,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) BOOL isCreateOrderSelectedMode;
 
+@property (nonatomic, copy) void (^selectedBlock)(EaseMessageModel *model);
+
 + (NSString *)cellIdentifierWithDirection:(EMMessageDirection)aDirection
                                      type:(EMMessageType)aType;
 
