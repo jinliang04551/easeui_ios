@@ -1356,9 +1356,9 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 - (void)refreshTableView:(BOOL)isScrollBottom
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-//        [self.tableView reloadData];
-//        [self.tableView setNeedsLayout];
-//        [self.tableView layoutIfNeeded];
+        [self.tableView reloadData];
+        [self.tableView setNeedsLayout];
+        [self.tableView layoutIfNeeded];
         if (self.chatRecordKeyMessage) {
             [self scrollToAssignMessage:self.chatRecordKeyMessage];
         }else {
