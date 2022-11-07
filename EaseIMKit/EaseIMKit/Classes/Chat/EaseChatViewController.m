@@ -383,7 +383,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 
 - (void)showEditingBottomView {
     [UIView animateWithDuration:0.5 animations:^{
-        [self.view addSubview:self.editingBottomView];
         [self.editingBottomView Ease_updateConstraints:^(EaseConstraintMaker *make) {
             make.height.equalTo(@(kEditingBottomViewHeight+ EaseIMKit_BottomSafeHeight));
         }];
@@ -402,7 +401,6 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
     [self.tableView addGestureRecognizer:self.tap];
 
     [UIView animateWithDuration:0.5 animations:^{
-        [self.view addSubview:self.editingBottomView];
         [self.editingBottomView Ease_updateConstraints:^(EaseConstraintMaker *make) {
             make.height.equalTo(@(0));
         }];
@@ -1506,10 +1504,21 @@ if ([EaseIMKitOptions sharedOptions].isJiHuApp){
 
 - (void)cancelButtonAction {
     _viewModel.isEditing = NO;
+    [self clearSelectedState];
     [self.tableView reloadData];
     [self hideEditingBottomView];
 }
 
+ 
+- (void)clearSelectedState {
+    NSMutableArray *selectedArray = [NSMutableArray array];
+    for (id obj in self.dataArray) {
+        if ([obj isKindOfClass:[EaseMessageModel class]]) {
+            EaseMessageModel *model = (EaseMessageModel *)obj;
+            model.isSelected = NO;
+        }
+    }
+}
 
 - (void)confirmButtonAction {
     NSMutableArray *selectedArray = [NSMutableArray array];

@@ -250,15 +250,6 @@
             break;
     }
     
-    if (!self.viewModel.isEditing) {
-        if (bubbleView) {
-            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bubbleViewTapAction:)];
-            [bubbleView addGestureRecognizer:tap];
-            
-            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(bubbleViewLongPressAction:)];
-            [bubbleView addGestureRecognizer:longPress];
-        }
-    }
     
     return bubbleView;
 }
@@ -285,8 +276,15 @@
         }
         
     }else {
+        if (self.bubbleView) {
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bubbleViewTapAction:)];
+            [self.bubbleView addGestureRecognizer:tap];
+            
+            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(bubbleViewLongPressAction:)];
+            [self.bubbleView addGestureRecognizer:longPress];
+        }
+
         self.selectedButton.hidden = YES;
-        
         if (model.direction == EMMessageDirectionReceive) {
             [self.avatarView Ease_updateConstraints:^(EaseConstraintMaker *make) {
                 make.left.equalTo(self.contentView).offset(16.0);
