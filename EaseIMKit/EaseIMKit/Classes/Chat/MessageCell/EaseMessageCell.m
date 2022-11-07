@@ -482,7 +482,6 @@
     if (_selectedButton == nil) {
         _selectedButton = [[UIButton alloc] init];
         [_selectedButton setImage:[UIImage easeUIImageNamed:@"ease_msg_unSelected"] forState:UIControlStateNormal];
-        [_selectedButton setImage:[UIImage easeUIImageNamed:@"ease_msg_selected"] forState:UIControlStateHighlighted];
         
         [_selectedButton addTarget:self action:@selector(selectedButtonAction) forControlEvents:UIControlEventTouchUpInside];
         _selectedButton.hidden = YES;
